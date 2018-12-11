@@ -26,6 +26,7 @@ after_install_dep_2: /tmp/texlive/texmf.cnf
 	
 /tmp/texlive/texmf.cnf: after_install_dep
 after_install_dep: install_dep
+	ls /tmp/texlive
 	# use tlmgr to install individual package
 	tlmgr install beamer etoolbox translator caption mathtools
 install_dep: pre_install_dep
