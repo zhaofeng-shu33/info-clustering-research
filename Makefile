@@ -2,19 +2,21 @@
 
 # Compiling method: xelatex/pdflatex
 INSTALL_PACKAGE = install-tl-unx.tar.gz
-INSTALL_DIR = ./install-texlive
+INSTALL_DIR = /tmp/install-texlive
 # automatic configuration of mirror
 REMOTE_INSTALLER_URL = http://mirror.ctan.org/systems/texlive/tlnet
 # Set opts for latexmk if you use it
 LATEXMKOPTS = -xelatex -halt-on-error -interaction=nonstopmode
 BUILD_DIR = ./build
 
-.PHONY: all pre_install_dep install_dep after_install_dep clean
+.PHONY: all pre_install_dep install_dep after_install_dep after_install_dep_2 clean
 
-all: after_install_dep main.pdf
+all: after_install_dep_2 main.pdf
 
 pre_install_dep: $(INSTALL_PACKAGE)
 
+after_install_dep_2: $(INSTALL_DIR)/texlive/texmf.cnf
+$(INSTALL_DIR)/texlive/texmf.cnf: after_install_dep
 after_install_dep: install_dep
 	# tricky, to make variable assignment in recipe, and to execute shell command and assign the print result to a variable.
 	$(eval PLATFORM1=`$(INSTALL_DIR)/install-tl --print-platform`)
