@@ -29,6 +29,7 @@ after_install_dep: install_dep
 	# use tlmgr to install individual package
 	tlmgr install beamer etoolbox translator caption mathtools
 install_dep: pre_install_dep
+	$(eval export INSTALLER_DIR := /tmp/installer-texlive)
 	mkdir -p $(INSTALLER_DIR)
 	tar -zxvf $(INSTALL_PACKAGE) -C $(INSTALLER_DIR) --strip-components 1 
 	$(INSTALLER_DIR)/install-tl -profile tl.profile
