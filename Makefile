@@ -17,15 +17,15 @@ all: after_install_dep_2 main.pdf
 pre_install_dep: $(INSTALL_PACKAGE)
 
 after_install_dep_2: $(INSTALL_DIR)/texlive/texmf.cnf
-$(INSTALL_DIR)/texlive/texmf.cnf: after_install_dep
-after_install_dep: install_dep
-	# tricky, to make variable assignment in recipe, and to execute shell command and assign the print result to a variable.
 	$(eval PLATFORM1=`$(INSTALL_DIR)/install-tl --print-platform`)
 	$(eval PLATFORM2=$(shell echo $(PLATFORM1)))
 	$(eval PLATFORM3=$(shell pwd))
 	$(eval export PATH :=$(PLATFORM3)/texlive/bin/$(PLATFORM2):$(PATH))
 	echo $$PATH	
-	# to make tlmgr work, we need perl
+	
+$(INSTALL_DIR)/texlive/texmf.cnf: after_install_dep
+after_install_dep: install_dep
+	# use tlmgr to install individual package
 	tlmgr install beamer etoolbox translator caption mathtools
 install_dep: pre_install_dep
 	mkdir -p $(INSTALL_DIR)
