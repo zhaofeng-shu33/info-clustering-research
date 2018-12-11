@@ -3,7 +3,7 @@
 # Compiling method: xelatex/pdflatex
 INSTALL_PACKAGE = install-tl-unx.tar.gz
 # if installation dir is changed, corresponding tl.profile should also be changed.
-INSTALL_DIR = /tmp/texlive
+INSTALLER_DIR = /tmp/installer-texlive
 # automatic configuration of mirror
 REMOTE_INSTALLER_URL = http://mirror.ctan.org/systems/texlive/tlnet
 # Set opts for latexmk if you use it
@@ -16,27 +16,28 @@ all: after_install_dep_2 main.pdf
 
 pre_install_dep: $(INSTALL_PACKAGE)
 
-after_install_dep_2: $(INSTALL_DIR)/texmf.cnf
-	$(eval PLATFORM1=`$(INSTALL_DIR)/install-tl --print-platform`)
+after_install_dep_2: /tmp/texlive/texmf.cnf
+	ls /tmp/texlive
+	$(eval PLATFORM1=`$(INSTALLER_DIR)/install-tl --print-platform`)
 	$(eval PLATFORM2=$(shell echo $(PLATFORM1)))
 	$(eval PLATFORM3=$(shell pwd))
 	$(eval export PATH :=$(PLATFORM3)/texlive/bin/$(PLATFORM2):$(PATH))
 	echo $$PATH	
 	
-$(INSTALL_DIR)/texmf.cnf: after_install_dep
+/tmp/texlive/texmf.cnf: after_install_dep
 after_install_dep: install_dep
 	# use tlmgr to install individual package
 	tlmgr install beamer etoolbox translator caption mathtools
 install_dep: pre_install_dep
-	mkdir -p $(INSTALL_DIR)
-	tar -zxvf $(INSTALL_PACKAGE) -C $(INSTALL_DIR) --strip-components 1 
-	$(INSTALL_DIR)/install-tl -profile tl.profile
+	mkdir -p $(INSTALLER_DIR)
+	tar -zxvf $(INSTALL_PACKAGE) -C $(INSTALLER_DIR) --strip-components 1 
+	$(INSTALLER_DIR)/install-tl -profile tl.profile
 
 $(INSTALL_PACKAGE): 
 	wget $(REMOTE_INSTALLER_URL)/$(INSTALL_PACKAGE)
 
 clean: 
-	rm -fr $(INSTALL_DIR)
+	rm -fr $(INSTALLER_DIR)
 	rm -f *.idx *.ilg *.glo *.gls *.hd *.ind *.log *.out *.synctex.gz *.toc *.aux
 
 main.pdf: main.tex
