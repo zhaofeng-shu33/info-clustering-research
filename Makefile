@@ -2,6 +2,7 @@
 
 # Compiling method: xelatex/pdflatex
 INSTALL_PACKAGE = install-tl-unx.tar.gz
+# if installation dir is changed, corresponding tl.profile should also be changed.
 INSTALL_DIR = /tmp/install-texlive
 # automatic configuration of mirror
 REMOTE_INSTALLER_URL = http://mirror.ctan.org/systems/texlive/tlnet
