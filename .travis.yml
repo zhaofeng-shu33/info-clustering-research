@@ -23,7 +23,7 @@ install:
         echo "tlpdbopt_install_docfiles 0" >> $INSTALL/tl.profile;
         echo "tlpdbopt_install_srcfiles 0" >> $INSTALL/tl.profile;
         $INSTALL/install-tl -profile $INSTALL/tl.profile;        
+        tlmgr install beamer etoolbox translator caption mathtools;          
     fi
-  - tlmgr install beamer etoolbox translator caption mathtools;  
 script:
   - make all
