@@ -3,9 +3,11 @@ cache:
     - /tmp/texlive
 os:
   - linux
-git:
-  submodules: true
-  
+before_install:
+  - cd code
+  - git submodule init
+  - git submodule update
+  - cd ..  
 install:
   - export PATH="/tmp/texlive/bin/x86_64-linux:$PATH";
   - |
