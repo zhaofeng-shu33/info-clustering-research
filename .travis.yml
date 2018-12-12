@@ -5,6 +5,7 @@ os:
   - linux
 install:
   - export PATH="/tmp/texlive/bin/x86_64-linux:$PATH";
+  - tlmgr install algorithms float footmisc;
   - |
     if ! command -v tlmgr > /dev/null; then
         REMOTE="http://mirror.ctan.org/systems/texlive/tlnet";
@@ -23,9 +24,7 @@ install:
         echo "tlpdbopt_install_docfiles 0" >> $INSTALL/tl.profile;
         echo "tlpdbopt_install_srcfiles 0" >> $INSTALL/tl.profile;
         $INSTALL/install-tl -profile $INSTALL/tl.profile;        
-        tlmgr install beamer etoolbox translator caption mathtools;          
+        tlmgr install beamer etoolbox translator caption mathtools algorithms float footmisc;          
     fi
 script:
-  - ls code
-  - ls code/utility
   - make all
