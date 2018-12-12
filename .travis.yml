@@ -22,9 +22,8 @@ install:
         echo "tlpdbopt_autobackup 0" >> $INSTALL/tl.profile;
         echo "tlpdbopt_install_docfiles 0" >> $INSTALL/tl.profile;
         echo "tlpdbopt_install_srcfiles 0" >> $INSTALL/tl.profile;
-        $INSTALL/install-tl -profile $INSTALL/tl.profile;
-        tlmgr install beamer etoolbox translator caption mathtools;
+        $INSTALL/install-tl -profile $INSTALL/tl.profile;        
     fi
-    
+  - tlmgr install beamer etoolbox translator caption mathtools;  
 script:
   - make all

@@ -5,9 +5,9 @@ BUILD_DIR = ./build
 
 .PHONY: all
 
-all: main.pdf
+all: $(BUILD_DIR)/main.pdf
 
-main.pdf: main.tex
+$(BUILD_DIR)/main.pdf: main.tex
 	# run twice to generate the toc and make label and reference work
 	mkdir -p $(BUILD_DIR)
 	xelatex -output-directory=$(BUILD_DIR) main.tex
