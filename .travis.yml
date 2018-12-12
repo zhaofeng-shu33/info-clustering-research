@@ -1,11 +1,15 @@
 cache:
+  - pip
   directories:
     - /tmp/texlive
 os:
   - linux
+language: python
+  python:
+    - "3.6"
+  
 install:
   - export PATH="/tmp/texlive/bin/x86_64-linux:$PATH";
-  - tlmgr install algorithms float footmisc;
   - |
     if ! command -v tlmgr > /dev/null; then
         REMOTE="http://mirror.ctan.org/systems/texlive/tlnet";
@@ -26,5 +30,12 @@ install:
         $INSTALL/install-tl -profile $INSTALL/tl.profile;        
         tlmgr install beamer etoolbox translator caption mathtools algorithms float footmisc;          
     fi
+  - |
+    if ! command -v python -c "import oss2" > /dev/null; then
+        pip install oss2
+    fi    
 script:
   - make all
+  # deploy the document on aliyun oss
+  - export AccessKeyId=LTAIhGvOLG5VLaqh
+  - python upload.py
