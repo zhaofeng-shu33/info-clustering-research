@@ -3,11 +3,6 @@ cache:
     - /tmp/texlive
 os:
   - linux
-before_install:
-  - cd code
-  - git submodule init
-  - git submodule update
-  - cd ..  
 install:
   - export PATH="/tmp/texlive/bin/x86_64-linux:$PATH";
   - |
@@ -31,4 +26,6 @@ install:
         tlmgr install beamer etoolbox translator caption mathtools;          
     fi
 script:
+  - ls code
+  - ls code/utility
   - make all
