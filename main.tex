@@ -48,15 +48,15 @@
 
 \subsection{Mutual Similarity and its extension}
 \begin{frame}
-\begin{block}{computable mutual similarity}
+\begin{block}{mutual similarity}
 \begin{itemize}
-\item Gaussian kernel: $ \exp({-\gamma \norm{p_1 - p_2}^2})$
-\item cosine similarity or empirical Pearson coeffient 
+\item Gaussian kernel $ \exp({-\gamma \norm{p_1 - p_2}^2})$
+\item mutual information $I(X;Y)$ for random variables
 \end{itemize}
 \end{block}
 
-\begin{definition}[Multivariate similarity]
-Given an undirected Graph $G(V, E)$, with vertex as data point, edge weight as mutual similarity, the multivariate similarity $I(Z_V)$
+\begin{definition}[Multivariate information]
+Given an undirected Graph $G(V, E)$, with vertex as data point, edge weight as mutual similarity, the multivariate information $I(Z_V)$
 \begin{align}
 I(Z_V) & = \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V) \\
 \label{eq:newDef}  I_{\mathcal{P}}(Z_V) & = {1 \over 2 ( \abs{\mathcal{P}} - 1) } \sum_{\substack{(i,j) \not\in C\\ C\in \mathcal{P}}} w_{ij}
@@ -203,7 +203,7 @@ Time Complexity: $\abs{V}^2 \mathrm{MF}(G(V,E))$
 \begin{frame}
 \frametitle{Contribution}
 \begin{itemize}
-\item propose multivariate similarity, used in info-clustering method
+\item propose multivariate information, used in info-clustering method
 \item implement info-clustering algorithm
 \item competitive with existing algorithms
 \end{itemize}
