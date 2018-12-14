@@ -75,6 +75,7 @@ I(Z_V) & = \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V) \\
 I_{\{1\},\{2\},\{3\}}(Z\{1,2,3\}) & = 3.5 \\
 I_{\{1,3\},\{2\}}(Z\{1,2,3\}) & = 2 \\ 
 I_{\{1,2\},\{3\}}(Z\{1,2,3\}) & = 6 \\ 
+I_{\{1\},\{2,3\}}(Z\{1,2,3\}) & = 6 \\ 
 \Rightarrow I(Z\{1,2,3\}) & = 2 \\
 \end{align*}
 \begin{equation*}
@@ -88,13 +89,13 @@ I(Z_{1,3}) = 5, I(Z_{1,2}) = 1
 To cluster $Z_1, Z_2, \dots, Z_{\abs{V}}$ for threshold $\gamma$.
 The clusters are:
 \begin{equation}
-C_{\gamma}(Z_V) = \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \}
+C_{\gamma}(Z_V) = \textrm{maximal}\{ B \subseteq V \vert \abs{B} > 1, I(Z_B) > \gamma \}
 \end{equation}
 More specificly:
 \begin{equation*}
 C_{\gamma}(Z_V) = \begin{cases}
 \{V\} & \gamma < \gamma_1 \\
-C_{\gamma_i} & \gamma \in [\gamma_i, \gamma_{i+1}), 1\leq i < N \\
+C_{\gamma_i}(Z_V) & \gamma \in [\gamma_i, \gamma_{i+1}), 1\leq i < N \\
 \emptyset & \gamma \geq \gamma_N
 \end{cases}
 \end{equation*}
@@ -126,12 +127,12 @@ C_{\gamma}(Z\{1,2,3\}) = \begin{cases}
 $C$ is a subset of $V$:
 \begin{align}
 f(C) & ={1 \over 2} \sum_{i\in C, j \not\in C} w_{ij} \\
-f(\P) & = \sum_{C \in \P} f(C)
+f[\P] & = \sum_{C \in \P} f(C)
 \end{align}
 \end{definition}
 \begin{theorem}
 \begin{equation}\label{eq:hLambda}
-h(\lambda) = \min_{\P} \sum_{C\in \P} (f(C)-\lambda)
+h(\lambda) = \min_{\P \in \Pi(V)} \{ f[\P] - \abs{\P}\lambda \}
 \end{equation} piesewise linear about $\lambda$. 
 $\gamma_i$: turning points; $\P_i$ corresponding partation. $C_{\gamma_i}(Z_V)$: non-singleton element of $\P_i$.
 \end{theorem}
@@ -147,7 +148,7 @@ $\gamma_i$: turning points; $\P_i$ corresponding partation. $C_{\gamma_i}(Z_V)$:
 \column{5cm}
 \begin{align*}
 h(\lambda)  & = \min_{\P} h_{\lambda}(\P) \\
-h_{\lambda}(\P) & = f(\P) - \abs{\P}\lambda
+h_{\lambda}(\P) & = f[\P] - \abs{\P}\lambda
 \end{align*}
 \begin{align*}
 \P_0  & = \{\{1,2,3\}\} \\
