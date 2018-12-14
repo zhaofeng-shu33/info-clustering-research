@@ -1,6 +1,5 @@
 # Makefile for thucoursework
 
-LATEXMKOPTS = -xelatex -halt-on-error -interaction=nonstopmode
 BUILD_DIR = ./build
 
 .PHONY: all
