@@ -30,10 +30,8 @@ install:
         $INSTALL/install-tl -profile $INSTALL/tl.profile;        
         tlmgr install beamer etoolbox translator caption mathtools algorithms float footmisc;          
     fi
-  - |
-    if ! command -v python -c "import oss2" > /dev/null; then
-        pip install oss2;
-    fi    
+  - tlmgr install oberdiek
+  - python -c "import oss2" 2>/dev/null || pip install oss2
 script:
   - make all
   # deploy the document on aliyun oss
