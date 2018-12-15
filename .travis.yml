@@ -19,6 +19,7 @@ install:
             --strip-components=1;
         echo "selected_scheme scheme-basic" >> $INSTALL/tl.profile;
         echo "collection-fontsrecommended 1" >> $INSTALL/tl.profile;
+        echo "collection-latex 1" >> $INSTALL/tl.profile;
         echo "collection-xetex 1" >> $INSTALL/tl.profile;
         echo "TEXDIR /tmp/texlive" >> $INSTALL/tl.profile;
         echo "TEXMFLOCAL /tmp/texlive/texmf-local" >> $INSTALL/tl.profile;
@@ -30,7 +31,6 @@ install:
         $INSTALL/install-tl -profile $INSTALL/tl.profile;        
         tlmgr install beamer etoolbox translator caption mathtools algorithms float footmisc;          
     fi
-  - tlmgr install oberdiek
   - python -c "import oss2" 2>/dev/null || pip install oss2
 script:
   - make all
