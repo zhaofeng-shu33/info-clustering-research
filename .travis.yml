@@ -1,12 +1,12 @@
 cache:
   - pip
-  directories:
+  - directories:
     - /tmp/texlive
 os:
   - linux
 language: python
-  python:
-    - "3.6"
+python:
+  - "3.6"
   
 install:
   - export PATH="/tmp/texlive/bin/x86_64-linux:$PATH";
@@ -32,7 +32,7 @@ install:
     fi
   - |
     if ! command -v python -c "import oss2" > /dev/null; then
-        pip install oss2
+        pip install oss2;
     fi    
 script:
   - make all
