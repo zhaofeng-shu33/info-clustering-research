@@ -362,19 +362,54 @@ In Algorithm \ref{alg:psp}, the function \texttt{Split} first calculates the int
 For the middle level(DT) in the pyramid, it calls at most $\abs{V}$ times submodular function minimization(SFM) algorithm.
 The algorithm is the same with procedure \texttt{FINDPARTITION} from literature \cite{mac}.
 
+Actually, it uses Edmonds' greedy algorithm to finish this task. Consider the polyhedron defined by $f_{\lambda}(C) = f(C)-\lambda$($h_{\lambda}(\P)= \sum_{C \in \P} f_{\lambda}(C)$):
+\begin{equation}
+P(f_{\lambda}) = \{ x \in \R |  x(C) \leq f_{\lambda}(C), \emptyset \neq \forall C \subseteq V\}
+\end{equation}
+
+A non-empty set $C$ is called \textit{tight} for a vector $x \in P(f_{\lambda})$ if $x(C) = f_{\lambda}(C)$.
+If we can find a vector $ x^* \in P(f_{\lambda}) $ and a complete partition $\P^*$ containing only tight partations,
+then $\P$ satisifies
+\begin{align*}
+h_{\lambda}(\P^*) &= \sum_{C \in \P^*} f_{\lambda}(C) \\
+ &=\sum_{C\in P^*} x^*(C)  \\
+& = \sum_{C \in \P} x^*(C), \forall \P \subset \Pi(V) \\
+& \leq \sum_{C\in \P} f_{\lambda}(C), \textrm{since } x^* \in P(f_{\lambda}) \\
+& = h_{\lambda}(\P),\forall \P \subset \Pi(V) 
+\end{align*}
+
+Let $V=\{1, 2, \dots, n\}$, the greedy algorithm to find $x^*$ and $\P^*$ is given in \ref{alg:dt}
+\begin{algorithm}
+\caption{Dilworth truncation algorithm}\label{alg:dt}
+\begin{algorithmic}[1]
+\REQUIRE function $h(\lambda)$ for a specific $\lambda$
+\ENSURE the partation $\P^*$ s.t. $h(\lambda) = h_{\lambda}(\P^*)$ and the value of $h(\lambda)$
+\STATE $V^0 = \emptyset, x = $ \texttt{zero vector}, $\mathcal{A} = $ \texttt{empty partition} 
+\FOR{$l=1, 2, \dots, n$}
+\STATE $V^l = \{l\} \cup V^{l-1}$
+\STATE\label{alg:tight} compute $x^*_l = \displaystyle\min_{ A: l \in A \subseteq V^l} f_{\lambda}(A)- x(A)$ and $T^l$ is one of the minimizer.
+\STATE $U^l = T^l \cup [\cup \{A | A \in \mathcal{A}, A \cap T^l \neq \emptyset\}] $
+\STATE $\mathcal{A} = \{U^l\} \cup \{A | A \in \mathcal{A}, A \cap T^l = \emptyset \}$
+\ENDFOR
+\STATE $\P^* = \mathcal{A}, h_{\lambda} = x^*(V)$
+\end{algorithmic}
+\end{algorithm}
+
+In line \ref{alg:tight} of Algorithm \ref{alg:dt}, the set $T^l$ remains tight.
+
 SFM algorithm has been proved to have combinatorial polynomial time algorithm. However, in applications provable combinatorial algorithm for SFM does not perform well. General implementation like Fujishige-Wolfe minimum norm algorithm( in literature \cite{fwrobust}) fails because of intracable accuracy.
 To finish our job, we focus on the specific problem to minimize 
 \begin{equation}
-\alpha^l = \min \{ f(S) - x^{l-1}(S) - \lambda: i_l \in \forall S \subset V^l\}
+\alpha^l = \min \{ f(S) - x^{l-1}(S) - \lambda: l \in \forall S \subset V^l\}
 \end{equation}
 When $f(S)$ is digraph cut function, we can convert the problem to minimum $s-t$ cut problem(in Algorithm 2, literature \cite{pin}). 
 \begin{equation}
-\beta^l = \min_{T \subseteq V^l \backslash \{s\}: i_l \in T} c(V^l \backslash T, T)
+\beta^l = \min_{T \subseteq V^l \backslash \{s\}: l \in T} c(V^l \backslash T, T)
 \end{equation} 
 
 The optimal solution matches while the optimal values differs a constant value. 
 \begin{equation}
-\beta^l - \alpha^l = \lambda + \sum_{x_v>0, 1\leq v<l}x_{i_v}
+\beta^l - \alpha^l = \lambda + \sum_{x_v>0, 1\leq v<l}x_{v}
 \end{equation} 
 \subsection{Example}
 
@@ -382,7 +417,7 @@ In this subsection, we use an illustrative example to explain the algorithm pyra
 The first simulation setting(Fig~\ref{fig:4p}) is the same with subsection 5.1 in \cite{mac}.  We use principal sequence of partition to obtain the following result.
 Aslo, figures on the same line are from one execution of \texttt{split}.
 
-In the second simulation environment(Fig~\ref{fig:3c}), we generate 60,100, 140 points uniformly on three circles and 10 random points on the line segment. The similarity metric is based on the polar coordinates of each point.
+In the second simulation environment(Fig~\ref{fig:3c}), we generate 60, 100, 140 points uniformly on three circles and 10 random points on the line segment. The similarity metric is based on the polar coordinates of each point.
 
 \begin{figure}[!ht]
 \includegraphics[width=12cm]{pic/4part.eps}
