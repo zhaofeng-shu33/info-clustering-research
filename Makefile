@@ -7,8 +7,8 @@ BUILD_DIR = ./build
 all: $(BUILD_DIR)/main.pdf $(BUILD_DIR)/clustering.pdf
 
 compare.tex:
-    wget https://programmierung.oss-cn-shenzhen.aliyuncs.com/research/info-clustering/code/utility/compare.tex
-    
+	wget https://programmierung.oss-cn-shenzhen.aliyuncs.com/research/info-clustering/code/utility/compare.tex
+
 $(BUILD_DIR)/main.pdf: compare.tex main.tex
 	# run twice to generate the toc and make label and reference work
 	mkdir -p $(BUILD_DIR)
