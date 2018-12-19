@@ -8,7 +8,9 @@ dist: xenial
 language: python
 python:
   - "3.6"
-  
+addons:
+  apt:
+    packages: ghostscript 
 install:
   - export PATH="/tmp/texlive/bin/x86_64-linux:$PATH";
   - |
