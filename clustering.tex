@@ -368,7 +368,7 @@ P(f_{\lambda}) = \{ x \in \R |  x(C) \leq f_{\lambda}(C), \emptyset \neq \forall
 \end{equation}
 
 A non-empty set $C$ is called \textit{tight} for a vector $x \in P(f_{\lambda})$ if $x(C) = f_{\lambda}(C)$.
-If we can find a vector $ x^* \in P(f_{\lambda}) $ and a complete partition $\P^*$ containing only tight partations,
+If we can find a vector $ x^* \in P(f_{\lambda}) $ and a complete partition $\P^*$ containing only tight partitions,
 then $\P$ satisifies
 \begin{align*}
 h_{\lambda}(\P^*) &= \sum_{C \in \P^*} f_{\lambda}(C) \\
@@ -383,7 +383,7 @@ Let $V=\{1, 2, \dots, n\}$, the greedy algorithm to find $x^*$ and $\P^*$ is giv
 \caption{Dilworth truncation algorithm}\label{alg:dt}
 \begin{algorithmic}[1]
 \REQUIRE function $h(\lambda)$ for a specific $\lambda$
-\ENSURE the partation $\P^*$ s.t. $h(\lambda) = h_{\lambda}(\P^*)$ and the value of $h(\lambda)$
+\ENSURE the partition $\P^*$ s.t. $h(\lambda) = h_{\lambda}(\P^*)$ and the value of $h(\lambda)$
 \STATE $V^0 = \emptyset, x = $ \texttt{zero vector}, $\mathcal{A} = $ \texttt{empty partition} 
 \FOR{$l=1, 2, \dots, n$}
 \STATE $V^l = \{l\} \cup V^{l-1}$
@@ -432,7 +432,7 @@ In the second simulation environment(Fig~\ref{fig:3c}), we generate 60, 100, 140
 In this section, we use 4 different clustering methods and test them on 5 different datasets. The clustering methods are kmeans, spectral clustering, affine propagation and our info-clustering algorithms. We use adjusted rand score as accuracy criterion. The 5 datasets are 4 Gaussian blobs, 3 circles and the other three are from UCI datasets(Iris, Glass and Libras).
 \begin{table}[!ht]
 \centering
-\input{build/compare.tex}
+\InputIfFileExists{build/compare.tex}
 \caption{clustering accuracy for the proposed and existing algorithms}
 \end{table}
 \begin{thebibliography}{9}
