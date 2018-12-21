@@ -86,7 +86,10 @@ $\widetilde{B}_{ij}$ is called divergence transfer matrix which comes from the i
 Our definition \eqref{eq:newDef} comes from an approximation of equation \eqref{eq:MMI_o} under certain conditions.
 
 See appendix \ref{sec:akld} for detail.
-
+\input{notation2.tex}
+\begin{example}
+Let $\P_1 = \{\{1, 2\}, \{3\}, \{4\}\}$, $\P_2 = \{\{1,3\},\{2\},\{4\}\}$, $\P_1\vee \P_2 = \{\{1,2,3\},\{4\}\}$, $\P_1 \wedge \P_2 = \{\{1\},\{2\},\{3\}, \{4\}\}$
+\end{example}
 If we treat each index as a vertex in a graph, then the partition $\P$ divides these vertices into $\abs{\P}$ groups. 
 \input{notation.tex}
 Suppose $\Pi = \{S_1, \dots, S_k\}$, and 
@@ -116,7 +119,7 @@ where
 h(\lambda) = \min_{\P} \sum_{C\in \P} (f(C)-\lambda)
 \end{equation}
 $h(\lambda)$ is the Dilworth truncation(DT) of the submodular function $f(C)$. $h(\lambda)$
-is piecewise linear. For each turning point of line segments, the optimal partition forms a lattice.
+is piecewise linear. For each turning point of line segments, the optimal partition forms a lattice. That is, if $\P_1$ and $\P_2$ are optimal partitions at $\lambda$, then $\P_1\vee \P_2$ and $\P_1 \wedge \P_2$ are also optimal partitions.
 
 The connection of \red{MMI with DT} is through equation \eqref{eq:Connection}. More precisely, $I(Z_V)$
 is the solution of equation $-\lambda = h(\lambda)$.
@@ -432,7 +435,7 @@ In the second simulation environment(Fig~\ref{fig:3c}), we generate 60, 100, 140
 In this section, we use 4 different clustering methods and test them on 5 different datasets. The clustering methods are kmeans, spectral clustering, affine propagation and our info-clustering algorithms. We use adjusted rand score as accuracy criterion. The 5 datasets are 4 Gaussian blobs, 3 circles and the other three are from UCI datasets(Iris, Glass and Libras).
 \begin{table}[!ht]
 \centering
-\InputIfFileExists{build/compare.tex}
+\InputIfFileExists{build/compare.tex}{}{}
 \caption{clustering accuracy for the proposed and existing algorithms}
 \end{table}
 \begin{thebibliography}{9}
