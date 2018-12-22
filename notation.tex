@@ -4,10 +4,12 @@
 \item[$\Pi$] collection of partitions, $\P \in \Pi$
 \item[$\P_1 \vee \P_2$] the least element of $\Pi$ above $\P_1$ and $\P_2$
 \item[$\P_1 \wedge \P_2$] the greatest element of $\Pi$ below $\P_1$ and $\P_2$
-\item[$f(\cdot)$] function defined on subset of $V$. $\mathrm{Domain}(f)=\{C| C\subset V\}$
-\item[$f{[}\cdot{]}$] function defined on $\Pi$
+\item[$f(\cdot)$] submodular function defined on subset of $V$. $\mathrm{Domain}(f)=\{C| C\subset V\}$
+\item[$f{[}\cdot{]}$] function defined on $\Pi$ by $f[\P] = \sum_{C\in \P} f(C)$
+\item[$x(\cdot)$] modular function defined on subset of $V$ where $x$ is a vector: $x(C)=\sum_{i \in C} x_i$
 \item[$h_{\lambda}$] function defined on $\Pi$ by $h_{\lambda}(\P)=f[\P]-\lambda\abs{\P}$
 \item[$\preceq$] partial order on $\Pi$, $\P_2 \preceq \P_1$ means $C\in \P_2 \Rightarrow C \in \P_1$
+\item[$\prec$] in strict sense such that $\P_1 \neq \P_2 $
 \item[$\P/\P'$] the partition of $\P$ by $\P'$, requiring $\P\preceq \P'$ and $\P/\P'=\{\{ C \in P | C \subseteq C' \} | C' \in \P'\}$
 \end{description}
 
