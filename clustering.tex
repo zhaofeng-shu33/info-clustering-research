@@ -89,12 +89,17 @@ $\widetilde{B}_{ij}$ is called divergence transfer matrix which comes from the i
 Our definition \eqref{eq:newDef} comes from an approximation of equation \eqref{eq:MMI_o} under certain conditions.
 
 See appendix \ref{sec:akld} for detail.
+Let $w_{ij} = \norm{\widetilde{B}_{ij}}_F^2$.
+$\norm{\widetilde{B}_{ij}}_F^2$ can be treated as a kind of similarity metric between two random variables.
+
+The graph-cut weight is $\norm{\widetilde{B}_{ij}}_F^2$.
 
 If we treat each index as a vertex in a graph, then the partition $\P$ divides these vertices into $\abs{\P}$ groups. 
-Suppose $\Pi = \{S_1, \dots, S_k\}$, and 
-\begin{equation}
-f(C) = {1 \over 2}\sum_{i\in C, j \not\in C} \norm{\widetilde{B}_{ij}}_F^2
-\end{equation}
+
+\begin{align}
+f(C) & = {1\over 2}\sum_{i\in C, j \in V\backslash C} w_{ij} \\
+f_B(C) & = {1\over 2}\sum_{i\in C, j \in B\backslash C} w_{ij} \\
+\end{align}
 We can write 
 \begin{align}
 f[\P] & = \sum_{C \in \P} f(C) \\
@@ -114,7 +119,7 @@ $I(Z_V)$ is the smallest value $\lambda$ that satisfies
 \begin{equation}\label{eq:rir}
 -\lambda = h_{\lambda}(\P)
 \end{equation}
-for some $\P \in \Pi'(V)$. Let $\Pi^*(Z_V)$ be the set of all such partitions satisfying \eqref{eq:rir}.
+for some $\P \in \Pi'(V)$. Let $\Pi^*$ be the set of all such partitions satisfying \eqref{eq:rir}.
 \end{theorem}
 \begin{proof}
 $I(Z_V)$ satisfies equation \eqref{eq:rir} for some $\P$. We only need to show the equality never holds for $\lambda < I(Z_V)$ and all partition $\P$. Indeed, we show $-\lambda < h_{\lambda}(\P)$.
@@ -129,8 +134,8 @@ $I(Z_V)$ satisfies equation \eqref{eq:rir} for some $\P$. We only need to show t
 Geometrically speaking, we know that the first line segment of $h(\lambda)$ is $\lambda$, theorem \ref{thm:f} shows that $I(Z_V)$ is the first critical value of $h(\lambda)$. It is the x coordinate of the intersection point of $-\lambda$ and a line with slope large than 1. $\Pi^*(Z_V) $ are just the collection of partitions which minimize $h_{\lambda}(\P)$, we can also show that this collection coincides with the optimal partitions to \eqref{eq:opI}.
 \end{remark}
 
-\begin{corollary}
-$\Pi^*(Z_V) = \{ P \in \Pi: I_{\P}(Z_V) = I(Z_V)\}$
+\begin{corollary}\label{cor:F}
+$\Pi^*= \{ P \in \Pi: I_{\P}(Z_V) = I(Z_V)\}$
 \end{corollary}
 \begin{proof}
 Let $\gamma = I(Z_V)$
@@ -140,12 +145,35 @@ Let $\gamma = I(Z_V)$
 \end{align*}
 \end{proof}
 
+From corollary \ref{cor:F} and theorem \ref{thm:lattice}, we know that if $I(Z_V) = I_{\P_1}(Z_V) = I_{\P_2}(Z_V)$, then $I(Z_V) = I_{\P_1 \wedge \P_2}(Z_V)$. Then we have the theorem:
+\begin{theorem}
+There is a unique finest partition $\P^* \in \Pi^*$, referred to as the fundamental partition.
+\end{theorem}
+\begin{proof}
+Since $\Pi^*$ has the lattice structure, the meet of all its member is the unique finest partition $\P^*$
+\end{proof}
+\begin{theorem}
+The fundamental partition $\P^*$ with the singletons removed is the set of all maximal subsets $B \subseteq V$ with strictly larger mutual information $I(Z_B) > I(Z_V)$ for $B \in \P^*, \abs{B}>1$.
+\end{theorem}
+\begin{proof}
+Suppose $I(Z_B)=I_{\P_B}(Z_B)$.
+Let $\P' = \P_B \cup  \P^* \backslash \{C\}$.
+Then $\abs{\P'} = \abs{\P^*} -1 + \abs{\P_B}$,
+Since
+\begin{align*}
+I_{\P'}(Z_V) & = { f[\P^*] + f_B[\P_B] \over \abs{\P'} - 1} \\
+I_{\P^*}(Z_V) & = { f[\P^*] \over \abs{\P^*} - 1} \\
+I_{\P_B}(Z_B) & = { f_B[\P_B] \over \abs{\P_B} - 1}
+\end{align*}
+As a result, there exists $\theta = {\abs{\P^*} - 1 \over \abs{\P'} - 1} \in (0,1)$ such that 
+\begin{equation}\label{eq:convexZ}
+I_{\P'}(Z_V) = \theta I_{\P^*}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
+\end{equation}
+Since $\P^*$ is finest, we have $I_{\P'}(Z_V) > I(Z_V)$, then from \eqref{eq:convexZ}, we have 
+$I(Z_V) < \theta I(Z_V) + (1-\theta) I(Z_B) \Rightarrow I(Z_B) > I(Z_V)$.
+\end{proof}
 Below we show that not only the first critical values coincides of info-clustering problem and PSP problem, all their critical values 
 and finest partitions coincide.
-
-$\norm{\widetilde{B}_{ij}}_F^2$ can be treated as a kind of similarity metric between two random variables.
-
-The graph-cut weight is $\norm{\widetilde{B}_{ij}}_F^2$.
 
 \section{property}
 \subsection{relation to Dilworth truncation}
