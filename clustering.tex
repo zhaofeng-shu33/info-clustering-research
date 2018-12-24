@@ -423,9 +423,9 @@ h_{\lambda}(\P^*) &= \sum_{C \in \P^*} f_{\lambda}(C) \\
 
 Let $V=\{1, 2, \dots, n\}$, the greedy algorithm to find $x^*$ and $\P^*$ is given in \ref{alg:dt}
 \begin{algorithm}
-\caption{Dilworth truncation algorithm}\label{alg:dt}
+\caption{Dilworth truncation algorithm(\texttt{DT})}\label{alg:dt}
 \begin{algorithmic}[1]
-\REQUIRE function $h(\lambda)$ for a specific $\lambda$
+\REQUIRE function $f$ and $\lambda$ which are requirements in the definition of $h_{\lambda}(\P)$.
 \ENSURE the partition $\P^*$ s.t. $h(\lambda) = h_{\lambda}(\P^*)$ and the value of $h(\lambda)$
 \STATE $V^0 = \emptyset, x = $ \texttt{zero vector}, $\mathcal{A} = $ \texttt{empty partition} 
 \FOR{$l=1, 2, \dots, n$}
@@ -478,6 +478,7 @@ In this section, we use 4 different clustering methods and test them on 5 differ
 \InputIfFileExists{build/compare.tex}{}{}
 \caption{clustering accuracy for the proposed and existing algorithms}
 \end{table}
+\subsection{Outlier detection}
 \begin{thebibliography}{9}
 \bibitem{ic}Info-Clustering: A Mathematical Theory for Data Clustering
 \bibitem{ska} Multivariate Mutual Information Inspired by Secret-Key Agreement
