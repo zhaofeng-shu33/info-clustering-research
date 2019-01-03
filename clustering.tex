@@ -153,11 +153,18 @@ There is a unique finest partition $\P^* \in \Pi^*$, referred to as the fundamen
 Since $\Pi^*$ has the lattice structure, the meet of all its member is the unique finest partition $\P^*$
 \end{proof}
 \begin{theorem}
-The fundamental partition $\P^*$ with the singletons removed is the set of all maximal subsets $B \subseteq V$ with strictly larger mutual information $I(Z_B) > I(Z_V)$ for $B \in \P^*, \abs{B}>1$.
+The fundamental partition $\P^*$ with the singletons removed is the set of all maximal subsets $B \subseteq V$ with strictly larger mutual information. 
+That is, we have
+\begin{enumerate}
+\item $I(Z_B) > I(Z_V)$ for $B \in \P^*, \abs{B}>1$.
+\item If $I(Z_C) > I(Z_V)$, then $C\subseteq B$ for $B \in \P^*$.
+\end{enumerate}
 \end{theorem}
 \begin{proof}
+\begin{enumerate}
+\item
 Suppose $I(Z_B)=I_{\P_B}(Z_B)$.
-Let $\P' = \P_B \cup  \P^* \backslash \{C\}$.
+Let $\P' = \P_B \cup  \P^* \backslash \{B\}$.
 Then $\abs{\P'} = \abs{\P^*} -1 + \abs{\P_B}$,
 Since
 \begin{align*}
@@ -171,10 +178,9 @@ I_{\P'}(Z_V) = \theta I_{\P^*}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 \end{equation}
 Since $\P^*$ is finest, we have $I_{\P'}(Z_V) > I(Z_V)$, then from \eqref{eq:convexZ}, we have 
 $I(Z_V) < \theta I(Z_V) + (1-\theta) I(Z_B) \Rightarrow I(Z_B) > I(Z_V)$.
+\item
+\end{enumerate}
 \end{proof}
-\begin{theorem}\label{thm:Z_C
-If $I(Z_C) > I(Z_V)$, then $C\subseteq B$ for $B \in \P^*$.
-\end{theorem}
 
 
 Below we show that not only the first critical values coincides of info-clustering problem and PSP problem, all their critical values 
