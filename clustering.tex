@@ -157,6 +157,7 @@ The fundamental partition $\P^*$ with the singletons removed is the set of all m
 That is, we have
 \begin{enumerate}
 \item $I(Z_B) > I(Z_V)$ for $B \in \P^*, \abs{B}>1$.
+\item $I(Z_V) \geq I(Z_B)$ if $\exists \P_B \subseteq \P^*$.
 \item If $I(Z_C) > I(Z_V)$, then $C\subseteq B$ for $B \in \P^*$.
 \end{enumerate}
 \end{theorem}
@@ -178,7 +179,12 @@ I_{\P'}(Z_V) = \theta I_{\P^*}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 \end{equation}
 Since $\P^*$ is finest, we have $I_{\P'}(Z_V) > I(Z_V)$, then from \eqref{eq:convexZ}, we have 
 $I(Z_V) < \theta I(Z_V) + (1-\theta) I(Z_B) \Rightarrow I(Z_B) > I(Z_V)$.
-\item
+
+\item Let $\P' = \{B\} \cup \P^*\backslash \P_B$, then $\P^* = \P_B \cup \P'\backslash\{B\}$ , similar to equation \eqref{eq:convexZ}, we have
+\begin{equation}
+I_{\P^*}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
+\end{equation}
+Since $\P^*$ is optimal partition, we have $I_{P^*}(Z_V) = I(Z_V), I_{\P'}(Z_V)\geq I(Z_V) \Rightarrow I(Z_V) \geq I_{\P_B}(Z_B) \geq I(Z_B)$ 
 \end{enumerate}
 \end{proof}
 
