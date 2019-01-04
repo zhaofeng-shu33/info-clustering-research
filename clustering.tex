@@ -1,40 +1,6 @@
 \documentclass{article}
-\usepackage{amsfonts}
-\usepackage{amsmath}
-\usepackage{amsthm}
-\usepackage{algorithm}
-\usepackage{algorithmic}
-\usepackage{bm}
-\usepackage{footmisc}
-\usepackage{xcolor}
-\DeclareMathOperator\E{\mathbb{E}}
-\DeclareMathOperator\Var{\mathrm{Var}}
-\def\R{\mathbb{R}}
-\def\P{\mathcal{P}}
-\usepackage{mathtools}
-\DeclarePairedDelimiter\abs{\lvert}{\rvert}
-\DeclarePairedDelimiter\norm{\lVert}{\rVert}
-\DeclarePairedDelimiter\inner{\langle}{\rangle}
-\def\red#1{\textcolor{red}{#1}}
-\makeatletter
-\newcommand{\algorithmicfunction}{\textbf{function}}
-\newcommand{\algorithmicendfunction}{\algorithmicend\ \algorithmicfunction}
-\newenvironment{ALC@func}{\begin{ALC@g}}{\end{ALC@g}}
-\newcommand{\FUNCTION}[2][default]{\ALC@it\algorithmicfunction\ #2\ %
-\textbf{:}%
-\ALC@com{#1}\begin{ALC@func}}
-\ifthenelse{\boolean{ALC@noend}}{
-    \newcommand{\ENDFUNCTION}{\end{ALC@func}}
-  }{
-    \newcommand{\ENDFUNCTION}{\end{ALC@func}\ALC@it\algorithmicendfunction}
-  }
-\makeatother
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}
-\newtheorem{theorem}{Theorem}
-\newtheorem{example}{Example}
-\newtheorem{corollary}{Corollary}
-\newtheorem{remark}{Remark}
+
+\input{macros.tex}
 \begin{document}
 \title{draft}
 \author{zhaofeng-shu33}
@@ -112,7 +78,7 @@ Below we show some properties of MMI.
 \input{notation.tex}
 \input{theorems.tex}
 \input{examples.tex}
-
+\input{lemma.tex}
 And then we show its connection with $h(\lambda)$.
 \begin{theorem}\label{thm:f}
 $I(Z_V)$ is the smallest value $\lambda$ that satisfies
@@ -152,7 +118,7 @@ There is a unique finest partition $\P^* \in \Pi^*$, referred to as the fundamen
 \begin{proof}
 Since $\Pi^*$ has the lattice structure, the meet of all its member is the unique finest partition $\P^*$
 \end{proof}
-\begin{theorem}
+\begin{theorem}\label{thm:strict_larger_mi}
 The fundamental partition $\P^*$ with the singletons removed is the set of all maximal subsets $B \subseteq V$ with strictly larger mutual information. 
 That is, we have
 \begin{enumerate}
@@ -218,7 +184,7 @@ Similar to Theorem 5.2 in literature \cite{ska}, the finest partition $\P^*(Z_V)
 \textbf{fundamental partition}.
 
 \subsection{Laminarity}
-In appendix \ref{sec:lp}, we show that
+From theorem \ref{thm:strict_larger_mi}, we can show that
 \begin{equation}\label{eq:P}
 I(Z_{C_1 \cup C_2}) \geq \min\{ I(Z_{C_1}), I(Z_{C_2})\}
 \end{equation}
@@ -393,27 +359,7 @@ $\rho$ & theoretical & empirical \\
 \end{tabular}
 \end{table}
 
-\section{Proof of Laminarity Property}\label{sec:lp}
-Suppose both $\mathcal{P}$ and $\mathcal{P}'$ are partitions of $Z_V$ and $\mathcal{P}$ is a refinement of $\mathcal{P}'$.
-The concise notation is $\mathcal{P} \preceq \mathcal{P}'$.
-We write $\mathcal{P}/\mathcal{P}'$ to denote the set consisting of partitions of each element of $\mathcal{P}' $ by $\mathcal{P}$
-\begin{equation}
-\mathcal{P}/\mathcal{P}' = \{ \{ C\in \mathcal{P} | C \subseteq C'\} | C'\in \mathcal{P}'\}
-\end{equation}
-Then we have the following two results:
-\begin{align}
-\abs{\mathcal{P}} & = \abs{\mathcal{P}'} + \sum_{\mathcal{Q} \in \mathcal{P}/\mathcal{P}'}(\abs{\mathcal{Q}}-1) \\
-d(\mathcal{P}) & = d(\mathcal{P}') + \sum_{\mathcal{Q} \in \mathcal{P}/\mathcal{P}'}d(\mathcal{Q})
-\end{align}
-By the above results, similar to the proof of Theorem 5.3 in literature \cite{ska}.
-The fundamental partition $\mathcal{P}^*(Z_V)$ with the singletons removed
-is the set of all maximal subsets $C\subseteq V$ with strictly larger mutual
-information $I(Z_C) > I(Z_V)$. 
-By this property, 
-for $C_1, C_2 \subseteq V$: $\abs{C_1},\abs{C_2}>1, C_1 \cap C_2 \neq \emptyset$, we have
-\begin{equation}
-I(Z_{C_1 \cup C_2}) \geq \min\{ I(Z_{C_1}), I(Z_{C_2})\}
-\end{equation}
+
 \section{Algorithm Architecture}
 \begin{figure}[!ht]
 \centering
