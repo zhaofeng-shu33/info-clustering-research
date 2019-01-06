@@ -30,6 +30,18 @@ The above definition excludes the singleton element.
 
 The key is how to define $I(Z_B)$, which is called the multivariate mutual information(MMI) for $\{Z_i | i \in B\}$.
 
+It can be seen there are finite values $\gamma$ such that $C_{\gamma}(Z_V)$ differs.
+We call them the critical values of info-clustering.
+More specificly:
+\begin{equation*}
+C_{\gamma}(Z_V) = \begin{cases}
+\{V\} & \gamma < \gamma_1 \\
+C_{\gamma_i}(Z_V) & \gamma \in [\gamma_i, \gamma_{i+1}), 1\leq i < N \\
+\emptyset & \gamma \geq \gamma_N
+\end{cases}
+\end{equation*}
+Obviously, the first critical value is $I(Z_V)$.
+
 \red{It is indeed hierachical if MMI satisfies certain properties.}
 
 In literature \cite{ic}, the MMI is defined as 
@@ -154,7 +166,14 @@ Since $\P^*$ is optimal partition, we have $I_{P^*}(Z_V) = I(Z_V), I_{\P'}(Z_V)\
 \end{enumerate}
 \end{proof}
 
-
+From theorem \ref{thm:strict_larger_mi} we have 
+\begin{theorem}
+the second critical values of info-clustering is $\gamma_2 = \min_{C\in \P*} I(Z_C)$.
+\end{theorem}
+\begin{proof}
+From (3) of theorem \ref{thm:strict_larger_mi} and the maximal property of $C_{\gamma_1}$,
+we have $C_{\gamma_1} = \{C, C\in \P^* \}$
+\end{proof}
 Below we show that not only the first critical values coincides of info-clustering problem and PSP problem, all their critical values 
 and finest partitions coincide.
 
