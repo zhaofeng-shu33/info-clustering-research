@@ -22,14 +22,34 @@ An information-theoretic approach to hierarchical clustering is formulated in \c
 The idea of this formulation is as follows:
 
 Suppose we have a set of random variables $Z_1, Z_2, \dots, Z_{\abs{V}}$ to be clustered, and for a given threshold $\gamma \in \mathbb{R}$, the set of clusters is defined as:
-\begin{equation}
+\begin{equation}\label{eq:def_CgammaZV}
 C_{\gamma}(Z_V) = \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \}
 \end{equation}
-We use the notation $\P_{\gamma}$ to denote the partition associated with $C_{\gamma}(Z_V)$.$\P_{\gamma}$ is obtained by adding all the singletons.
+This definition is well defined if \eqref{eq:P} holds. See subsection \ref{sec:laminarity} for detail.
 
-The above definition excludes the singleton element.
+$C_{\gamma}(Z_V)$ consists of collection of disjoint subsets of $V$.
+The definition of $C_{\gamma}(Z_V)$ excludes the singleton element,
+we use the notation $\P_{\gamma}$ to denote the partition associated with $C_{\gamma}(Z_V)$.$\P_{\gamma}$ is obtained by adding $C_{\gamma}(Z_V)$ with all the other singletons.
+$\P_{\gamma}$ is a partition of $V$.
 
-The key is how to define $I(Z_B)$, which is called the multivariate mutual information(MMI) for $\{Z_i | i \in B\}$.
+\begin{theorem}\label{thm:hierachical}
+$\P_{\gamma_2} \preceq \P_{\gamma_1}$ if $\gamma_1 < \gamma_2$.
+\end{theorem}
+\begin{proof}
+For $C \in \P_{\gamma_2}$, if $\abs{C}=1$, then  $C\in \P_{\gamma_1}$;
+if $\abs{C}>1$, then $C \in C_{\gamma_2}(Z_V)$ and we have $I(Z_C) > \gamma_2 > \gamma_1$.
+As a result, there exists $C' \in C_{\gamma_1}(Z_V)$ such that $C\subseteq C' \in \P_{\gamma_1}$.
+\end{proof}
+\begin{remark}
+Theorem \ref{thm:hierachical} shows that for a series of threshold $\gamma$, $\P_{\gamma}$ forms a hierachical clustering structure.
+\end{remark}
+The key is how to define $I(Z_B)$, which is called the multivariate mutual information(MMI) for $\{Z_i | i
+\in B\}$ such that
+\begin{itemize}
+\item satisfies equation \eqref{eq:P}
+\item easy computable.
+\item theoretically interpretable.
+\end{itemize}
 
 It can be seen there are finite values $\gamma$ such that $C_{\gamma}(Z_V)$ differs.
 We call them the critical values of info-clustering.
@@ -42,8 +62,6 @@ C_{\gamma_i}(Z_V) & \gamma \in [\gamma_i, \gamma_{i+1}), 1\leq i < N \\
 \end{cases}
 \end{equation*}
 Obviously, the first critical value is $I(Z_V)$.
-
-\red{It is indeed hierachical if MMI satisfies certain properties.}
 
 In literature \cite{ic}, the MMI is defined as 
 \begin{align}
@@ -161,9 +179,9 @@ Since $\P^*$ is optimal partition, we have $I_{P^*}(Z_V) = I(Z_V), I_{\P'}(Z_V)\
 $k \geq 2, C_i \in \P^* $ such that $C \subseteq \cup_{i=1}^k C_i$ and $C_i \cap C \neq \emptyset$.
 Then we have
 \begin{align*}
-I(Z_V) & \upbrace{\geq}_{(a)} I_{\P_U}(Z_U)  = I(Z_{C_1} \wedge \dots \wedge Z_{C_k})\\
-& = {1\over k-1}\sum_{i=1}^{k=1} I(Z_{C_1} \wedge Z_{})
-\end{align*}•
+I(Z_V) & \overbrace{\geq}_{(a)} I_{\P_U}(Z_U)  = I(Z_{C_1} \wedge \dots \wedge Z_{C_k})\\
+& = {1\over k-1}\sum_{i=1}^{k=1} I(Z_{C_1} \wedge Z_{C})
+\end{align*}
 \end{enumerate}
 \end{proof}
 
@@ -211,7 +229,7 @@ Therefore the set of optimal partition to achieve $I(Z_V)$ forms a lattice $\P^*
 Similar to Theorem 5.2 in literature \cite{ska}, the finest partition $\P^*(Z_V)$ exists and is called the 
 \textbf{fundamental partition}.
 
-\subsection{Laminarity}
+\subsection{Laminarity}\label{sec:laminarity}
 From theorem \ref{thm:strict_larger_mi}, we can show that
 \begin{equation}\label{eq:P}
 I(Z_{C_1 \cup C_2}) \geq \min\{ I(Z_{C_1}), I(Z_{C_2})\}
