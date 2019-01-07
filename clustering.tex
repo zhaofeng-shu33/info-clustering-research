@@ -43,13 +43,6 @@ As a result, there exists $C' \in C_{\gamma_1}(Z_V)$ such that $C\subseteq C' \i
 \begin{remark}
 Theorem \ref{thm:hierachical} shows that for a series of threshold $\gamma$, $\P_{\gamma}$ forms a hierachical clustering structure.
 \end{remark}
-The key is how to define $I(Z_B)$, which is called the multivariate mutual information(MMI) for $\{Z_i | i
-\in B\}$ such that
-\begin{itemize}
-\item satisfies equation \eqref{eq:P}
-\item easy computable.
-\item theoretically interpretable.
-\end{itemize}
 
 It can be seen there are finite values $\gamma$ such that $C_{\gamma}(Z_V)$ differs.
 We call them the critical values of info-clustering.
@@ -63,29 +56,25 @@ C_{\gamma_i}(Z_V) & \gamma \in [\gamma_i, \gamma_{i+1}), 1\leq i < N \\
 \end{equation*}
 Obviously, the first critical value is $I(Z_V)$.
 
-In literature \cite{ic}, the MMI is defined as 
-\begin{align}
-I(Z_V) & = \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V) \label{eq:opI}\\
-\label{eq:MMI_o} I_{\mathcal{P}}(Z_V) & = {1 \over \abs{\mathcal{P}} -1 } D\left(P_{Z_V}|| \prod_{C\in \mathcal{P}} P_{Z_C} \right) 
-\end{align}
+The key is how to define $I(Z_B)$, which is called the multivariate mutual information(MMI) for $\{Z_i | i
+\in B\}$ such that
+\begin{itemize}
+\item satisfies equation \eqref{eq:P}
+\item easily computable.
+\item theoretically interpretable.
+\end{itemize}
 
-We give a different definition of MMI.
+We give a definition of MMI as follows:
 \begin{align}
 I(Z_V) & = \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V) \\
 \label{eq:newDef}  I_{\mathcal{P}}(Z_V) & = {1 \over 2( \abs{\mathcal{P}} - 1) } \sum_{\substack{(i,j) \not\in C\\ C\in \mathcal{P}}} \norm{\widetilde{B}_{ij}}_F^2
 \end{align}
 
 $\widetilde{B}_{ij}$ is called divergence transfer matrix which comes from the information geometry theory.
-%The set of clusters can be computed from the \textit{Dilworth truncation} as the finest partition (not include the singleton element) which minimize $h_{\gamma}(\mathcal{P}) %$ (a piecewise linear function about $\gamma$), where
-%\begin{equation}
-%h_{\gamma}(\mathcal{P}) = \sum_{C \in \mathcal{P}} h(C) - \gamma \abs{ \mathcal{P}} , \mathcal{P} \in \Pi(V)
-%\end{equation}
 
-%From the definition of multivariate mutual information,  $h(C)$ is the joint entropy function of random variables $Z_i, i\in C$.  If the model satisfies certain conditions, the %minimizer can be computed as the graph-cut function, which is also submodular.
 \section{Origin}
-Our definition \eqref{eq:newDef} comes from an approximation of equation \eqref{eq:MMI_o} under certain conditions.
+Our definition \eqref{eq:newDef} comes from an approximation of equation \eqref{eq:MMI_o} under certain conditions. See appendix \ref{sec:akld} for detail.
 
-See appendix \ref{sec:akld} for detail.
 Let $w_{ij} = \norm{\widetilde{B}_{ij}}_F^2$.
 $\norm{\widetilde{B}_{ij}}_F^2$ can be treated as a kind of similarity metric between two random variables.
 
@@ -95,7 +84,7 @@ If we treat each index as a vertex in a graph, then the partition $\P$ divides t
 
 \begin{align}
 f(C) & = {1\over 2}\sum_{i\in C, j \in V\backslash C} w_{ij} \\
-f_B(C) & = {1\over 2}\sum_{i\in C, j \in B\backslash C} w_{ij} \\
+f_B(C) & = {1\over 2}\sum_{i\in C, j \in B\backslash C} w_{ij} (C \subseteq B) \\
 \end{align}
 We can write 
 \begin{align}
@@ -110,41 +99,11 @@ Below we show some properties of MMI.
 \input{theorems.tex}
 \input{examples.tex}
 \input{lemma.tex}
-And then we show its connection with $h(\lambda)$.
-\begin{theorem}\label{thm:f}
-$I(Z_V)$ is the smallest value $\lambda$ that satisfies
-\begin{equation}\label{eq:rir}
--\lambda = h_{\lambda}(\P)
-\end{equation}
-for some $\P \in \Pi'(V)$. Let $\Pi^*$ be the set of all such partitions satisfying \eqref{eq:rir}.
-\end{theorem}
-\begin{proof}
-$I(Z_V)$ satisfies equation \eqref{eq:rir} for some $\P$. We only need to show the equality never holds for $\lambda < I(Z_V)$ and all partition $\P$. Indeed, we show $-\lambda < h_{\lambda}(\P)$.
-\begin{align*}
--\lambda < h_{\lambda}(\P) &\iff -\lambda < f[\P] - \abs{\P} \lambda \\
-& \iff \lambda < { f[\P] \over \abs{\P} - 1 } \\
-& \iff \lambda < \min_{\P \in \Pi'(V)} { f[\P] \over \abs{\P} - 1 } \\
-& \iff \lambda < I(Z_V)
-\end{align*}
-\end{proof}
-\begin{remark}
-Geometrically speaking, we know that the first line segment of $h(\lambda)$ is $\lambda$, theorem \ref{thm:f} shows that $I(Z_V)$ is the first critical value of $h(\lambda)$. It is the x coordinate of the intersection point of $-\lambda$ and a line with slope large than 1. $\Pi^*(Z_V) $ are just the collection of partitions which minimize $h_{\lambda}(\P)$, we can also show that this collection coincides with the optimal partitions to \eqref{eq:opI}.
-\end{remark}
 
-\begin{corollary}\label{cor:F}
-$\Pi^*= \{ P \in \Pi: I_{\P}(Z_V) = I(Z_V)\}$
-\end{corollary}
-\begin{proof}
-Let $\gamma = I(Z_V)$
-\begin{align*}
--\gamma = h_{\gamma}(\P) & \iff  \gamma = { f[\P] \over \abs{\P} - 1 } \\
-& \iff I(Z_V) = I_{\P}(Z_V)
-\end{align*}
-\end{proof}
 
 From corollary \ref{cor:F} and theorem \ref{thm:lattice}, we know that if $I(Z_V) = I_{\P_1}(Z_V) = I_{\P_2}(Z_V)$, then $I(Z_V) = I_{\P_1 \wedge \P_2}(Z_V)$. Then we have the theorem:
 \begin{theorem}
-There is a unique finest partition $\P^* \in \Pi^*$, referred to as the \textbf{fundamental partition}.
+There is a unique finest partition $\P^* \in \{ P \in \Pi: I_{\P}(Z_V) = I(Z_V)\}$, referred to as the \textbf{fundamental partition}.
 \end{theorem}
 \begin{proof}
 Since $\Pi^*$ has the lattice structure, the meet of all its member is the unique finest partition $\P^*$
@@ -154,7 +113,6 @@ The fundamental partition $\P^*$ with the singletons removed is the set of all m
 That is, we have
 \begin{enumerate}
 \item $I(Z_B) > I(Z_V)$ for $B \in \P^*, \abs{B}>1$.
-\item $I(Z_V) \geq I_{\P_B}(Z_B) \geq I(Z_B)$ if $\exists \P_B \subseteq \P^*$.
 \item If $I(Z_C) > I(Z_V)$, then $C\subseteq B$ for $B \in \P^*$.
 \end{enumerate}
 \end{theorem}
@@ -170,11 +128,6 @@ I_{\P'}(Z_V) = \theta I_{\P^*}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 Since $\P^*$ is finest, we have $I_{\P'}(Z_V) > I(Z_V)$, then from \eqref{eq:convexZ}, we have 
 $I(Z_V) < \theta I(Z_V) + (1-\theta) I(Z_B) \Rightarrow I(Z_B) > I(Z_V)$.
 
-\item Let $\P' = \{B\} \cup \P^*\backslash \P_B$, then $\P^* = \P_B \cup \P'\backslash\{B\}$ , similar to equation \eqref{eq:convexZ}, we have
-\begin{equation}
-I_{\P^*}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
-\end{equation}
-Since $\P^*$ is optimal partition, we have $I_{P^*}(Z_V) = I(Z_V), I_{\P'}(Z_V)\geq I(Z_V) \Rightarrow I(Z_V) \geq I_{\P_B}(Z_B) \geq I(Z_B)$ 
 \item Suppose $C \not\subseteq B$, then there is a subset of at least two parts from $\P^*$ intersecting with $C$. Denote the collection of parts by $\P_U :=\{C_1, \dots, C_k\} \in \Pi'$ where 
 $k \geq 2, C_i \in \P^* $ such that $C \subseteq \cup_{i=1}^k C_i$ and $C_i \cap C \neq \emptyset$.
 Then we have
@@ -220,7 +173,37 @@ is piecewise linear. For each turning point of line segments, the optimal partit
 
 The connection of \red{MMI with DT} is through equation \eqref{eq:Connection}. More precisely, $I(Z_V)$
 is the solution of equation $-\lambda = h(\lambda)$.
+And then we show its connection with $h(\lambda)$.
+\begin{theorem}\label{thm:f}
+$I(Z_V)$ is the smallest value $\lambda$ that satisfies
+\begin{equation}\label{eq:rir}
+-\lambda = h_{\lambda}(\P)
+\end{equation}
+for some $\P \in \Pi'(V)$. Let $\Pi^*$ be the set of all such partitions satisfying \eqref{eq:rir}.
+\end{theorem}
+\begin{proof}
+$I(Z_V)$ satisfies equation \eqref{eq:rir} for some $\P$. We only need to show the equality never holds for $\lambda < I(Z_V)$ and all partition $\P$. Indeed, we show $-\lambda < h_{\lambda}(\P)$.
+\begin{align*}
+-\lambda < h_{\lambda}(\P) &\iff -\lambda < f[\P] - \abs{\P} \lambda \\
+& \iff \lambda < { f[\P] \over \abs{\P} - 1 } \\
+& \iff \lambda < \min_{\P \in \Pi'(V)} { f[\P] \over \abs{\P} - 1 } \\
+& \iff \lambda < I(Z_V)
+\end{align*}
+\end{proof}
+\begin{remark}
+Geometrically speaking, we know that the first line segment of $h(\lambda)$ is $\lambda$, theorem \ref{thm:f} shows that $I(Z_V)$ is the first critical value of $h(\lambda)$. It is the x coordinate of the intersection point of $-\lambda$ and a line with slope large than 1. $\Pi^*(Z_V) $ are just the collection of partitions which minimize $h_{\lambda}(\P)$ at $\lambda = I(Z_V)$.
+\end{remark}
 
+\begin{corollary}\label{cor:F}
+$\Pi^*= \{ P \in \Pi: I_{\P}(Z_V) = I(Z_V)\}$
+\end{corollary}
+\begin{proof}
+Let $\gamma = I(Z_V)$
+\begin{align*}
+-\gamma = h_{\gamma}(\P) & \iff  \gamma = { f[\P] \over \abs{\P} - 1 } \\
+& \iff I(Z_V) = I_{\P}(Z_V)
+\end{align*}
+\end{proof}
 This connection is similar from RIR in literature \cite{ic}. We have $f(V)=0$ in our definition and the first line segement is $-\lambda$. Therefore
 $(I(Z_V),  y_1)$ is the first turning point of $h(\lambda)$.
 
