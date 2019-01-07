@@ -106,51 +106,14 @@ if $I(Z_V) = I_{\P_1}(Z_V) = I_{\P_2}(Z_V)$, then $I(Z_V)
  I_{\P_1 \wedge \P_2}(Z_V)$
 \end{theorem}
 \begin{proof}
-If $\P_2$ are all singletons. Then $\P_2 \succeq \P_1$ and the result hold.
-
-First we show that the conclusion holds if $\P_2$ has special structure, that is $\P_2 = \{B\} \cup \{\{i\}| i\in V\backslash B\}$.  
-Then we have 
-\begin{align*}
-f[\P_1]  & = (\abs{\P_1} - 1) I(Z_V) \\
-f[\P_2]  & = (\abs{\P_2} - 1) I(Z_V)
-\end{align*}
-From lemma, we have 
-\begin{align*}
-f[\P_1 \vee \P_2] &+ f[\P_1 \wedge \P_2]  \leq f[\P_1] + f[\P_2] = (\abs{\P_1} + \abs{\P_2} - 2) I(Z_V)\\
-&\Rightarrow 
-\frac{\abs{\P_1 \vee \P_2}-1}{\abs{\P_1} + \abs{\P_2} - 2}I_{\P_1 \vee \P_2}(Z_V)
-+ \frac{\abs{\P_1 \wedge \P_2}-1}{\abs{\P_1} + \abs{\P_2} - 2}I_{\P_1 \wedge \P_2}(Z_V)
-\leq I(Z_V)
-\end{align*}
-Since $\abs{\P_2} = 1+ \abs{V} - \abs{B}, \abs{\P_1 \vee \P_2} = \abs{\P_1} - \abs{\{C\in \P_1 | C\cap B \neq \emptyset \}}+1, \abs{\P_1 \wedge \P_2} = \abs{V} - \abs{B} + \abs{\{C\in \P_1 | C\cap B \neq \emptyset \}}$, therefore, $\abs{\P_1} + \abs{\P_2} = \abs{\P_1 \wedge \P_2} + \abs{\P_1 \vee \P_2}$
-Let $\theta = \frac{\abs{\P_1 \vee \P_2}-1}{\abs{\P_1} + \abs{\P_2} - 2}$, then we have
+Consider $C \in \P_1 \vee \P_2$, then $C = \cup_{i=1}^k B_i ,B_i\in \P_1$.
+If $k\geq 2$, from lemma \ref{lem:smallZB} we have $I_{\P_C}(Z_C) \leq I(Z_V)$
+where $\P_C=\{B_1, \dots, B_k\}$.
+Then from lemma \ref{lem:ref_combination}, we have
 \begin{equation*}
-\theta I_{\P_1 \vee \P_2}(Z_V)
-+ (1-\theta) I_{\P_1 \wedge \P_2}(Z_V)
-\leq I(Z_V)
+I_{\P_1}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_C}(Z_C)
 \end{equation*}
-Since $I_{\P_1 \vee \P_2}(Z_V) \geq I(Z_V), I_{\P_1 \wedge \P_2}(Z_V) \geq I(Z_V)$,
-we must have $I_{\P_1 \vee \P_2}(Z_V) = I(Z_V), I_{\P_1 \wedge \P_2}(Z_V) = I(Z_V)$
-
-For general $\P_2= \{B_1, \dots, B_r\} \cup \{\{i\} |  i\neq B_i\}$,
-where $\abs{B_i} > 1$.
-If all $I(Z_{B_1})> I(Z_V)$ then by the laminarity property, $I(Z_B) > I(Z_V)$  where $B=\cup_{i=1}^r B_i$, a contradition with lemma \ref{lem:smallZB}. Therefore, we must have at least one( suppose it is)
-$I(Z_{B_1}) \leq I(Z_V)$.  Then use lemma \ref{lem:ref_combination} with $B_1(\P
-'=\P_2, \P'_2 = \P_{B_1}\cup \P'\backslash\{B_1\})$ we get 
-$I_{\P'_2}(Z_V) \leq I(Z_V)$. That is $I_{\P'_2}(Z_V) = I(Z_V)$.
-$\P'_2$ has such property that $I_{\P'_2}(Z_V) = I(Z_V)$.
-Replace $\P_2$ with $\P'_2$. $\P'_2$ is strictly finer than $\P_2$. Repeat this process we can get
-a sequence of partitions such that $\P^{n'}_2 \prec \dots \P'_2 \prec \P_2$ where $\P^{n'}_2$ has only one non-singleton part and $I_{\P^{n'}_2}(Z_V)=I(Z_V)$. Using above proof we have 
-$\P_2 \wedge \P_1 = \P^{n'}_2 \wedge \P_1 \in \Pi^*,  \P^{n'}_2 \vee \P_1 \in \Pi^*$.
-
-we have $\P_1 \vee \P_2 = \P_1 \vee \P'_1 \dots \vee \P'_r$,
-where $\P'_j =  \{B_j\} \cup \{\{i\}| i\in V\backslash B_j\}$. Therefore, we have $I_{\P_1 \vee \P_2}(Z_V) = I(Z_V)$
-
-To show the other part of the theorem, we use
-\begin{align*}
-I_{\P_2} = 
-\end{align*}
-
+where $\P' = C \cup \{B\in \P_1| B\cap C= \emptyset\}$
 \end{proof}
 
 From theorem \ref{thm:lattice}, we have the corollary:
