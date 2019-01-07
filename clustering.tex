@@ -113,7 +113,7 @@ Let $\gamma = I(Z_V)$
 
 From corollary \ref{cor:F} and theorem \ref{thm:lattice}, we know that if $I(Z_V) = I_{\P_1}(Z_V) = I_{\P_2}(Z_V)$, then $I(Z_V) = I_{\P_1 \wedge \P_2}(Z_V)$. Then we have the theorem:
 \begin{theorem}
-There is a unique finest partition $\P^* \in \Pi^*$, referred to as the fundamental partition.
+There is a unique finest partition $\P^* \in \Pi^*$, referred to as the \textbf{fundamental partition}.
 \end{theorem}
 \begin{proof}
 Since $\Pi^*$ has the lattice structure, the meet of all its member is the unique finest partition $\P^*$
@@ -123,7 +123,7 @@ The fundamental partition $\P^*$ with the singletons removed is the set of all m
 That is, we have
 \begin{enumerate}
 \item $I(Z_B) > I(Z_V)$ for $B \in \P^*, \abs{B}>1$.
-\item $I(Z_V) \geq I(Z_B)$ if $\exists \P_B \subseteq \P^*$.
+\item $I(Z_V) \geq I_{\P_B}(Z_B) \geq I(Z_B)$ if $\exists \P_B \subseteq \P^*$.
 \item If $I(Z_C) > I(Z_V)$, then $C\subseteq B$ for $B \in \P^*$.
 \end{enumerate}
 \end{theorem}
@@ -132,14 +132,7 @@ That is, we have
 \item
 Suppose $I(Z_B)=I_{\P_B}(Z_B)$.
 Let $\P' = \P_B \cup  \P^* \backslash \{B\}$.
-Then $\abs{\P'} = \abs{\P^*} -1 + \abs{\P_B}$,
-Since
-\begin{align*}
-I_{\P'}(Z_V) & = { f[\P^*] + f_B[\P_B] \over \abs{\P'} - 1} \\
-I_{\P^*}(Z_V) & = { f[\P^*] \over \abs{\P^*} - 1} \\
-I_{\P_B}(Z_B) & = { f_B[\P_B] \over \abs{\P_B} - 1}
-\end{align*}
-As a result, there exists $\theta = {\abs{\P^*} - 1 \over \abs{\P'} - 1} \in (0,1)$ such that 
+Then by lemma \ref{lem:ref_combination}, there exists $\theta \in (0,1)$ such that 
 \begin{equation}\label{eq:convexZ}
 I_{\P'}(Z_V) = \theta I_{\P^*}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 \end{equation}
@@ -151,6 +144,13 @@ $I(Z_V) < \theta I(Z_V) + (1-\theta) I(Z_B) \Rightarrow I(Z_B) > I(Z_V)$.
 I_{\P^*}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 \end{equation}
 Since $\P^*$ is optimal partition, we have $I_{P^*}(Z_V) = I(Z_V), I_{\P'}(Z_V)\geq I(Z_V) \Rightarrow I(Z_V) \geq I_{\P_B}(Z_B) \geq I(Z_B)$ 
+\item Suppose $C \not\subseteq B$, then there is a subset of at least two parts from $\P^*$ intersecting with $C$. Denote the collection of parts by $\P_U :=\{C_1, \dots, C_k\} \in \Pi'$ where 
+$k \geq 2, C_i \in \P^* $ such that $C \subseteq \cup_{i=1}^k C_i$ and $C_i \cap C \neq \emptyset$.
+Then we have
+\begin{align*}
+I(Z_V) & \upbrace{\geq}_{(a)} I_{\P_U}(Z_U)  = I(Z_{C_1} \wedge \dots \wedge Z_{C_k})\\
+& = {1\over k-1}\sum_{i=1}^{k=1} I(Z_{C_1} \wedge Z_{})
+\end{align*}•
 \end{enumerate}
 \end{proof}
 

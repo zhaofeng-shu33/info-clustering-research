@@ -1,12 +1,45 @@
+\begin{lemma}\label{lem:ref_combination}
+For any $B \in \P' \in \Pi'$ and $\P_B \in \Pi'_B$, let $\P = \P_B \cup \P' \backslash \{B\} $
+be the refinement of $\P'$. Then we have
+\begin{equation}\label{eq:ref_combination}
+I_{\P}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
+\end{equation}
+\end{lemma}
+\begin{proof}
+First we have $\abs{\P} = \abs{\P'} -1 + \abs{\P_B}$,
+Since
+\begin{align*}
+I_{\P}(Z_V) & = { f[\P'] + f_B[\P_B] \over \abs{\P} - 1} \\
+I_{\P'}(Z_V) & = { f[\P'] \over \abs{\P'} - 1} \\
+I_{\P_B}(Z_B) & = { f_B[\P_B] \over \abs{\P_B} - 1}
+\end{align*}
+As a result, there exists $\theta = {\abs{\P'} - 1 \over \abs{\P} - 1} \in (0,1)$ such that 
+\eqref{eq:ref_combination} holds.
+\end{proof}
 \begin{lemma}\label{lem:mi_split}
 For any $\P:=\{C_1, \dots, C_k\} \in \Pi'$, we have
 \begin{align}
 I_{\P}(Z_V) =& I(Z_{C_1} \wedge \dots \wedge Z_{C_k}) \label{eq:mmi_representation} \\
-=& { 1 \over k-1} \sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j})
+=& { 1 \over k-1} \sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j}) \label{eq:mi_mmi}
 \end{align}
 \end{lemma}
 \begin{proof}
 $I(Z_1 \wedge Z_2)$ is a kind of representation of mutual information.
 And we use \eqref{eq:mmi_representation} to represent the multivariate mutual information.
 
+Equation \eqref{eq:mi_mmi} is true for $k=2$. Suppose it holds for $k=m$. Then
+let $B=\{C_m, C_{m+1}\}$ , $\P=\{C_1, \dots, C_{m+1}\}$
+and use the result of lemma \ref{lem:ref_combination}, 
+we have $\theta = \frac{m-1}{m}$
+\begin{align*}
+I(Z_{C_1} \wedge \dots \wedge Z_{C_{m+1}}) & = 
+ \frac{m-1}{m} I(Z_{C_1} \wedge \dots \wedge Z_{C_m})
++ \frac{1}{m}  I(Z_{m} \wedge Z_{m+1}) \\
+& = \frac{m-1}{m} \frac{1}{m-1}\sum_{i=1}^{m-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^m C_j})
++ \frac{1}{m}  I(Z_{m} \wedge Z_{m+1})\textrm{ by induction} \\
+& = \frac{1}{m} \sum_{i=1}^{m} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^{m+1} C_j})
+\end{align*}
 \end{proof}
+\begin{remark}
+This lemma shows that we can use the mutual information to compute the multivariate mutual information.
+\end{remark}
