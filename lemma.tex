@@ -43,13 +43,13 @@ I(Z_{C_1} \wedge \dots \wedge Z_{C_{m+1}}) & =
 \begin{remark}
 This lemma shows that we can use the mutual information to compute the multivariate mutual information.
 \end{remark}
-\begin{lemma}
+\begin{lemma}\label{lem:smallZB}
 Suppose $I_{\P}(Z_V) = I(Z_V)$, then we have $I(Z_V) \geq I_{\P_B}(Z_B) \geq I(Z_B)$ if $\exists \P_B \subseteq \P$.
 \end{lemma}
 \begin{proof}
 Let $\P' = \{B\} \cup \P\backslash \P_B$, then $\P = \P_B \cup \P'\backslash\{B\}$ , use lemma , we have
 \begin{equation}
-I_{\P^*}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
+I_{\P}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 \end{equation}
-Since $\P^*$ is optimal partition, we have $I_{P^*}(Z_V) = I(Z_V), I_{\P'}(Z_V)\geq I(Z_V) \Rightarrow I(Z_V) \geq I_{\P_B}(Z_B) \geq I(Z_B)$ 
+Since  $I_{P}(Z_V) = I(Z_V), I_{\P'}(Z_V)\geq I(Z_V) \Rightarrow I(Z_V) \geq I_{\P_B}(Z_B) \geq I(Z_B)$ 
 \end{proof}

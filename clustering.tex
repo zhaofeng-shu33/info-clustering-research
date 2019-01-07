@@ -99,12 +99,45 @@ Below we show some properties of MMI.
 \input{theorems.tex}
 \input{examples.tex}
 \input{lemma.tex}
-
-
-From corollary \ref{cor:F} and theorem \ref{thm:lattice}, we know that if $I(Z_V) = I_{\P_1}(Z_V) = I_{\P_2}(Z_V)$, then $I(Z_V) = I_{\P_1 \wedge \P_2}(Z_V)$. Then we have the theorem:
-\begin{theorem}
-There is a unique finest partition $\P^* \in \{ P \in \Pi: I_{\P}(Z_V) = I(Z_V)\}$, referred to as the \textbf{fundamental partition}.
+\begin{theorem}\label{thm:lattice}
+Let $\Pi^* =  \{ P \in \Pi: I_{\P}(Z_V) = I(Z_V)\}$, then $\Pi^*$ has the lattice structure. That is, 
+if $I(Z_V) = I_{\P_1}(Z_V) = I_{\P_2}(Z_V)$, then $I(Z_V) 
+=  I_{\P_1 \vee \P_2}(Z_V) = 
+ I_{\P_1 \wedge \P_2}(Z_V)$
 \end{theorem}
+\begin{proof}
+First we show that the conclusion holds if $\P_2$ has special structure, that is $\P_2 = \{B\} \cup \{\{i\}| i\in V\backslash B\}$. 
+Then we have 
+\begin{align*}
+f[\P_1]  & = (\abs{\P_1} - 1) I(Z_V) \\
+f[\P_2]  & = (\abs{\P_2} - 1) I(Z_V)
+\end{align*}
+From lemma, we have 
+\begin{align*}
+f[\P_1 \vee \P_2] &+ f[\P_1 \wedge \P_2]  \leq f[\P_1] + f[\P_2] = (\abs{\P_1} + \abs{\P_2} - 2) I(Z_V)\\
+&\Rightarrow 
+\frac{\abs{\P_1 \vee \P_2}-1}{\abs{\P_1} + \abs{\P_2} - 2}I_{\P_1 \vee \P_2}(Z_V)
++ \frac{\abs{\P_1 \wedge \P_2}-1}{\abs{\P_1} + \abs{\P_2} - 2}I_{\P_1 \wedge \P_2}(Z_V)
+\leq I(Z_V)
+\end{align*}
+Since $\abs{\P_2} = 1+ \abs{V} - \abs{B}, \abs{\P_1 \vee \P_2} = \abs{\P_1} - \abs{\{C\in \P_1 | C\cap B \neq \emptyset \}}+1, \abs{\P_1 \wedge \P_2} = \abs{V} - \abs{B} + \abs{\{C\in \P_1 | C\cap B \neq \emptyset \}}$, therefore, $\abs{\P_1} + \abs{\P_2} = \abs{\P_1 \wedge \P_2} + \abs{\P_1 \vee \P_2}$
+Let $\theta = \frac{\abs{\P_1 \vee \P_2}-1}{\abs{\P_1} + \abs{\P_2} - 2}$, then we have
+\begin{equation*}
+\theta I_{\P_1 \vee \P_2}(Z_V)
++ (1-\theta) I_{\P_1 \wedge \P_2}(Z_V)
+\leq I(Z_V)
+\end{equation*}
+Since $I_{\P_1 \vee \P_2}(Z_V) \geq I(Z_V), I_{\P_1 \wedge \P_2}(Z_V) \geq I(Z_V)$,
+we must have $I_{\P_1 \vee \P_2}(Z_V) = I(Z_V), I_{\P_1 \wedge \P_2}(Z_V) = I(Z_V)$
+
+
+
+\end{proof}
+
+From theorem \ref{thm:lattice}, we have the corollary:
+\begin{corollary}
+There is a unique finest partition $\P^* \in \Pi^*$, referred to as the \textbf{fundamental partition}.
+\end{corollary}
 \begin{proof}
 Since $\Pi^*$ has the lattice structure, the meet of all its member is the unique finest partition $\P^*$
 \end{proof}
@@ -133,7 +166,9 @@ $k \geq 2, C_i \in \P^* $ such that $C \subseteq \cup_{i=1}^k C_i$ and $C_i \cap
 Then we have
 \begin{align*}
 I(Z_V) & \overbrace{\geq}_{(a)} I_{\P_U}(Z_U)  = I(Z_{C_1} \wedge \dots \wedge Z_{C_k})\\
-& = {1\over k-1}\sum_{i=1}^{k=1} I(Z_{C_1} \wedge Z_{C})
+& = {1\over k-1}\sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j}) \\
+& \overbrace{\geq}_{(b)} {1\over k-1}\sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j}) \\
+& = I(Z_{C_1 \cap C} \wedge \dots \wedge Z_{C_k \cap C}) \geq I(Z_C)
 \end{align*}
 \end{enumerate}
 \end{proof}
