@@ -25,10 +25,23 @@ Suppose we have a set of random variables $Z_1, Z_2, \dots, Z_{\abs{V}}$ to be c
 \begin{equation}
 C_{\gamma}(Z_V) = \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \}
 \end{equation}
+We use the notation $\P_{\gamma}$ to denote the partition associated with $C_{\gamma}(Z_V)$.$\P_{\gamma}$ is obtained by adding all the singletons.
 
 The above definition excludes the singleton element.
 
 The key is how to define $I(Z_B)$, which is called the multivariate mutual information(MMI) for $\{Z_i | i \in B\}$.
+
+It can be seen there are finite values $\gamma$ such that $C_{\gamma}(Z_V)$ differs.
+We call them the critical values of info-clustering.
+More specificly:
+\begin{equation*}
+C_{\gamma}(Z_V) = \begin{cases}
+\{V\} & \gamma < \gamma_1 \\
+C_{\gamma_i}(Z_V) & \gamma \in [\gamma_i, \gamma_{i+1}), 1\leq i < N \\
+\emptyset & \gamma \geq \gamma_N
+\end{cases}
+\end{equation*}
+Obviously, the first critical value is $I(Z_V)$.
 
 \red{It is indeed hierachical if MMI satisfies certain properties.}
 
@@ -154,6 +167,21 @@ I(Z_V) & \upbrace{\geq}_{(a)} I_{\P_U}(Z_U)  = I(Z_{C_1} \wedge \dots \wedge Z_{
 \end{enumerate}
 \end{proof}
 
+From theorem \ref{thm:strict_larger_mi} we have 
+\begin{theorem}
+$\P_{\gamma_1} = \{C, C\in \P^* \}$ and
+the second critical values of info-clustering is $\gamma_2 = \min_{C\in \P*, \abs{C}>1} I(Z_C)$.
+\end{theorem}
+\begin{proof}
+From (3) of theorem \ref{thm:strict_larger_mi} and the maximal property of $C_{\gamma_1}$,
+we have $\P_{\gamma_1} = \{C, C\in \P^* \}$ and $C_{\gamma_1}(Z_V)$ is $\P_{\gamma_1}$ removing the singletons.
+Since $\gamma_2 > \gamma_1$. If $I(Z_B)>\gamma_2 > I(Z_V)$, then by (3) of theorem \ref{thm:strict_larger_mi}, $B$ is a subset of $C$ for $C \in \P^*$. That is, we have $\P_{\gamma_2} \prec \P_{\gamma_1}$. 
+\end{proof}
+We use deduction to show that
+\begin{theorem}
+Suppose $\gamma_i$ is a set of critical values of info-clustering. Then
+$\P_{\gamma_{i+1}} \prec \P_{\gamma_i}$ and $\gamma_{i+1} = \min_{C \in C_{\gamma_i}(Z_V)}I(Z_C)$
+\end{theorem}
 
 Below we show that not only the first critical values coincides of info-clustering problem and PSP problem, all their critical values 
 and finest partitions coincide.
@@ -188,6 +216,9 @@ From theorem \ref{thm:strict_larger_mi}, we can show that
 \begin{equation}\label{eq:P}
 I(Z_{C_1 \cup C_2}) \geq \min\{ I(Z_{C_1}), I(Z_{C_2})\}
 \end{equation}
+This property is vital in the definition of $C_{\gamma}(Z_V)$. Suppose we have
+$I(B_1)>\gamma, I(B_2)>\gamma$. If $B_1 \cap B_2 \neq \emptyset$, then $I(Z_{B_1\cup B_2})>\gamma$ and the maximal meaning in the definition of $C_{\gamma}(Z_V)$ holds.
+Therefore $C_{\gamma}(Z_V)$
 From literature \cite{ic}, this property implies we can use the iteration method to compute the entire clustering
 provided we can compute the first critical value and the first set of clusters.
 
@@ -251,6 +282,10 @@ This is (4.21a) in literature \cite{ic}
 In literature \cite{ic}, the definition of MMI is based on the submodular function is $H(Z_C)$, which is the joint entropy. It has the nondeceasing property such that the larger $C$ is, the bigger value $H(Z_C)$ takes. However, in our formulation of MMI, we use the graph cut function, it does not have the monotonic property and $f(V) = 0$ from the definition. Therefore, our work is not a special case of literature \cite{ic} even through many conclusions are similar.
 
 In PIN model, the two definitions coincide. But the PIN model has strong assumptions and is not practical. Our formulation of MMI is suitable to be applied directly to cluster cases in real work application.
+\subsection{Difference to mac}
+minimum average cost is a similar but different clustering method.
+
+In literature \cite{mac}, only the first critical value and partation information are used to do the clustering task. The threshold is controled by $\beta$ not our $\lambda$.
 \section{Contributions}
 \begin{enumerate}
 \item Use graph cut function to reformulate MMI.
