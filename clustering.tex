@@ -15,7 +15,7 @@
 %   4. 计算fundamental partition 的原理和算法pseudo code
 %   5. 简单的例子、算法实现与验证
 %   6. B matrix 的近似，人工数据验证
-%   7. Real data
+%   7. application in real world dataset
 %   8. 总结与展望
 \section{Background}
 Hierarchical clustering is a popular clustering method. It produces a semi-lattice structure of clusters. 
@@ -43,7 +43,7 @@ if $\abs{C}>1$, then $C \in C_{\gamma_2}(Z_V)$ and we have $I(Z_C) > \gamma_2 > 
 As a result, there exists $C' \in C_{\gamma_1}(Z_V)$ such that $C\subseteq C' \in \P_{\gamma_1}$.
 \end{proof}
 \begin{remark}
-Theorem \ref{thm:hierachical} shows that for a series of threshold $\gamma$, $\P_{\gamma}$ forms a hierachical clustering structure.
+Theorem \ref{thm:hierachical} shows that for a series of threshold $\gamma$, $\P_{\gamma}$ forms a \textbf{hierachical clustering} structure.
 \end{remark}
 
 It can be seen there are finite values $\gamma$ such that $C_{\gamma}(Z_V)$ differs.
@@ -69,13 +69,13 @@ The key is how to define $I(Z_B)$, which is called the multivariate mutual infor
 We give a definition of MMI as follows:
 \begin{align}
 I(Z_V) & = \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V) \\
-\label{eq:newDef}  I_{\mathcal{P}}(Z_V) & = {1 \over 2( \abs{\mathcal{P}} - 1) } \sum_{\substack{(i,j) \not\in C\\ C\in \mathcal{P}}} \norm{\widetilde{B}_{ij}}_F^2
+\label{eq:newDef}  I_{\mathcal{P}}(Z_V) & = \frac{1}{ 2( \abs{\mathcal{P}} - 1) } \sum_{\substack{(i,j) \not\in C\\ C\in \mathcal{P}}} \norm{\widetilde{B}_{ij}}_F^2
 \end{align}
 
 $\widetilde{B}_{ij}$ is called divergence transfer matrix which comes from the information geometry theory.
 
 \section{Origin}
-Our definition \eqref{eq:newDef} comes from an approximation of equation \eqref{eq:MMI_o} under certain conditions. See appendix \ref{sec:akld} for detail.
+Our definition \eqref{eq:newDef} comes from an approximation of KL-Diverence under certain conditions. See appendix \ref{sec:akld} for detail.
 
 Let $w_{ij} = \norm{\widetilde{B}_{ij}}_F^2$.
 $\norm{\widetilde{B}_{ij}}_F^2$ can be treated as a kind of similarity metric between two random variables.
@@ -85,23 +85,23 @@ The graph-cut weight is $\norm{\widetilde{B}_{ij}}_F^2$.
 If we treat each index as a vertex in a graph, then the partition $\P$ divides these vertices into $\abs{\P}$ groups. 
 
 \begin{align}
-f(C) & = {1\over 2}\sum_{i\in C, j \in V\backslash C} w_{ij} \\
-f_B(C) & = {1\over 2}\sum_{i\in C, j \in B\backslash C} w_{ij} (C \subseteq B) \\
+f(C) & = \frac{1}{2}\sum_{i\in C, j \in V\backslash C} w_{ij} \\
+f_B(C) & = \frac{1}{2}\sum_{i\in C, j \in B\backslash C} w_{ij} (C \subseteq B) \\
 \end{align}
 We can write 
 \begin{align}
 f[\P] & = \sum_{C \in \P} f(C) \\
-I_{\mathcal{P}}(Z_V)  &= { 1 \over \abs{\P}  - 1}f(\P) 
+I_{\mathcal{P}}(Z_V)  &= \frac{1}{\abs{\P}  - 1}f(\P) 
 \end{align}
 %$f$ on $S_i$ is a submodular function defined as graph cut.
 
 Below we show some properties of MMI.
 \ifpublish
 \input{notation.tex}
-\input{theorems.tex}
 \input{examples.tex}
-\input{lemma.tex}
 \fi
+\input{lemma.tex}
+\input{theorems.tex}
 \begin{theorem}\label{thm:lattice}
 Let $\Pi^* =  \{ P \in \Pi: I_{\P}(Z_V) = I(Z_V)\}$, then $\Pi^*$ has the lattice structure. That is, 
 if $I(Z_V) = I_{\P_1}(Z_V) = I_{\P_2}(Z_V)$, then $I(Z_V) 
@@ -152,7 +152,7 @@ Then we have
 \begin{align*}
 I(Z_V) & \overbrace{\geq}_{(a)} I_{\P_U}(Z_U)  = I(Z_{C_1} \wedge \dots \wedge Z_{C_k})\\
 & = {1\over k-1}\sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j}) \\
-& \overbrace{\geq}_{(b)} {1\over k-1}\sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j}) \\
+& \overbrace{\geq}_{(b)} \frac{1}{k-1}\sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j}) \\
 & = I(Z_{C_1 \cap C} \wedge \dots \wedge Z_{C_k \cap C}) \geq I(Z_C)
 \end{align*}
 \end{enumerate}
@@ -205,8 +205,8 @@ for some $\P \in \Pi'(V)$. Let $\Pi^*$ be the set of all such partitions satisfy
 $I(Z_V)$ satisfies equation \eqref{eq:rir} for some $\P$. We only need to show the equality never holds for $\lambda < I(Z_V)$ and all partition $\P$. Indeed, we show $-\lambda < h_{\lambda}(\P)$.
 \begin{align*}
 -\lambda < h_{\lambda}(\P) &\iff -\lambda < f[\P] - \abs{\P} \lambda \\
-& \iff \lambda < { f[\P] \over \abs{\P} - 1 } \\
-& \iff \lambda < \min_{\P \in \Pi'(V)} { f[\P] \over \abs{\P} - 1 } \\
+& \iff \lambda < \frac{ f[\P] }{ \abs{\P} - 1 } \\
+& \iff \lambda < \min_{\P \in \Pi'(V)} \frac{f[\P]}{  \abs{\P} - 1 } \\
 & \iff \lambda < I(Z_V)
 \end{align*}
 \end{proof}
@@ -472,5 +472,6 @@ In this section, we use 4 different clustering methods and test them on 5 differ
 \bibitem{pin} Info-Clustering: An Efficient Algorithm by Network Information Flow
 \bibitem{mac} Minimum Average Cost Clustering
 \bibitem{fwrobust} Provable Submodular Minimization using Wolfe's Algorithm
+\bibitem{psp} The Principal Lattice of Partitions of a Submodular Function
 \end{thebibliography}
 \end{document}

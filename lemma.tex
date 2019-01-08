@@ -71,7 +71,30 @@ Since  $I_{P}(Z_V) = I(Z_V), I_{\P'}(Z_V)\geq I(Z_V) \Rightarrow I(Z_V) \geq I_{
 \end{lemma}
 \begin{proof}
 Let $\P_2 = \{B_1, \dots, B_r\} \cup \{\{i\}, i\not\in B_i\}$, where $\abs{B_i}>1$.
-If $r=1$, \eqref{eq:P12Inequality} holds.
+If $r=1$, 
 $\abs{\P_2} = 1+ \abs{V} - \abs{B}, \abs{\P_1 \vee \P_2} = \abs{\P_1} - \abs{\{C\in \P_1 | C\cap B \neq \emptyset \}}+1, \abs{\P_1 \wedge \P_2} = \abs{V} - \abs{B} + \abs{\{C\in \P_1 | C\cap B \neq \emptyset \}}$,
  therefore, $\abs{\P_1} + \abs{\P_2} = \abs{\P_1 \wedge \P_2} + \abs{\P_1 \vee \P_2}$
+and \eqref{eq:P12Inequality} holds.
+
+Suppose \eqref{eq:P12Inequality} holds for $r=k$. Then for $r=k+1$,
+$\P_2 = \P'_2 \vee (B_{k+1} \cup \{ \{i\}, i\not\in B_{k+1} \})$.
+\begin{align*}
+\abs{\P_1 \vee \P_2} & = \abs{\P_1 \vee \P'_2} - \abs{\{C\in \P_1 \vee \P'_2 | C\cap B_{k+1}\neq \emptyset \}}+1 \\
+\abs{\P_1 \wedge \P_2} & = \abs{\P_1 \wedge \P'_2} - \abs{B_{k+1}} +  \abs{\{C\in \P_1 | C\cap B_{k+1}\neq \emptyset \}} \\
+\abs{\P_2} & = \abs{\P'_2} -\abs{B_{k+1}} +1
+\end{align*}
+Since 
+$$
+  \abs{\{C\in \P_1 | C\cap B_{k+1}\neq \emptyset \}}
+  \geq
+  \abs{\{C\in \P_1 \vee \P'_2 | C\cap B_{k+1}\neq \emptyset \}}
+$$
+we have
+\begin{align*}
+	\abs{\P_1 \vee \P_2} + \abs{\P_1 \wedge \P_2} & \geq \abs{\P_1 \wedge \P'_2} + \abs{\P_1 \wedge \P'_2}
+	- \abs{B_{k+1}} + 1 \\
+	& \geq \abs{\P_1} + \abs{\P'_2} - \abs{B_{k+1}} + 1  \\
+	& = \abs{\P_1} + \abs{\P_2}	
+\end{align*}
+By induction, \eqref{eq:P12Inequality} holds.
 \end{proof}
