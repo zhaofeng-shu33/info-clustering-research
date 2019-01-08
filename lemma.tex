@@ -6,17 +6,32 @@ I_{\P}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 \end{equation}
 \end{lemma}
 \begin{proof}
-First we have $\abs{\P} = \abs{\P'} -1 + \abs{\P_B}$,
-Since
-\begin{align*}
-I_{\P}(Z_V) & = { f[\P'] + f_B[\P_B] \over \abs{\P} - 1} \\
-I_{\P'}(Z_V) & = { f[\P'] \over \abs{\P'} - 1} \\
-I_{\P_B}(Z_B) & = { f_B[\P_B] \over \abs{\P_B} - 1}
-\end{align*}
-As a result, there exists $\theta = {\abs{\P'} - 1 \over \abs{\P} - 1} \in (0,1)$ such that 
-\eqref{eq:ref_combination} holds.
+	First we have $\abs{\P} = \abs{\P'} -1 + \abs{\P_B}$,
+	Since
+	\begin{align*}
+		I_{\P}(Z_V) & = { f[\P'] + f_B[\P_B] \over \abs{\P} - 1} \\
+		I_{\P'}(Z_V) & = { f[\P'] \over \abs{\P'} - 1} \\
+		I_{\P_B}(Z_B) & = { f_B[\P_B] \over \abs{\P_B} - 1}
+	\end{align*}
+	As a result, there exists $\theta = {\abs{\P'} - 1 \over \abs{\P} - 1} \in (0,1)$ such that 
+	\eqref{eq:ref_combination} holds.
 \end{proof}
-
+The above lemma is a special case of the following lemma:
+\begin{lemma}\label{lem:multi_combination}
+For any $\P, \P' \in \Pi' : \P \preceq \P' $, we have
+\begin{equation}
+I_{\P}(Z_V) = \E[I_{Q}(Z_{\cup_{C\in Q}C})]
+\end{equation}
+where $Q$ is a random partition with the distribution
+\begin{equation}
+P_{Q}(\mathcal{Q}) = \frac{\abs{\mathcal{Q} } - 1
+	}{\abs{\P} - 1}
+\end{equation}
+for $\mathcal{Q} \in \{\P' \} \cup (\P \backslash \P'): \abs{\mathcal{Q}}>1$.
+\end{lemma}
+\begin{proof}
+	See Lemma 5.2 of literature \cite{ska}.
+\end{proof}
 \begin{lemma}\label{lem:mi_split}
 For any $\P:=\{C_1, \dots, C_k\} \in \Pi'$, we have
 \begin{align}
@@ -44,7 +59,7 @@ I(Z_{C_1} \wedge \dots \wedge Z_{C_{m+1}}) & =
 \begin{remark}
 This lemma shows that we can use the mutual information to compute the multivariate mutual information.
 \end{remark}
-\begin{lemma}
+\begin{lemma}\label{lem:elementLarge}
 If $I_{P}(Z_V) = I(Z_V)$, then for any $\P_B, B\in P$, we have $I_{P_B}(Z_B) \geq I(Z_V)$. That is we have $I(Z_B) \geq I(Z_V)$
 \end{lemma}
 \begin{proof}
@@ -97,4 +112,19 @@ we have
 	& = \abs{\P_1} + \abs{\P_2}	
 \end{align*}
 By induction, \eqref{eq:P12Inequality} holds.
+\end{proof}
+\begin{lemma}\label{lem:LargeIZV}
+	If $I_{\P}(Z_V)=I(Z_V)$ and $I(Z_C) > I(Z_V)$, then $C\subseteq B$ for $B \in \P$.
+\end{lemma}
+\begin{proof}
+	Suppose $C \not\subseteq B$, then there is a subset of at least two parts from $\P$ intersecting with $C$. Denote the collection of parts by $\P_U :=\{C_1, \dots, C_k\} \in \Pi'$ where 
+	$k \geq 2, C_i \in \P $ such that $C \subseteq \cup_{i=1}^k C_i$ and $C_i \cap C \neq \emptyset$.
+	Then we have
+\begin{align*}
+	I(Z_V) & \overbrace{\geq}_{(a)} I_{\P_U}(Z_U)  = I(Z_{C_1} \wedge \dots \wedge Z_{C_k})\\
+	& = {1\over k-1}\sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j}) \\
+	& \overbrace{\geq}_{(b)} \frac{1}{k-1}\sum_{i=1}^{k-1} I(Z_{C_i \cap C} \wedge Z_{\cup_{j=i+1}^k C_j \cap C}) \\
+	& = I(Z_{C_1 \cap C} \wedge \dots \wedge Z_{C_k \cap C}) \geq I(Z_C)
+\end{align*}
+$(a)$ is from lemma \ref{lem:smallZB} and $(b)$ is from the data processing inequality of mutual information (or the restriction of graph cut function).
 \end{proof}

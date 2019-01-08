@@ -101,6 +101,24 @@ Below we show some properties of MMI.
 \input{examples.tex}
 \fi
 \input{lemma.tex}
+\subsection{Laminarity}\label{sec:laminarity}
+From lemma \ref{lem:LargeIZV}, we can show that
+\begin{theorem}
+\begin{equation}\label{eq:P}
+I(Z_{C_1 \cup C_2}) \geq \min\{ I(Z_{C_1}), I(Z_{C_2})\}
+\end{equation}
+\end{theorem}
+This property is vital in the definition of $C_{\gamma}(Z_V)$. Suppose we have
+$I(B_1)>\gamma, I(B_2)>\gamma$. If $B_1 \cap B_2 \neq \emptyset$, then $I(Z_{B_1\cup B_2})>\gamma$ and the maximal meaning in the definition of $C_{\gamma}(Z_V)$ holds.
+Therefore $C_{\gamma}(Z_V)$
+From literature \cite{ic}, this property implies we can use the iteration method to compute the entire clustering
+provided we can compute the first critical value and the first set of clusters.
+\begin{proof}
+	We proceed by contradiction. Let $V=C_1 \cup C_2$ and suppose $I(Z_V) < I(Z_{C_1}),
+	I(Z_V) < I(Z_{C_2})$. There exists $\P$ such that $I_{\P}(Z_V) = I(Z_V)$.
+	Then by lemma \ref{lem:LargeIZV} we can get $C_1 \subset B_1, C_2 \subset B_2, B_1, B_2 \in
+	\P$. Since $C_1 \cap C_2 \neq \emptyset \Rightarrow B_1 = B_2$. Therefore $V=C_1 \cup C_2 \subset B_1$ which contradicts $\abs{\P}>1$.
+\end{proof}
 \input{theorems.tex}
 \begin{theorem}\label{thm:lattice}
 Let $\Pi^* =  \{ P \in \Pi: I_{\P}(Z_V) = I(Z_V)\}$, then $\Pi^*$ has the lattice structure. That is, 
@@ -109,14 +127,31 @@ if $I(Z_V) = I_{\P_1}(Z_V) = I_{\P_2}(Z_V)$, then $I(Z_V)
  I_{\P_1 \wedge \P_2}(Z_V)$
 \end{theorem}
 \begin{proof}
-Consider $C \in \P_1 \vee \P_2$, then $C = \cup_{i=1}^k B_i ,B_i\in \P_1$.
-If $k\geq 2$, from lemma \ref{lem:smallZB} we have $I_{\P_C}(Z_C) \leq I(Z_V)$
-where $\P_C=\{B_1, \dots, B_k\}$.
-Then from lemma \ref{lem:ref_combination}, we have
+	
+Consider $C \in \P_1 \vee \P_2$, $C\not\in \P_1$. we will show that $I(Z_C) = I(Z_V)$.
+
+We have $C = \cup_{i=1}^k B_i ,B_i\in \P_1, k>1$. 
+From lemma \ref{lem:smallZB} we have $I(Z_C) \leq I(Z_V)$.
+Consider the relationship of $C$ with $\P_2$. if $C\in \P_2$, by lemma \ref{lem:elementLarge} we have
+$I(Z_C) \geq I(Z_V)$. The equality $I(Z_C) = I(Z_V)$ holds.
+
+Suppose  $C = \cup_{j=1}^r D_j ,D_j\in \P_2, r>1$. Then $B_i \neq D_j$ by the definition of $\P_1\vee \P_2$. From lemma \ref{lem:elementLarge}, $I(B_i)\geq I(Z_V), I(D_j) \geq I(Z_V)$
+Therefore, we can found $D_t$ such that $B_1 \cap D_t\neq\emptyset$. Then from the laminarity property of MMI, $I(B_1 \cup D_t)\geq I(Z_V)$. If $B_1 \cup D_t \subsetneq C$, we can find another $B_i$ or $D_j$ which has nonempty intersection with  $B_1 \cup D_t$. Otherwise $\{B_1 \cup D_t, B_2, \dots B_k\}$
+forms a parition of $C$ and $D_t \subset B_1$; $\{D_t \cup B_1\}\cup \{ D_1, \dots D_r\}\backslash \{D_t\}$
+forms a parition of $C$ and $B_1 \subset D_t$. That is $B_1 = D_t$, a contradiction with $B_1 \neq D_t$. 
+We can continue this process. If this process stops when $(\cup B_i)\cup(\cup D_j) \subsetneq C$. we then have $\cup B_i = \cup D_j \in \P_1 \vee \P_2$, a contradiction with $C \in \P_1 \vee \P_2$. 
+Therefore, this process stops when the union equals $C$ and we will have $I(Z_C) \geq I(Z_V)$.
+
+Since $\P_1 \preceq \P_1 \vee \P_2 $, using lemma \ref{lem:multi_combination}, we have
 \begin{equation*}
-I_{\P_1}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_C}(Z_C)
+I_{\P_1}(Z_V) = \Pr(\P_1 \vee \P_2) I_{\P_1 \vee \P_2}(Z_V) + \sum_{Q \in \P\backslash\P'} \Pr(Q) I_{Q}(Z_{\cup_{C\in Q}C})
 \end{equation*}
-where $\P' = C \cup \{B\in \P_1| B\cap C= \emptyset\}$
+Since $I_{Q}(Z_{\cup_{C\in Q}C}\geq I(Z_{\cup_{C\in Q}C} = I(Z_V)$, we have
+\begin{equation*}
+I(Z_V) \geq \Pr(\P_1 \vee \P_2) I_{\P_1 \vee \P_2}(Z_V) + (1-\Pr(\P_1 \vee \P_2)) I(Z_V)	
+\end{equation*}
+We get $I_{\P_1 \vee \P_2}(Z_V) \leq I(Z_V)$, then we have $I_{\P_1 \vee \P_2}(Z_V) =  I(Z_V)$.
+
 \end{proof}
 
 From theorem \ref{thm:lattice}, we have the corollary:
@@ -129,14 +164,9 @@ Since $\Pi^*$ has the lattice structure, the meet of all its member is the uniqu
 \begin{theorem}\label{thm:strict_larger_mi}
 The fundamental partition $\P^*$ with the singletons removed is the set of all maximal subsets $B \subseteq V$ with strictly larger mutual information. 
 That is, we have
-\begin{enumerate}
-\item $I(Z_B) > I(Z_V)$ for $B \in \P^*, \abs{B}>1$.
-\item If $I(Z_C) > I(Z_V)$, then $C\subseteq B$ for $B \in \P^*$.
-\end{enumerate}
+$I(Z_B) > I(Z_V)$ for $B \in \P^*, \abs{B}>1$.
 \end{theorem}
 \begin{proof}
-\begin{enumerate}
-\item
 Suppose $I(Z_B)=I_{\P_B}(Z_B)$.
 Let $\P' = \P_B \cup  \P^* \backslash \{B\}$.
 Then by lemma \ref{lem:ref_combination}, there exists $\theta \in (0,1)$ such that 
@@ -146,16 +176,6 @@ I_{\P'}(Z_V) = \theta I_{\P^*}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 Since $\P^*$ is finest, we have $I_{\P'}(Z_V) > I(Z_V)$, then from \eqref{eq:convexZ}, we have 
 $I(Z_V) < \theta I(Z_V) + (1-\theta) I(Z_B) \Rightarrow I(Z_B) > I(Z_V)$.
 
-\item Suppose $C \not\subseteq B$, then there is a subset of at least two parts from $\P^*$ intersecting with $C$. Denote the collection of parts by $\P_U :=\{C_1, \dots, C_k\} \in \Pi'$ where 
-$k \geq 2, C_i \in \P^* $ such that $C \subseteq \cup_{i=1}^k C_i$ and $C_i \cap C \neq \emptyset$.
-Then we have
-\begin{align*}
-I(Z_V) & \overbrace{\geq}_{(a)} I_{\P_U}(Z_U)  = I(Z_{C_1} \wedge \dots \wedge Z_{C_k})\\
-& = {1\over k-1}\sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j}) \\
-& \overbrace{\geq}_{(b)} \frac{1}{k-1}\sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j}) \\
-& = I(Z_{C_1 \cap C} \wedge \dots \wedge Z_{C_k \cap C}) \geq I(Z_C)
-\end{align*}
-\end{enumerate}
 \end{proof}
 
 From theorem \ref{thm:strict_larger_mi} we have 
@@ -199,7 +219,8 @@ $I(Z_V)$ is the smallest value $\lambda$ that satisfies
 \begin{equation}\label{eq:rir}
 -\lambda = h_{\lambda}(\P)
 \end{equation}
-for some $\P \in \Pi'(V)$. Let $\Pi^*$ be the set of all such partitions satisfying \eqref{eq:rir}.
+for some $\P \in \Pi'(V)$. Let $\Pi^*$ be the set of all such partitions satisfying \eqref{eq:rir}
+for $\lambda = I(Z_V)$.
 \end{theorem}
 \begin{proof}
 $I(Z_V)$ satisfies equation \eqref{eq:rir} for some $\P$. We only need to show the equality never holds for $\lambda < I(Z_V)$ and all partition $\P$. Indeed, we show $-\lambda < h_{\lambda}(\P)$.
@@ -232,23 +253,7 @@ Therefore the set of optimal partition to achieve $I(Z_V)$ forms a lattice $\P^*
 Similar to Theorem 5.2 in literature \cite{ska}, the finest partition $\P^*(Z_V)$ exists and is called the 
 \textbf{fundamental partition}.
 
-\subsection{Laminarity}\label{sec:laminarity}
-From theorem \ref{thm:strict_larger_mi}, we can show that
-\begin{equation}\label{eq:P}
-I(Z_{C_1 \cup C_2}) \geq \min\{ I(Z_{C_1}), I(Z_{C_2})\}
-\end{equation}
-This property is vital in the definition of $C_{\gamma}(Z_V)$. Suppose we have
-$I(B_1)>\gamma, I(B_2)>\gamma$. If $B_1 \cap B_2 \neq \emptyset$, then $I(Z_{B_1\cup B_2})>\gamma$ and the maximal meaning in the definition of $C_{\gamma}(Z_V)$ holds.
-Therefore $C_{\gamma}(Z_V)$
-From literature \cite{ic}, this property implies we can use the iteration method to compute the entire clustering
-provided we can compute the first critical value and the first set of clusters.
 
-By \eqref{eq:P}, we can show that the collection of all clusters $C(Z_V)$ forms a laminar family\footnote{Laminarity means that for any intersecting subsets, one is contained in the other}, i.e.
-\begin{equation}
-B_1 \cap B_2 \in \{\emptyset, B_1, B_2\}
-\end{equation}
-
-This implies the hierachical structure of the clustering solution.
 \subsection{Computing first critical value via fundamental partitition}
 Similar to Proposition 3.1 in literature \cite{ic}, we can compute $C_{\gamma_1}$ by computing $\P^*(Z_V)$
 \begin{description}
