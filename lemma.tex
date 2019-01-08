@@ -6,6 +6,7 @@ I_{\P}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 \end{equation}
 \end{lemma}
 \begin{proof}
+\ifshowNonSelf
 	First we have $\abs{\P} = \abs{\P'} -1 + \abs{\P_B}$,
 	Since
 	\begin{align*}
@@ -15,6 +16,9 @@ I_{\P}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 	\end{align*}
 	As a result, there exists $\theta = {\abs{\P'} - 1 \over \abs{\P} - 1} \in (0,1)$ such that 
 	\eqref{eq:ref_combination} holds.
+\else
+See corollary 5.3 of literature \cite{ska}.
+\fi
 \end{proof}
 The above lemma is a special case of the following lemma:
 \begin{lemma}\label{lem:multi_combination}
@@ -40,6 +44,7 @@ I_{\P}(Z_V) =& I(Z_{C_1} \wedge \dots \wedge Z_{C_k}) \label{eq:mmi_representati
 \end{align}
 \end{lemma}
 \begin{proof}
+\ifshowNonSelf
 $I(Z_1 \wedge Z_2)$ is a kind of representation of mutual information.
 And we use \eqref{eq:mmi_representation} to represent the multivariate mutual information.
 
@@ -55,12 +60,16 @@ I(Z_{C_1} \wedge \dots \wedge Z_{C_{m+1}}) & =
 & + \frac{1}{m}  I(Z_{m} \wedge Z_{m+1})\textrm{ by induction} \\
 & = \frac{1}{m} \sum_{i=1}^{m} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^{m+1} C_j})
 \end{align*}
+\else
+See corollary 5.4 of literature \cite{ska}.
+\fi
 \end{proof}
 \begin{remark}
 This lemma shows that we can use the mutual information to compute the multivariate mutual information.
 \end{remark}
 \begin{lemma}\label{lem:elementLarge}
-If $I_{P}(Z_V) = I(Z_V)$, then for any $\P_B, B\in P$, we have $I_{P_B}(Z_B) \geq I(Z_V)$. That is we have $I(Z_B) \geq I(Z_V)$
+If $I_{P}(Z_V) = I(Z_V)$, then for any $\P_B, B\in P$, we have $I_{P_B}(Z_B) \geq I(Z_V)$. 
+That is we have $I(Z_B) \geq I(Z_V)$.
 \end{lemma}
 \begin{proof}
 By lemma \ref{lem:ref_combination}, let $\P' = \P_B \cup \P\backslash B$ we have 
@@ -79,6 +88,7 @@ I_{\P}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 \end{equation}
 Since  $I_{P}(Z_V) = I(Z_V), I_{\P'}(Z_V)\geq I(Z_V) \Rightarrow I(Z_V) \geq I_{\P_B}(Z_B) \geq I(Z_B)$ 
 \end{proof}
+\ifshowIrrelevant
 \begin{lemma}
 \begin{equation}\label{eq:P12Inequality}
 \abs{\P_1} + \abs{\P_2} \leq \abs{\P_1 \cap \P_2} + \abs{\P_1 \cup \P_2}
@@ -113,10 +123,12 @@ we have
 \end{align*}
 By induction, \eqref{eq:P12Inequality} holds.
 \end{proof}
+\fi
 \begin{lemma}\label{lem:LargeIZV}
 	If $I_{\P}(Z_V)=I(Z_V)$ and $I(Z_C) > I(Z_V)$, then $C\subseteq B$ for $B \in \P$.
 \end{lemma}
 \begin{proof}
+\ifshowNonSelf
 	Suppose $C \not\subseteq B$, then there is a subset of at least two parts from $\P$ intersecting with $C$. Denote the collection of parts by $\P_U :=\{C_1, \dots, C_k\} \in \Pi'$ where 
 	$k \geq 2, C_i \in \P $ such that $C \subseteq \cup_{i=1}^k C_i$ and $C_i \cap C \neq \emptyset$.
 	Then we have
@@ -127,4 +139,7 @@ By induction, \eqref{eq:P12Inequality} holds.
 	& = I(Z_{C_1 \cap C} \wedge \dots \wedge Z_{C_k \cap C}) \geq I(Z_C)
 \end{align*}
 $(a)$ is from lemma \ref{lem:smallZB} and $(b)$ is from the data processing inequality of mutual information (or the restriction of graph cut function).
+\else
+The proof is similar to Proposition 5.3 of literature \cite{ska}.
+\fi
 \end{proof}

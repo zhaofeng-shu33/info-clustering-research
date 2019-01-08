@@ -2,7 +2,11 @@
 
 \input{macros.tex}
 \newif\ifpublish
+\newif\ifshowNonSelf
+\newif\ifshowIrrelevant
 \publishfalse
+\showNonSelffalse
+\showIrrelevantfalse
 \begin{document}
 \title{draft}
 \author{zhaofeng-shu33}
@@ -119,7 +123,6 @@ provided we can compute the first critical value and the first set of clusters.
 	Then by lemma \ref{lem:LargeIZV} we can get $C_1 \subset B_1, C_2 \subset B_2, B_1, B_2 \in
 	\P$. Since $C_1 \cap C_2 \neq \emptyset \Rightarrow B_1 = B_2$. Therefore $V=C_1 \cup C_2 \subset B_1$ which contradicts $\abs{\P}>1$.
 \end{proof}
-\input{theorems.tex}
 \begin{theorem}\label{thm:lattice}
 Let $\Pi^* =  \{ P \in \Pi: I_{\P}(Z_V) = I(Z_V)\}$, then $\Pi^*$ has the lattice structure. That is, 
 if $I(Z_V) = I_{\P_1}(Z_V) = I_{\P_2}(Z_V)$, then $I(Z_V) 
@@ -208,6 +211,8 @@ and finest partitions coincide.
 
 \section{property}
 \subsection{relation to Dilworth truncation}
+\input{theorems.tex}
+
 \begin{align}
 I(Z_V) &= \max\{ \lambda \in \R_+: \lambda \leq f(\P)/(\abs{\P} - 1) \text{ for all partition } \P \in \Pi'(V)\} \\
 & = \max\{ \lambda \in \R_+:  -\lambda \leq f(\P) - \abs{\P} \lambda \} \text{ for all partition } \P \in \Pi'(V)\} \\
