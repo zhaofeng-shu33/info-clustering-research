@@ -211,7 +211,7 @@ and finest partitions coincide.
 
 \section{property}
 \subsection{relation to Dilworth truncation}
-\input{theorems.tex}
+\input{lemma_dt.tex}
 
 \begin{align}
 I(Z_V) &= \max\{ \lambda \in \R_+: \lambda \leq f(\P)/(\abs{\P} - 1) \text{ for all partition } \P \in \Pi'(V)\} \\
@@ -223,7 +223,10 @@ where
 h(\lambda) = \min_{\P} \sum_{C\in \P} (f(C)-\lambda)
 \end{equation}
 $h(\lambda)$ is the Dilworth truncation(DT) of the submodular function $f(C)$. $h(\lambda)$
-is piecewise linear. For each turning point of line segments, the optimal partition forms a lattice. That is, if $\P_1$ and $\P_2$ are optimal partitions at $\lambda$, then $\P_1\vee \P_2$ and $\P_1 \wedge \P_2$ are also optimal partitions.
+is piecewise linear. For each turning point of line segments, 
+from theorem \ref{thm:lattice_structure},
+the optimal partition forms a lattice. 
+
 
 The connection of \red{MMI with DT} is through equation \eqref{eq:Connection}. More precisely, $I(Z_V)$
 is the solution of equation $-\lambda = h(\lambda)$.
@@ -261,11 +264,16 @@ Let $\gamma = I(Z_V)$
 \end{proof}
 This connection is similar from RIR in literature \cite{ic}. We have $f(V)=0$ in our definition and the first line segement is $-\lambda$. Therefore
 $(I(Z_V),  y_1)$ is the first turning point of $h(\lambda)$.
+\begin{corollary}\label{cor:large}
+	\begin{equation}
+	\lambda \leq I(Z_V) \iff h(\lambda) + \lambda \geq 0
+	\end{equation}
+\end{corollary}
+\begin{proof}
+	From equation \eqref{eq:hLambda} or from the geometric meaning.
+\end{proof}
 
-Therefore the set of optimal partition to achieve $I(Z_V)$ forms a lattice $\P^*(Z_V)$.
-
-Similar to Theorem 5.2 in literature \cite{ska}, the finest partition $\P^*(Z_V)$ exists and is called the 
-\textbf{fundamental partition}.
+Using the corollary \ref{cor:large}, we can give an algorithm to compute $I(Z_V)$
 
 
 \subsection{Computing first critical value via fundamental partitition}
@@ -429,7 +437,7 @@ h_{\lambda}(\P^*) &= \sum_{C \in \P^*} f_{\lambda}(C) \\
 
 Let $V=\{1, 2, \dots, n\}$, the greedy algorithm to find $x^*$ and $\P^*$ is given in \ref{alg:dt}
 \begin{algorithm}
-\caption{Dilworth truncation algorithm(\texttt{DT})}\label{alg:dt}
+\caption{Dilworth truncation algorithm(\texttt{DT(f,$\lambda$)})}\label{alg:dt}
 \begin{algorithmic}[1]
 \REQUIRE function $f$ and $\lambda$ which are requirements in the definition of $h_{\lambda}(\P)$.
 \ENSURE the partition $\P^*$ s.t. $h(\lambda) = h_{\lambda}(\P^*)$ and the value of $h(\lambda)$
