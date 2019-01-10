@@ -31,7 +31,7 @@ Suppose we have a set of random variables $Z_1, Z_2, \dots, Z_{\abs{V}}$ to be c
 \begin{equation}\label{eq:def_CgammaZV}
 C_{\gamma}(Z_V) = \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \}
 \end{equation}
-This definition is well defined if \eqref{eq:P} holds. See subsection \ref{sec:laminarity} for detail.
+This definition is well defined if \eqref{eq:P} holds. See theorem \ref{thm:laminarity} for detail.
 
 $C_{\gamma}(Z_V)$ consists of collection of disjoint subsets of $V$.
 The definition of $C_{\gamma}(Z_V)$ excludes the singleton element,
@@ -78,14 +78,15 @@ I(Z_V) & = \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V) \\
 
 $\widetilde{B}_{ij}$ is called divergence transfer matrix which comes from the information geometry theory.
 
-\section{Origin}
+\section{Property}
+\subsection{Origin}
 Our definition \eqref{eq:newDef} comes from an approximation of KL-Diverence under certain conditions. See appendix \ref{sec:akld} for detail.
 
 Let $w_{ij} = \norm{\widetilde{B}_{ij}}_F^2$.
 $\norm{\widetilde{B}_{ij}}_F^2$ can be treated as a kind of similarity metric between two random variables.
 
 The graph-cut weight is $\norm{\widetilde{B}_{ij}}_F^2$.
-
+\subsection{Notation}
 If we treat each index as a vertex in a graph, then the partition $\P$ divides these vertices into $\abs{\P}$ groups. 
 
 \begin{align}
@@ -98,16 +99,15 @@ f[\P] & = \sum_{C \in \P} f(C) \\
 I_{\mathcal{P}}(Z_V)  &= \frac{1}{\abs{\P}  - 1}f(\P) 
 \end{align}
 %$f$ on $S_i$ is a submodular function defined as graph cut.
-
+\subsection{Property}
 Below we show some properties of MMI.
 \ifpublish
 \input{notation.tex}
 \input{examples.tex}
 \fi
 \input{lemma.tex}
-\subsection{Laminarity}\label{sec:laminarity}
 From lemma \ref{lem:LargeIZV}, we can show that
-\begin{theorem}
+\begin{theorem}[Laminarity]\label{thm:laminarity}
 \begin{equation}\label{eq:P}
 I(Z_{C_1 \cup C_2}) \geq \min\{ I(Z_{C_1}), I(Z_{C_2})\}
 \end{equation}
@@ -209,8 +209,7 @@ $\P_{\gamma_{i+1}} \prec \P_{\gamma_i}$ and $\gamma_{i+1} = \min_{C \in C_{\gamm
 Below we show that not only the first critical values coincides of info-clustering problem and PSP problem, all their critical values 
 and finest partitions coincide.
 
-\section{property}
-\subsection{relation to Dilworth truncation}
+\section{Dilworth truncation}
 \input{lemma_dt.tex}
 
 \begin{align}
@@ -222,7 +221,7 @@ where
 \begin{equation}\label{eq:hLambda}
 h(\lambda) = \min_{\P} \sum_{C\in \P} (f(C)-\lambda)
 \end{equation}
-$h(\lambda)$ is the Dilworth truncation(DT) of the submodular function $f(C)$. $h(\lambda)$
+$h(\lambda)$ is the Dilworth truncation(DT) of the submodular function $f(C)$ and can be computed by \textbf{DT} Algorithm \ref{alg:dt}. $h(\lambda)$
 is piecewise linear. For each turning point of line segments, 
 from theorem \ref{thm:lattice_structure},
 the optimal partition forms a lattice. 
@@ -266,7 +265,7 @@ This connection is similar from RIR in literature \cite{ic}. We have $f(V)=0$ in
 $(I(Z_V),  y_1)$ is the first turning point of $h(\lambda)$.
 \begin{corollary}\label{cor:large}
 	\begin{equation}
-	\lambda \leq I(Z_V) \iff h(\lambda) + \lambda \geq 0
+	\lambda \geq I(Z_V) \iff h(\lambda) \leq -\lambda
 	\end{equation}
 \end{corollary}
 \begin{proof}
@@ -274,7 +273,19 @@ $(I(Z_V),  y_1)$ is the first turning point of $h(\lambda)$.
 \end{proof}
 
 Using the corollary \ref{cor:large}, we can give an algorithm to compute $I(Z_V)$
-
+\begin{algorithm}
+	\begin{algorithmic}[1]
+		\REQUIRE Statistics of $Z_V$ sufficient for calculating $f(B)$ for all $B \subseteq V$
+		\ENSURE $I(Z_V)$ and partition $\P'$ such that $I_{\P'}(Z_V) = I(Z_V)$
+		\STATE $\P \leftarrow \{ \{i \} | i \in V\}$
+		\STATE $\lambda = I_{\P}(Z_V)$
+		\STATE $(h(\lambda), \P)=DT(f,\lambda)$
+		\WHILE{$h(\lambda) < -\lambda$}
+		\STATE $\lambda = I_{\P}(Z_V)$
+		\ENDWHILE
+		\STATE $I(Z_V) = \lambda, \P' = \P$
+	\end{algorithmic}
+\end{algorithm}
 
 \subsection{Computing first critical value via fundamental partitition}
 Similar to Proposition 3.1 in literature \cite{ic}, we can compute $C_{\gamma_1}$ by computing $\P^*(Z_V)$
