@@ -1,0 +1,24 @@
+\begin{algorithm}
+\caption{Agglomerate Info-Clustering}\label{alg:aic}
+	\begin{algorithmic}[1]
+		\REQUIRE $\P$ is equal to $\P_l$ in psp list
+		\ENSURE $(\gamma, \P')$ is equal to $(\gamma_l, \P_{l-1})$
+		\STATE $\P = \{C_1, \dots, C_k\}$
+		\STATE $x \to $ nested array with size $k-1$
+		\FOR{$j=1$ \textbf{to} $k-1$} 
+			\STATE Define $g_j$ as the function $B \subseteq \{j+1, \dots, k\} \to 
+			-\sum_{i\in B\cup\{j\}} f_{B\cup \{j\}} (\{C_i\})$
+			\STATE $x[j-1] = $\texttt{MinNormBase}$(g_j, \{j+1, \dots, k\})$
+		\ENDFOR
+		\STATE $\gamma \to - \displaystyle\min_{1 \leq j<i\leq k} x[j][i], \P' \to \emptyset$
+		\FOR{$j=1$ \textbf{to} $k-1$} 			
+			\IF{$C_j \subsetneq \P'$} 
+			\STATE add $C_j \cup \bigcup\{C_i | i\in\{j+1, \dots, k\}, x[j][i]\leq -\gamma\}$to $\P'$
+			\ENDIF
+		\ENDFOR
+		\FUNCTION{\texttt{MinNormBase}$(f, U)$}
+		\RETURN $\arg\min \{\norm{x_U} | x_U \in \mathcal{B}(f)\}$
+		\ENDFUNCTION
+	\end{algorithmic}
+\end{algorithm}
+In Algorithm \ref{alg:aic}, $g_j(B)$ is modular.
