@@ -12,7 +12,7 @@
 		\ENDFOR
 		\STATE $\gamma \to - \displaystyle\min_{1 \leq j<i\leq k} x[j][i], \P' \to \emptyset$
 		\FOR{$j=1$ \textbf{to} $k-1$} 			
-			\IF{$C_j \subsetneq \P'$} 
+			\IF{$C_j \not\subseteq \cup\P'$} \label{alg:unionPartition}
 			\STATE add $C_j \cup \bigcup\{C_i | i\in\{j+1, \dots, k\}, x[j][i]\leq -\gamma\}$to $\P'$
 			\ENDIF
 		\ENDFOR
@@ -21,4 +21,4 @@
 		\ENDFUNCTION
 	\end{algorithmic}
 \end{algorithm}
-In Algorithm \ref{alg:aic}, $g_j(B)$ is modular.
+In Algorithm \ref{alg:aic}, $g_j(B)$ is modular. On line \ref{alg:unionPartition}, $\cup\P'=\cup_{C\in \P'} C$
