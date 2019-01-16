@@ -6,8 +6,8 @@
 		\STATE $\P = \{C_1, \dots, C_k\}$
 		\STATE $x \to $ nested array with size $k-1$
 		\FOR{$j=1$ \textbf{to} $k-1$} 
-			\STATE Define $g_j$ as the function $B \subseteq \{j+1, \dots, k\} \to 
-			-\sum_{i\in B\cup\{j\}} f_{B\cup \{j\}} (\{C_i\})$
+			\STATE\label{alg:shrink} Define $g_j$ as the function $B \subseteq \{j+1, \dots, k\} \to 
+			f(\bigcup_{i \in B\cup\{j\}}C_i)-\sum_{i\in B\cup\{j\}} f (\{C_i\})$
 			\STATE $x[j-1] = $\texttt{MinNormBase}$(g_j, \{j+1, \dots, k\})$
 		\ENDFOR
 		\STATE $\gamma \to - \displaystyle\min_{1 \leq j<i\leq k} x[j][i], \P' \to \emptyset$
@@ -21,4 +21,5 @@
 		\ENDFUNCTION
 	\end{algorithmic}
 \end{algorithm}
-In Algorithm \ref{alg:aic}, $g_j(B)$ is modular. On line \ref{alg:unionPartition}, $\cup\P'=\cup_{C\in \P'} C$
+In Algorithm \ref{alg:aic}, $g_j(B)$ is modular. On line \ref{alg:unionPartition}, $\cup\P'=\cup_{C\in \P'} C$. On line \ref{alg:shrink}, let $C = \bigcup_{i \in B\cup\{j\}}C_i$, then
+$g_j(B) = -\sum_{i \in B\cup\{j\}} f_C(\{C_i\})$.
