@@ -111,7 +111,7 @@ Below we show some properties of MMI.
 From lemma \ref{lem:LargeIZV}, we can show that
 \begin{theorem}[Laminarity]\label{thm:laminarity}
 \begin{equation}\label{eq:P}
-I(Z_{C_1 \cup C_2}) \geq \min\{ I(Z_{C_1}), I(Z_{C_2})\}
+I(Z_{C_1 \cup C_2}) \geq \min\{ I(Z_{C_1}), I(Z_{C_2})\}, \textrm{ for } C_1\cap C_2 \neq \emptyset
 \end{equation}
 \end{theorem}
 This property is vital in the definition of $C_{\gamma}(Z_V)$. Suppose we have
@@ -218,11 +218,11 @@ Denote the collection of set which achieves $\gamma_{i+1}$ as $C_{i+1}:=\{C \in 
 \end{proof}
 
 
-Below we show that not only the first critical values coincides of info-clustering problem and PSP problem, all their critical values 
+Below we show the connection of info-clustering problem with principal sequence of partition(PSP) problem. The conclusion is that all their critical values 
 and finest partitions coincide.
 
 \section{Dilworth truncation}
-\input{lemma_dt.tex}
+
 
 \begin{align}
 I(Z_V) &= \max\{ \lambda \in \R_+: \lambda \leq f(\P)/(\abs{\P} - 1) \text{ for all partition } \P \in \Pi'(V)\} \\
@@ -234,10 +234,13 @@ where
 h(\lambda) = \min_{\P} \sum_{C\in \P} (f(C)-\lambda)
 \end{equation}
 $h(\lambda)$ is the Dilworth truncation(DT) of the submodular function $f(C)$ and can be computed by \textbf{DT} Algorithm \ref{alg:dt}. $h(\lambda)$
-is piecewise linear. For each turning point of line segments, 
-from theorem \ref{thm:lattice_structure},
-the optimal partition forms a lattice. 
+is piecewise linear. 
 
+\input{lemma_dt.tex}
+
+In $h(\lambda)$, for each turning point of line segments, 
+from lemma \ref{lem:lattice_structure},
+the optimal partition forms a lattice. 
 
 The connection of \red{MMI with DT} is through equation \eqref{eq:Connection}. More precisely, $I(Z_V)$
 is the solution of equation $-\lambda = h(\lambda)$.
@@ -284,7 +287,7 @@ $(I(Z_V),  y_1)$ is the first turning point of $h(\lambda)$.
 	From equation \eqref{eq:hLambda} or from the geometric meaning.
 \end{proof}
 
-Using the corollary \ref{cor:large}, we can give an algorithm to compute $I(Z_V)$
+Using the corollary \ref{cor:large}, we can give an algorithm to compute $I(Z_V)$.
 \begin{algorithm}
 	\begin{algorithmic}[1]
 		\REQUIRE Statistics of $Z_V$ sufficient for calculating $f(B)$ for all $B \subseteq V$
@@ -298,6 +301,8 @@ Using the corollary \ref{cor:large}, we can give an algorithm to compute $I(Z_V)
 		\STATE $I(Z_V) = \lambda, \P' = \P$
 	\end{algorithmic}
 \end{algorithm}
+
+We have shown that the first critical value and partition match of the two problems. Next we show all their critical values and partitions are the same.
 
 \subsection{Computing first critical value via fundamental partitition}
 Similar to Proposition 3.1 in literature \cite{ic}, we can compute $C_{\gamma_1}$ by computing $\P^*(Z_V)$

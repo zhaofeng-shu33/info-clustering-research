@@ -1,3 +1,11 @@
+\documentclass{article}
+\input{macros.tex}
+\begin{document}
+\begin{equation}
+J_T(Z_C) = \frac{1}{\abs{C}-1} [\sum_{i\in C} f(\{i\}) - f(C)]
+\end{equation}
+We can use $J_T(Z_C)$ to replace $I(Z_V)$ to define the info-clustering method.
+
 Consider
 \begin{equation}\label{eq:setdt}
 g(\lambda) = \min_{C\subset V, C\neq \emptyset} \{ H(C) + \lambda\abs{C}\}
@@ -12,10 +20,8 @@ The function defined in the above equation is piecewise linear about $\lambda$.
 The largest turning point of $\gamma$ is equal to $\gamma_N$, which is the last critical value of info-clustering.
 \end{theorem}
 From the property of last critical value, it equals $\max_{C\subset V: \abs{C}>1}J_T(Z_C)$,
-where $J_T(\cdot)$ is Watanabe's total correlation. Its definition is given as follows:
-\begin{equation}
-J_T(Z_C) = \frac{1}{\abs{C}-1} [\sum_{i\in C} f(\{i\}) - f(C)]
-\end{equation}
+
+
 The last line segment of $g(\lambda)$ is simply $\lambda$ itself.
 \begin{proof}[Proof of theorem \ref{thm:LastCriticalValue}]
 \begin{align*}
@@ -37,3 +43,4 @@ $g(\lambda)$ in this example is drawn in Fig \ref{fig:gLambda}.
 \includegraphics[width=6cm]{pic/dt2.eps}
 \caption{$g(\lambda)$}\label{fig:gLambda}
 \end{figure}
+\end{document}
