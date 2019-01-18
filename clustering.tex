@@ -60,7 +60,9 @@ C_{\gamma_i}(Z_V) & \gamma \in [\gamma_i, \gamma_{i+1}), 1\leq i < N \\
 \emptyset & \gamma \geq \gamma_N
 \end{cases}
 \end{equation*}
-Obviously, the first critical value is $I(Z_V)$.
+Obviously, the first critical value is $I(Z_V)$, and the critical value set is $\{\gamma_1, \dots, \gamma_N \}$.
+Let $\P_{\gamma_0} = \{V\}$, then the hierachical partition structure is $\P_{\gamma_0} \prec \P_{\gamma_1} \prec \dots \P_{\gamma_N}$.
+where $\P_{\gamma_N} = \{1, 2, \dots, \abs{V}\}$.
 
 The key is how to define $I(Z_B)$, which is called the multivariate mutual information(MMI) for $\{Z_i | i
 \in B\}$ such that
@@ -192,19 +194,29 @@ $I(Z_V) < \theta I(Z_V) + (1-\theta) I(Z_B) \Rightarrow I(Z_B) > I(Z_V)$.
 
 From theorem \ref{thm:strict_larger_mi} we have 
 \begin{theorem}
-$\P_{\gamma_1} = \{C, C\in \P^* \}$ and
-the second critical values of info-clustering is $\gamma_2 = \min_{C\in \P*, \abs{C}>1} I(Z_C)$.
+Suppose $\P_{\gamma_i} = \{C, C\in V \}$, then
+\begin{equation}
+\gamma_{i+1} = \displaystyle\min_{C\in \P_{\gamma_i}, \abs{C}>1} I(Z_C) 
+\end{equation}
+Denote the collection of set which achieves $\gamma_{i+1}$ as $C_{i+1}:=\{C \in V | I(Z_C) = \gamma_{i+1}\}$, then
+\begin{equation}
+\P_{\gamma_{i+1}}/\P_{\gamma_i} = \bigcup_{C \in C_{i+1}} \P_C^*
+\end{equation}
 \end{theorem}
 \begin{proof}
-From (3) of theorem \ref{thm:strict_larger_mi} and the maximal property of $C_{\gamma_1}$,
-we have $\P_{\gamma_1} = \{C, C\in \P^* \}$ and $C_{\gamma_1}(Z_V)$ is $\P_{\gamma_1}$ removing the singletons.
-Since $\gamma_2 > \gamma_1$. If $I(Z_B)>\gamma_2 > I(Z_V)$, then by (3) of theorem \ref{thm:strict_larger_mi}, $B$ is a subset of $C$ for $C \in \P^*$. That is, we have $\P_{\gamma_2} \prec \P_{\gamma_1}$. 
+	Suppose $B \in \P_{\gamma_{i+1}}$, since $I(Z_B)>\gamma_{i+1} > \gamma_i$, then by the definition of info-clusters, $B$ is a subset of $C$ for $C \in \P_{\gamma_i}$.	
+	If $I(Z_C) > \gamma_{i+1}, \forall C\in \P_{\gamma_i}$, then $B$ is not maximal since $C$ also satisfies $I(Z_C) > \gamma_{i+1}$.
+	Therefore, let  $\gamma^* = \min_{C \in \P_{\gamma_i}, \abs{C}>1} I(Z_C), \gamma_{i+1} \geq \gamma^*$.
+	Suppose $I(Z_C')=\gamma^*$, then there exists $B\in \P^*_{C'}$ such that $I(Z_B) > I(Z_C') = \gamma^*$ and $B$ is maximal.
+	Hence $\gamma^*$ makes $\P_{\gamma_{i+1}}$ strictly finer than $\P_{\gamma_i}$. And $\gamma_{i+1} = \gamma^*$.
+	
+	For $B \in \bigcup_{C \in C_{i+1}} \P_C^*$, by theorem \ref{thm:strict_larger_mi}, we have $I(Z_B) > I(Z_C) =  \gamma_{i+1}$ and $B$ is maximal,
+	then $B \in \P_{\gamma_{i+1}}/\P_{\gamma_{i}}$;
+	for $B \in \P_{\gamma_{i+1}}/\P_{\gamma_{i}}$, $B\subsetneq C \in \P_{\gamma_i}$, since $B$ is maximal, $I(Z_C) \leq \gamma_{i+1}$, 
+	then $I(Z_B) > I(Z_C)$,
+	by lemma \ref{lem:LargeIZV} and maximal property of $B$, $B \in \P^*_C$.
 \end{proof}
-We use deduction to show that
-\begin{theorem}
-Suppose $\gamma_i$ is a set of critical values of info-clustering. Then
-$\P_{\gamma_{i+1}} \prec \P_{\gamma_i}$ and $\gamma_{i+1} = \min_{C \in C_{\gamma_i}(Z_V)}I(Z_C)$
-\end{theorem}
+
 
 Below we show that not only the first critical values coincides of info-clustering problem and PSP problem, all their critical values 
 and finest partitions coincide.
