@@ -5,7 +5,24 @@
 J_T(Z_C) = \frac{1}{\abs{C}-1} [\sum_{i\in C} f(\{i\}) - f(C)]
 \end{equation}
 We can use $J_T(Z_C)$ to replace $I(Z_V)$ to define the info-clustering method.
-
+We show that
+\begin{equation}
+J_T(Z_{C_1\cup C_2}) \geq \min\{ J_T(Z_{C_1}), J_T(Z_{C_2}) \} 
+\end{equation}
+\begin{example}\label{eg:rand5}
+consider four
+uniformly distributed and independent Bernoulli random variables $X_a, X_b, X_c, X_d$ and $
+Z_1 = (X_a, X_b), Z_2 = X_a, Z_3 = X_c, Z_4 = X_c, Z_5 = X_d$. Let $V = \{1,2,3,4,5\}$.
+Then 
+\begin{equation*}
+C_{\gamma}(Z_V) = \begin{cases}
+\{V\} & \gamma < \frac{1}{2} \\
+\{1,2,3,4\} & \gamma \in [\frac{1}{2}, \frac{2}{3}) \\
+\{1,2\}, \{3,4\} & \gamma \in [\frac{2}{3}, 1) \\
+\emptyset & \gamma > 1
+\end{cases}
+\end{equation*}
+\end{example}
 Consider
 \begin{equation}\label{eq:setdt}
 g(\lambda) = \min_{C\subset V, C\neq \emptyset} \{ H(C) + \lambda\abs{C}\}
@@ -32,9 +49,7 @@ The last line segment of $g(\lambda)$ is simply $\lambda$ itself.
 \end{align*}
 \end{proof}
 
-We give an example to illustrate $g(\lambda)$, consider four
-uniformly distributed and independent Bernoulli random variables $X_a, X_b, X_c, X_d$ and $
-Z_1 = (X_a, X_b), Z_2 = X_a, Z_3 = X_c, Z_4 = X_c, Z_5 = X_d$.
+We use example \ref{eg:rand5}to illustrate $g(\lambda)$.
 
 Let $V=\{1,2,3,4,5\}$ and $f(C) = H(\{Z_i |  i \in C \})$ for $C\subset V$.
 For example $f(\{1\}) = 2, f(\{2\})=1, f(\{2,3\})=2$.
