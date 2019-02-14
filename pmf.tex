@@ -1,0 +1,55 @@
+\documentclass{article}
+\input{macros.tex}
+\begin{document}
+Using paramatric maximum flow algorithm to solve the following problem:
+\begin{equation}\label{eq:pmq}
+\min_{j \in A \subseteq V} f(A) - 2\lambda - y^{\lambda}(A)
+\end{equation}
+where
+$y^{\lambda}_i = \min\{a_i - 2\lambda, b_i\}$, where $b_i$ maybe $+\infty$.
+First we need to convert the problem to a directed graph with parameter.
+For the original graph, each edge is splitted into two directed arc with same capacity.
+Introduce a source node $s$ while $j$ is treated as target node.  then change
+$c^{\lambda}(s,v)=\max\{0, -y^{\lambda}_v\}, c^{\lambda}(v,j) += \max\{0, y^{\lambda}_v\}$ for $ v=1 $ to $j-1$. Then the minimum minimizer to 
+\begin{equation}\label{eq:pmqe}
+\min_{s\in U\backslash T, j\in T}c^{\lambda}(U\backslash T, T)
+\end{equation}
+is the same with equation \eqref{eq:pmq}.
+
+Graph contraction: $X\subseteq V$, the contraction of graph $G$ by $X$ is denoted by $G[X]$.
+
+Slice function has two parameters:
+the first parameter is the contracted graph and the second parameter is the vertice subset containing $j$.
+\begin{algorithm}
+\begin{algorithmic}[1]
+\REQUIRE an undirected graph $G(V, E)$ with $j \in V={1,2,\dots, n}$ and edge cost function $c(e)$ for $e \in E$, function $f(A)$ is the cut function w.r.t set $A\subseteq V$. tuples $(a_i, b_i)$ for $i=1,2,\dots, j-1$ are given.
+\ENSURE a nested famility of minimal value to equation \eqref{eq:pmq}, as a set list and its corresponding turning value $\lambda$ as a value list.
+\STATE Let $L$ be the turning point list, initialized as empty array;
+\STATE find $(S_0, T_0)$ which is optimal to \eqref{eq:pmqe} for $ \lambda  = 0$.  Also let $T_k = \{j\}$ and $S_k = \{s, 1, \dots, j-1\}$. Construct $G_1 = G[S_0]$;
+\STATE $\mathcal{A}$ contains the decreasing set list, initialized as $[T_0, T_k]$;
+\STATE \texttt{slice}$(G_1, \emptyset)$
+\FUNCTION{\texttt{slice}$(G, T)$}
+  \STATE Let $\lambda_2$ be the value of $\lambda$ such that $c^{\lambda}(\{s\}, V-\{s\}) = 
+c^{\lambda}(V-\{j\}, \{j\})$
+\STATE find $(S, T)$ which is optimal to \eqref{eq:pmqe} for $\lambda = \lambda_2$.
+\IF{$S \neq \{s\}$ and $T \neq \{j\}$}
+\STATE insert $T\cup T_p$ to $\mathcal{A}$
+\STATE \texttt{slice}$(G[T], T_p\cup T)$
+\STATE \texttt{slice}$(G[S], T_p)$
+\ELSE
+\STATE insert $\lambda_2$ to $L$ 
+\ENDIF
+\ENDFUNCTION
+\end{algorithmic}
+\end{algorithm}
+When the above algorithm terminates, we get $L=[\lambda_1, \lambda_2, \dots, \lambda_{k-1}]$ with
+$0\leq \lambda_1 < \lambda_2 < \dots < \lambda_{k-1}$ and $\mathcal{A} = [T_0, T_1, \dots, T_k]$ with
+$T_k \subsetneq  \dots \subsetneq T_1 \subsetneq T_0$.  The solution to \eqref{eq:pmq} is then
+\begin{equation}
+A^{\lambda}=\begin{cases}
+T_0 & 0 \leq \lambda < \lambda_1 \\
+T_i & \lambda_i \leq \lambda < \lambda_{i+1}, \textrm{ for } i=1, 2, \dots, k-1 \\
+T_k & \lambda \geq \lambda_{k}
+\end{cases}
+\end{equation}
+\end{document}
