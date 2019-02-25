@@ -79,12 +79,12 @@ Now we give the algorithm to compute the Dilworth truncation $$\min_{\P}\{f[\P] 
 \STATE $y^{\lambda}_j = (f(\{j\}), 0)$
 \ELSE
 \STATE $ i = \max_i \{ u \in \mathcal{A}[i]\}$
-\IF{$L[i] > \frac{a_u - b_u}{2}$}
+\IF{$i$ exists and $L[i] > \frac{a_u - b_u}{2}$}
 \STATE $y_u^{\lambda} = (a_u, a_u - 2 L[i])$
 \ENDIF
 \ENDIF
 \ENDFOR
-\STATE $i, k = 0, \mathcal{Q} = \emptyset, \widetilde{\mathcal{\P}}^{\lambda} = [], \widetilde{\mathcal{L}} = []$, append $+\infty$ to $L$.
+\STATE $i, k = 0, \mathcal{Q} = \{\emptyset\}, \widetilde{\mathcal{\P}}^{\lambda} = [], \widetilde{\mathcal{L}} = []$, append $+\infty$ to $L$.
 \WHILE{$i<\texttt{length}(\mathcal{L})$ \texttt{ and } $k<\texttt{length}(L)$}
 \IF{$ \P^{\lambda}_i[\mathcal{A}_k] \neq \mathcal{Q}$}
 \STATE $\mathcal{Q} = \P^{\lambda}_i[\mathcal{A}_k]$
