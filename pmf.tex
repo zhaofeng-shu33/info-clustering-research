@@ -17,7 +17,7 @@ $c^{\lambda}(s,v)=\max\{0, -y^{\lambda}_v\}, c^{\lambda}(v,j) += \max\{0, y^{\la
 is the same with equation \eqref{eq:pmq}.
 
 Let $\widetilde{G}$ be the product from $G$ (add $s$ and modify some capacity). 
-Graph contraction: $X\subseteq V$, the contraction of graph $\widetilde{G}$ by $X$ is denoted by $\widetilde{G}[X]$.
+%Graph contraction: $X\subseteq V$, the contraction of graph $\widetilde{G}$ by $X$ is denoted by $\widetilde{G}[X]$.
 
 Slice function has two parameters:
 the first parameter is the contracted graph and the second parameter is the vertice subset containing $j$.
@@ -33,11 +33,11 @@ the first parameter is the contracted graph and the second parameter is the vert
 \FUNCTION{\texttt{slice}$(S, T)$}
   \STATE Let $\lambda_2$ be the value of $\lambda$ such that $c^{\lambda}(S, V'\backslash S) = 
 c^{\lambda}(V'\backslash T, T)$ \label{findLambda}
-\STATE for $\lambda = \lambda_2$, find $(S', T')$ which is optimal to \eqref{eq:pmqe} for $\widetilde{G}[S][T]$.
-\IF{$S' \neq \{s\}$ and $T' \neq \{j\}$}
+\STATE for $\lambda = \lambda_2$, find $(S', T')$ which is optimal to \eqref{eq:pmqe} for $\widetilde{G}$.
+\IF{$S' \neq S$ and $T' \neq T$}
 \STATE insert $T'\cup T$ to $\mathcal{A}$
-\STATE \texttt{slice}$(S, T'\cup T)$
-\STATE \texttt{slice}$(S'\cup S, T)$
+\STATE \texttt{slice}$(S, T')$
+\STATE \texttt{slice}$(S', T)$
 \ELSE
 \STATE insert $\lambda_2$ to $L$ 
 \ENDIF
@@ -71,12 +71,12 @@ Now we give the algorithm to compute the Dilworth truncation $$\min_{\P}\{f[\P] 
 \begin{algorithmic}[1]
 \REQUIRE an undirected graph $G(V, E)$; edge cost function $c(e)$ for $e\in E$
 \ENSURE a nested family of partition $\P^{\lambda}$ and its corresponding turning point list $\mathcal{L}$
-\STATE initialize $y^{\lambda}_v = (0, 0)$ for $ v \in V$, $\P^{\lambda} = [\{\emptyset\}], \mathcal{L} = [+\infty]$
+\STATE initialize $y^{\lambda}_v = (0, +\infty)$ for $ v \in V$, $\P^{\lambda} = [\{\emptyset\}], \mathcal{L} = [+\infty]$
 \FOR{$j = 1$ to $\abs{V}$}
 \STATE  $(\mathcal{A}, L) = \texttt{pmf}(G(V,E), c(e), j, y^{\lambda})$
 \FOR{$u=1$ to $\abs{V}$}
 \IF{$u=j$}
-\STATE $y^{\lambda}_j = (f(\{j\}), 0)$
+\STATE $y^{\lambda}_j = (f(\{j\}), +\infty)$
 \ELSE
 \STATE $ i = \max_i \{ u \in \mathcal{A}[i]\}$
 \IF{$i$ exists and $L[i] > \frac{a_u - b_u}{2}$}
