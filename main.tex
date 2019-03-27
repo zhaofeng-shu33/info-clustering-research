@@ -189,11 +189,16 @@ Time Complexity: $\abs{V}^2 \mathrm{MF}(G(V,E))$
 \begin{figure}[!ht]
 \centering
 \begin{subfigure}{\textwidth}
-\includegraphics[width=12cm]{pic/4part.eps}
+\IfFileExists{code/utility/build/4part.eps}
+{\includegraphics[width=12cm]{code/utility/build/4part.eps}}
+{\includegraphics[width=12cm]{pic/4part.eps}} % not up-to-date
+
 \caption{Illustrative example from four Gaussians}\label{fig:4p}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
-\includegraphics[width=12cm]{pic/3circle.eps}
+\IfFileExists{code/utility/build/3circle.eps}
+{\includegraphics[width=12cm]{code/utility/build/3circle.eps}}
+{\includegraphics[width=12cm]{pic/3circle.eps}} % not up-to-date
 \caption{Illustrative example from three circles}\label{fig:3c}
 \end{subfigure}
 \end{figure}
