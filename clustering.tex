@@ -376,11 +376,10 @@ In literature \cite{mac}, only the first critical value and partation informatio
 \fi
 For continue random variables, we modify the summation notation with the integral notation.
 \begin{align}
-\norm{\widetilde{B}}_F^2 & = \int \frac{p^2(x,y)}{p(x)p(y)} dx dy \\
-& = \E[\frac{P(X,Y)}{P(X)P(Y)}]
+\norm{\widetilde{B}}_F^2 & = \int \frac{(p(x,y)-p(x)p(y))^2}{p(x)p(y)} dx dy
 \end{align}
-compared with the definition of mutual information $I(X;Y) =  \E[\log \frac{P(X,Y)}{P(X)P(Y)}] $,
-there is some similarity.
+%compared with the definition of mutual information $I(X;Y) =  \E[\log \frac{P(X,Y)}{P(X)P(Y)}] $,
+%there is some similarity.
 
 \begin{example}\label{ex:rho}
 Consider $(X,Y)$ conforms to multivariate distribution with correlation coeffient $\rho$, then

@@ -10,7 +10,7 @@ $y^{\lambda}_i = \min\{a_i - 2\lambda, b_i\}$, where $b_i$ maybe $+\infty$.
 First we need to convert the problem to a directed graph with parameter.
 For the original graph, each edge is splitted into two directed arc with same capacity.
 Introduce a source node $s$ while $j$ is treated as target node.  then change
-$c^{\lambda}(s,v)=\max\{0, -y^{\lambda}_v\}, c^{\lambda}(v,j) += \max\{0, y^{\lambda}_v\}$ for $ v=1 $ to $j-1$. Then the minimum minimizer to 
+$c^{\lambda}(s,v)=\max\{0, -y^{\lambda}_v\}, c^{\lambda}(v,j) += \max\{0, y^{\lambda}_v\}$ for $ v=1 $ to $\abs{V}$ and $v \neq  j$. Then the minimum minimizer to 
 \begin{equation}\label{eq:pmqe}
 \min_{s\in U\backslash T, j\in T}c^{\lambda}(U\backslash T, T)
 \end{equation}
@@ -35,7 +35,7 @@ the first parameter is the contracted graph and the second parameter is the vert
 c^{\lambda}(V'\backslash T, T)$ \label{findLambda}
 \STATE for $\lambda = \lambda_2$, find $(S', T')$ which is optimal to \eqref{eq:pmqe} for $\widetilde{G}$.
 \IF{$S' \neq S$ and $T' \neq T$}
-\STATE insert $T'\cup T$ to $\mathcal{A}$
+\STATE insert $T'$ to $\mathcal{A}$
 \STATE \texttt{slice}$(S, T')$
 \STATE \texttt{slice}$(S', T)$
 \ELSE
@@ -65,9 +65,9 @@ For line \ref{findLambda} in the above algorithm,  we can simplify it as:
 \end{equation*}
 where $g(B)$ is the graph cut function of the original graph $G$.
 
-Now we give the algorithm to compute the Dilworth truncation $$\min_{\P}\{f[\P] - \abs{\P} \lambda \}$$for all values of $\lambda$. We call the algorithm parametric Dilworth truncation to distinguish Dilworth truncation algorithm which is applied for a given $\lambda$.
+Now we give the algorithm to compute the Dilworth truncation $$\min_{\P}\{f[\P] - \abs{\P} \lambda \}$$for all values of $\lambda$. We call the algorithm parametric Dilworth truncation (Algorithm \ref{alg:pdt}) to distinguish Dilworth truncation algorithm which is applied for a given $\lambda$.
 \begin{algorithm}
-\caption{paramatric Dilworth truncation $(\P, \mathcal{L})=\texttt{pdt}(G(V,E), c(e))$}
+\caption{paramatric Dilworth truncation $(\P, \mathcal{L})=\texttt{pdt}(G(V,E), c(e))$}\label{alg:pdt}
 \begin{algorithmic}[1]
 \REQUIRE an undirected graph $G(V, E)$; edge cost function $c(e)$ for $e\in E$
 \ENSURE a nested family of partition $\P^{\lambda}$ and its corresponding turning point list $\mathcal{L}$
