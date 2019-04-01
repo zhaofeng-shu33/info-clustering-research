@@ -25,7 +25,7 @@
 \usepackage{amsfonts}       % blackboard math symbols
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
-
+\input{extra_math.tex}
 \title{A practical information theoretic clustering method}
 
 % The \author macro works with any number of authors. There are two commands
@@ -88,6 +88,15 @@ The paper is organized as follows. In Section \ref{sec:models}, we formulate the
 
 \section{Models}\label{sec:models}
 
+Consider an undirected graph partition problem, in which we want to partition the graph nodes into several groups with largest similarity within each group and smallest similarity between different group. To formulate this problem mathematically, the graph is denoted by $G(V,E)$, with vertex set $V = \{1, 2, \dots, \abs{V}\}$ and edge set $E=\{(i,j) | w_{ij}>0\}$ where the edge weight $w$ is nonnegative and represents pairwise similarity of nodes. The clustering criterion is to minimize the following quantity over different parition of $V$
+\begin{definition}[Multivariate similarity]
+\begin{equation}\label{eq:ms}
+I_{\P}(Z_V) = {1 \over 2 ( \abs{\mathcal{P}} - 1) } \sum_{\substack{i\in C, j \not\in C\\ C\in \mathcal{P}}} w_{ij}
+\end{equation}
+\end{definition}
+
+We call this quantity \textbf{multivariate similarity} because it measures the similarity shared by multiple graph nodes. The definition has the same form with that of graph strength if  the whole graph nodes are considered\cite{RN12}. However, we can compute multivariate similarity for any subset of $V$. In such case,
+we use subgraph symbol $V'$ to replace $V$ in equation \eqref{eq:ms}.
 
 The text must be confined within a rectangle 5.5~inches (33~picas) wide and
 9~inches (54~picas) long. The left margin is 1.5~inch (9~picas).  Use 10~point
