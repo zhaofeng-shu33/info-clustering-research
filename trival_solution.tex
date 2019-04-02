@@ -5,16 +5,22 @@ If the graph weights are similar, we cannot distinguish each cluster.
 In such case, info-clustering algorithm will provide trivial solution: 
 that is, either the whole set is one cluster or each singleton forms one cluster.
 
-We consider one extreme case where the graph is complete graph and each edge is with equal weight value.
+We consider one extreme case where the graph is complete graph and each edge is with equal weight value (suppose equal to 1 for brevity).
 Then we will show that the info-clustering solution is trivial.
 
 \begin{lemma}
 \begin{equation}\label{eq:larger_n_2}
-\frac{f[\P]}{\abs{\P}-1} \geq \frac{n}{2} \forall \P
+\frac{f[\P]}{\abs{\P}-1} \geq \frac{n}{2}, \quad\forall \P
 \end{equation}
 where $n = \abs{V}$.
 \end{lemma}
 \begin{proof}
-Math deduction on $n$ to prove $f[\P] \geq \frac{n}{2}(\abs{\P} - 1)$.  Suppose \eqref{eq:larger_n_2} holds for $n=k$ and every partition $\P$. For $n=k+1$, the new paritition $\tilde{\P} has two choices: suppose the $k+1$ node forms one cluster itself, then 
+Math deduction on $n$ to prove $f[\P] \geq \frac{n}{2}(\abs{\P} - 1)$.  Suppose \eqref{eq:larger_n_2} holds for $n=k$ and every partition $\P$. For $n=k+1$, the new paritition $\widetilde{\P}$ has two choices: 
+\begin{enumerate}
+\item the $(k+1)$-th node forms one cluster itself, and $\tilde{\P} = \P \cup \{\{k+1\}\}$, 
+then $f[\widetilde{\P}] = f[\P] + \abs{\P} \geq \frac{n}{2}(\abs{\P}-1) + \abs{\P} = \frac{n+1}{2}\abs{\P} $
+\item the $(k+1)$-th node joined one of the previous cluster, denoted as $C_1$. Since $\abs{C_1} \leq \abs{n}-\abs{\P} + 1$, then 
+$f[\widetilde{\P}] = f[\P]+ (n-\abs{C_1}) \geq \frac{n}{2}(\abs{\P}-1) + (n-\abs{C_1}) \geq \frac{n}{2}(\abs{\P}-1) +(\abs{\P} - 1) \geq \frac{n+1}{2}(\abs{\P}-1)$. That is $f[\widetilde{\P}]  \geq \frac{n+1}{2}(\abs{\widetilde{\P}}-1)$
+\end{enumerate}
 \end{proof}
 \end{document}
