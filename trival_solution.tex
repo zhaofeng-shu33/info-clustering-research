@@ -12,15 +12,22 @@ Then we will show that the info-clustering solution is trivial.
 \begin{equation}\label{eq:larger_n_2}
 \frac{f[\P]}{\abs{\P}-1} \geq \frac{n}{2}, \quad\forall \P
 \end{equation}
-where $n = \abs{V}$.
+where $n = \abs{V}$ and the equality holds only when $\abs{\P}=n$.
 \end{lemma}
 \begin{proof}
-Math deduction on $n$ to prove $f[\P] \geq \frac{n}{2}(\abs{\P} - 1)$.  Suppose \eqref{eq:larger_n_2} holds for $n=k$ and every partition $\P$. For $n=k+1$, the new paritition $\widetilde{\P}$ has two choices: 
-\begin{enumerate}
-\item the $(k+1)$-th node forms one cluster itself, and $\tilde{\P} = \P \cup \{\{k+1\}\}$, 
-then $f[\widetilde{\P}] = f[\P] + \abs{\P} \geq \frac{n}{2}(\abs{\P}-1) + \abs{\P} = \frac{n+1}{2}\abs{\P} $
-\item the $(k+1)$-th node joined one of the previous cluster, denoted as $C_1$. Since $\abs{C_1} \leq \abs{n}-\abs{\P} + 1$, then 
-$f[\widetilde{\P}] = f[\P]+ (n-\abs{C_1}) \geq \frac{n}{2}(\abs{\P}-1) + (n-\abs{C_1}) \geq \frac{n}{2}(\abs{\P}-1) +(\abs{\P} - 1) \geq \frac{n+1}{2}(\abs{\P}-1)$. That is $f[\widetilde{\P}]  \geq \frac{n+1}{2}(\abs{\widetilde{\P}}-1)$
-\end{enumerate}
+Math deduction on $\abs{\P}$ to prove $f[\P] \geq \frac{n}{2}(\abs{\P} - 1)$.  We know that the equality holds for $\abs{\P} = n$.
+Suppose \eqref{eq:larger_n_2} holds for $\abs{\P} =k+1$. For $\abs{\P}=k(k\geq 2)$, the new paritition $\widetilde{\P}$ can be divided into $n_1\leq n_2 \dots n_k$ parts where $n_1 \leq \frac{n}{k}$.
+
+Let the smallest part be further partitioned into two parts with $1$ and $n_1-1$ elements respectively.
+Then using assumption that that the conclusion holds for $\abs{\P}=k+1$ we have
+$$
+n-1 + (n_1-1)(n-n_1+1) + \sum_{i=2}^k n_i(n-n_i) \geq nk
+$$
+That is $\sum_{i=1}^k n_i(n-n_i) \geq nk - 2(n_1-1)$
+Since $2(n_1-1)<2n_1\leq 2\frac{n}{k} \leq n$ we have
+$$
+ \sum_{i=1}^k n_i(n-n_i)  > n(k-1)
+$$
+That it, strict inequality holds for $\abs{\P}=k$.
 \end{proof}
 \end{document}
