@@ -8,7 +8,7 @@ that is, either the whole set is one cluster or each singleton forms one cluster
 We consider one extreme case where the graph is complete graph and each edge is with equal weight value (suppose equal to 1 for brevity).
 Then we will show that the info-clustering solution is trivial.
 
-\begin{lemma}
+\begin{lemma}\label{lem:L}
 \begin{equation}\label{eq:larger_n_2}
 \frac{f[\P]}{\abs{\P}-1} \geq \frac{n}{2}, \quad\forall \P
 \end{equation}
@@ -30,4 +30,28 @@ $$
 $$
 That it, strict inequality holds for $\abs{\P}=k$.
 \end{proof}
+According to Dilworth truncation theory, the line $-\lambda$ and $\frac{n(n-1)}{2} - n\lambda$ intersects at $(\frac{n}{2}, -\frac{n}{2})$. The minimal value for $\sum_{C\in\P}f(C) -\abs{\P}\lambda$ at $\lambda = \frac{n}{2}$ is $-\frac{n}{2}$ from lemma \ref{lem:L}. Therefore, the partition is trival.
+
+generally speaking for a graph with weight $w_{ij}$ if
+\begin{equation}\label{eq:GF}
+\frac{f[\P]}{\abs{\P}-1} \geq \frac{\sum w_{ij}}{n-1} \textrm{ for any } \P
+\end{equation}
+holds, the info-clustering solution is trival.
+
+For example, consider a graph with three point, when 
+\begin{align*}
+w_{12}+w_{23}\geq & w_{13} \\
+w_{13}+w_{12}\geq & w_{23} \\
+w_{13}+w_{23}\geq & w_{12} 
+\end{align*}
+That is, $w_{12}, w_{23}, w_{13}$ can be used to form a triangle in Euclidean space. Then we cannot get non-trival solution.
+
+The triangle condition can be formulated as a sufficient condition:
+\begin{lemma}
+If $w_{ij}, w_{jk}, w_{ki}$ can form a triangle in Euclidean space for a specified $i$ and any $j, k$, then the info-clustering solution is trival.
+\end{lemma}
+\begin{proof}
+WLOG, suppose $i=1$ and we have $\sum_{i,j\neq 1} w_{ij} \leq (n-2) \sum_{j=2}^n w_{1j}$ from triangle inequality in Euclidean space. Then for $\P=\{\{1\},\{2,\dots, n\}\}$ we have \eqref{eq:GF} holds.
+\end{proof}
+The above lemma shows that if we can use $w_{ij}$ as length of edge and can draw the graph on the Euclidean space, then the info-clustering solution is trival.
 \end{document}
