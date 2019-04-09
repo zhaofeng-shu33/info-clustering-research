@@ -111,7 +111,7 @@ The following two procedures generate the same hierachical tree, illustrated by 
 \end{enumerate}
 \end{proposition}
 %proof in attachment.
-For the top-down approach, there may be multiple partition $\P$ that reaches the minimum in \eqref{eq:ms}, we can show that there is a unique finest partition and this one is used; for the bottom-up approach, there may be multiple subsets with equal maximal multivariate similarity, we can show that these subsets are disjoint and graph contraction is unambiguous.
+For the top-down approach, there may be multiple partition $\P$ that reaches the minimum in \eqref{eq:ms}, we can show that there is a unique finest partition and this one is used; for the bottom-up approach, there may be multiple subsets with equal maximal multivariate similarity, we can show that the union of these subsets also reach the maximal and maximal $C$ is unique.
 %proof in attachment. (2 statements)
 \begin{figure}
 \centering
@@ -119,12 +119,17 @@ For the top-down approach, there may be multiple partition $\P$ that reaches the
 \caption{hierachical tree generation based on multivariate similarity. Left figure shows the top-down approach with each subset splitted. Right figure shows the bottom-up approach with the graph contracted.}\label{fig:ta}
 \end{figure}
 
-The text must be confined within a rectangle 5.5~inches (33~picas) wide and
-9~inches (54~picas) long. The left margin is 1.5~inch (9~picas).  Use 10~point
-type with a vertical spacing (leading) of 11~points.  Times New Roman is the
-preferred typeface throughout, and will be selected for you by default.
-Paragraphs are separated by \nicefrac{1}{2}~line space (5.5 points), with no
-indentation.
+Using $I(Z_V)$ to cluster data directly is computing expensive, the same clustering result can be achieved by solving the following optimalization problem for all $\lambda$
+\begin{proposition}
+\begin{equation}
+h(\lambda) = \min_{\P \in \Pi'(V)}\{ \sum_{\substack{i\in C, j \not\in C\\ C\in \mathcal{P}}}w_{ij} - \abs{\P} \lambda \}
+\end{equation}
+\end{proposition}
+%proof in attachment
+
+For given $\P$, the function about $\lambda$ is linear, therefore $h(\lambda)$ is piecewise linear and we can use the parametric maximal flow algorithm to compute efficiently, which is shown in the next section.
+
+The method is information theoretic since it is an extension of mutual information in information theory. When the graph node is random variable and the edge weight is mutual information metric, then equation \eqref{eq:ms} becomes one form of multivariate mutual information proposed in \cite{RN1}. When $I(Z_V)=0$, the random variables $Z_i$ are pairwise independent. 
 
 The paper title should be 17~point, initial caps/lower case, bold, centered
 between two horizontal rules. The top rule should be 4~points thick and the
