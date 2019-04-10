@@ -8,3 +8,20 @@
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
 \newtheorem{proposition}{Proposition}
+\newtheorem{example}{Example}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\makeatletter
+\newcommand{\algorithmicfunction}{\textbf{function}}
+\newcommand{\algorithmicendfunction}{\algorithmicend\ \algorithmicfunction}
+\newenvironment{ALC@func}{\begin{ALC@g}}{\end{ALC@g}}
+\newcommand{\FUNCTION}[2][default]{\ALC@it\algorithmicfunction\ #2\ %
+\textbf{:}%
+\ALC@com{#1}\begin{ALC@func}}
+\ifthenelse{\boolean{ALC@noend}}{
+    \newcommand{\ENDFUNCTION}{\end{ALC@func}}
+  }{
+    \newcommand{\ENDFUNCTION}{\end{ALC@func}\ALC@it\algorithmicendfunction}
+  }
+\makeatother
