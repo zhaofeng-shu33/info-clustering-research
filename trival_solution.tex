@@ -71,6 +71,24 @@ Since
 Sum over the above two, we have $\sum_{i,j \in C_1, i\neq j} w_{ij} \leq \frac{2(n_1-1) \sum w_{ij}}{n-1}$. Therefore, 
 $2f[\P] \geq \frac{2k \sum w_{ij}}{n-1}$. That is, the result holds for $\abs{\P}=k$.
 \end{proof}
-The above lemma shows that if we can use $w_{ij}$ as length of edge and can draw the graph on the Euclidean space, then the info-clustering solution is trival.
+If we can use $w_{ij}$ as length of edge and can draw the graph on the Euclidean space, then the info-clustering solution is trival.
+
+The above lemma gives us the following proposition:
 For example, suppose all $w_{ij} \in [2,4]$, then the solution is trival.
+
+From the hierachical structure property, we can get the following proposition.
+
+\begin{proposition}
+If $G$ has a subgraph $S$ which only admits trival solution, then neither non-singleton subset of $S$ is a cluster of $G$. 
+\end{proposition}
+
+\begin{proof}
+Suppose  $S$ has a non-singleton subset $T$ which is a cluster of $G$, since $S$ only admits trival solution. $I(Z_S) > I(Z_T)$ and $S$ is also a cluster of $G$. In the hierachical tree of $G$, $S$ will be parent of $T$, from the top-down interpretation it is impossible since the clustering solution of $S$ is trival.
+\end{proof}
+\begin{example}
+\begin{figure}[!ht]
+\includegraphics[width=6cm]{sample/8point.eps}
+\end{figure}
+In this example, $V=\{1,2,3,4,5,6\}$ and $I(Z_V) = \min\{x,\frac{x+6}{5}\}$, when $x\geq \frac{3}{2}$, the solution is trival; when $ x< \frac{3}{2}$, the non-trival solution is $\{\{1,2,3\},\{4,5,6\}\}$.
+\end{example}
 \end{document}
