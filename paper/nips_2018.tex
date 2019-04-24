@@ -107,11 +107,11 @@ Based on the definition \eqref{def:ms}, we have both a top-down and bottom-up ve
 The following two procedures generate the same hierachical tree, illustrated by figure \ref{fig:ta}.
 \begin{enumerate}
 \item For a graph $G$, suppose $I_{\P}(Z_V)=I(Z_V)$, each subset of $\P$ is child of hierachical tree root $V$. For each tree leaf node, use \eqref{eq:ms} to split it until the leaf node has exactly one element.
-\item For a graph $G$, suppose $I(Z_C) = \max_{B\subseteq V} I(Z_B)$ and $C$ is maximal, merge singleton element of $C$ together and $G$ is contracted. At each step select the set with maximal multivariate similarity to contract the graph until the graph contracted to one vertex.
+\item For a graph $G$, suppose $C = \arg\max_{B\subseteq V} I_{\P_B}(Z_B)$ where $\P_B =\{\{i\}|i\in B\}$and $C$ is maximal, merge singleton element of $C$ together and $G$ is contracted. At each step select the set with maximal multivariate similarity to contract the graph until the graph contracted to one vertex.
 \end{enumerate}
 \end{proposition}
 %proof in attachment.
-For the top-down approach, there may be multiple partition $\P$ that reaches the minimum in \eqref{eq:ms}, we can show that there is a unique finest partition and this one is used; for the bottom-up approach, there may be multiple subsets with equal maximal multivariate similarity, we can show that the union of these subsets also reach the maximal and maximal $C$ is unique.
+For the top-down approach, there may be multiple partition $\P$ that reaches the minimum in \eqref{eq:ms}, we can show that there is a unique finest partition and this one is used; for the bottom-up approach, we can show that $I(Z_C)=I_{\P_C}(Z_C)$ and when there are multiple subsets with equal maximal multivariate similarity, the union of these subsets also reach the maximal and maximal $C$ is unique.
 %proof in attachment. (2 statements)
 \begin{figure}
 \centering
