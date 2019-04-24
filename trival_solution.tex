@@ -79,16 +79,41 @@ For example, suppose all $w_{ij} \in [2,4]$, then the solution is trival.
 From the hierachical structure property, we can get the following proposition.
 
 \begin{proposition}
-If $G$ has a subgraph $S$ which only admits trival solution, then neither non-singleton subset of $S$ is a cluster of $G$. 
+If $G$ has a subgraph $S$ which only admits trival solution, then neither non-singleton proper subset of $S$ is a cluster of $G$. 
 \end{proposition}
 
 \begin{proof}
 Suppose  $S$ has a non-singleton subset $T$ which is a cluster of $G$, since $S$ only admits trival solution. $I(Z_S) > I(Z_T)$ and $S$ is also a cluster of $G$. In the hierachical tree of $G$, $S$ will be parent of $T$, from the top-down interpretation it is impossible since the clustering solution of $S$ is trival.
 \end{proof}
-\begin{example}
+\begin{example}\label{ex:6point}
 \begin{figure}[!ht]
-\includegraphics[width=6cm]{sample/8point.eps}
+\includegraphics[width=6cm]{sample/6point.eps}
 \end{figure}
-In this example, $V=\{1,2,3,4,5,6\}$ and $I(Z_V) = \min\{x,\frac{x+6}{5}\}$, when $x\geq \frac{3}{2}$, the solution is trival; when $ x< \frac{3}{2}$, the non-trival solution is $\{\{1,2,3\},\{4,5,6\}\}$.
+In this example, $V=\{1,2,3,4,5,6\}$ and we have $I(Z_{\{1,2,3\}})=\frac{3}{2}, I(Z_V) = \min\{x,\frac{x+6}{5}, \frac{3}{2}\}, I(Z_{\{1,6\}})=x$, Then
+\begin{equation*}
+C^*(Z_V) = 
+\begin{cases}
+\{\{1,2,3\},\{4,5,6\}\} & x < \frac{3}{2} \\
+\emptyset & x = \frac{3}{2} \\
+\{1,6\} & x>\frac{3}{2}
+\end{cases}
+\end{equation*}
+Where $C^*(Z_V)$ denotes the non-trival cluster of $V$.
+\end{example}
+\begin{proposition}
+If node set $S_1 \cap S_2 \neq \emptyset$ and $I(Z_{S_1}) > I(Z_{S_2})$, then $S_2$ is not a cluster of $G$.
+\end{proposition}
+\begin{proof}
+Since $I(Z_{S_1\cup S_2}) > \min\{I(Z_{S_1}), I(Z_{S_2})\} = I(Z_{S_2})$. Then from the definition of info-cluster $S_2$ cannot be a cluster of $G$.
+Since every two clusters of $G$ are either disjoint or have the inclusion relationship, $S_2$ cannot be a cluster of $G$.
+\end{proof}
+\begin{example}
+We extend example \ref{ex:6point}. Consider two complete graphs $S_1, S_2$with $n$ nodes (weight = 1), there are $m$ connections(edges) between the two complete graphs, but all inter-connection edge is with equal weight 1. Also, suppose there is no complete graph with $n+1$ nodes in the $2n$-nodes graph. Since $I(Z_{S_1})=\frac{n}{2}$ which is largest among all subgraphs with no more than $n$ nodes and equal weight 1(since the solution to $S_1$ is trival). Therefore $I(Z_V) = \min\{m, \frac{m+n(n-1)}{2n-1}\}$. By some deduction, we get
+\begin{equation*}
+I(Z_V) = \begin{cases}
+m & m <\frac{n}{2}, S_1,S_2 \textrm{ are non-trival cluster} \\
+\frac{m+n(n-1)}{2n-1} & m\geq \frac{n}{2}, \textrm{ only trival solution} 
+\end{cases}
+\end{equation*}
 \end{example}
 \end{document}
