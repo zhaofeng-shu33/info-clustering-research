@@ -55,7 +55,7 @@ def graph_plot(G):
     global n, k1,k2
     g = graphviz.Graph(filename='two_level.gv', engine='neato') # g is used for plotting
     for i in range(n*k1*k2):
-        g.node(str(i))
+        g.node(str(i), shape='point')
     for e in nx.edges(G):
         i,j = e
         if(abs(i-j) < n):

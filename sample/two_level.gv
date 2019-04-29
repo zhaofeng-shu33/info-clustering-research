@@ -1,256 +1,256 @@
 graph {
-	0
-	1
-	2
-	3
-	4
-	5
-	6
-	7
-	8
-	9
-	10
-	11
-	12
-	13
-	14
-	15
-	16
-	17
-	18
-	19
-	20
-	21
-	22
-	23
-	24
-	25
-	26
-	27
-	28
-	29
-	30
-	31
-	32
-	33
-	34
-	35
-	36
-	37
-	38
-	39
-	40
-	41
-	42
-	43
-	44
-	45
-	46
-	47
-	48
-	49
-	50
-	51
-	52
-	53
-	54
-	55
-	56
-	57
-	58
-	59
-	60
-	61
-	62
-	63
-	64
-	65
-	66
-	67
-	68
-	69
-	70
-	71
-	72
-	73
-	74
-	75
-	76
-	77
-	78
-	79
-	80
-	81
-	82
-	83
-	84
-	85
-	86
-	87
-	88
-	89
-	90
-	91
-	92
-	93
-	94
-	95
-	96
-	97
-	98
-	99
-	100
-	101
-	102
-	103
-	104
-	105
-	106
-	107
-	108
-	109
-	110
-	111
-	112
-	113
-	114
-	115
-	116
-	117
-	118
-	119
-	120
-	121
-	122
-	123
-	124
-	125
-	126
-	127
-	128
-	129
-	130
-	131
-	132
-	133
-	134
-	135
-	136
-	137
-	138
-	139
-	140
-	141
-	142
-	143
-	144
-	145
-	146
-	147
-	148
-	149
-	150
-	151
-	152
-	153
-	154
-	155
-	156
-	157
-	158
-	159
-	160
-	161
-	162
-	163
-	164
-	165
-	166
-	167
-	168
-	169
-	170
-	171
-	172
-	173
-	174
-	175
-	176
-	177
-	178
-	179
-	180
-	181
-	182
-	183
-	184
-	185
-	186
-	187
-	188
-	189
-	190
-	191
-	192
-	193
-	194
-	195
-	196
-	197
-	198
-	199
-	200
-	201
-	202
-	203
-	204
-	205
-	206
-	207
-	208
-	209
-	210
-	211
-	212
-	213
-	214
-	215
-	216
-	217
-	218
-	219
-	220
-	221
-	222
-	223
-	224
-	225
-	226
-	227
-	228
-	229
-	230
-	231
-	232
-	233
-	234
-	235
-	236
-	237
-	238
-	239
-	240
-	241
-	242
-	243
-	244
-	245
-	246
-	247
-	248
-	249
-	250
-	251
+	0 [shape=point]
+	1 [shape=point]
+	2 [shape=point]
+	3 [shape=point]
+	4 [shape=point]
+	5 [shape=point]
+	6 [shape=point]
+	7 [shape=point]
+	8 [shape=point]
+	9 [shape=point]
+	10 [shape=point]
+	11 [shape=point]
+	12 [shape=point]
+	13 [shape=point]
+	14 [shape=point]
+	15 [shape=point]
+	16 [shape=point]
+	17 [shape=point]
+	18 [shape=point]
+	19 [shape=point]
+	20 [shape=point]
+	21 [shape=point]
+	22 [shape=point]
+	23 [shape=point]
+	24 [shape=point]
+	25 [shape=point]
+	26 [shape=point]
+	27 [shape=point]
+	28 [shape=point]
+	29 [shape=point]
+	30 [shape=point]
+	31 [shape=point]
+	32 [shape=point]
+	33 [shape=point]
+	34 [shape=point]
+	35 [shape=point]
+	36 [shape=point]
+	37 [shape=point]
+	38 [shape=point]
+	39 [shape=point]
+	40 [shape=point]
+	41 [shape=point]
+	42 [shape=point]
+	43 [shape=point]
+	44 [shape=point]
+	45 [shape=point]
+	46 [shape=point]
+	47 [shape=point]
+	48 [shape=point]
+	49 [shape=point]
+	50 [shape=point]
+	51 [shape=point]
+	52 [shape=point]
+	53 [shape=point]
+	54 [shape=point]
+	55 [shape=point]
+	56 [shape=point]
+	57 [shape=point]
+	58 [shape=point]
+	59 [shape=point]
+	60 [shape=point]
+	61 [shape=point]
+	62 [shape=point]
+	63 [shape=point]
+	64 [shape=point]
+	65 [shape=point]
+	66 [shape=point]
+	67 [shape=point]
+	68 [shape=point]
+	69 [shape=point]
+	70 [shape=point]
+	71 [shape=point]
+	72 [shape=point]
+	73 [shape=point]
+	74 [shape=point]
+	75 [shape=point]
+	76 [shape=point]
+	77 [shape=point]
+	78 [shape=point]
+	79 [shape=point]
+	80 [shape=point]
+	81 [shape=point]
+	82 [shape=point]
+	83 [shape=point]
+	84 [shape=point]
+	85 [shape=point]
+	86 [shape=point]
+	87 [shape=point]
+	88 [shape=point]
+	89 [shape=point]
+	90 [shape=point]
+	91 [shape=point]
+	92 [shape=point]
+	93 [shape=point]
+	94 [shape=point]
+	95 [shape=point]
+	96 [shape=point]
+	97 [shape=point]
+	98 [shape=point]
+	99 [shape=point]
+	100 [shape=point]
+	101 [shape=point]
+	102 [shape=point]
+	103 [shape=point]
+	104 [shape=point]
+	105 [shape=point]
+	106 [shape=point]
+	107 [shape=point]
+	108 [shape=point]
+	109 [shape=point]
+	110 [shape=point]
+	111 [shape=point]
+	112 [shape=point]
+	113 [shape=point]
+	114 [shape=point]
+	115 [shape=point]
+	116 [shape=point]
+	117 [shape=point]
+	118 [shape=point]
+	119 [shape=point]
+	120 [shape=point]
+	121 [shape=point]
+	122 [shape=point]
+	123 [shape=point]
+	124 [shape=point]
+	125 [shape=point]
+	126 [shape=point]
+	127 [shape=point]
+	128 [shape=point]
+	129 [shape=point]
+	130 [shape=point]
+	131 [shape=point]
+	132 [shape=point]
+	133 [shape=point]
+	134 [shape=point]
+	135 [shape=point]
+	136 [shape=point]
+	137 [shape=point]
+	138 [shape=point]
+	139 [shape=point]
+	140 [shape=point]
+	141 [shape=point]
+	142 [shape=point]
+	143 [shape=point]
+	144 [shape=point]
+	145 [shape=point]
+	146 [shape=point]
+	147 [shape=point]
+	148 [shape=point]
+	149 [shape=point]
+	150 [shape=point]
+	151 [shape=point]
+	152 [shape=point]
+	153 [shape=point]
+	154 [shape=point]
+	155 [shape=point]
+	156 [shape=point]
+	157 [shape=point]
+	158 [shape=point]
+	159 [shape=point]
+	160 [shape=point]
+	161 [shape=point]
+	162 [shape=point]
+	163 [shape=point]
+	164 [shape=point]
+	165 [shape=point]
+	166 [shape=point]
+	167 [shape=point]
+	168 [shape=point]
+	169 [shape=point]
+	170 [shape=point]
+	171 [shape=point]
+	172 [shape=point]
+	173 [shape=point]
+	174 [shape=point]
+	175 [shape=point]
+	176 [shape=point]
+	177 [shape=point]
+	178 [shape=point]
+	179 [shape=point]
+	180 [shape=point]
+	181 [shape=point]
+	182 [shape=point]
+	183 [shape=point]
+	184 [shape=point]
+	185 [shape=point]
+	186 [shape=point]
+	187 [shape=point]
+	188 [shape=point]
+	189 [shape=point]
+	190 [shape=point]
+	191 [shape=point]
+	192 [shape=point]
+	193 [shape=point]
+	194 [shape=point]
+	195 [shape=point]
+	196 [shape=point]
+	197 [shape=point]
+	198 [shape=point]
+	199 [shape=point]
+	200 [shape=point]
+	201 [shape=point]
+	202 [shape=point]
+	203 [shape=point]
+	204 [shape=point]
+	205 [shape=point]
+	206 [shape=point]
+	207 [shape=point]
+	208 [shape=point]
+	209 [shape=point]
+	210 [shape=point]
+	211 [shape=point]
+	212 [shape=point]
+	213 [shape=point]
+	214 [shape=point]
+	215 [shape=point]
+	216 [shape=point]
+	217 [shape=point]
+	218 [shape=point]
+	219 [shape=point]
+	220 [shape=point]
+	221 [shape=point]
+	222 [shape=point]
+	223 [shape=point]
+	224 [shape=point]
+	225 [shape=point]
+	226 [shape=point]
+	227 [shape=point]
+	228 [shape=point]
+	229 [shape=point]
+	230 [shape=point]
+	231 [shape=point]
+	232 [shape=point]
+	233 [shape=point]
+	234 [shape=point]
+	235 [shape=point]
+	236 [shape=point]
+	237 [shape=point]
+	238 [shape=point]
+	239 [shape=point]
+	240 [shape=point]
+	241 [shape=point]
+	242 [shape=point]
+	243 [shape=point]
+	244 [shape=point]
+	245 [shape=point]
+	246 [shape=point]
+	247 [shape=point]
+	248 [shape=point]
+	249 [shape=point]
+	250 [shape=point]
+	251 [shape=point]
 	0 -- 1 [weight=1]
 	0 -- 2 [weight=1]
 	0 -- 3 [weight=1]
@@ -268,8 +268,7 @@ graph {
 	0 -- 48 [weight=0.2]
 	0 -- 60 [weight=0.2]
 	0 -- 72 [weight=0.2]
-	0 -- 144 [weight=0.04]
-	0 -- 108 [weight=0.04]
+	0 -- 192 [weight=0.04]
 	1 -- 2 [weight=1]
 	1 -- 3 [weight=1]
 	1 -- 4 [weight=1]
@@ -411,8 +410,8 @@ graph {
 	24 -- 48 [weight=0.2]
 	24 -- 60 [weight=0.2]
 	24 -- 72 [weight=0.2]
-	24 -- 144 [weight=0.04]
-	24 -- 96 [weight=0.2]
+	24 -- 132 [weight=0.04]
+	24 -- 84 [weight=0.2]
 	25 -- 26 [weight=1]
 	25 -- 27 [weight=1]
 	25 -- 28 [weight=1]
@@ -482,8 +481,6 @@ graph {
 	36 -- 48 [weight=0.2]
 	36 -- 60 [weight=0.2]
 	36 -- 72 [weight=0.2]
-	36 -- 108 [weight=0.2]
-	36 -- 168 [weight=0.04]
 	37 -- 38 [weight=1]
 	37 -- 39 [weight=1]
 	37 -- 40 [weight=1]
@@ -552,6 +549,7 @@ graph {
 	48 -- 59 [weight=1]
 	48 -- 60 [weight=0.2]
 	48 -- 72 [weight=0.2]
+	48 -- 156 [weight=0.04]
 	49 -- 50 [weight=1]
 	49 -- 51 [weight=1]
 	49 -- 52 [weight=1]
@@ -685,6 +683,7 @@ graph {
 	72 -- 81 [weight=1]
 	72 -- 82 [weight=1]
 	72 -- 83 [weight=1]
+	72 -- 96 [weight=0.2]
 	73 -- 74 [weight=1]
 	73 -- 75 [weight=1]
 	73 -- 76 [weight=1]
@@ -757,6 +756,7 @@ graph {
 	84 -- 132 [weight=0.2]
 	84 -- 144 [weight=0.2]
 	84 -- 156 [weight=0.2]
+	84 -- 180 [weight=0.04]
 	85 -- 86 [weight=1]
 	85 -- 87 [weight=1]
 	85 -- 88 [weight=1]
