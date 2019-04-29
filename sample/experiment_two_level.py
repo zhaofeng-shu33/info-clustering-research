@@ -4,8 +4,8 @@ from info_cluster import InfoCluster
 import random
 import numpy as np
 import argparse
-import networkx as nx
-import graphviz
+import networkx as nx # for manipulating graph data-structure
+import graphviz # for writing .gv file
 import pdb
 n = 12
 k1 = 7
@@ -68,8 +68,8 @@ def graph_plot(G):
     g.save()    
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--save_graph', default=False, type=bool, nargs='?', const=True) 
-    parser.add_argument('--print_tree', default=False, type=bool, nargs='?', const=True)
+    parser.add_argument('--save_graph', default=False, type=bool, nargs='?', const=True, help='whether to save the .gv file') 
+    parser.add_argument('--print_tree', default=False, type=bool, nargs='?', const=True, help='whether to print the hierachical tree')
     parser.add_argument('--p1', default=0.0, type=float, help='first level random parameter')      
     args = parser.parse_args()
     
