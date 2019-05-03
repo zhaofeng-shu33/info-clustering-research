@@ -1,0 +1,64 @@
+\documentclass{article}
+
+\input{extra_math.tex}
+\title{Supplementary Material}
+\begin{document}
+\maketitle
+\appendix
+\section{Proofs}
+This section gives proof details about propositions in the paper.
+\input{proposition_top_bottom.tex}
+Before processing, we give some properties of multivariate similarity $I(Z_V)$.
+\begin{lemma}\label{lem:ref_combination}
+For any $B \in \P' \in \Pi'$ and $\P_B \in \Pi'_B$, let $\P = \P_B \cup \P' \backslash \{B\} $
+be the refinement of $\P'$. Then we have
+\begin{equation}\label{eq:ref_combination}
+I_{\P}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
+\end{equation}
+\end{lemma}
+\begin{proof}
+	First we have $\abs{\P} = \abs{\P'} -1 + \abs{\P_B}$,
+	Since
+	\begin{align*}
+		I_{\P}(Z_V) & = { f[\P'] + f_B[\P_B] \over \abs{\P} - 1} \\
+		I_{\P'}(Z_V) & = { f[\P'] \over \abs{\P'} - 1} \\
+		I_{\P_B}(Z_B) & = { f_B[\P_B] \over \abs{\P_B} - 1}
+	\end{align*}
+	As a result, there exists $\theta = {\abs{\P'} - 1 \over \abs{\P} - 1} \in (0,1)$ such that 
+	\eqref{eq:ref_combination} holds.
+\end{proof}
+\begin{lemma}\label{lem:smallZB}
+Suppose $I_{\P}(Z_V) = I(Z_V)$, then we have $I(Z_V) \geq I_{\P_B}(Z_B) \geq I(Z_B)$ if $\exists \P_B \subseteq \P$.
+\end{lemma}
+\begin{proof}
+Let $\P' = \{B\} \cup \P\backslash \P_B$, then $\P = \P_B \cup \P'\backslash\{B\}$ , use lemma \ref{lem:ref_combination}, we have
+\begin{equation}
+I_{\P}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
+\end{equation}
+Since  $I_{P}(Z_V) = I(Z_V), I_{\P'}(Z_V)\geq I(Z_V) \Rightarrow I(Z_V) \geq I_{\P_B}(Z_B) \geq I(Z_B)$ 
+\end{proof}
+\begin{lemma}\label{lem:LargeIZV}
+	If $I_{\P}(Z_V)=I(Z_V)$ and $I(Z_C) > I(Z_V)$, then $C\subseteq B$ for $B \in \P$.
+\end{lemma}
+\begin{proof}
+	Suppose $C \not\subseteq B$, then there is a subset of at least two parts from $\P$ intersecting with $C$. Denote the collection of parts by $\P_U :=\{C_1, \dots, C_k\} \in \Pi'$ where 
+	$k \geq 2, C_i \in \P $ such that $C \subseteq \cup_{i=1}^k C_i$ and $C_i \cap C \neq \emptyset$.
+	Then we have
+\begin{align*}
+	I(Z_V) & \overbrace{\geq}_{(a)} I_{\P_U}(Z_U)  = I(Z_{C_1} \wedge \dots \wedge Z_{C_k})\\
+	& = {1\over k-1}\sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j}) \\
+	& \overbrace{\geq}_{(b)} \frac{1}{k-1}\sum_{i=1}^{k-1} I(Z_{C_i \cap C} \wedge Z_{\cup_{j=i+1}^k C_j \cap C}) \\
+	& = I(Z_{C_1 \cap C} \wedge \dots \wedge Z_{C_k \cap C}) \geq I(Z_C)
+\end{align*}
+$(a)$ is from lemma \ref{lem:smallZB} and $(b)$ is from the data processing inequality of mutual information (or the restriction of graph cut function).
+\end{proof}
+\begin{proof}
+We make the connection of the two approaches with the original definition of info-clusters in \cite{RN1}.
+\begin{equation}\label{eq:def_CgammaZV}
+C_{\gamma}(Z_V) = \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \}
+\end{equation}
+The smallest critical value of $C_{\gamma}(Z_V)$ is $I(Z_V)$ (Theorem 1 in \cite{RN1}) and for each $B \in P$ we have $I(Z_B) \geq I(Z_V)$ by 
+\end{proof}
+\bibliographystyle{plain}
+\bibliography{exportlist}
+\end{document}

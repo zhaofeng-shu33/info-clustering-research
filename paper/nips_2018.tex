@@ -9,7 +9,7 @@
 
 % to compile a preprint version, e.g., for submission to arXiv, add add the
 % [preprint] option:
-    \usepackage[preprint]{neurips_2018}
+    \usepackage[preprint]{neurips_2019}
 
 % to compile a camera-ready version, add the [final] option, e.g.:
  %    \usepackage[final]{neurips_2018}
@@ -103,15 +103,9 @@ For a three node graph $G=(\{1,2,3\},\{(1,2),(1,3),(2,3)| w_{12}=w_{23}=1, w_{13
 \end{example}
 
 Based on the definition \eqref{def:ms}, we have both a top-down and bottom-up version of hierachical clustering.
-\begin{proposition}\label{prop:ta}
-The following two procedures generate the same hierachical tree, illustrated by figure \ref{fig:ta}.
-\begin{enumerate}
-\item For a graph $G$, suppose $I_{\P}(Z_V)=I(Z_V)$, each subset of $\P$ is child of hierachical tree root $V$. For each tree leaf node, use \eqref{eq:ms} to split it until the leaf node has exactly one element.
-\item For a graph $G$, suppose $I(Z_C) = \max_{B\subseteq V} I(Z_B)$ and $C$ is maximal, merge singleton element of $C$ together and $G$ is contracted. At each step select the set with maximal multivariate similarity to contract the graph until the graph contracted to one vertex.
-\end{enumerate}
-\end{proposition}
+\input{proposition_top_bottom.tex}
 %proof in attachment.
-For the top-down approach, there may be multiple partition $\P$ that reaches the minimum in \eqref{eq:ms}, we can show that there is a unique finest partition and this one is used; for the bottom-up approach, there may be multiple subsets with equal maximal multivariate similarity, we can show that the union of these subsets also reach the maximal and maximal $C$ is unique.
+The two procedures are illustrated by figure \ref{fig:ta}. For the top-down approach, there may be multiple partition $\P$ that reaches the minimum in \eqref{eq:ms}, we can show that there is a unique finest partition and this one is used; for the bottom-up approach, there may be multiple subsets with equal maximal multivariate similarity, we can show that the union of these subsets also reach the maximal and maximal $C$ is unique.
 %proof in attachment. (2 statements)
 \begin{figure}
 \centering
@@ -119,7 +113,7 @@ For the top-down approach, there may be multiple partition $\P$ that reaches the
 \caption{hierachical tree generation based on multivariate similarity. Left figure shows the top-down approach with each subset splitted. Right figure shows the bottom-up approach with the graph contracted.}\label{fig:ta}
 \end{figure}
 
-Using $I(Z_V)$ to cluster data directly is computing expensive, the same clustering result can be achieved by solving the following optimalization problem for all $\lambda$
+Using $I(Z_V)$ to cluster data directly is computing expensive, the same clustering result can be achieved by solving the following optimalization problem for all $\lambda$.
 \begin{proposition}
 \begin{equation}\label{eq:hL}
 h(\lambda) = \min_{\P \in \Pi'(V)}\{ \sum_{\substack{i\in C, j \not\in C\\ C\in \mathcal{P}}}w_{ij} - \abs{\P} \lambda \}
