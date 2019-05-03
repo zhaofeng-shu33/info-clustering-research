@@ -134,7 +134,7 @@ By induction, \eqref{eq:P12Inequality} holds.
 	Then we have
 \begin{align*}
 	I(Z_V) & \overbrace{\geq}_{(a)} I_{\P_U}(Z_U)  = I(Z_{C_1} \wedge \dots \wedge Z_{C_k})\\
-	& = {1\over k-1}\sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j}) \\
+	& \overbrace{=}_{\ref{lem:mi_split}} {1\over k-1}\sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j}) \\
 	& \overbrace{\geq}_{(b)} \frac{1}{k-1}\sum_{i=1}^{k-1} I(Z_{C_i \cap C} \wedge Z_{\cup_{j=i+1}^k C_j \cap C}) \\
 	& = I(Z_{C_1 \cap C} \wedge \dots \wedge Z_{C_k \cap C}) \geq I(Z_C)
 \end{align*}

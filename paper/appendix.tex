@@ -1,5 +1,6 @@
 \documentclass{article}
-
+\usepackage[preprint]{neurips_2019}
+\usepackage{hyperref}       % hyperlinks
 \input{extra_math.tex}
 \title{Supplementary Material}
 \begin{document}
@@ -27,6 +28,31 @@ I_{\P}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 	As a result, there exists $\theta = {\abs{\P'} - 1 \over \abs{\P} - 1} \in (0,1)$ such that 
 	\eqref{eq:ref_combination} holds.
 \end{proof}
+\begin{lemma}\label{lem:mi_split}
+For any $\P:=\{C_1, \dots, C_k\} \in \Pi'$, we have
+\begin{align}
+I_{\P}(Z_V) =& I(Z_{C_1} \wedge \dots \wedge Z_{C_k}) \label{eq:mmi_representation} \\
+=& { 1 \over k-1} \sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j}) \label{eq:mi_mmi}
+\end{align}
+\end{lemma}
+\begin{proof}
+$I(Z_1 \wedge Z_2)$ is a kind of representation of mutual information.
+And we use \eqref{eq:mmi_representation} to represent the multivariate mutual information.
+
+Equation \eqref{eq:mi_mmi} is true for $k=2$. Suppose it holds for $k=m$. Then
+let $B=\{C_m, C_{m+1}\}$ , $\P=\{C_1, \dots, C_{m+1}\}$
+and use the result of lemma \ref{lem:ref_combination}, 
+we have $\theta = \frac{m-1}{m}$
+\begin{align*}
+I(Z_{C_1} \wedge \dots \wedge Z_{C_{m+1}}) & = 
+ \frac{m-1}{m} I(Z_{C_1} \wedge \dots \wedge Z_{C_m})
++ \frac{1}{m}  I(Z_{m} \wedge Z_{m+1}) \\
+& = \frac{m-1}{m} \frac{1}{m-1}\sum_{i=1}^{m-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^m C_j})\\
+& + \frac{1}{m}  I(Z_{m} \wedge Z_{m+1})\textrm{ by induction} \\
+& = \frac{1}{m} \sum_{i=1}^{m} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^{m+1} C_j})
+\end{align*}
+\end{proof}
+
 \begin{lemma}\label{lem:smallZB}
 Suppose $I_{\P}(Z_V) = I(Z_V)$, then we have $I(Z_V) \geq I_{\P_B}(Z_B) \geq I(Z_B)$ if $\exists \P_B \subseteq \P$.
 \end{lemma}
@@ -46,18 +72,51 @@ Since  $I_{P}(Z_V) = I(Z_V), I_{\P'}(Z_V)\geq I(Z_V) \Rightarrow I(Z_V) \geq I_{
 	Then we have
 \begin{align*}
 	I(Z_V) & \overbrace{\geq}_{(a)} I_{\P_U}(Z_U)  = I(Z_{C_1} \wedge \dots \wedge Z_{C_k})\\
-	& = {1\over k-1}\sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j}) \\
+	& \overbrace{=}_{\ref{lem:mi_split}} {1\over k-1}\sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j}) \\
 	& \overbrace{\geq}_{(b)} \frac{1}{k-1}\sum_{i=1}^{k-1} I(Z_{C_i \cap C} \wedge Z_{\cup_{j=i+1}^k C_j \cap C}) \\
 	& = I(Z_{C_1 \cap C} \wedge \dots \wedge Z_{C_k \cap C}) \geq I(Z_C)
 \end{align*}
 $(a)$ is from lemma \ref{lem:smallZB} and $(b)$ is from the data processing inequality of mutual information (or the restriction of graph cut function).
 \end{proof}
+
+\begin{theorem}\label{thm:lattice}
+If $I(Z_V) = I_{\P_1}(Z_V) = I_{\P_2}(Z_V)$, then $I_{\P_1 \wedge \P_2}(Z_V)=I(Z_V) $
+\end{theorem}
+\begin{proof}
+Consider $C\in \P_1, \not\in \P_1\wedge\P_2$ and $C = \cup_{i=1}^k B_i, k>1$ where $B_i \in \P_1 \wedge \P_2$.
+Consider $\P_C = \{B_1, \dots, B_k\}$. Each $B_i$ belongs to one of subsets of $\P_2$. Suppose $B_1, B_2 \subseteq D \in \P_2$. Then $B_1\cup B_2 \subseteq D$,
+which contradicts the maximal property of $\P_1\wedge \P_2$. Therefore, we have $\P_D = \{D_1, D_2, \dots D_k\}\subseteq \P_2$ such that $B_i \subset D_i$.
+From lemma \ref{lem:smallZB}, we have $I_{\P_D}(Z_V) \leq I(Z_V)$. Since $\abs{\P_D} = \abs{\P_C}$, From the definition we have $I_{\P_C}(Z_V) \leq I_{\P_D}(Z_V) \leq I(Z_V)$.
+Then using lemma \ref{lem:ref_combination}, we have
+\begin{equation*}
+I_{\P_1 \wedge \P_2}(Z_V) \leq \theta I(Z_V) + (1- \theta)I(Z_V) = I(Z_V)
+\end{equation*} 
+Then we have $I_{\P_1 \wedge \P_2}(Z_V)=I(Z_V)$.
+\end{proof}
+
+By theorem \ref{thm:lattice}, the finest partition $I_{\P}(Z_V)=I(Z_V)$ is unique, which is the meet of all partitions. Therefore, the top-down approach is unambigous. We use $\P^*$ to denote the unique finest partition and it has the following property.
+\begin{theorem}\label{thm:strict_larger_mi}
+The fundamental partition $\P^*$ with the singletons removed is the set of all maximal subsets $B \subseteq V$ with strictly larger mutual information. 
+That is, we have
+$I(Z_B) > I(Z_V)$ for $B \in \P^*, \abs{B}>1$.
+\end{theorem}
+\begin{proof}
+Suppose $I(Z_B)=I_{\P_B}(Z_B)$.
+Let $\P' = \P_B \cup  \P^* \backslash \{B\}$.
+Then by lemma \ref{lem:ref_combination}, there exists $\theta \in (0,1)$ such that 
+\begin{equation}\label{eq:convexZ}
+I_{\P'}(Z_V) = \theta I_{\P^*}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
+\end{equation}
+Since $\P^*$ is finest, we have $I_{\P'}(Z_V) > I(Z_V)$, then from \eqref{eq:convexZ}, we have 
+$I(Z_V) < \theta I(Z_V) + (1-\theta) I(Z_B) \Rightarrow I(Z_B) > I(Z_V)$.
+\end{proof}
+
 \begin{proof}
 We make the connection of the two approaches with the original definition of info-clusters in \cite{RN1}.
 \begin{equation}\label{eq:def_CgammaZV}
 C_{\gamma}(Z_V) = \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \}
 \end{equation}
-The smallest critical value of $C_{\gamma}(Z_V)$ is $I(Z_V)$ (Theorem 1 in \cite{RN1}) and for each $B \in P$ we have $I(Z_B) \geq I(Z_V)$ by 
+The smallest critical value of $C_{\gamma}(Z_V)$ is $I(Z_V)$ (Theorem 1 in \cite{RN1}) and for each $B \in \P$, since  our $\P$ is fundamental partition we have $I(Z_B) > I(Z_V)$ by theorem \ref{thm:strict_larger_mi} for $\abs{B}>1$. Take $\gamma = I(Z_V)$, by lemma \ref{lem:LargeIZV}, if $I(Z_C) > \gamma$ we have $C\subseteq B' \in \P$. Therefore $B$ is maximal and $B\in C_{\gamma}(Z_V)$. The same argument can be done for subtrees by replacing $V$ by subroot. Therefore, all tree node set by top-down approach belongs to $C_{\gamma}(Z_V)$.
 \end{proof}
 \bibliographystyle{plain}
 \bibliography{exportlist}
