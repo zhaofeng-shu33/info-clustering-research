@@ -1,0 +1,20 @@
+\documentclass{article}
+\input{macros.tex}
+\begin{document}
+For graph weight function $f(A)$, it has the following property:
+\begin{equation}
+f(A) + f(B) = f(A\cup B) + f(A \cap B)
+\end{equation}
+If the graph weight is interpreted as distance metric and we use $D_{\P}(Z_V)$ instead of $I_{\P}(Z_V)$,
+also 
+\begin{equation}
+D(Z_V) = \max_{\P \in \Pi'(V)} D_{\P}(Z_V)
+\end{equation}
+which describes the average distance shared between multiple random variables.
+
+Then by solving $h(\lambda)$, we can get a hierachical solution.
+\begin{equation}
+h(\lambda) = \max\{f[\P] - \lambda\abs{\P},\forall \P\}
+\end{equation}
+However, solving $h(\lambda)$ is related to solving \texttt{MAX-CUT}, which is NP-HARD.
+\end{document}

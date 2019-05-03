@@ -79,7 +79,10 @@ I(Z_V) & = \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V) \\
 \end{align}
 
 $\widetilde{B}_{ij}$ is called divergence transfer matrix which comes from the information geometry theory.
-
+\begin{remark}
+From the definition of MMI, we can get the scaling-invariant property of info-clustering.
+If we use MMI to do clustering, scaling $ \norm{\widetilde{B}_{ij}}_F^2$ does not affect the clustering result.
+\end{remark}
 \section{Property}
 \subsection{Origin}
 Our definition \eqref{eq:newDef} comes from an approximation of KL-Diverence under certain conditions. See appendix \ref{sec:akld} for detail.
@@ -376,11 +379,10 @@ In literature \cite{mac}, only the first critical value and partation informatio
 \fi
 For continue random variables, we modify the summation notation with the integral notation.
 \begin{align}
-\norm{\widetilde{B}}_F^2 & = \int \frac{p^2(x,y)}{p(x)p(y)} dx dy \\
-& = \E[\frac{P(X,Y)}{P(X)P(Y)}]
+\norm{\widetilde{B}}_F^2 & = \int \frac{(p(x,y)-p(x)p(y))^2}{p(x)p(y)} dx dy
 \end{align}
-compared with the definition of mutual information $I(X;Y) =  \E[\log \frac{P(X,Y)}{P(X)P(Y)}] $,
-there is some similarity.
+%compared with the definition of mutual information $I(X;Y) =  \E[\log \frac{P(X,Y)}{P(X)P(Y)}] $,
+%there is some similarity.
 
 \begin{example}\label{ex:rho}
 Consider $(X,Y)$ conforms to multivariate distribution with correlation coeffient $\rho$, then

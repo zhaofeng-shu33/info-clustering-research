@@ -1,0 +1,16 @@
+\documentclass{article}
+\input{macros.tex}
+\begin{document}
+A polymatroid $P$ is a subset of $\R_E^+$.
+
+For a vector $v$ in $\R_E^+$,  the basis of $v$ (with respect to $P$) is maximal $x\in P$ such that $ x \preceq v$
+
+Consider $E=\{1,2\}, f(A) = \abs{A}$, for $A\subset E$. Then the polymatroid is a square $[0,1]\times [0,1]$ in the first quadrature. For a vector $v=(a,2a)$ with nonnegative $a$. We can find its base as:
+\begin{equation}
+u =\begin{cases}
+v & a \leq \frac{1}{2} \\
+(a, 1) & \frac{1}{2} < a \leq 1 \\
+(1,1) & a > 1
+\end{cases}
+\end{equation}
+\end{document}

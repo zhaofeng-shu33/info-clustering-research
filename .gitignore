@@ -1,2 +1,8 @@
-literature/*
+.DS_Store
+proof/*
 build/*
+literature/*
+note/*
+paper/neurips_2018.sty
+paper/nips_2018.synctex.gz
+paper/nips_2018.pdf
