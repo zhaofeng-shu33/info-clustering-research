@@ -14,19 +14,21 @@ and we rerun the algorithm to get the micro-community structures.
 
 As we can see, if the graph has deep hierachical structure, info-cluster has advantages since we only need to run ic algorithm once.
 '''
-from info_cluster import InfoCluster
 import random
 import numpy as np
 import argparse
 import networkx as nx # for manipulating graph data-structure
 import graphviz # for writing .gv file
-import pdb
+
+from info_cluster import InfoCluster
+import GN
 
 n = 16
 k1 = 4
 k2 = 4
 K = 18
 color_list = ['red','orange','green','purple']
+
 def construct(z_in_1, z_in_2, z_out):
     '''
        p2: type float, percentage of edges to be added at macro level.
@@ -62,6 +64,7 @@ def construct(z_in_1, z_in_2, z_out):
                     if(random.random() <= p_2):
                         G.add_edge(i[0], j[0])
     return G    
+    
 def graph_plot(G):
     '''
     generate the plot file which is the input of graphviz.
@@ -87,6 +90,7 @@ def graph_plot(G):
             edge_len = 0.5
         g.edge(str(i), str(j), weight=str(weight_value), penwidth="0.3", len=str(edge_len))    
     g.save()    
+    
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--save_graph', default=False, type=bool, nargs='?', const=True, help='whether to save the .gv file') 
@@ -103,4 +107,6 @@ if __name__ == '__main__':
         sparse_mat = nx.adjacency_matrix(G)
         ic.fit(np.asarray(sparse_mat.todense(),dtype=float))
         print(ic.partition_num_list)
-        
+    if(args.gn):
+        gn_result = GN(G)
+        print('number of clusters', len(gn_result))

@@ -1,6 +1,13 @@
+'''
+    wrapper of Girvan-Newman community detection algorithm
+'''
 from cmty import cmty
 import networkx as nx
 def GN(G):
+    '''
+        G: nx.Graph like object
+        returns the partition
+    '''
     n = G.number_of_nodes()    #|V|
     A = nx.adj_matrix(G)    #adjacenct matrix
 
@@ -15,4 +22,4 @@ def GN(G):
     Orig_deg = cmty.UpdateDeg(A, G.nodes())
 
     #run Newman alg
-    cmty.runGirvanNewman(G, Orig_deg, m_)
+    return cmty.runGirvanNewman(G, Orig_deg, m_)
