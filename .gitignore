@@ -3,6 +3,6 @@ proof/*
 build/*
 literature/*
 note/*
-paper/neurips_2018.sty
+paper/neurips_2019.sty
 paper/nips_2018.synctex.gz
-paper/nips_2018.pdf
+paper/*.pdf
