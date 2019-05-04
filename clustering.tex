@@ -5,7 +5,7 @@
 \newif\ifshowNonSelf
 \newif\ifshowIrrelevant
 \publishfalse
-\showNonSelffalse
+\showNonSelftrue
 \showIrrelevantfalse
 \begin{document}
 \title{draft}
@@ -161,14 +161,14 @@ I(Z_V) \geq \Pr(\P_1 \vee \P_2) I_{\P_1 \vee \P_2}(Z_V) + (1-\Pr(\P_1 \vee \P_2)
 We get $I_{\P_1 \vee \P_2}(Z_V) \leq I(Z_V)$, then we have $I_{\P_1 \vee \P_2}(Z_V) =  I(Z_V)$.
 
 On the other hand, consider $C\in \P_1, \not\in \P_1\wedge\P_2$ and $C = \cup_{i=1}^k B_i, k>1$ where $B_i \in \P_1 \wedge \P_2$.
-Consider $\P_C = \{B_1, \dots, B_k\}$. Each $B_i$ belongs to one of subsets of $\P_2$. Suppose $B_1, B_2 \subseteq D \in \P_2$. Then $B_1\cup B_2 \subseteq D$,
+Consider $\P_C = \{B_1, \dots, B_k\}$. Each $B_i$ belongs to one of subsets of $\P_2$. Suppose $B_1, B_2 \subseteq D_i \in \P_2$. Then $B_1\cup B_2 \subseteq D_i$,
 which contradicts the maximal property of $\P_1\wedge \P_2$. Therefore, we have $\P_D = \{D_1, D_2, \dots D_k\}\subseteq \P_2$ such that $B_i \subset D_i$.
-From lemma \ref{lem:smallZB}, we have $I_{\P_D}(Z_V) \leq I(Z_V)$. Since $\abs{\P_D} = \abs{\P_C}$, From the definition we have $I_{\P_C}(Z_V) \leq I_{\P_D}(Z_V) \leq I(Z_V)$.
-Then using lemma \ref{lem:multi_combination}, we have
+From lemma \ref{lem:smallZB}, we have $I_{\P_D}(Z_D) \leq I(Z_V)$. Since $\abs{\P_D} = \abs{\P_C}$, From the definition we have $I_{\P_C}(Z_C) \leq I_{\P_D}(Z_D) \leq I(Z_V)$.
+Then using lemma \ref{lem:ref_combination}, we have
 \begin{equation*}
-I_{\P_1 \wedge \P_2}(Z_V) \leq \Pr(\P_1) I(Z_V) + (1- \Pr(\P_1))I(Z_V) = I(Z_V)
+I_{\P_1 \wedge \P_2}(Z_V) \leq \theta I(Z_V) + (1- \theta)I(Z_V) = I(Z_V)
 \end{equation*} 
-Then we have $I_{\P_1 \wedge \P_2}(Z_V)=I(Z_V)$.
+Since $I(Z_V)$ is minimum value, then we have $I_{\P_1 \wedge \P_2}(Z_V)=I(Z_V)$.
 \end{proof}
 
 From theorem \ref{thm:lattice}, we have the corollary:
