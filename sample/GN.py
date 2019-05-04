@@ -3,11 +3,12 @@
 '''
 from cmty import cmty
 import networkx as nx
-def GN(G):
+def GN(G_outer):
     '''
         G: nx.Graph like object
         returns the partition
     '''
+    G = G_outer.copy()# copy the graph
     n = G.number_of_nodes()    #|V|
     A = nx.adj_matrix(G)    #adjacenct matrix
 
