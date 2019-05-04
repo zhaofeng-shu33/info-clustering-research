@@ -110,14 +110,28 @@ I_{\P'}(Z_V) = \theta I_{\P^*}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 Since $\P^*$ is finest, we have $I_{\P'}(Z_V) > I(Z_V)$, then from \eqref{eq:convexZ}, we have 
 $I(Z_V) < \theta I(Z_V) + (1-\theta) I(Z_B) \Rightarrow I(Z_B) > I(Z_V)$.
 \end{proof}
-
+\begin{theorem}[Laminarity]\label{thm:laminarity}
+\begin{equation}\label{eq:P}
+I(Z_{C_1 \cup C_2}) \geq \min\{ I(Z_{C_1}), I(Z_{C_2})\}, \textrm{ for } C_1\cap C_2 \neq \emptyset
+\end{equation}
+\end{theorem}
 \begin{proof}
+	We proceed by contradiction. Let $V=C_1 \cup C_2$ and suppose $I(Z_V) < I(Z_{C_1}),
+	I(Z_V) < I(Z_{C_2})$. There exists $\P$ such that $I_{\P}(Z_V) = I(Z_V)$.
+	Then by lemma \ref{lem:LargeIZV} we can get $C_1 \subset B_1, C_2 \subset B_2, B_1, B_2 \in
+	\P$. Since $C_1 \cap C_2 \neq \emptyset \Rightarrow B_1 = B_2$. Therefore $V=C_1 \cup C_2 \subset B_1$ which contradicts $\abs{\P}>1$.
+\end{proof}
+Theorem \ref{thm:laminarity} implies the maximal requirement for the bottom-up approach is umambigious. First we notice that if the subsets are non-overlapping, we can merge them respectively. Therefore, we only need to consider $C_1, C_2$ such that $I(Z_{C_1}) = I(Z_{C_2}) = \max_{B\subseteq V} I(Z_B)$ and $C_1\cap C_2 \neq \emptyset$. , $I(Z_{C_1\cup C_2}) \geq \max_{B\subseteq V} I(Z_B)$ therefore $C_1\cup C_2$ is also a solution to the maximization.
+\begin{proof}[Proof of Proposition \ref{prop:ta}]
 We make the connection of the two approaches with the original definition of info-clusters in \cite{RN1}.
 \begin{equation}\label{eq:def_CgammaZV}
-C_{\gamma}(Z_V) = \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \}
+\mathcal{C}_{\gamma}(Z_V) = \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \}
 \end{equation}
-The smallest critical value of $C_{\gamma}(Z_V)$ is $I(Z_V)$ (Theorem 1 in \cite{RN1}) and for each $B \in \P$, since  our $\P$ is fundamental partition we have $I(Z_B) > I(Z_V)$ by theorem \ref{thm:strict_larger_mi} for $\abs{B}>1$. Take $\gamma = I(Z_V)$, by lemma \ref{lem:LargeIZV}, if $I(Z_C) > \gamma$ we have $C\subseteq B' \in \P$. Therefore $B$ is maximal and $B\in C_{\gamma}(Z_V)$. The same argument can be done for subtrees by replacing $V$ by subroot. Therefore, all tree node set by top-down approach belongs to $C_{\gamma}(Z_V)$. By Theorem 2.4 in \cite{RN1}, we conclude all clusters in $C_{\gamma}(Z_V)$ is a tree node set by top-down approach.
+The smallest critical value of $\mathcal{C}_{\gamma}(Z_V)$ is $I(Z_V)$ (Theorem 1 in \cite{RN1}) and for each $B \in \P$, since  our $\P$ is fundamental partition we have $I(Z_B) > I(Z_V)$ by theorem \ref{thm:strict_larger_mi} for $\abs{B}>1$. Take $\gamma = I(Z_V)$, by lemma \ref{lem:LargeIZV}, if $I(Z_C) > \gamma$ we have $C\subseteq B' \in \P$. Therefore $B$ is maximal and $B\in \mathcal{C}_{\gamma}(Z_V)$. The same argument can be done for subtrees by replacing $V$ by subroot. Therefore, all tree node sets by top-down approach belong to $\mathcal{C}_{\gamma}(Z_V)$. By Theorem 2.4 in \cite{RN1}, we conclude all clusters in $C_{\gamma}(Z_V)$ is a tree node set by top-down approach.
+
+The largest critical value of $\mathcal{C}_{\gamma}(Z_V)$ is $\gamma_N = \max_{B\subseteq V} I(Z_B)$. Take $\gamma = \gamma_N - \epsilon$ where $\epsilon$ is sufficient small, since $I(Z_C) > \gamma$ and $C$ is maximal, we have $C \in \mathcal{C}_{\gamma}(Z_V)$. For each tree node set, since it is also maximal for some $\gamma$, all of them belong to $\mathcal{C}_{\gamma}(Z_V)$. By Theorem 4.2 in \cite{RN8}, we conclude all clusters in $C_{\gamma}(Z_V)$ is a tree node set by bottom-up approach.
 \end{proof}
+By the construction of the clustering tree, we can associate each tree node with a threshold value, which is multivariate similarity computed at that step.
 \bibliographystyle{plain}
 \bibliography{exportlist}
 \end{document}
