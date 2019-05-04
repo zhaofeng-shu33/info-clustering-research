@@ -105,23 +105,43 @@ For a three node graph $G=(\{1,2,3\},\{(1,2),(1,3),(2,3)| w_{12}=w_{23}=1, w_{13
 Based on the definition \eqref{def:ms}, we have both a top-down and bottom-up version of hierachical clustering.
 \input{proposition_top_bottom.tex}
 %proof in attachment.
-The two procedures are illustrated by figure \ref{fig:ta}. For the top-down approach, there may be multiple partition $\P$ that reaches the minimum in \eqref{eq:ms}, we can show that there is a unique finest partition and this one is used; for the bottom-up approach, there may be multiple subsets with equal maximal multivariate similarity, we can show that the union of these subsets also reach the maximal and maximal $C$ is unique.
-%proof in attachment. (2 statements)
+The two procedures are illustrated by figure \ref{fig:ta}. For the top-down approach, there may be multiple partition $\P$ that reaches the minimum in \eqref{eq:ms}, we can show that there is a unique finest partition and this one is used; for the bottom-up approach, there may be multiple intersecting subsets with equal maximal multivariate similarity, we can show that the union of these subsets also reach the maximal and maximal $C$ is unique.
+%proof in attachment, before the proof of the above proposition. (2 statements)
 \begin{figure}
 \centering
 \includegraphics[width=0.8\textwidth]{two_approach.eps}
 \caption{hierachical tree generation based on multivariate similarity. Left figure shows the top-down approach with each subset splitted. Right figure shows the bottom-up approach with the graph contracted.}\label{fig:ta}
 \end{figure}
 
+By the construction of the clustering tree, we can associate each tree node with a threshold value, which is multivariate similarity computed at that step.
+\begin{example}
+\begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth]{threshold.eps}
+\caption{a clustering tree (left figure) for the weighted graph (right figure) by info-clustering method. Threshold values are $0.9, 1, 2$.}\label{fig:threshold}
+\end{figure}
+Consider a graph $G(V, E)$ with $V=\{1,2,3,4\}$ and $E=\{(1,2),(1,3),(3,4),(2,4)\}$ with edge weight $w_{12}=1,w_{13}=0.4,w_{24}=0.5,w_{34}=2$ (See Fig. \ref{fig:threshold}). The threshold values are the multivariate similarity $I(Z_{3,4})=2, I(Z_{1,2})=1$ and $I(Z_V)=0.9$ respectively. We can write the complete clustering solution as:
+\begin{equation*}
+\P = 
+\begin{cases}
+\{\{1,2,3,4\}\} & \lambda < 0.9 \\
+\{\{1,2\},\{3,4\}\} & 0.9 \leq \lambda < 1 \\
+\{\{1\},\{2\},\{3,4\}\} & 1 \leq \lambda < 2\\
+\{\{1\},\{2\},\{3\},\{4\}\} & \lambda \geq 2
+\end{cases}
+\end{equation*}
+Although the clustering tree does not distinguish $\{\{1\},\{2\},\{3,4\}\}$ with $\{\{1,2\},\{3\}, \{4\}\}$ ,Notice that partition $\{\{1,2\},\{3\}, \{4\}\}$ does not exist by the threshold method.
+\end{example}
 Using $I(Z_V)$ to cluster data directly is computing expensive, the same clustering result can be achieved by solving the following optimalization problem for all $\lambda$.
 \begin{proposition}
 \begin{equation}\label{eq:hL}
 h(\lambda) = \min_{\P \in \Pi'(V)}\{ \sum_{\substack{i\in C, j \not\in C\\ C\in \mathcal{P}}}w_{ij} - \abs{\P} \lambda \}
 \end{equation}
+The optimal partitions for $h(\lambda)$ are finite and they can be arranged in a decrasing sequence $\P_1, \dots, \P_k$ such that $\P_1 \succeq \P_2 \dots \succeq \P_k$, This sequence is called \textbf{principal sequence of partitions} of $h(\lambda)$.
 \end{proposition}
 %proof in attachment
 
-For given $\P$, the function about $\lambda$ is linear, therefore $h(\lambda)$ is piecewise linear and we can use the parametric maximal flow algorithm to compute efficiently, which is shown in the next section.
+For given $\P$, the function about $\lambda$ is linear, therefore $h(\lambda)$ is piecewise linear and each turning point of $h(\lambda)$ corresponds to $\P_i, \P_{i+1}$ respectively. We can use the parametric maximal flow algorithm to compute $\P_i$ efficiently, which is shown in the next section.
 
 The method is information theoretic since it is an extension of mutual information in information theory. When the graph node is random variable and the edge weight is mutual information metric, then equation \eqref{eq:ms} becomes one form of multivariate mutual information proposed in \cite{RN1}. When $I(Z_V)=0$, the random variables $Z_i$ are pairwise independent. 
 
@@ -138,7 +158,7 @@ The pmf routinue is called $\abs{V}$ times. At the bottom level, the edge cost i
 \begin{figure}
 \centering
 \includegraphics[width=6cm]{pdt.eps}
-\caption{Algorithmic pyramid of principal sequence of partition. The top level is parametric Dilworth truncation; the middle level is parametric maximal flow and the bottom level is maximal flow}\label{fig:pyramid}
+\caption{Algorithmic pyramid to compute principal sequence of partitions. The top level is parametric Dilworth truncation; the middle level is parametric maximal flow and the bottom level is maximal flow}\label{fig:pyramid}
 \end{figure}
 
 For the pmf algorithm applied to our problem, we are required to solve 
