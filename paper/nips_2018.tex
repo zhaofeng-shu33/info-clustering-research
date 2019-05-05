@@ -203,9 +203,13 @@ c^{\lambda}(V'\backslash T, T)$ \label{findLambda}
 \end{algorithm}
 
 \section{Experiement}\label{sec:experiment}
+In this section, we demonstrate info-clustering algorithm on two kinds of datasets. The first is about feature clustering, in which we need to cluster multi-dimentional vectors. For this kind of task, we need to construct the clustering graph first by using proper similarity measure. The other dataset is in community detection, coming from \cite{RN22}, in which a two-level hierachical structure is defined. By comparision with other clustering method, we will show that info-clustering algorithm gives reasonable good result and can recover the two-level hierachical structure under certain conditions. 
 
-
-
+For feature clustering task, we prepare three groups of data:
+\begin{enumerate}
+\item Four Gaussian blobs with unit variance and centers at $(3,3), (3,-3), (-3,3), (-3,-3)$.  We generate 25 points for each blob.
+\item Three concentric circles with radius $0.1,0.2,0.3$ and data points $60, 100, 140$. The angles of these points are uniform distributed and they also oscilate around the radius direction.
+\end{enumerate}
 \section{Conclusion}\label{sec:conclusion}
 
 

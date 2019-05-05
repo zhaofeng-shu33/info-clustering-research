@@ -71,7 +71,7 @@ def evaluate(num_times, alg):
         out_ari = adjusted_rand_score(ground_truth_outer, alg.get_category(k2));
         inner_ari = adjusted_rand_score(ground_truth_inner, alg.get_category(k1))
         report['outer_ari'] += adjusted_rand_score(ground_truth_outer, alg.get_category(k2))
-        report['inner_ari'] += adjusted_rand_score(ground_truth_inner, alg.get_category(k1))
+        report['inner_ari'] += adjusted_rand_score(ground_truth_inner, alg.get_category(k2 * k1))
         if(out_ari > 0.99 and inner_ari > 0.99):
             report['recover_percentage'] += 1.0
         report['depth'] += len(alg.partition_num_list)
