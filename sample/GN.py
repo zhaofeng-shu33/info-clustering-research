@@ -1,5 +1,17 @@
 '''
     wrapper of Girvan-Newman community detection algorithm
+    >>> import networkx as nx
+    >>> G=nx.Graph()
+    >>> G.add_edge(1,3)
+    >>> G.add_edge(1,2)
+    >>> G.add_edge(3,2)
+    >>> G.add_edge(4,5)
+    >>> G.add_edge(4,6)
+    >>> G.add_edge(5,6)
+    >>> G.add_edge(1,6)
+    >>> from GN import GN
+    >>> GN(G)
+    [{1, 2, 3}, {4, 5, 6}]    
 '''
 from cmty import cmty
 import networkx as nx
