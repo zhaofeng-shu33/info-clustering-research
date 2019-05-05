@@ -15,8 +15,10 @@ and we rerun the algorithm to get the micro-community structures.
 As we can see, if the graph has deep hierachical structure, info-cluster has advantages since we only need to run ic algorithm once.
 '''
 import random
-import numpy as np
 import argparse
+import pdb
+
+import numpy as np
 import networkx as nx # for manipulating graph data-structure
 import graphviz # for writing .gv file
 
@@ -95,10 +97,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--save_graph', default=False, type=bool, nargs='?', const=True, help='whether to save the .gv file') 
     parser.add_argument('--ic', default=False, type=bool, nargs='?', const=True, help='whether to run info-cluster algorithm')
-    parser.add_argument('--z_in_1', default=14, type=int, help='inter-micro-community node average degree')      
-    parser.add_argument('--z_in_2', default=3, type=int, help='intra-micro-community node average degree')          
+    parser.add_argument('--gn', default=False, type=bool, nargs='?', const=True, help='whether to run Girvan-Newman algorithm')                  
+    parser.add_argument('--z_in_1', default=14.0, type=float, help='inter-micro-community node average degree')      
+    parser.add_argument('--z_in_2', default=3.0, type=float, help='intra-micro-community node average degree')          
+    parser.add_argument('--debug', default=False, type=bool, nargs='?', const=True, help='whether to enter debug mode')                  
     args = parser.parse_args()
-    
+    if(args.debug):
+        pdb.set_trace()
     G = construct(args.z_in_1, args.z_in_2, K - args.z_in_1 - args.z_in_2)    
     if(args.save_graph):
         graph_plot(G)
