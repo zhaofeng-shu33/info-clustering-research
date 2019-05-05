@@ -1,6 +1,6 @@
 import networkx as nx
 import unittest
-from .GN import GN
+from GN import GN
 
 class TestGN(unittest.TestCase):
     def test_6point(self):
