@@ -10,13 +10,12 @@
     >>> G.add_edge(5,6)
     >>> G.add_edge(1,6)
     >>> from GN import GN
-    >>> GN(G)
+    >>> GN().fit(G).Bestcomps
     [{1, 2, 3}, {4, 5, 6}]    
 '''
 from cmty import cmty
 import networkx as nx
 import numpy as np
-import pdb
 class GN:
     def __init__(self):
         self.partition_num_list = []
@@ -42,7 +41,8 @@ class GN:
         self.Orig_deg = cmty.UpdateDeg(A, G.nodes())
 
         #run Newman alg
-        return self.runGirvanNewman()   
+        self.runGirvanNewman() 
+        return self  
         
     def runGirvanNewman(self):
         #let's find the best split of the graph
