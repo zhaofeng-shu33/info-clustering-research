@@ -22,16 +22,18 @@ import pdb
 import numpy as np
 import networkx as nx # for manipulating graph data-structure
 import graphviz # for writing .gv file
+from sklearn.metrics import adjusted_rand_score
 
 from info_cluster import InfoCluster
-import GN
+from GN import GN
 
 n = 16
-k1 = 4
-k2 = 4
+k1 = 4 # inner
+k2 = 4 # outer
 K = 18
 color_list = ['red','orange','green','purple']
-
+ground_truth_outer = []
+ground_truth_inner = []
 def modify_edge_weight(G, weight_method='triangle-power'):
     '''
         G: networkx like graph
@@ -49,9 +51,33 @@ def modify_edge_weight(G, weight_method='triangle-power'):
             G[i][j]['weight'] = G[i][j]['weight']
             
 def evaluate(num_times, alg):
-    # the evaluated alg is a class, and should provide fit method , which operates on similarity matrix
-    # and get_category(i) method, where i is the specified category.
-    return
+    '''
+        num_times: int
+        alg: algorithm class
+        
+        the evaluated alg is a class, and should provide fit method , which operates on similarity matrix
+        and get_category(i) method, where i is the specified category.
+    '''
+    report = {'outer_ari' : 0.0,
+              'inner_ari' : 0.0,
+              'depth': 0,
+              'recover_percentage': 0.0
+             }
+    print('eval ' + str(type(alg)))
+    for i in range(num_times):
+        G = construct(args.z_in_1, args.z_in_2, z_o)    
+        modify_edge_weight(G, args.weight)
+        alg.fit(G)
+        out_ari = adjusted_rand_score(ground_truth_outer, alg.get_category(k2));
+        inner_ari = adjusted_rand_score(ground_truth_inner, alg.get_category(k1))
+        report['outer_ari'] += adjusted_rand_score(ground_truth_outer, alg.get_category(k2))
+        report['inner_ari'] += adjusted_rand_score(ground_truth_inner, alg.get_category(k1))
+        if(out_ari > 0.99 and inner_ari > 0.99):
+            report['recover_percentage'] += 1.0
+        report['depth'] += len(alg.partition_num_list)
+    for k in report.keys():
+        report[k] /= num_times
+    return report
     
 def construct(z_in_1, z_in_2, z_out):
     '''
@@ -71,7 +97,10 @@ def construct(z_in_1, z_in_2, z_out):
     for t in range(k2):
         for i in range(k1):
             for j in range(n):
-                G.add_node(cnt, macro=t,micro=i)
+                G.add_node(cnt, macro=t, micro=i)
+                if(len(ground_truth_inner) != n*k1*k2):
+                    ground_truth_outer.append(t)
+                    ground_truth_inner.append(i+k2*t)
                 cnt += 1
     for i in G.nodes(data=True):
         for j in G.nodes(data=True):
@@ -94,7 +123,7 @@ def graph_plot(G):
     generate the plot file which is the input of graphviz.
     G: networkx graph object
     '''
-    global n, k1,k2
+    global n, k1, k2
     time_str = datetime.now().isoformat()
     g = graphviz.Graph(filename='two_level-%s.gv'%time_str, engine='neato') # g is used for plotting
     for i in G.nodes(data=True):
@@ -127,6 +156,7 @@ if __name__ == '__main__':
     parser.add_argument('--z_in_2', default=3.0, type=float, help='intra-micro-community node average degree')          
     parser.add_argument('--z_o', default=-1, type=float, help='intra-macro-community node average degree')              
     parser.add_argument('--debug', default=False, type=bool, nargs='?', const=True, help='whether to enter debug mode')                  
+    parser.add_argument('--evaluate', default=0, type=int, help='whether to evaluate the method instead of run once')                      
     args = parser.parse_args()
     if(args.debug):
         pdb.set_trace()
@@ -140,9 +170,15 @@ if __name__ == '__main__':
     if(args.ic):           
         ic = InfoCluster(affinity='precomputed')        
         modify_edge_weight(G, args.weight)
-        sparse_mat = nx.adjacency_matrix(G)
-        ic.fit(np.asarray(sparse_mat.todense(),dtype=float))
+        ic.fit(G)
         print(ic.partition_num_list)
-    if(args.gn):
-        gn_result = GN(G)
-        print('number of clusters', len(gn_result))
+    elif(args.gn):
+        gn = GN()
+        gn.fit(G)
+        print(gn.partition_num_list)
+    elif(args.evaluate > 0):
+        methods = [InfoCluster(affinity='precomputed'), GN()]
+        for method in methods:
+            report = evaluate(args.evaluate, method)
+            print(report)
+        
