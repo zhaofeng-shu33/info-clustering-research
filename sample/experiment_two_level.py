@@ -16,6 +16,7 @@ As we can see, if the graph has deep hierachical structure, info-cluster has adv
 '''
 import random
 import argparse
+from datetime import datetime
 import pdb
 
 import numpy as np
@@ -31,6 +32,27 @@ k2 = 4
 K = 18
 color_list = ['red','orange','green','purple']
 
+def modify_edge_weight(G, weight_method='triangle-power'):
+    '''
+        G: networkx like graph
+        Notice the graph object G is modified by this function.
+    '''
+    if(weight_method=='triangle-power'):
+        # for each edge, the weight equals the number of triangles + beta(default to 1)
+        beta = 1
+        for e in G.edges():
+            i, j = e
+            G[i][j]['weight'] = beta
+            for n in G.nodes():
+                if(G[i].get(n) is not None and G[j].get(n) is not None):
+                    G[i][j]['weight'] += 1
+            G[i][j]['weight'] = G[i][j]['weight']
+            
+def evaluate(num_times, alg):
+    # the evaluated alg is a class, and should provide fit method , which operates on similarity matrix
+    # and get_category(i) method, where i is the specified category.
+    return
+    
 def construct(z_in_1, z_in_2, z_out):
     '''
        p2: type float, percentage of edges to be added at macro level.
@@ -73,7 +95,8 @@ def graph_plot(G):
     G: networkx graph object
     '''
     global n, k1,k2
-    g = graphviz.Graph(filename='two_level.gv', engine='neato') # g is used for plotting
+    time_str = datetime.now().isoformat()
+    g = graphviz.Graph(filename='two_level-%s.gv'%time_str, engine='neato') # g is used for plotting
     for i in G.nodes(data=True):
         macro_index = i[1]['macro']
         g.node(str(i[0]), shape='point', color=color_list[macro_index])
@@ -97,18 +120,26 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--save_graph', default=False, type=bool, nargs='?', const=True, help='whether to save the .gv file') 
     parser.add_argument('--ic', default=False, type=bool, nargs='?', const=True, help='whether to run info-cluster algorithm')
+    parser.add_argument('--weight', default='triangle-power', help='for info-clustering method, the edge weight shold be used. This parameters'
+        ' specifies how to modify the edge weight.')    
     parser.add_argument('--gn', default=False, type=bool, nargs='?', const=True, help='whether to run Girvan-Newman algorithm')                  
     parser.add_argument('--z_in_1', default=14.0, type=float, help='inter-micro-community node average degree')      
     parser.add_argument('--z_in_2', default=3.0, type=float, help='intra-micro-community node average degree')          
+    parser.add_argument('--z_o', default=-1, type=float, help='intra-macro-community node average degree')              
     parser.add_argument('--debug', default=False, type=bool, nargs='?', const=True, help='whether to enter debug mode')                  
     args = parser.parse_args()
     if(args.debug):
         pdb.set_trace()
-    G = construct(args.z_in_1, args.z_in_2, K - args.z_in_1 - args.z_in_2)    
+    if(args.z_o == -1):
+        z_o = K - args.z_in_1 - args.z_in_2
+    else:
+        z_o = args.z_o
+    G = construct(args.z_in_1, args.z_in_2, z_o)    
     if(args.save_graph):
         graph_plot(G)
     if(args.ic):           
         ic = InfoCluster(affinity='precomputed')        
+        modify_edge_weight(G, args.weight)
         sparse_mat = nx.adjacency_matrix(G)
         ic.fit(np.asarray(sparse_mat.todense(),dtype=float))
         print(ic.partition_num_list)
