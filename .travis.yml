@@ -34,9 +34,11 @@ install:
         $INSTALL/install-tl -profile $INSTALL/tl.profile;        
         tlmgr install beamer etoolbox translator caption mathtools algorithms float footmisc;          
     fi
-  - python -c "import oss2" 2>/dev/null || pip install oss2
+  - python -c "import scipy" 2>/dev/null || pip install oss2 networkx numpy scipy
 script:
   - make all
   # deploy the document on aliyun oss
   - export AccessKeyId=LTAIhGvOLG5VLaqh
   - python upload.py
+  - cd sample
+  - python test_interface.py
