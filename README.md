@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/zhaofeng-shu33/lab2c_presentation_template.svg?branch=master)](https://travis-ci.org/zhaofeng-shu33/lab2c_presentation_template)
 # Introduction
 This project is document oriented and uses the result generated from the code project.
-Actually, it uses the code project as a submodule.
+Actually, it uses the [code](https://github.com/zhaofeng-shu33/principal_sequence_of_partition) project as a submodule.
 
 The document project provides `main.tex` and `clustering.tex`. The first is the presentation and the second is the article.
 

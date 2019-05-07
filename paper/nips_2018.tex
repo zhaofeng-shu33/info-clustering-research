@@ -73,7 +73,7 @@
 \maketitle
 
 \begin{abstract}
-  We propose a new hierachical clustering method based on a multivariate information metric, which is computable in polynomial time. The proposed method generate different hierachical tree by scaling the metric used. The hierachical tree can be computed efficiently in polynomial time by invoking parametric maximal flow algorithm. Experiment shows that clustering result is comparable with other hierachical clustering technique or genral clustering method.
+\input{english_abstract.tex}
 \end{abstract}
 
 \section{Introduction}
@@ -110,7 +110,7 @@ The two procedures are illustrated by figure \ref{fig:ta}. For the top-down appr
 %proof in attachment, before the proof of the above proposition. (2 statements)
 \begin{figure}
 \centering
-\includegraphics[width=0.8\textwidth]{two_approach.eps}
+\includegraphics[width=0.8\textwidth]{pic/two_approach.eps}
 \caption{hierachical tree generation based on multivariate similarity. Left figure shows the top-down approach with each subset splitted. Right figure shows the bottom-up approach with the graph contracted.}\label{fig:ta}
 \end{figure}
 
@@ -118,7 +118,7 @@ By the construction of the clustering tree, we can associate each tree node with
 \begin{example}
 \begin{figure}
 \centering
-\includegraphics[width=0.8\textwidth]{threshold.eps}
+\includegraphics[width=0.8\textwidth]{pic/threshold.eps}
 \caption{a clustering tree (left figure) for the weighted graph (right figure) by info-clustering method. Threshold values are $0.9, 1, 2$.}\label{fig:threshold}
 \end{figure}
 Consider a graph $G(V, E)$ with $V=\{1,2,3,4\}$ and $E=\{(1,2),(1,3),(3,4),(2,4)\}$ with edge weight $w_{12}=1,w_{13}=0.4,w_{24}=0.5,w_{34}=2$ (See Fig. \ref{fig:threshold}). The threshold values are the multivariate similarity $I(Z_{3,4})=2, I(Z_{1,2})=1$ and $I(Z_V)=0.9$ respectively. We can write the complete clustering solution as:
@@ -158,7 +158,7 @@ Then we call $h(\lambda)$ the Dilworth truncation of function $ \frac{1}{2} f(C)
 The pmf routinue is called $\abs{V}$ times. At the bottom level, the edge cost is fixed for given $\lambda$ and maximal flow routinue is called. By the analysis in \cite{RN17}, the time complexity for pmf is the same with that of maximal flow.
 \begin{figure}
 \centering
-\includegraphics[width=6cm]{pdt.eps}
+\includegraphics[width=6cm]{pic/pdt.eps}
 \caption{Algorithmic pyramid to compute principal sequence of partitions. The top level is parametric Dilworth truncation; the middle level is parametric maximal flow and the bottom level is maximal flow}\label{fig:pyramid}
 \end{figure}
 
@@ -208,8 +208,15 @@ In this section, we demonstrate info-clustering algorithm on two kinds of datase
 For feature clustering task, we prepare three groups of data:
 \begin{enumerate}
 \item Four Gaussian blobs with unit variance and centers at $(3,3), (3,-3), (-3,3), (-3,-3)$.  We generate 25 points for each blob.
-\item Three concentric circles with radius $0.1,0.2,0.3$ and data points $60, 100, 140$. The angles of these points are uniform distributed and they also oscilate around the radius direction.
+\item Three concentric circles with radius $0.1,0.2,0.3$ and data points $60, 100, 140$. The angles of these points are uniform distributed and they also oscillate around the radius direction.
+\item Iris flower dataset with 50 samples, 3 classes, 4 dimensions of feature.
 \end{enumerate}
+We use adjusted rand index as the clustering metric to score different clustering method, the result is shown in Table.
+\begin{table}
+\centering
+\InputIfFileExists{build/compare_3.tex}{}{}
+\caption{ accuracy for different clustering algorithms }
+\end{table}
 \section{Conclusion}\label{sec:conclusion}
 
 
