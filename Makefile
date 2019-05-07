@@ -1,4 +1,3 @@
-# Makefile for thucoursework
 
 BUILD_DIR = ./build
 
