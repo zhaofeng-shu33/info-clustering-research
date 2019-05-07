@@ -12,3 +12,10 @@ and packaged by *zhaofeng-shu33*. If you want to use it in your beamer presentat
 \usetheme{Lab2C}
 %other materials
 ```
+## experiment result
+We did a simple comparasion between 5 different clustring methods on 5 different datasets. 
+The experiment code is at [utility](https://github.com/zhaofeng-shu33/principal_sequence_of_partition/tree/master/utility).
+The score table is called `compare.tex` and is a input to `main.tex`. If you don't want to run the experiment locally,
+you can download [compare.tex](http://data-visualization.leidenschaft.cn/research/info-clustering/code/utility/compare.tex).
+If you use linux os, you can use `Makefile` to handle the dependencies.
+
