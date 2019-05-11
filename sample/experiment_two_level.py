@@ -68,10 +68,10 @@ def evaluate(num_times, alg):
         G = construct(args.z_in_1, args.z_in_2, z_o)    
         modify_edge_weight(G, args.weight)
         alg.fit(G)
-        out_ari = adjusted_rand_score(ground_truth_outer, alg.get_category(k2));
-        inner_ari = adjusted_rand_score(ground_truth_inner, alg.get_category(k1))
-        report['outer_ari'] += adjusted_rand_score(ground_truth_outer, alg.get_category(k2))
-        report['inner_ari'] += adjusted_rand_score(ground_truth_inner, alg.get_category(k2 * k1))
+        out_ari = adjusted_rand_score(ground_truth_outer, alg.get_category(k2))
+        inner_ari = adjusted_rand_score(ground_truth_inner, alg.get_category(k2 * k1))
+        report['outer_ari'] += out_ari
+        report['inner_ari'] += inner_ari
         if(out_ari > 0.99 and inner_ari > 0.99):
             report['recover_percentage'] += 1.0
         report['depth'] += len(alg.partition_num_list)
@@ -124,7 +124,7 @@ def graph_plot(G):
     G: networkx graph object
     '''
     global n, k1, k2
-    time_str = datetime.now().isoformat()
+    time_str = datetime.now().strftime('%Y-%m-%d')
     g = graphviz.Graph(filename='two_level-%s.gv'%time_str, engine='neato') # g is used for plotting
     for i in G.nodes(data=True):
         macro_index = i[1]['macro']
@@ -133,17 +133,17 @@ def graph_plot(G):
         i,j = e
         i_attr = G.node[i]
         j_attr = G.node[j]
-        if(i_attr['macro']!=j_attr['macro']):
+        if(i_attr['macro'] != j_attr['macro']):
             edge_len = 2
             weight_value = 0.1
-        elif(i_attr['micro']!=j_attr['micro']):
+        elif(i_attr['micro'] != j_attr['micro']):
             weight_value = 1
             edge_len = 1
         else:
             weight_value = 10
             edge_len = 0.5
         g.edge(str(i), str(j), weight=str(weight_value), penwidth="0.3", len=str(edge_len))    
-    g.save()    
+    g.save(directory='fig')    
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -167,18 +167,25 @@ if __name__ == '__main__':
     G = construct(args.z_in_1, args.z_in_2, z_o)    
     if(args.save_graph):
         graph_plot(G)
-    if(args.ic):           
-        ic = InfoCluster(affinity='precomputed')        
-        modify_edge_weight(G, args.weight)
-        ic.fit(G)
-        print(ic.partition_num_list)
-    elif(args.gn):
-        gn = GN()
-        gn.fit(G)
-        print(gn.partition_num_list)
-    elif(args.evaluate > 0):
-        methods = [InfoCluster(affinity='precomputed'), GN()]
+    if(args.evaluate > 0):
+        methods = []
+        if(args.ic):
+            methods.append(InfoCluster(affinity='precomputed'))
+        if(args.gn):
+            methods.append(GN())
         for method in methods:
             report = evaluate(args.evaluate, method)
             print(report)
+    else:
+        if(args.ic):           
+            print('use info-clustering algorithm...')
+            ic = InfoCluster(affinity='precomputed')        
+            modify_edge_weight(G, args.weight)
+            ic.fit(G)
+            print(ic.partition_num_list)
+        if(args.gn):
+            print('use Girvan-Newman algorithm...')        
+            gn = GN()
+            gn.fit(G)
+            print(gn.partition_num_list)
         
