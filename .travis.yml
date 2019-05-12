@@ -40,5 +40,3 @@ script:
   # deploy the document on aliyun oss
   - export AccessKeyId=LTAIhGvOLG5VLaqh
   - python upload.py
-  - cd sample
-  - python test_interface.py
