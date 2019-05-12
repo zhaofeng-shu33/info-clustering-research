@@ -25,6 +25,7 @@
 \usepackage{amsfonts}       % blackboard math symbols
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
+\usepackage{subcaption}
 \input{extra_math.tex}
 \title{A practical information theoretic clustering method}
 
@@ -141,9 +142,9 @@ Consider a graph $G(V, E)$ with $V=\{1,2,3,4\}$ and $E=\{(1,2),(1,3),(3,4),(2,4)
 Although the clustering tree does not distinguish $\{\{1\},\{2\},\{3,4\}\}$ with $\{\{1,2\},\{3\}, \{4\}\}$ ,Notice that partition $\{\{1,2\},\{3\}, \{4\}\}$ does not exist by the threshold method.
 \end{example}
 Using $I(Z_V)$ to cluster data directly is computing expensive, the same clustering result can be achieved by solving the following optimalization problem for all $\lambda$ (Corollary 2 in \cite{RN1}).
-\begin{proposition}
+\begin{proposition}\label{prop:psp}
 \begin{equation}\label{eq:hL}
-h(\lambda) = \min_{\P \in \Pi'(V)}\{ \sum_{\substack{i\in C, j \not\in C\\ C\in \mathcal{P}}}w_{ij} - \abs{\P} \lambda \}
+h(\lambda) = \min_{\P \in \Pi'(V)}\{ f[\P] - \abs{\P} \lambda \}
 \end{equation}
 The optimal partitions for $h(\lambda)$ are finite and they can be arranged in a decrasing sequence $\P_1, \dots, \P_k$ such that $\P_1 \succeq \P_2 \dots \succeq \P_k$, This sequence is called \textbf{principal sequence of partitions} of $h(\lambda)$\cite{RN17}.
 \end{proposition}
@@ -155,22 +156,30 @@ The method is information theoretic since it is an extension of mutual informati
 
 Info-clustering assume the weight is additive and tends to produce trival hierachical structure when the value of weights are near equal. This is shown by the following theorem:
 \begin{theorem}
-The solution to equation \eqref{eq:ms} is $\{\{1\},\{2\},\dots,\{\abs{V}\}\}$ if and only if
+The paritition to minimize equation \eqref{eq:ms} is $\{\{1\},\{2\},\dots,\{\abs{V}\}\}$ if and only if equation \eqref{eq:GF} holds.
+\begin{equation}\label{eq:GF}
+\frac{f[\P]}{\abs{\P}-1} \geq \frac{\sum w_{ij, (i,j) \in E}}{\abs{V}-1} \textrm{ for any } \P \in \Pi'
+\end{equation}
 \end{theorem}
+\begin{proof}
+Since $h(\lambda)$ is piecewise linear, the first line segment of $h(\lambda)$ is $ - \lambda $ and the last line segment is $ \sum w_{ij, (i,j) \in E} - \abs{V} \lambda$. Their intersection point is $(\lambda_{+}, -\lambda_{+})$ where $\lambda_{+} = \frac{\sum w_{ij, (i,j) \in E}}{\abs{V}-1}$. Since $\frac{f[\P]}{\abs{\P}-1} \geq \lambda_{+} \iff f[\P] - \abs{\P}\lambda_{+} \geq - \lambda_{+}$ Equation \eqref{eq:GF} says the minimzer of $h(\lambda)$ at $\lambda = \lambda_{+}$ is either $\{V\}$ or $\{\{1\},\{2\},\dots,\{\abs{V}\}\}$ and $h(\lambda)$ has only two line segments. From geometric point of view, the solution to equation \eqref{eq:ms} is the first turning point of $h(\lambda)$ and it is equal to that of last turning point if and only if \eqref{eq:GF} holds.
+\end{proof}
 \section{Algorithm}\label{sec:algorithm}
 
 In this section, we review the basic theory to solve equation \eqref{eq:hL} and give the detailed pseudocode based on the work of \cite{RN4}.
 
-We use $f(C)$ to denote the graph cut function defined on subsets of graph vertex set. That is
-\begin{equation}
-f(C) =\sum_{ i\in C, j\in V\backslash C} w_{ij}
-\end{equation}
 Then we call $h(\lambda)$ the Dilworth truncation of function $ \frac{1}{2} f(C)$ and the computation of $h(\lambda)$ can be done by the algorithmic pyramid shown in figure \ref{fig:pyramid}. The method, called graph principal sequence of paritition is divided into three level. At the top level, $h(\lambda)$ is computed with $\lambda$ as a symbol, called parametric Dilworth truncation (pdt) (\cite{RN4} Fig. 3). The result of top level routine is a nested family of partition and its corresponding turning point. In example \ref{eg:three}, we have $[\{1,2,3\},\{\{1,3\},\{2\}\},\{\{1\},\{2\},\{3\}\}],[2,5,+\infty) $ as a return. At the middle level, one of graph node is treated as sink node and parametric maximal flow(pmf) routinue is called.
 The pmf routinue is called $\abs{V}$ times. At the bottom level, the edge cost is fixed for given $\lambda$ and maximal flow routinue is called. By the analysis in \cite{RN17}, the time complexity for pmf is the same with that of maximal flow.
 \begin{figure}
 \centering
-\includegraphics[width=6cm]{pic/pdt.eps}
+\begin{subfigure}{0.45\textwidth}
+\includegraphics[width=\textwidth]{pic/dt.eps}
+\caption{An illustration to proposition \ref{prop:psp}}\label{fig:psp}
+\end{subfigure}
+\begin{subfigure}{0.45\textwidth}
+\includegraphics[width=\textwidth]{pic/pdt.eps}
 \caption{Algorithmic pyramid to compute principal sequence of partitions. The top level is parametric Dilworth truncation; the middle level is parametric maximal flow and the bottom level is maximal flow}\label{fig:pyramid}
+\end{subfigure}
 \end{figure}
 
 For the pmf algorithm applied to our problem, we are required to solve 
