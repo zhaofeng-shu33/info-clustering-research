@@ -239,7 +239,22 @@ h(\lambda) = \min_{\P} \sum_{C\in \P} (f(C)-\lambda)
 $h(\lambda)$ is the Dilworth truncation(DT) of the submodular function $f(C)$ and can be computed by \textbf{DT} Algorithm \ref{alg:dt}. $h(\lambda)$
 is piecewise linear. 
 
-\input{lemma_dt.tex}
+\begin{lemma}\label{lem:lattice_structure}
+Let $f$ be a submodular function on the subset of $V$. Let $\P_1, \P_2$ be partitions
+at which $f$ reaches its minimum. Then $f$ reaches a minimum at $\P_1 \vee \P_2$ and $\P_1 \wedge \P_2$.
+\end{lemma}
+\begin{proof}
+See Theorem 3.5 of literature \cite{psp}.	
+\end{proof}
+\begin{lemma}\label{lem:hierarchical}
+Let $f$ be a submodular function on the subset of $V$. Let $\P_1, \P_2$ be partitions
+at which $h(\lambda_i)(i=1,2)$ reaches its minimum. 
+If $\lambda_1 < \lambda_2$, then $\P_2 \preceq \P_1$.
+\end{lemma}
+\begin{proof}
+	See Theorem 3.7 of literature \cite{psp}.	
+\end{proof}
+
 
 In $h(\lambda)$, for each turning point of line segments, 
 from lemma \ref{lem:lattice_structure},
