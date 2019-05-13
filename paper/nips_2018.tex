@@ -155,7 +155,7 @@ For given $\P$, the function about $\lambda$ is linear, therefore $h(\lambda)$ i
 The method is information theoretic since it is an extension of mutual information in information theory. When the graph node is random variable and the edge weight is mutual information metric, then equation \eqref{eq:ms} becomes one form of multivariate mutual information proposed in \cite{RN1}. When $I(Z_V)=0$, the random variables $Z_i$ are pairwise independent. 
 
 Info-clustering assume the weight is additive and tends to produce trival hierachical structure when the value of weights are near equal. This is shown by the following theorem:
-\begin{theorem}
+\begin{theorem}\label{thm:trival}
 The paritition to minimize equation \eqref{eq:ms} is $\{\{1\},\{2\},\dots,\{\abs{V}\}\}$ if and only if equation \eqref{eq:GF} holds.
 \begin{equation}\label{eq:GF}
 \frac{f[\P]}{\abs{\P}-1} \geq \frac{\sum w_{ij, (i,j) \in E}}{\abs{V}-1} \textrm{ for any } \P \in \Pi'
@@ -164,6 +164,12 @@ The paritition to minimize equation \eqref{eq:ms} is $\{\{1\},\{2\},\dots,\{\abs
 \begin{proof}
 Since $h(\lambda)$ is piecewise linear, the first line segment of $h(\lambda)$ is $ - \lambda $ and the last line segment is $ \sum w_{ij, (i,j) \in E} - \abs{V} \lambda$. Their intersection point is $(\lambda_{+}, -\lambda_{+})$ where $\lambda_{+} = \frac{\sum w_{ij, (i,j) \in E}}{\abs{V}-1}$. Since $\frac{f[\P]}{\abs{\P}-1} \geq \lambda_{+} \iff f[\P] - \abs{\P}\lambda_{+} \geq - \lambda_{+}$ Equation \eqref{eq:GF} says the minimzer of $h(\lambda)$ at $\lambda = \lambda_{+}$ is either $\{V\}$ or $\{\{1\},\{2\},\dots,\{\abs{V}\}\}$ and $h(\lambda)$ has only two line segments. From geometric point of view, the solution to equation \eqref{eq:ms} is the first turning point of $h(\lambda)$ and it is equal to that of last turning point if and only if \eqref{eq:GF} holds.
 \end{proof}
+By theorem \ref{thm:trival}, we can show that all weights are of equal value, then by applying info-clustering we can only get each data point as a cluster. Generally, we have the following proposition.
+\begin{proposition}
+Let $w_{ij}=0$ if $(i,j)\not\in E$. If $w_{ij}, w_{jk}, w_{ki}$ satisfies triangle inequality for any different triple $i, j, k \in V$, then the info-clustering solution is trival.
+\end{proposition}
+It inspires us in order to seperate different clusters, we need small magnitude of inter cluster weights and similar weight value of intra cluster.
+
 \section{Algorithm}\label{sec:algorithm}
 
 In this section, we review the basic theory to solve equation \eqref{eq:hL} and give the detailed pseudocode based on the work of \cite{RN4}.
@@ -237,7 +243,6 @@ We use adjusted rand index as the clustering metric to score different clusterin
 \InputIfFileExists{build/compare_3.tex}{}{}
 \caption{ accuracy for different clustering algorithms }\label{tb:e1}
 \end{table}
-\section{Conclusion}\label{sec:conclusion}
 
 For community detection task, we use a two-level artifical dataset proposed in \cite{RN22}. 
 The community structure is shown in Figure \ref{fig:c1}. In macro-level, it has 4 communities and each macro community contains 4 micro communities. We use $z_{\mathrm{in}_1}$ to represent the internal average degree of nodes within micro community; $z_{\mathrm{in}_2}$ as node degree between different micro communities but within one macro community; $z_{\mathrm{out}}$ as node degree between different macro communities. By fixing $z_{\mathrm{in}} + z_{\mathrm{in}_2} + z_{\mathrm{out}}$ we get different set of experiment and in each given community parameter, we compare the detection accuracy between different methods. The result is shown in Table.
@@ -247,6 +252,8 @@ The community structure is shown in Figure \ref{fig:c1}. In macro-level, it has 
 \includegraphics[width=6cm]{pic/two_level.eps}
 \caption{a community with 256 nodes, 16 components in micro-level, each 4 components compose a macro-level larger part of this community.}\label{fig:c1}
 \end{figure}
+\section{Conclusion}\label{sec:conclusion}
+
 \subsubsection*{Acknowledgments}
 
 
