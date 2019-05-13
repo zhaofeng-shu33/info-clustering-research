@@ -125,17 +125,17 @@ I(Z_V) = \begin{cases}
 \end{cases}
 \end{equation*}
 \end{example}
-\begin{example}
+\begin{example}\label{ex:2nc}
 We make an improvement to example \ref{ex:2c}.
 Suppose $S_1, S_2 $ are complete graph with $n$ nodes and equal weight $r=n$. Then $I(Z_{S_1})= \frac{nr}{2}$. there are $m$ connections(edges) between the two complete graphs, but all inter-connection edge is with equal weight 1. Then for any $U \in S_1 \cup S_2 $ and $\abs{U} < n$ by proposition \ref{prop:sub} we can show $U$ is not a cluster.
-For $\abs{U} > n$ but $U \neq V = S_1 \cup S_2$. $I_{Z_U}$ can only be reached by $\{\{i\}| i\in U\}$, which is $\frac{\frac{n(n-1)r}{2} + m + \frac{k(k-1)r}{2}}{n+k-1}$ where $m \leq nk$ and $k=\abs{U} - n < n$. We compare it to $\frac{nr}{2}$ and we can show that $I(Z_{S_1}) \geq I(Z_U) $, that is $U$ is not a cluster by propsition \ref{prop:sub}. 
+For $\abs{U} > n$ but $U \neq V = S_1 \cup S_2$. $I(Z_U)$ can only be reached by $\{\{i\}| i\in U\}$, which is $\frac{\frac{n(n-1)r}{2} + m + \frac{k(k-1)r}{2}}{n+k-1}$ where $m \leq nk$ and $k=\abs{U} - n < n$. We compare it to $\frac{nr}{2}$ and we can show that $I(Z_{S_1}) \geq I(Z_U) $, that is $U$ is not a cluster by propsition \ref{prop:sub}. 
 In such case, we call the graph $S_1$ is robust enough since complete linkage between the two clusters cannot destroy its structure. And we can get
 \begin{equation*}
 I(Z_V) = \begin{cases}
 m & m <\frac{n^2}{2}, S_1,S_2 \textrm{ are non-trival cluster} \\
-\frac{m+n(n-1)}{2n-1} & m\geq \frac{n^2}{2}, \textrm{ only trival solution} 
+\frac{m+n^2(n-1)}{2n-1} & m\geq \frac{n^2}{2}, \textrm{ only trival solution} 
 \end{cases}
 \end{equation*}
-This example inspires us to assign the weight value to unweighted graph as the number of triangle (3 node cliques) the edges contribute plus 1. In such case $ r = n-1$ and suboptimal result can be obtained. 
+This example inspires us to assign the weight value to unweighted graph as the number of triangle (3 node cliques) the edges contribute plus 1. In such case $ r = n-1$ and suboptimal result can be obtained. See \texttt{experiment\_equal\_n.py} for code verification.
 \end{example}
 \end{document}
