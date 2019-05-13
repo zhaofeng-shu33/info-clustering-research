@@ -132,6 +132,31 @@ The smallest critical value of $\mathcal{C}_{\gamma}(Z_V)$ is $I(Z_V)$ (Theorem 
 The largest critical value of $\mathcal{C}_{\gamma}(Z_V)$ is $\gamma_N = \max_{B\subseteq V} I(Z_B)$. Take $\gamma = \gamma_N - \epsilon$ where $\epsilon$ is sufficient small, since $I(Z_C) > \gamma$ and $C$ is maximal, we have $C \in \mathcal{C}_{\gamma}(Z_V)$. For each tree node set, since it is also maximal for some $\gamma$, all of them belong to $\mathcal{C}_{\gamma}(Z_V)$. By Theorem 4.2 in \cite{RN8}, we conclude all clusters in $C_{\gamma}(Z_V)$ is a tree node set by bottom-up approach.
 \end{proof}
 By the construction of the clustering tree, we can associate each tree node with a threshold value, which is multivariate similarity computed at that step.
+\section{Experiment}
+In this section, we describe the details of our experiment. The source code for info-clustering algorithm and experiments can be found at \href{https://github.com/zhaofeng-shu33/lab2c\_presentation\_template}{info-cluster}.
+\subsection{Feature Clustering}
+For the three groups of data: \textsf{Gaussian}, \textsf{Circle} and \textsf{Iris}. The first two have some intrinsic randomness. To make the result reproducible, we use fixed the random seed to generate the data. The three cirlces data is generated using polar coordinate:
+\begin{align*}
+r &= 0.1*i + 0.01*(2u-1), i = 1, 2, 3\\
+\theta & = 2\pi v
+\end{align*}
+where random variable $u,v$ conform uniform distribution within $[0,1]$. Also, $u$ and $v$ are independent.
+
+Different metric (or affinity) can affect the clustering accuracy significantly. Some clustering algorithm such as \textsf{k-means} can only use Euclidean metric and performs badly on non-convex dataset such as \textsf{Circle}. Therefore, we do not use such algorithm in comparision. 
+
+Some algorithm needs to specify the number of cluster.  For example, spectral clustering is a powerful method but lacks the flexibility because it needs the dimension of subspace(number of cluster).  We'd like to compare methods which have the ability to select the best cluster without knowing the ground truth. Both \textsf{affinity propagation} and \textsf{agglomerative clustering}\footnote{We can use a quality function to select the best layer in the hierachical tree, for example modularity of Newman and Girvan.} meets the requirement. The agglomerative clustering algorithm we used is the standard one which merges two objects at each step. For \textsf{affinity propagation} and \textsf{agglomerative clustering} we use the implementation of \textsf{sklearn} and tune their parameters respectively.
+
+For real world data like Glass dataset, some pre-processing is necessary, for our experiment we just scale each feature dimension to $[0, 1]$ for all algorithms.
+
+\begin{table}
+\centering
+\InputIfFileExists{build/compare_3.tex}{}{}
+\caption{ accuracy for different clustering algorithms }\label{tb:e1}
+\end{table}
+
+For \textsf{Gaussian} dataset, all three algorithms can get correct clustering result (\texttt{ari = 1.0}); for \textsf{Circle} dataset, affinity propagation method performs poorly even for nearest neighbor metric; for \textsf{Glass} dataset, info-clustering method has best performance compared with other method. To achieve this score, we use nearest neighbor affinity metric with 14 neighbors. We also tune the hyperparameters of the other two algorithms but neither of them can achieve the score of info-clustering.
+\subsection{Community Detection}
+
 \bibliographystyle{plain}
 \bibliography{exportlist}
 \end{document}

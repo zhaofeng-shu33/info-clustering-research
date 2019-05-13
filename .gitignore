@@ -1,8 +1,7 @@
 .DS_Store
 proof/*
-build/*
+**/build
 literature/*
 note/*
+*/__pycache__
 paper/neurips_2019.sty
-paper/nips_2018.synctex.gz
-paper/*.pdf
