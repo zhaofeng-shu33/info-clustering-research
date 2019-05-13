@@ -33,6 +33,8 @@ That it, strict inequality holds for $\abs{\P}=k$.
 \end{proof}
 According to Dilworth truncation theory, the line $-\lambda$ and $\frac{n(n-1)}{2} - n\lambda$ intersects at $(\frac{n}{2}, -\frac{n}{2})$. The minimal value for $\sum_{C\in\P}f(C) -\abs{\P}\lambda$ at $\lambda = \frac{n}{2}$ is $-\frac{n}{2}$ from lemma \ref{lem:L}. Therefore, the partition is trival.
 
+From agglomerative point of view, $I(Z_V) \geq I(Z_C)$ for $C\in V$ if $G(V, E)$ is a complete graph with equal weight since we merge the set with largest MMI together.
+
 generally speaking for a graph with weight $w_{ij}$ the info-clustering solution is trival if and only if
 \begin{equation}\label{eq:GF}
 \frac{f[\P]}{\abs{\P}-1} \geq \frac{\sum w_{ij}}{n-1} \textrm{ for any } \P
@@ -99,14 +101,14 @@ C^*(Z_V) =
 \end{equation*}
 Where $C^*(Z_V)$ denotes the non-trival cluster of $V$.
 \end{example}
-\begin{proposition}
+\begin{proposition}\label{prop:sub}
 If node set $S_1 \cap S_2 \neq \emptyset$ and $I(Z_{S_1}) > I(Z_{S_2})$, then $S_2$ is not a cluster of $G$.
 \end{proposition}
 \begin{proof}
 Since $I(Z_{S_1\cup S_2}) > \min\{I(Z_{S_1}), I(Z_{S_2})\} = I(Z_{S_2})$. Then from the definition of info-cluster $S_2$ cannot be a cluster of $G$.
 Since every two clusters of $G$ are either disjoint or have the inclusion relationship, $S_2$ cannot be a cluster of $G$.
 \end{proof}
-\begin{example}
+\begin{example}\label{ex:2c}
 We extend example \ref{ex:6point}. Consider two complete graphs $S_1, S_2$ with $n$ nodes (weight = 1), there are $m$ connections(edges) between the two complete graphs, but all inter-connection edge is with equal weight 1. Also, suppose there is no complete graph with $n+1$ nodes in the $2n$-nodes graph. Since $I(Z_{S_1})=\frac{n}{2}$ which is largest among all subgraphs with no more than $n$ nodes and equal weight 1(since the solution to $S_1$ is trival). Therefore $I(Z_V) = \min\{m, \frac{m+n(n-1)}{2n-1}\}$. By some deduction, we get
 \begin{equation*}
 I(Z_V) = \begin{cases}
@@ -122,6 +124,18 @@ I(Z_V) = \begin{cases}
 \frac{m+n(n-1)k/2}{kn-1} & m\geq \frac{n(k-1)}{2}, \textrm{ only trival solution} 
 \end{cases}
 \end{equation*}
-
+\end{example}
+\begin{example}
+We make an improvement to example \ref{ex:2c}.
+Suppose $S_1, S_2 $ are complete graph with $n$ nodes and equal weight $r=n$. Then $I(Z_{S_1})= \frac{nr}{2}$. there are $m$ connections(edges) between the two complete graphs, but all inter-connection edge is with equal weight 1. Then for any $U \in S_1 \cup S_2 $ and $\abs{U} < n$ by proposition \ref{prop:sub} we can show $U$ is not a cluster.
+For $\abs{U} > n$ but $U \neq V = S_1 \cup S_2$. $I_{Z_U}$ can only be reached by $\{\{i\}| i\in U\}$, which is $\frac{\frac{n(n-1)r}{2} + m + \frac{k(k-1)r}{2}}{n+k-1}$ where $m \leq nk$ and $k=\abs{U} - n < n$. We compare it to $\frac{nr}{2}$ and we can show that $I(Z_{S_1}) \geq I(Z_U) $, that is $U$ is not a cluster by propsition \ref{prop:sub}. 
+In such case, we call the graph $S_1$ is robust enough since complete linkage between the two clusters cannot destroy its structure. And we can get
+\begin{equation*}
+I(Z_V) = \begin{cases}
+m & m <\frac{n^2}{2}, S_1,S_2 \textrm{ are non-trival cluster} \\
+\frac{m+n(n-1)}{2n-1} & m\geq \frac{n^2}{2}, \textrm{ only trival solution} 
+\end{cases}
+\end{equation*}
+This example inspires us to assign the weight value to unweighted graph as the number of triangle (3 node cliques) the edges contribute plus 1. In such case $ r = n-1$ and suboptimal result can be obtained. 
 \end{example}
 \end{document}
