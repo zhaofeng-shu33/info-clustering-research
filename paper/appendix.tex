@@ -132,6 +132,31 @@ The smallest critical value of $\mathcal{C}_{\gamma}(Z_V)$ is $I(Z_V)$ (Theorem 
 The largest critical value of $\mathcal{C}_{\gamma}(Z_V)$ is $\gamma_N = \max_{B\subseteq V} I(Z_B)$. Take $\gamma = \gamma_N - \epsilon$ where $\epsilon$ is sufficient small, since $I(Z_C) > \gamma$ and $C$ is maximal, we have $C \in \mathcal{C}_{\gamma}(Z_V)$. For each tree node set, since it is also maximal for some $\gamma$, all of them belong to $\mathcal{C}_{\gamma}(Z_V)$. By Theorem 4.2 in \cite{RN8}, we conclude all clusters in $C_{\gamma}(Z_V)$ is a tree node set by bottom-up approach.
 \end{proof}
 By the construction of the clustering tree, we can associate each tree node with a threshold value, which is multivariate similarity computed at that step.
+
+\input{proposition_triangle_inequality.tex}
+\begin{proof}
+
+
+We use deduction to show  
+$\frac{f[\P]}{\abs{\P}-1} \geq \frac{\sum w_{ij, (i,j) \in E}}{\abs{V}-1} \textrm{ for any } $
+ holds. For $\abs{\P}=n$, the result holds. Suppose the result holds for any $\abs{\P} \geq k+1(k\geq 2)$, and for $\abs{\P}=k$, we choose the smallest part $C_1$ with $\abs{C_1}=n_1(\geq 2)$ and divide it into singletons. Then we have $k+n_1-1$ part. Using the assumption we have
+$$
+\mathrm{LHS} = \sum_{i\in C_1, i\neq k} w_{ik} + \sum_{r=2}^k \sum_{i \in C_r, j \not\in C_r} w_{ij}\geq \frac{2(k+n_1 -1)\sum w_{ij}}{n-1}
+$$
+
+Then for the given $\abs{\P}=k$, $2f[\P] =\mathrm{LHS} - \sum_{i,j\in C_1, i\neq j} w_{ij}$.
+Applying triangle inequality $w_{ij} \leq w_{ik} + w_{jk}$ for given $k\not\in C_1$ and sum it over all $i, j \in C_1, i\neq j$, we have
+$$
+\sum_{i,j \in C_1, i\neq j} w_{ij} \leq 2(n_1-1)\sum_{i\in C_1} w_{ik}
+$$
+Since
+\begin{align*}
+\sum w_{ij} &= \sum_{i,j \in C_1, i\neq j} w_{ij} + \sum_{i\in C_1, k\neq C_1} w_{ik} \\
+(n - n_1) \sum_{i,j \in C_1, i\neq j} w_{ij}& \leq 2(n_1 - 1) \sum_{i \in C_1, k \not\in C_1} w_{ik} \\
+\end{align*}
+We have $\sum_{i,j \in C_1, i\neq j} w_{ij} \leq \frac{2(n_1-1) \sum w_{ij}}{n-1}$. Therefore, 
+$2f[\P] \geq \frac{2k \sum w_{ij}}{n-1}$. That is, the result holds for $\abs{\P}=k$.
+\end{proof}
 \section{Experiment}
 In this section, we describe the details of our experiment. The source code for info-clustering algorithm and experiments can be found at \href{https://github.com/zhaofeng-shu33/lab2c\_presentation\_template}{info-cluster}.
 \subsection{Feature Clustering}
@@ -156,7 +181,7 @@ For real world data like Glass dataset, some pre-processing is necessary, for ou
 
 For \textsf{Gaussian} dataset, all three algorithms can get correct clustering result (\texttt{ari = 1.0}); for \textsf{Circle} dataset, affinity propagation method performs poorly even for nearest neighbor metric; for \textsf{Glass} dataset, info-clustering method has best performance compared with other method. To achieve this score, we use nearest neighbor affinity metric with 14 neighbors. We also tune the hyperparameters of the other two algorithms but neither of them can achieve the score of info-clustering.
 \subsection{Community Detection}
-
+There is some randomness in the generation of the two-level community. For each data point in the figure or table， we average over times of experiment for the same graph configuration.
 \bibliographystyle{plain}
 \bibliography{exportlist}
 \end{document}

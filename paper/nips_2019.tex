@@ -37,35 +37,8 @@
 % authors names on the first line, and the last on the second line, try using
 % \AND instead of \And before the third author name.
 
-\author{%
-  David S.~Hippocampus\thanks{Use footnote for providing further information
-    about author (webpage, alternative address)---\emph{not} for acknowledging
-    funding agencies.} \\
-  Department of Computer Science\\
-  Cranberry-Lemon University\\
-  Pittsburgh, PA 15213 \\
-  \texttt{hippo@cs.cranberry-lemon.edu} \\
-  % examples of more authors
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \AND
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
+\author{
+  anonymous
 }
 
 \begin{document}
@@ -165,9 +138,7 @@ The paritition to minimize equation \eqref{eq:ms} is $\{\{1\},\{2\},\dots,\{\abs
 Since $h(\lambda)$ is piecewise linear, the first line segment of $h(\lambda)$ is $ - \lambda $ and the last line segment is $ \sum w_{ij, (i,j) \in E} - \abs{V} \lambda$. Their intersection point is $(\lambda_{+}, -\lambda_{+})$ where $\lambda_{+} = \frac{\sum w_{ij, (i,j) \in E}}{\abs{V}-1}$. Since $\frac{f[\P]}{\abs{\P}-1} \geq \lambda_{+} \iff f[\P] - \abs{\P}\lambda_{+} \geq - \lambda_{+}$ Equation \eqref{eq:GF} says the minimzer of $h(\lambda)$ at $\lambda = \lambda_{+}$ is either $\{V\}$ or $\{\{1\},\{2\},\dots,\{\abs{V}\}\}$ and $h(\lambda)$ has only two line segments. From geometric point of view, the solution to equation \eqref{eq:ms} is the first turning point of $h(\lambda)$ and it is equal to that of last turning point if and only if \eqref{eq:GF} holds.
 \end{proof}
 By theorem \ref{thm:trival}, we can show that all weights are of equal value, then by applying info-clustering we can only get each data point as a cluster. Generally, we have the following proposition.
-\begin{proposition}
-Let $w_{ij}=0$ if $(i,j)\not\in E$. If $w_{ij}, w_{jk}, w_{ki}$ satisfies triangle inequality for any different triple $i, j, k \in V$, then the info-clustering solution is trival.
-\end{proposition}
+\input{proposition_triangle_inequality.tex}
 It inspires us in order to seperate different clusters, we need small magnitude of inter cluster weights and similar weight value of intra cluster.
 
 \section{Algorithm}\label{sec:algorithm}
