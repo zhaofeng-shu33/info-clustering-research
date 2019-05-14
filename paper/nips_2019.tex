@@ -222,7 +222,17 @@ It is noticed that for such problems with unweighted graph, it is more practical
 \begin{equation}
     w_{ij} = 1 + \abs{\{k | (i,k),(j,k) \in E \}} \textrm{ for } (i,j) \in E
 \end{equation}
-This is the number of triangles which contain the edge. By such definition we can show that two complete graph with size $n$ can be clustered rightly if the number of their inter-connected edge is less than $\frac{n^2}{2}$.
+This is the number of triangles which contain the edge. Such definition is justified by the following proposition.
+\begin{proposition}
+Suppose $S_1, S_2 $ are complete graph with $n$ nodes and equal weight $w=n$. There are $m$ edges between the two graphs and all inter-connection edge is with equal weight 1. Then we have
+\begin{equation}
+I(Z_V) = \begin{cases}
+m & m <\frac{n^2}{2}, S_1,S_2 \textrm{ are non-trival cluster} \\
+\frac{m+n^2(n-1)}{2n-1} & m\geq \frac{n^2}{2}, \textrm{ only trival cluster exists} 
+\end{cases}
+\end{equation}
+\end{proposition}
+This proposition inspires us to increase the weight linearly with the number of nodes for densely connected part of the whole community. It increases the performance of info-clustering algorithm.
 
 \begin{figure}
 \centering
