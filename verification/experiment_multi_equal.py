@@ -4,9 +4,6 @@
 [6.0]
 [6.010526315789473]
 to the console, which is equal to the theoretical result.
-Currently, this verification has some problem, as it does not check the 
-existance of \frac{n}{2} constraint. As a result, it may not produce the
-theoretical result.
 '''
 import random
 import argparse
@@ -20,16 +17,31 @@ n = 12
 k = 8
 choice_array = [i for i in range(k*n)]
 
+def check_constraint(G):
+    for t1 in range(k):
+        for t2 in range(t1+1, k):
+            num_edge = 0
+            for i in range(t1*n, t1*n+n):
+                num_edge_each = 0
+                for j in range(t2*n, t2*n+n):
+                    if(G.has_edge(i, j)):
+                        num_edge += 1
+                        num_edge_each += 1
+                if(num_edge_each == n):
+                    return False
+            if(num_edge >= n/2):
+                return False       
+    return True
 def construct():
     G = nx.Graph()
     for t in range(k):
         for i in range(n):
-            for j in range(i+1,n):
-                G.add_edge(t*n+i,t*n+j)    
+            for j in range(i+1, n):
+                G.add_edge(t*n+i, t*n+j)    
 
     cnt = 0
     while(cnt < n*(k-1)/2):
-        a,b = np.random.choice(choice_array,2)
+        a, b = np.random.choice(choice_array, 2)
         if(a == b):
             continue
         if(G.has_edge(a, b)):
@@ -57,8 +69,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--under_only',default=False, type=bool, nargs='?', const=True) 
     parser.add_argument('--print_tree',default=False, type=bool, nargs='?', const=True)     
-    args = parser.parse_args()
+    args = parser.parse_args()    
     G, a, b = construct()
+    while(not check_constraint(G)):
+        G, a, b = construct()
     mat = np.asarray(nx.adjacency_matrix(G).todense(),dtype=float)
 
     # under critical condition
@@ -72,7 +86,8 @@ if __name__ == '__main__':
     
     if not(args.under_only):
         # in critical condition
-        mat[a,b] = 1    
+        mat[a, b] = 1 
+        mat[b, a] = 1          
         ic.fit(mat)
         print(ic.critical_values)
         if(args.print_tree):
@@ -80,15 +95,9 @@ if __name__ == '__main__':
         
         # up critical condition
         while(True):
-            a1,b1 = np.random.choice(choice_array,2)
-            if(a1 == b1):
-                continue            
-            if(a1 < b1):
-                a = a1
-                b = b1
-            else:
-                a = b1
-                b = a1  
+            a, b = np.random.choice(choice_array,2) 
+            if(a == b):
+                continue
             if(G.has_edge(a, b)):
                 continue                      
             break
