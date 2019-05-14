@@ -1,5 +1,12 @@
 # How to build
-
+```shell
+mkdir build
+cp exportlist.bib build/
+xelatex -output-directory=build nips_2019.tex
+cd build && bibtex nips_2019.aux
+cd .. && xelatex -output-directory=build nips_2019.tex
+xelatex -output-directory=build nips_2019.tex # rerun
+```
 ## template style file
 Download the template style file to the current directory first.
 [neurips_2019.sty](https://media.neurips.cc/Conferences/NeurIPS2019/Styles/neurips_2019.sty)
