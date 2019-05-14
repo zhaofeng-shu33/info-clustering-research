@@ -240,12 +240,17 @@ We use adjusted rand index as the clustering metric to score different clusterin
 \section{Conclusion}\label{sec:conclusion}
 
 For community detection task, we use a two-level artifical dataset proposed in \cite{RN22}. 
-The community structure is shown in Figure \ref{fig:c1}. In macro-level, it has 4 communities and each macro community contains 4 micro communities. We use $z_{\mathrm{in}_1}$ to represent the internal average degree of nodes within micro community; $z_{\mathrm{in}_2}$ as node degree between different micro communities but within one macro community; $z_{\mathrm{out}}$ as node degree between different macro communities. By fixing $z_{\mathrm{in}} + z_{\mathrm{in}_2} + z_{\mathrm{out}}$ we get different set of experiment and in each given community parameter, we compare the detection accuracy between different methods. The result is shown in Table.
+The community structure is shown in Figure \ref{fig:c1}. In macro-level, it has 4 communities and each macro community contains 4 micro communities. We use $z_{\mathrm{in}_1}$ to represent the internal average degree of nodes within micro community; $z_{\mathrm{in}_2}$ as node degree between different micro communities but within one macro community; $z_{\mathrm{out}}$ as node degree between different macro communities. By varying $z_{\mathrm{in}} + z_{\mathrm{in}_2} + z_{\mathrm{out}}$ we get different set of experiment and in each given community parameter, we compare the detection accuracy between different methods. The result is shown in Table.
 
 \begin{figure}
 \centering
 \includegraphics[width=6cm]{pic/two_level.eps}
 \caption{a community with 256 nodes, 16 components in micro-level, each 4 components compose a macro-level larger part of this community.}\label{fig:c1}
+\end{figure}
+\begin{figure}
+\centering
+\includegraphics[width=6cm]{pic/tree.pdf}
+\caption{a community with $z_{\mathrm{in}_1} = 14, z_{\mathrm{in}_2} = 2.3$ and $z_{\mathrm{out}}=0.1$}\label{fig:c2}
 \end{figure}
 \subsubsection*{Acknowledgments}
 
