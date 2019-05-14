@@ -110,20 +110,22 @@ Since every two clusters of $G$ are either disjoint or have the inclusion relati
 \end{proof}
 \begin{example}\label{ex:2c}
 We extend example \ref{ex:6point}. Consider two complete graphs $S_1, S_2$ with $n$ nodes (weight = 1), there are $m$ connections(edges) between the two complete graphs, but all inter-connection edge is with equal weight 1. Also, suppose there is no complete graph with $n+1$ nodes in the $2n$-nodes graph. Since $I(Z_{S_1})=\frac{n}{2}$ which is largest among all subgraphs with no more than $n$ nodes and equal weight 1(since the solution to $S_1$ is trival). Therefore $I(Z_V) = \min\{m, \frac{m+n(n-1)}{2n-1}\}$. By some deduction, we get
-\begin{equation*}
+\begin{equation}\label{eq:ee}
 I(Z_V) = \begin{cases}
 m & m <\frac{n}{2}, S_1,S_2 \textrm{ are non-trival cluster} \\
 \frac{m+n(n-1)}{2n-1} & m\geq \frac{n}{2}, \textrm{ only trival solution} 
 \end{cases}
-\end{equation*}
-In general, if we have $k$ clusters with each cluster a $n-$ clique. There are $m$ connections(edges) between any two different cliques. 
+\end{equation}
+The above result is verified by \texttt{experiment\_equal.py}.
+
+In general, if we have $k$ clusters with each cluster a $n-$ clique. There are $m$ connections(edges) between any two different cliques.  and for any two cliques, the number of connection is less than $\frac{n}{2}$.
 We have
-\begin{equation*}
+\begin{equation}\label{eq:me}
 I(Z_V) = \begin{cases}
 \frac{m}{k-1} & m <\frac{n(k-1)}{2}, S_i,\dots, S_k \textrm{ are non-trival cluster} \\
 \frac{m+n(n-1)k/2}{kn-1} & m\geq \frac{n(k-1)}{2}, \textrm{ only trival solution} 
 \end{cases}
-\end{equation*}
+\end{equation}
 \end{example}
 \begin{example}\label{ex:2nc}
 We make an improvement to example \ref{ex:2c}.
