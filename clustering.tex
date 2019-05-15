@@ -448,8 +448,8 @@ We use method of principal sequence of partition(PSP) to implement the info-clus
 \FUNCTION{\texttt{Split}$(Q,P)$}
  \STATE\label{alg:gamma} $\gamma' = {1 \over \abs{P} - \abs{Q}} (f(P)-f(Q))$
  \STATE $h' = {1 \over \abs{P} - \abs{Q}}(\abs{P} h(Q) - \abs{Q} h(P))$
- \STATE $(\tilde{h}, P') = \texttt{DT}(f,\gamma')$
- \IF{$\tilde{h}>h'$}
+ \STATE $(\tilde{h}, P') = \texttt{DT}(f,\gamma')$ \footnotemark
+ \IF{$\tilde{h} = h'$}
  	\STATE $\mathbf{L}[\abs{Q}] = \gamma'$
  \ELSE
  	\STATE $\mathbf{PSP}[\abs{P'}]=P'$
@@ -459,7 +459,7 @@ We use method of principal sequence of partition(PSP) to implement the info-clus
 \ENDFUNCTION
 \end{algorithmic}
 \end{algorithm}
-
+\footnotetext{$\tilde{h} \leq h'$ by theory}
 In Algorithm \ref{alg:psp}, the function \texttt{Split} first calculates the intersection point of two lines: $f(P)-\abs{P}\lambda$ and $f(Q)-\abs{Q}\lambda$(in line~\ref{alg:gamma}) and then calls the DT algorithm to get the minimal value and minumal partition at $\gamma'$. From literature \cite{mac}, when there is partition between $Q$ and $P$, the $Split$ algorithm recursively calls itself to calculate all partitions.
 
 For the middle level(DT) in the pyramid, it calls at most $\abs{V}$ times submodular function minimization(SFM) algorithm.

@@ -72,7 +72,7 @@ f[\P] = \sum_{\substack{i\in C, j \not\in C\\ (i,j)\in E, C\in \mathcal{P}}} w_{
 Consider an undirected graph partition problem, in which we want to partition the graph nodes into several groups with largest similarity within each group and smallest similarity between different group. To formulate this problem mathematically, given $G(V, E)$ where the edge weight $w$ is nonnegative and represents pairwise similarity of nodes, we try to minimize the following quantity over different parition of $V$.
 \begin{definition}[Multivariate similarity]\label{def:ms}
 \begin{align}
-I_{\P}(Z_V) & = { ( \abs{\mathcal{P}} - 1) } f[\P]\\
+I_{\P}(Z_V) & = \frac{ f[\P] }{  \abs{\mathcal{P}} - 1 }\\
 I(Z_V) & = \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V)  \label{eq:ms}
 \end{align}
 \end{definition}
@@ -221,7 +221,7 @@ The community structure is shown in Figure \ref{fig:c1}. In macro-level, it has 
 \begin{figure}
 \centering
 \includegraphics[width=6cm]{pic/two_level.eps}
-\caption{a community with 256 nodes, 16 components in micro-level, each 4 components compose a macro-level larger part of this community.}\label{fig:c1}
+\caption{a community with 256 nodes, 16 components in micro-level, each 4 components compose a macro-level larger part of this community. $z_{\mathrm{in}_1} = 14, z_{\mathrm{in}_2} = 3, z_{\mathrm{out}}=1$}\label{fig:c1}
 \end{figure}
 
 \begin{figure}
