@@ -145,7 +145,7 @@ It inspires us in order to seperate different clusters, we need small magnitude 
 
 In this section, we review the basic theory to solve equation \eqref{eq:hL} and give the detailed pseudocode based on the work of \cite{RN4}.
 
-Then we call $h(\lambda)$ the Dilworth truncation of function $ \frac{1}{2} f(C)$ and the computation of $h(\lambda)$ can be done by the algorithmic pyramid shown in figure \ref{fig:pyramid}. The method, called graph principal sequence of paritition is divided into three level. At the top level, $h(\lambda)$ is computed with $\lambda$ as a symbol, called parametric Dilworth truncation (pdt) (\cite{RN4} Fig. 3). The result of top level routine is a nested family of partition and its corresponding turning point. In example \ref{eg:three}, we have $[\{1,2,3\},\{\{1,3\},\{2\}\},\{\{1\},\{2\},\{3\}\}],[2,5,+\infty) $ as a return. At the middle level, one of graph node is treated as sink node and parametric maximal flow(pmf) routinue is called.
+We call $h(\lambda)$ the Dilworth truncation of function $ \frac{1}{2} f(C)$ and the computation of $h(\lambda)$ can be done by two methods. The algorithmic pyramid shown in figure \ref{fig:pyramid}. The method, called graph principal sequence of paritition is divided into three level. At the top level, $h(\lambda)$ is computed with $\lambda$ as a symbol, called parametric Dilworth truncation (pdt) (\cite{RN4} Fig. 3). The result of top level routine is a nested family of partition and its corresponding turning point. In example \ref{eg:three}, we have $[\{1,2,3\},\{\{1,3\},\{2\}\},\{\{1\},\{2\},\{3\}\}],[2,5,+\infty) $ as a return. At the middle level, one of graph node is treated as sink node and parametric maximal flow(pmf) routinue is called.
 The pmf routinue is called $\abs{V}$ times. At the bottom level, the edge cost is fixed for given $\lambda$ and maximal flow routinue is called. By the analysis in \cite{RN17}, the time complexity for pmf is the same with that of maximal flow.
 \begin{figure}
 \centering
@@ -216,7 +216,23 @@ We use adjusted rand index as the clustering metric to score different clusterin
 \end{table}
 
 For community detection task, we use a two-level artifical dataset proposed in \cite{RN22}. 
-The community structure is shown in Figure \ref{fig:c1}. In macro-level, it has 4 communities and each macro community contains 4 micro communities. We use $z_{\mathrm{in}_1}$ to represent the internal average degree of nodes within micro community; $z_{\mathrm{in}_2}$ as node degree between different micro communities but within one macro community; $z_{\mathrm{out}}$ as node degree between different macro communities. By varying $z_{\mathrm{in}} + z_{\mathrm{in}_2} + z_{\mathrm{out}}$ we get different set of experiment and in each given community parameter, we compare the detection accuracy between different methods. The result is shown in Table.
+The community structure is shown in Figure \ref{fig:c1}. In macro-level, it has 4 communities and each macro community contains 4 micro communities. We use $z_{\mathrm{in}_1}$ to represent the internal average degree of nodes within micro community; $z_{\mathrm{in}_2}$ as node degree between different micro communities but within one macro community; $z_{\mathrm{out}}$ as node degree between different macro communities. By varying one and fixing the other two in $\{z_{\mathrm{in}} , z_{\mathrm{in}_2}, z_{\mathrm{out}} \}$ we get different set of experiment and in each given community parameter, we compare the detection accuracy between different methods. The result is shown in Table.
+
+It is noticed that for such problems with unweighted graph, it is more practical to deduce a weighted graph with the weight value defined as 
+\begin{equation}
+    w_{ij} = 1 + \abs{\{k | (i,k),(j,k) \in E \}} \textrm{ for } (i,j) \in E
+\end{equation}
+This is the number of triangles which contain the edge. Such definition is justified by the following proposition.
+\begin{proposition}
+Suppose $S_1, S_2 $ are complete graph with $n$ nodes and equal weight $w=n$. There are $m$ edges between the two graphs and all inter-connection edge is with equal weight 1. Then we have
+\begin{equation}
+I(Z_V) = \begin{cases}
+m & m <\frac{n^2}{2}, S_1,S_2 \textrm{ are non-trival cluster} \\
+\frac{m+n^2(n-1)}{2n-1} & m\geq \frac{n^2}{2}, \textrm{ only trival cluster exists} 
+\end{cases}
+\end{equation}
+\end{proposition}
+This proposition inspires us to increase the weight linearly with the number of nodes for densely connected part of the whole community. It increases the performance of info-clustering algorithm.
 
 \begin{figure}
 \centering

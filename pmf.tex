@@ -35,11 +35,11 @@ the first parameter is the contracted graph and the second parameter is the vert
 c^{\lambda}(V'\backslash T, T)$ \label{findLambda}
 \STATE for $\lambda = \lambda_2$, find $(S', T')$ which is optimal to \eqref{eq:pmqe} for $\widetilde{G}$.
 \IF{$S' \neq S$ and $T' \neq T$}
-\STATE insert $T'$ to $\mathcal{A}$
+\STATE insert $T'$ to $\mathcal{A}$ at proper position
 \STATE \texttt{slice}$(S, T')$
 \STATE \texttt{slice}$(S', T)$
 \ELSE
-\STATE insert $\lambda_2$ to $L$ 
+\STATE insert $\lambda_2$ to $L$ at proper position
 \ENDIF
 \ENDFUNCTION
 \end{algorithmic}
