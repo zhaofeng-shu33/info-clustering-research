@@ -506,7 +506,7 @@ To finish our job, we focus on the specific problem to minimize
 \alpha^l = \min \{ f(S) - x^{l-1}(S) - \lambda: l \in \forall S \subset V^l\}
 \end{equation}
 When $f(S)$ is digraph cut function, we can convert the problem to minimum $s-t$ cut problem(in Algorithm 2, literature \cite{pin}). 
-\begin{equation}
+\begin{equation}\label{eq:beta}
 \beta^l = \min_{T \subseteq V^l \backslash \{s\}: l \in T} c(V^l \backslash T, T)
 \end{equation} 
 
@@ -514,6 +514,11 @@ The optimal solution matches while the optimal values differs a constant value.
 \begin{equation}
 \beta^l - \alpha^l = \lambda + \sum_{x_v>0, 1\leq v<l}x_{v}
 \end{equation} 
+
+If there are multiple solutions to \eqref{eq:beta}.
+
+If our max flow algorithm gives maximum source size result, then using  $\beta^l$ method we will get the solution to $\alpha^l$ with minimum $S$.
+
 \subsection{Example}
 
 In this subsection, we use an illustrative example to explain the algorithm pyramid.
