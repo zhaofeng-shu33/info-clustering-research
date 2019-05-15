@@ -27,7 +27,7 @@ the first parameter is the contracted graph and the second parameter is the vert
 \REQUIRE an undirected graph $G(V, E)$; $j \in V={1,2,\dots, \abs{V}}$; edge cost function $c(e)$ for $e \in E$; function $f(A)$ is the cut function w.r.t set $A\subseteq V$; tuples $y^{\lambda}_i = (a_i, b_i)$ for $i \in V$.
 \ENSURE a nested family of minimal value to equation \eqref{eq:pmq}, as a set list $\mathcal{A}$ and its corresponding turning value $\lambda$ as a value list $L$.
 \STATE Let $L$ be the turning point list, initialized as empty array, let $V'=V\cup\{s\}$.
-\STATE find $(S_0, T_0)$ which is optimal to \eqref{eq:pmqe} for $ \lambda  = 0$.  Also let $T_1 = \{j\}$ and $S_1 = \{s\}\cup V \backslash \{j\}$.
+\STATE find $(S_0, T_0)$ which is optimal to \eqref{eq:pmqe} for $ \lambda  = -\epsilon$.  Also let $T_1 = \{j\}$ and $S_1 = \{s\}\cup V \backslash \{j\}$.
 \STATE $\mathcal{A}$ contains the decreasing set list, initialized as $[T_0, T_1]$;
 \STATE \texttt{slice}$( S_0, T_1)$
 \FUNCTION{\texttt{slice}$(S, T)$}
@@ -45,7 +45,7 @@ c^{\lambda}(V'\backslash T, T)$ \label{findLambda}
 \end{algorithmic}
 \end{algorithm}
 When the above algorithm terminates, we get $L=[\lambda_1, \lambda_2, \dots, \lambda_{k-1}]$ with
-$0 < \lambda_1 < \lambda_2 < \dots < \lambda_{k-1}$ and $\mathcal{A} = [T_0, T_1, \dots, T_k]$ with
+$0 \leq \lambda_1 \footnotemark < \lambda_2 < \dots < \lambda_{k-1}$ and $\mathcal{A} = [T_0, T_1, \dots, T_k]$ with \footnotetext{$\lambda_1 $ can be zero since $I(Z_V)$ can be zero.}
 $T_k \subsetneq  \dots \subsetneq T_1 \subsetneq T_0$.  The solution to \eqref{eq:pmq} is then
 \begin{equation}
 \mathcal{A}^{\lambda}=\begin{cases}
