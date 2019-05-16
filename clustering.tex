@@ -509,10 +509,13 @@ When $f(S)$ is digraph cut function, we can convert the problem to minimum $s-t$
 \begin{equation}\label{eq:beta}
 \beta^l = \min_{T \subseteq V^l \backslash \{s\}: l \in T} c(V^l \backslash T, T)
 \end{equation} 
+The s-t cut graph is initialized with $\{s,1,2,\dots, l\}$, in which $s$ is a newly added node and $l$ is the target node. For the weight,
+$w_{si}  = \max\{0, - x^{l-1}_i\}, w_{il} = \max\{0, x^{l-1}_i\} + c_{il}$ where $c_{il}$ is the original weight of the graph. Notice the position of minus sign is not important, we only need to ensure
+$w_{si} + w_{il} = c_{il} + \abs{x^{l-1}_i}$
 
 The optimal solution matches while the optimal values differs a constant value. 
 \begin{equation}
-\beta^l - \alpha^l = \lambda + \sum_{x_v>0, 1\leq v<l}x_{v}
+\beta^l - \alpha^l = \lambda + \sum_{x^{l-1}_v>0, 1\leq v<l}x_{v}
 \end{equation} 
 
 If there are multiple solutions to \eqref{eq:alpha}. The solution set equals. However, in 
@@ -520,7 +523,15 @@ pratical computations, the maximal flow algorithm can only compute one set (mini
 If our max flow algorithm gives maximum source size result, then using  \eqref{eq:beta} method we will get the solution to $\alpha^l$ with minimum $S$.
 
 If we want the solution to $\alpha^l$ with minimum $S$, we can change the position of source and sink, to solve the following problem.
-
+\begin{equation}\label{eq:gamma}
+\gamma^{l} = \min_{S \in V^l \backslash \{t\}, l \in S} c(S, V\backslash S)
+\end{equation}
+In equation \eqref{eq:gamma}, $l$ is treated as source node.  Also we have
+\begin{equation}
+\gamma^l - \alpha^l = \lambda + \sum_{x_v>0, 1\leq v<l}x_{v}
+\end{equation} 
+The s-t cut graph is initialized with $\{1,2,\dots, l,t\}$, in which $t$ is a newly added node and $l$ is the source node. For the weight,
+$w_{it}  = \max\{0, - x^{l-1}_i\}, w_{li} = \max\{0, x^{l-1}_i\} + c_{il}$.
 \subsection{Example}
 
 In this subsection, we use an illustrative example to explain the algorithm pyramid.

@@ -1,28 +1,68 @@
 \documentclass{article}
 \input{macros.tex}
+\title{Paramatric Computing of Info-Clustering}
 \begin{document}
+\maketitle
 Using paramatric maximum flow algorithm to solve the following problem:
 \begin{equation}\label{eq:pmq}
-\min_{j \in A \subseteq V} f(A) - 2\lambda - y^{\lambda}(A)
+\tilde{h}(\lambda) = \min_{j \in A \subseteq V} f(A) - 2\lambda - y^{\lambda}(A)
 \end{equation}
 where
 $y^{\lambda}_i = \min\{a_i - 2\lambda, b_i\}$, where $b_i$ maybe $+\infty$.
-First we need to convert the problem to a directed graph with parameter.
+The minimum solution to \eqref{eq:pmq} is denoted as $A^{\lambda}$ since different $\lambda$ will produce different set $A$. The structure of the solution is a nested family like \eqref{eq:Alambda}.
+
+If $\lambda$ is sufficiently large, then all $y_i^{\lambda}$ will have the form $a_i - 2 \lambda$ and the minimum solution is $\{j\}$; on the other hand, since we are only concerned about $\lambda \geq 0$. We can compute \eqref{eq:pmq} for $\lambda = -\epsilon$. Then we have $T_0$ and $T_k$ in \eqref{eq:Alambda}.
+
+An important observation of function $\tilde{h}(\lambda)$ is that it is piecewise linear and concave. $T_0$ corresponds a piecewise linear part and $T_k$ corresponds another one.  To compute the nested family between $T_0$ and $T_k$, we use divide and conquer techniques. The algorithm is presented in Algorithm \ref{alg:pmfT}.
+
+\begin{algorithm}
+\caption{Theoretical Formulation of Parametric Computing}\label{alg:pmfT}
+\begin{algorithmic}[1]
+\REQUIRE $y^{\lambda}$ and function $f$
+\ENSURE The array \textbf{L} contains $\lambda_1, \dots \lambda_k$. The array $A^{\lambda}$ contains the $T_0,\dots, T_k$. More specificly, $\mathtt{index} = \abs{V} - \abs{T_i}$, $A^{\lambda}[\mathtt{index}]=T_i,  L[\mathtt{index}]=\lambda_{i+1}$\footnotemark
+\STATE \textbf{L}, $A^{\lambda} \leftarrow$ empty arrays of size $\abs{V}$
+\STATE $Q \leftarrow \argmin_{A\in V} \tilde{h}(-\epsilon), P \leftarrow \{ j \}$
+\STATE $A^{\lambda}[ \abs{V}-\abs{Q}]=Q, A^{\lambda}[ \abs{V}-\abs{P}] = P$
+\STATE \texttt{Split}$(Q,P)$
+\FUNCTION{\texttt{Split}$(Q,P)$}
+\STATE Let $\lambda_2$ be the solution to $f(Q) - y^{\lambda}(Q) = f(P) - y^{\lambda}(P)$
+\STATE $h' = f(Q) - 2\lambda - y^{\lambda_2}(Q)$
+ \STATE $P' =\argmin_{A\in V} \tilde{h}(\lambda_2) $ 
+ \IF{$ \tilde{h}(\lambda_2) = h'$}
+ 	\STATE $\mathbf{L}[\abs{V} - \abs{Q}] = \lambda_2$
+ \ELSE
+ 	\STATE $A^{\lambda}[\abs{V} - \abs{P'}]=P'$
+ 	\STATE \texttt{Split}$(Q,P')$
+ 	\STATE \texttt{Split}$(P',P)$
+ \ENDIF
+\ENDFUNCTION
+\end{algorithmic}
+\end{algorithm}
+\footnotetext{we let $\lambda_{k+1} = +\infty$}
+
+Algorithm \ref{alg:pmfT} is theoretical computable. To make it concrete, we need to figure out how to solve $\lambda_2$ and how to compute $\tilde{h}(\lambda)$ for given $\lambda$ efficiently.
+
+To compute $\tilde{h}(\lambda)$ , we need to convert the problem to a weighted directed graph.
 For the original graph, each edge is splitted into two directed arc with same capacity.
 Introduce a source node $s$ while $j$ is treated as target node.  then change
-$c^{\lambda}(s,v)=\max\{0, -y^{\lambda}_v\}, c^{\lambda}(v,j) += \max\{0, y^{\lambda}_v\}$ for $ v=1 $ to $\abs{V}$ and $v \neq  j$. Then the minimum minimizer to 
+$c^{\lambda}(s,v)=\max\{0, -y^{\lambda}_v\}, c^{\lambda}(v,j) += \max\{0, y^{\lambda}_v\}$ for $ v=1 $ to $\abs{V}$ and $v \neq  j$.
+In detailed form is:
+\begin{align}
+c(s, v) &=  \max\{0, -\min\{a_i-2\lambda, b_i\}\} \\
+c(v, j) & = \tilde{c}(v, j) + \max\{0, \min\{a_i - 2\lambda, b_i\}\}
+\end{align}
+Then the minimum minimizer to 
 \begin{equation}\label{eq:pmqe}
 \min_{s\in U\backslash T, j\in T}c^{\lambda}(U\backslash T, T)
 \end{equation}
-is the same with equation \eqref{eq:pmq}.
+is the same with equation \eqref{eq:pmq} while the minumum value differs a constant.
 
-Let $\widetilde{G}$ be the product from $G$ (add $s$ and modify some capacity). 
-%Graph contraction: $X\subseteq V$, the contraction of graph $\widetilde{G}$ by $X$ is denoted by $\widetilde{G}[X]$.
+Let $\widetilde{G}$ be the modified weighted directed graph from $G$ (add $s$ and modify some capacity). 
 
-Slice function has two parameters:
-the first parameter is the contracted graph and the second parameter is the vertice subset containing $j$.
+
+By doing so, we can rewrite Algorithm \ref{alg:pmfT} by Algorithm \ref{alg:pmfC}.
 \begin{algorithm}
-\caption{paramatric maximum flow $(\mathcal{A}, L) = \texttt{pmf}(G(V,E), c(e), j, y^{\lambda})$}
+\caption{paramatric maximum flow $(\mathcal{A}, L) = \texttt{pmf}(G(V,E), c(e), j, y^{\lambda})$}\label{alg:pmfC}
 \begin{algorithmic}[1]
 \REQUIRE an undirected graph $G(V, E)$; $j \in V={1,2,\dots, \abs{V}}$; edge cost function $c(e)$ for $e \in E$; function $f(A)$ is the cut function w.r.t set $A\subseteq V$; tuples $y^{\lambda}_i = (a_i, b_i)$ for $i \in V$.
 \ENSURE a nested family of minimal value to equation \eqref{eq:pmq}, as a set list $\mathcal{A}$ and its corresponding turning value $\lambda$ as a value list $L$.
@@ -44,22 +84,22 @@ c^{\lambda}(V'\backslash T, T)$ \label{findLambda}
 \ENDFUNCTION
 \end{algorithmic}
 \end{algorithm}
-When the above algorithm terminates, we get $L=[\lambda_1, \lambda_2, \dots, \lambda_{k-1}]$ with
+In Algorithm \ref{alg:pmfC}, the \texttt{slice} function has two parameters:
+the first parameter is the subset containing $s$ and the second parameter is the vertice subset containing $j$. It is equivalent to the \texttt{split} function in Algorithm \ref{alg:pmfT}.
+
+When Algorithm \ref{alg:pmfC} terminates, we get $L=[\lambda_1, \lambda_2, \dots, \lambda_{k-1}]$ with
 $0 \leq \lambda_1 \footnotemark < \lambda_2 < \dots < \lambda_{k-1}$ and $\mathcal{A} = [T_0, T_1, \dots, T_k]$ with \footnotetext{$\lambda_1 $ can be zero since $I(Z_V)$ can be zero.}
 $T_k \subsetneq  \dots \subsetneq T_1 \subsetneq T_0$.  The solution to \eqref{eq:pmq} is then
-\begin{equation}
+\begin{equation}\label{eq:Alambda}
 \mathcal{A}^{\lambda}=\begin{cases}
-T_0 & 0 \leq \lambda < \lambda_1 \\
+T_0 & \lambda < \lambda_1 \\
 T_i & \lambda_i \leq \lambda < \lambda_{i+1}, \textrm{ for } i=1, 2, \dots, k-1 \\
 T_k & \lambda \geq \lambda_{k}
 \end{cases}
 \end{equation}
 Parametric Representation. For edge cost of the converted directed graph, we have
-\begin{align}
-c(s, v) &=  \max\{0, -\min\{a_i-2\lambda, b_i\}\} \\
-c(v, j) & = \tilde{c}(v, j) + \max\{0, \min\{a_i - 2\lambda, b_i\}\}
-\end{align}
-For line \ref{findLambda} in the above algorithm,  we can simplify it as:
+
+$\lambda_2$ computing can be simplified in previous. For line \ref{findLambda} in  Algorithm \ref{alg:pmfC},  we can rewrite it as:
 \begin{equation*}
 \sum_{v\in V'\backslash (S\cup T)} [-y^{\lambda}_v ] = g(T)-g(S\backslash\{s\})
 \end{equation*}
@@ -90,6 +130,8 @@ Now we give the algorithm to compute the Dilworth truncation $$\min_{\P}\{f[\P] 
 \STATE $\mathcal{Q} = \P^{\lambda}_i[\mathcal{A}_k]$
 \STATE append $\mathcal{Q}$ to $\widetilde{\mathcal{\P}}^{\lambda}$ and $\min\{\mathcal{L}[i], L[k]\}$
 to $\widetilde{\mathcal{L}}$
+\ELSE
+\STATE $\widetilde{\mathcal{L}}[-1] = \min\{\mathcal{L}[i], L[k]\}$
 \ENDIF
 \STATE $(i, k) \leftarrow \begin{cases} (i+1, k) & \mathcal{L}[i] < L[k] \\  (i, k+1) & \mathcal{L}[i] > L[k]\\ (i+1, k+1) & \mathcal{L}[i] = L[k]\end{cases}$
 \ENDWHILE
