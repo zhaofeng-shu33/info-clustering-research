@@ -1,4 +1,5 @@
 \documentclass{article}
+\usepackage{subcaption}
 \input{macros.tex}
 \title{Paramatric Computing of Info-Clustering}
 \begin{document}
@@ -25,11 +26,11 @@ An important observation of function $\tilde{h}(\lambda)$ is that it is piecewis
 \STATE $A^{\lambda}[ \abs{V}-\abs{Q}]=Q, A^{\lambda}[ \abs{V}-\abs{P}] = P$
 \STATE \texttt{Split}$(Q,P)$
 \FUNCTION{\texttt{Split}$(Q,P)$}
-\STATE Let $\lambda_2$ be the solution to $f(Q) - y^{\lambda}(Q) = f(P) - y^{\lambda}(P)$
-\STATE $h' = f(Q) - 2\lambda - y^{\lambda_2}(Q)$
- \STATE $P' =\argmin_{A\in V} \tilde{h}(\lambda_2) $ 
+\STATE Let $\tilde{\lambda}_2$ be the solution to $f(Q) - y^{\lambda}(Q) = f(P) - y^{\lambda}(P)$
+\STATE $h' = f(Q) - 2\lambda - y^{\tilde{\lambda}_2}(Q)$
+ \STATE $P' =\argmin_{A\in V} \tilde{h}(\tilde{\lambda}_2) $ 
  \IF{$ \tilde{h}(\lambda_2) = h'$}
- 	\STATE $\mathbf{L}[\abs{V} - \abs{Q}] = \lambda_2$
+ 	\STATE $\mathbf{L}[\abs{V} - \abs{Q}] = \tilde{\lambda}_2$
  \ELSE
  	\STATE $A^{\lambda}[\abs{V} - \abs{P'}]=P'$
  	\STATE \texttt{Split}$(Q,P')$
@@ -40,7 +41,24 @@ An important observation of function $\tilde{h}(\lambda)$ is that it is piecewis
 \end{algorithm}
 \footnotetext{we let $\lambda_{k+1} = +\infty$}
 
-Algorithm \ref{alg:pmfT} is theoretical computable. To make it concrete, we need to figure out how to solve $\lambda_2$ and how to compute $\tilde{h}(\lambda)$ for given $\lambda$ efficiently.
+\begin{example}\label{ex:3point}
+We consider an example problem. Consider a three node graph (see fig \ref{fig:ex}). $G=(\{1,2,3\},\{(1,2),(1,3),(2,3)| w_{12}=w_{23}=1, w_{13}=5\})$ and $f(A)$ is the graph cut function. Let $j=3$ and $y^{\lambda}_i = -2\lambda$ for $i=1,2,3$.
+\begin{figure}[!ht]
+\centering
+\begin{subfigure}{0.45\textwidth}
+\includegraphics[width=\textwidth]{pic/example.eps}
+\caption{A three node graph}\label{fig:ex}
+\end{subfigure}
+\begin{subfigure}{0.45\textwidth}
+\includegraphics[width=\textwidth]{pic/example_pst.eps}
+\caption{method to solve $\tilde{h}(\lambda)$}\label{fig:linseg}
+\end{subfigure}
+\caption{}
+\end{figure}
+we can get $T_0 = \{1,2,3\} $ and $T_k = \{3\}$. And their corresponding lines are $4\lambda$ and $6$. As Figure \ref{fig:linseg} shows, they intersect at $(1.5,6)$, the set $T_1=\{1,3\}$; and we can compute $\tilde{h}(1.5)=5<6$. That is, there are turning points at interval $(0, 1.5)$ and $(1.5, +\infty)$ respectively. For the first interval, we compute the intersection of $4\lambda$ and $2+2\lambda$ and get$(1,4)$; Also $\tilde{h}(1)=4$, therefore, the computation for the first interval is finished. The same goes for the second interval. And finally, we can get $L=[\lambda_1, \lambda_2, +\infty]$ and $A^{\lambda} = [\{1,2,3\}, \{1,3\},\{3\}]$
+\end{example}
+
+Algorithm \ref{alg:pmfT} is theoretical computable. To make it possible to implemetation, we need to figure out how to solve $\tilde{\lambda}_2$ and how to compute $\tilde{h}(\lambda)$ for given $\lambda$ efficiently.
 
 To compute $\tilde{h}(\lambda)$ , we need to convert the problem to a weighted directed graph.
 For the original graph, each edge is splitted into two directed arc with same capacity.
@@ -51,6 +69,12 @@ In detailed form is:
 c(s, v) &=  \max\{0, -\min\{a_i-2\lambda, b_i\}\} \\
 c(v, j) & = \tilde{c}(v, j) + \max\{0, \min\{a_i - 2\lambda, b_i\}\}
 \end{align}
+\begin{figure}
+\centering
+\includegraphics[width=5cm]{pic/example_st.eps}
+\caption{converted weighted digraph}\label{fig:convert}
+\end{figure}
+Figure \ref{fig:convert} illustrates the convertion for Example \ref{ex:3point} and $\lambda>0$ .
 Then the minimum minimizer to 
 \begin{equation}\label{eq:pmqe}
 \min_{s\in U\backslash T, j\in T}c^{\lambda}(U\backslash T, T)
@@ -71,9 +95,9 @@ By doing so, we can rewrite Algorithm \ref{alg:pmfT} by Algorithm \ref{alg:pmfC}
 \STATE $\mathcal{A}$ contains the decreasing set list, initialized as $[T_0, T_1]$;
 \STATE \texttt{slice}$( S_0, T_1)$
 \FUNCTION{\texttt{slice}$(S, T)$}
-  \STATE Let $\lambda_2$ be the value of $\lambda$ such that $c^{\lambda}(S, V'\backslash S) = 
+  \STATE Let $\tilde{\lambda}_2$ be the value of $\lambda$ such that $c^{\lambda}(S, V'\backslash S) = 
 c^{\lambda}(V'\backslash T, T)$ \label{findLambda}
-\STATE for $\lambda = \lambda_2$, find $(S', T')$ which is optimal to \eqref{eq:pmqe} for $\widetilde{G}$.
+\STATE for $\lambda = \tilde{\lambda}_2$, find $(S', T')$ which is optimal to \eqref{eq:pmqe} for $\widetilde{G}$.
 \IF{$S' \neq S$ and $T' \neq T$}
 \STATE insert $T'$ to $\mathcal{A}$ at proper position
 \STATE \texttt{slice}$(S, T')$
