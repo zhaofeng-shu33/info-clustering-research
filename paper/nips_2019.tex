@@ -139,13 +139,36 @@ Since $h(\lambda)$ is piecewise linear, the first line segment of $h(\lambda)$ i
 \end{proof}
 By theorem \ref{thm:trival}, we can show that all weights are of equal value, then by applying info-clustering we can only get each data point as a cluster. Generally, we have the following proposition.
 \input{proposition_triangle_inequality.tex}
-It inspires us in order to seperate different clusters, we need small magnitude of inter cluster weights and similar weight value of intra cluster.
+It inspires us in order to seperate different clusters, we need small magnitude of inter cluster weights and large and similar weight value of intra cluster.
 
 \section{Algorithm}\label{sec:algorithm}
 
 In this section, we review the basic theory to solve equation \eqref{eq:hL} and give the detailed pseudocode based on the work of \cite{RN4}.
 
-We call $h(\lambda)$ the Dilworth truncation of function $ \frac{1}{2} f(C)$ and the computation of $h(\lambda)$ can be done by two methods. The algorithmic pyramid shown in figure \ref{fig:pyramid}. The method, called graph principal sequence of paritition is divided into three level. At the top level, $h(\lambda)$ is computed with $\lambda$ as a symbol, called parametric Dilworth truncation (pdt) (\cite{RN4} Fig. 3). The result of top level routine is a nested family of partition and its corresponding turning point. In example \ref{eg:three}, we have $[\{1,2,3\},\{\{1,3\},\{2\}\},\{\{1\},\{2\},\{3\}\}],[2,5,+\infty) $ as a return. At the middle level, one of graph node is treated as sink node and parametric maximal flow(pmf) routinue is called.
+Since $h(\lambda)$ is piecewise linear, we can use divide and conquer to search the turning points and evaluate $h(\lambda)$ only at these turning points. This is the method proposed at \cite{RN7} and has complexity $N^2 \mathtt{MaxFlow}(N)$ if the hierachical tree structure is needed. If we are only interested in finding a suitable partition  with at least $k$ part, then the algorithm complexity can be reduced to $\log(N) N \mathtt{MaxFlow}(N)$. This is the approach evaluated at subsection \ref{sec:fc}.
+
+We call this aprroach Dilworth truncation. It solves \eqref{eq:hL} for fixed $\lambda$ by solving the following equation sequentially for $j=1,\dots,\abs{V}$.
+\begin{equation}\label{eq:pmq}
+\tilde{h}(\lambda) = \min_{j \in A \subseteq V} f(A) - \lambda - y^{\lambda}(A)
+\end{equation}
+where
+$y^{\lambda}_i = \min\{a_i - \lambda, b_i\}$  and $b_i \leq +\infty$. 
+It is pointed out in \cite{RN4} that \eqref{eq:pmq} can be solved with $\lambda$ as a parameter, not a value. We call this method parametric Dilworth truncation. It can solve \eqref{eq:hL} directly by treating $\lambda$ as a parameter. However, how to solve \eqref{eq:pmq} for fixed $j$ is not a trival task and the approach given in \cite{RN4} is too complex to analyze. We will give an clear and efficient approach to solve \eqref{eq:pmq} for $\lambda\geq 0$. 
+
+First we have the following property to the solution set of $\tilde{h}(\lambda) $.
+\begin{proposition}
+Let $A^{\lambda}$ be the solution to $\tilde{h}(\lambda)$, then 
+\begin{equation}\label{eq:Alambda}
+\mathcal{A}^{\lambda}=\begin{cases}
+T_0 & \lambda < \lambda_1 \\
+T_i & \lambda_i \leq \lambda < \lambda_{i+1}, \textrm{ for } i=1, 2, \dots, k-1 \\
+T_k & \lambda \geq \lambda_{k}
+\end{cases}
+\end{equation}
+where $T_k \subsetneq  \dots \subsetneq T_1 \subsetneq T_0$
+\end{proposition}
+
+The result of top level routine is a nested family of partition and its corresponding turning point. In example \ref{eg:three}, we have $[\{1,2,3\},\{\{1,3\},\{2\}\},\{\{1\},\{2\},\{3\}\}],[2,5,+\infty) $ as a return. At the middle level, one of graph node is treated as sink node and parametric maximal flow(pmf) routinue is called.
 The pmf routinue is called $\abs{V}$ times. At the bottom level, the edge cost is fixed for given $\lambda$ and maximal flow routinue is called. By the analysis in \cite{RN17}, the time complexity for pmf is the same with that of maximal flow.
 \begin{figure}
 \centering
@@ -160,11 +183,7 @@ The pmf routinue is called $\abs{V}$ times. At the bottom level, the edge cost i
 \end{figure}
 
 For the pmf algorithm applied to our problem, we are required to solve 
-\begin{equation}\label{eq:pmq}
-\min_{j \in A \subseteq V} f(A) - 2\lambda - y^{\lambda}(A)
-\end{equation}
-where
-$y^{\lambda}_i = \min\{a_i - 2\lambda, b_i\}$, where $b_i$ maybe $+\infty$. We can make the parameter dependent part on the edge cost and turn the undirected graph to the directed graph by splitting each edge into two directed arc with same capacity value. We also introduce a source
+We can make the parameter dependent part on the edge cost and turn the undirected graph to the directed graph by splitting each edge into two directed arc with same capacity value. We also introduce a source
 node $s$ while $j$ is treated as target node.  then change
 $c^{\lambda}(s,v)=\max\{0, -y^{\lambda}_v\}, c^{\lambda}(v,j) += \max\{0, y^{\lambda}_v\}$ for $ v=1 $ to $\abs{V}$ and $v \neq  j$. Then we claim that
 \begin{proposition}
@@ -202,6 +221,7 @@ c^{\lambda}(V'\backslash T, T)$ \label{findLambda}
 \section{Experiment}\label{sec:experiment}
 In this section, we demonstrate info-clustering algorithm on two kinds of datasets. The first is about feature clustering, in which we need to cluster multi-dimentional vectors. For this kind of task, we need to construct the clustering graph first by using proper similarity measure. The other dataset is in community detection, coming from \cite{RN22}, in which a two-level hierachical structure is defined. By comparision with other clustering method, we will show that info-clustering algorithm gives reasonable good result and can recover the two-level hierachical structure under certain conditions. 
 
+\subsection{Feature Clustering}\label{sec:fc}
 For feature clustering task, we prepare three groups of data:
 \begin{enumerate}
 \item Four Gaussian blobs with unit variance and centers at $(3,3), (3,-3), (-3,3), (-3,-3)$.  We generate 25 points for each blob.
@@ -214,7 +234,7 @@ We use adjusted rand index as the clustering metric to score different clusterin
 \InputIfFileExists{build/compare_3.tex}{}{}
 \caption{ accuracy for different clustering algorithms }\label{tb:e1}
 \end{table}
-
+\subsection{Community Detection}
 For community detection task, we use a two-level artifical dataset proposed in \cite{RN22}. 
 The community structure is shown in Figure \ref{fig:c1}. In macro-level, it has 4 communities and each macro community contains 4 micro communities. We use $z_{\mathrm{in}_1}$ to represent the internal average degree of nodes within micro community; $z_{\mathrm{in}_2}$ as node degree between different micro communities but within one macro community; $z_{\mathrm{out}}$ as node degree between different macro communities. By varying one and fixing the other two in $\{z_{\mathrm{in}} , z_{\mathrm{in}_2}, z_{\mathrm{out}} \}$ we get different set of experiment and in each given community parameter, we compare the detection accuracy between different methods. The result is shown in Table.
 
