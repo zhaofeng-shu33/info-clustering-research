@@ -59,7 +59,7 @@ The clustering method used in this paper is information theoretic since it is es
 
 The paper is organized as follows. In Section \ref{sec:models}, we formulate the info-clustering problem and show its connection with theory. In Section \ref{sec:algorithm}, we propose the algorithm workflow to solve the info-clustering problem. In Section \ref{sec:experiment}, we give the experiement result and comparision of info-clustering with other methods. Finally, we give the conclusion in Section \ref{sec:conclusion}.
 
-Throughout this paper, the graph is denoted by $G(V,E)$, with vertex set $V = \{1, 2, \dots, \abs{V}\}$ and edge set $E=\{(i,j) | w_{ij}>0\}$\footnote{$(\cdot, \cdot)$ is ordered pair. For undirected graph $(i,j) \in E \Rightarrow (j,i) \in E$}. $\P$ is a partition of $V$ and $\{V\}$ is a trival partition. $\Pi$ is the collection of all partitions of $V$. $\Pi' = \Pi \backslash \{V\}$ is the collection of non-trival partitions. $f(\cdot)$ is graph cut function, that is $f(C) = \sum_{i\in C, j\not\in C, (i,j) \in E} w_{ij}$. $f[\cdot]$ is function defined on $\Pi$, that is
+Throughout this paper, the graph is denoted by $G(V,E)$, with vertex set $V = \{1, 2, \dots, \abs{V}\}$ and edge set $E=\{(i,j) | w_{ij}>0\}$\footnote{$(\cdot, \cdot)$ is ordered pair. For undirected graph $(i,j) \in E \Rightarrow (j,i) \in E$}. $\P$ is a partition of $V$ and $\{V\}$ is a trival partition. $\Pi$ is the collection of all partitions of $V$. $\Pi' = \Pi \backslash \{V\}$ is the collection of non-trival partitions. $f(\cdot)$ is graph cut function, that is $f(C) = \sum_{i\not\in C, j\in C, (i,j) \in E} w_{ij}$. $f[\cdot]$ is function defined on $\Pi$, that is
 \begin{equation}
 f[\P] = \sum_{\substack{i\in C, j \not\in C\\ (i,j)\in E, C\in \mathcal{P}}} w_{ij} =
 \begin{cases}
@@ -67,6 +67,7 @@ f[\P] = \sum_{\substack{i\in C, j \not\in C\\ (i,j)\in E, C\in \mathcal{P}}} w_{
 \sum_{C\in \P}f(C)   & G \textrm{ is directed}
 \end{cases}
 \end{equation}
+An important observation is that if we add direction to an undirected graph, the value of $f[\P]$ is unchanged. Therefore, without specific declaration, $G$ is directed throughout the paper. Given a $\abs{V}$ dimensional vector $x, x(C)=\sum_{i \in C} x_i, C\in V$.
 \section{Models}\label{sec:models}
 
 Consider an undirected graph partition problem, in which we want to partition the graph nodes into several groups with largest similarity within each group and smallest similarity between different group. To formulate this problem mathematically, given $G(V, E)$ where the edge weight $w$ is nonnegative and represents pairwise similarity of nodes, we try to minimize the following quantity over different parition of $V$.
@@ -80,7 +81,7 @@ I(Z_V) & = \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V)  \label{eq:ms}
 We call the quantity in equation \eqref{eq:ms} \textbf{multivariate similarity} because it measures the similarity shared by multiple graph nodes. The definition has the same form with that of graph strength if  the whole graph nodes are considered\cite{RN12}. However, we can compute multivariate similarity for any subset of $V$. In such case, 
 we use subgraph symbol $V'$ to replace $V$ in equation \eqref{eq:ms}.
 \begin{example}\label{eg:three}
-For a three node graph $G=(\{1,2,3\},\{(1,2),(1,3),(2,3)| w_{12}=w_{23}=1, w_{13}=5\})$, we have $I(Z_{\{1,3\}}) = 5$ and $I(Z_V) = 2$ which is minimal value among $I_{\{1\},\{2\},\{3\}}(Z_V)=3.5, I_{\{1, 2\},\{3\}}(Z_V)=6, I_{\{1,3\},\{2\}}(Z_V)=2, I_{\{1\},\{2,3\}}(Z_V)=6$.(see also \cite{RN9} Fig. 1)
+For a three node directed graph $G=(\{1,2,3\},\{(1,2),(1,3),(2,3)| w_{12}=w_{23}=1, w_{13}=5\})$, we have $I(Z_{\{1,3\}}) = 5$ and $I(Z_V) = 2$ which is minimal value among $I_{\{1\},\{2\},\{3\}}(Z_V)=3.5, I_{\{1, 2\},\{3\}}(Z_V)=6, I_{\{1,3\},\{2\}}(Z_V)=2, I_{\{1\},\{2,3\}}(Z_V)=6$.(see also \cite{RN9} Fig. 1)
 \end{example}
 
 Based on the definition \eqref{def:ms}, we have both a top-down and bottom-up version of hierachical clustering.
@@ -102,7 +103,7 @@ By the construction of the clustering tree, we can associate each tree node with
 \includegraphics[width=0.8\textwidth]{pic/threshold.eps}
 \caption{a clustering tree (left figure) for the weighted graph (right figure) by info-clustering method. Threshold values are $0.9, 1, 2$.}\label{fig:threshold}
 \end{figure}
-Consider a graph $G(V, E)$ with $V=\{1,2,3,4\}$ and $E=\{(1,2),(1,3),(3,4),(2,4)\}$ with edge weight $w_{12}=1,w_{13}=0.4,w_{24}=0.5,w_{34}=2$ (See Fig. \ref{fig:threshold}). The threshold values are the multivariate similarity $I(Z_{3,4})=2, I(Z_{1,2})=1$ and $I(Z_V)=0.9$ respectively. We can write the complete clustering solution as:
+Consider an undirected graph $G(V, E)$ with $V=\{1,2,3,4\}$ and $E=\{(1,2),(1,3),(3,4),(2,4)\}$ with edge weight $w_{12}=1,w_{13}=0.4,w_{24}=0.5,w_{34}=2$ (See Fig. \ref{fig:threshold}). The threshold values are the multivariate similarity $I(Z_{3,4})=2, I(Z_{1,2})=1$ and $I(Z_V)=0.9$ respectively. We can write the complete clustering solution as:
 \begin{equation*}
 \P = 
 \begin{cases}
@@ -115,12 +116,12 @@ Consider a graph $G(V, E)$ with $V=\{1,2,3,4\}$ and $E=\{(1,2),(1,3),(3,4),(2,4)
 Although the clustering tree does not distinguish $\{\{1\},\{2\},\{3,4\}\}$ with $\{\{1,2\},\{3\}, \{4\}\}$ ,Notice that partition $\{\{1,2\},\{3\}, \{4\}\}$ does not exist by the threshold method.
 \end{example}
 Using $I(Z_V)$ to cluster data directly is computing expensive, the same clustering result can be achieved by solving the following optimalization problem for all $\lambda$ (Corollary 2 in \cite{RN1}).
-\begin{proposition}\label{prop:psp}
+\begin{theorem}\label{thm:psp}
 \begin{equation}\label{eq:hL}
 h(\lambda) = \min_{\P \in \Pi'(V)}\{ f[\P] - \abs{\P} \lambda \}
 \end{equation}
-The optimal partitions for $h(\lambda)$ are finite and they can be arranged in a decrasing sequence $\P_1, \dots, \P_k$ such that $\P_1 \succeq \P_2 \dots \succeq \P_k$, This sequence is called \textbf{principal sequence of partitions} of $h(\lambda)$\cite{RN17}.
-\end{proposition}
+The optimal partitions for $h(\lambda)$ are finite and they can be arranged in a decrasing sequence $\P_1, \dots, \P_k$ such that $\P_1 \succeq \P_2 \dots \succeq \P_k$, This sequence is called \textbf{principal sequence of partitions} of $h(\lambda)$(proved in \cite{RN3}).
+\end{theorem}
 %proof in attachment
 
 For given $\P$, the function about $\lambda$ is linear, therefore $h(\lambda)$ is piecewise linear and each turning point of $h(\lambda)$ corresponds to $\P_i, \P_{i+1}$ respectively. We can use the parametric maximal flow algorithm to compute $\P_i$ efficiently, which is shown in the next section.
@@ -143,72 +144,93 @@ It inspires us in order to seperate different clusters, we need small magnitude 
 
 \section{Algorithm}\label{sec:algorithm}
 
-In this section, we review the basic theory to solve equation \eqref{eq:hL} and give the detailed pseudocode based on the work of \cite{RN4}.
+In this section, we review the basic theory to solve equation \eqref{eq:hL} and propose an improved algorithm flow based on the work of \cite{RN4}.
 
 Since $h(\lambda)$ is piecewise linear, we can use divide and conquer to search the turning points and evaluate $h(\lambda)$ only at these turning points. This is the method proposed at \cite{RN7} and has complexity $N^2 \mathtt{MaxFlow}(N)$ if the hierachical tree structure is needed. If we are only interested in finding a suitable partition  with at least $k$ part, then the algorithm complexity can be reduced to $\log(N) N \mathtt{MaxFlow}(N)$. This is the approach evaluated at subsection \ref{sec:fc}.
 
-We call this aprroach Dilworth truncation. It solves \eqref{eq:hL} for fixed $\lambda$ by solving the following equation sequentially for $j=1,\dots,\abs{V}$.
-\begin{equation}\label{eq:pmq}
-\tilde{h}(\lambda) = \min_{j \in A \subseteq V} f(A) - \lambda - y^{\lambda}(A)
-\end{equation}
+We call this aprroach Dilworth truncation. It solves \eqref{eq:hL} for fixed $\lambda$ by solving the following equation sequentially for $t=1,\dots,\abs{V}$.
+\begin{align}\label{eq:pmq}
+\tilde{h}(\lambda) & = \min_{t \in T \subseteq V} \tilde{h}_{\lambda}(T) \\
+\tilde{h}_{\lambda}(T) &= f(T) - \lambda - y^{\lambda}(T)
+\end{align}
 where
 $y^{\lambda}_i = \min\{a_i - \lambda, b_i\}$  and $b_i \leq +\infty$. 
-It is pointed out in \cite{RN4} that \eqref{eq:pmq} can be solved with $\lambda$ as a parameter, not a value. We call this method parametric Dilworth truncation. It can solve \eqref{eq:hL} directly by treating $\lambda$ as a parameter. However, how to solve \eqref{eq:pmq} for fixed $j$ is not a trival task and the approach given in \cite{RN4} is too complex to analyze. We will give an clear and efficient approach to solve \eqref{eq:pmq} for $\lambda\geq 0$. 
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\textwidth]{pic/example_pst_single.eps}
+		\caption{An illustration to Algorithm \ref{alg:pmfT}}\label{fig:linseg}
+	\end{subfigure}
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\textwidth]{pic/pdt.eps}
+		\caption{Algorithmic pyramid to compute principal sequence of partitions. The top level is parametric Dilworth truncation; the middle level is parametric maximal flow and the bottom level is maximal flow}\label{fig:pyramid}
+	\end{subfigure}
+\end{figure}
+
+It is pointed out in \cite{RN4} that \eqref{eq:pmq} can be solved with $\lambda$ as a parameter, not a value. We call this method parametric Dilworth truncation(pdt in short, in Fig \ref{fig:pyramid}). It can solve \eqref{eq:hL} directly by treating $\lambda$ as a parameter. However, how to solve \eqref{eq:pmq} for fixed $j$ is not a trival task and the approach given in \cite{RN4} is too complex to analyze. We will give an clear and efficient approach to solve \eqref{eq:pmq} for $\lambda\geq 0$. 
 
 First we have the following property to the solution set of $\tilde{h}(\lambda) $.
 \input{proposition_submodular_structure}
 
-The result of top level routine is a nested family of partition and its corresponding turning point. In example \ref{eg:three}, we have $[\{1,2,3\},\{\{1,3\},\{2\}\},\{\{1\},\{2\},\{3\}\}],[2,5,+\infty) $ as a return. At the middle level, one of graph node is treated as sink node and parametric maximal flow(pmf) routinue is called.
-The pmf routinue is called $\abs{V}$ times. At the bottom level, the edge cost is fixed for given $\lambda$ and maximal flow routinue is called. By the analysis in \cite{RN17}, the time complexity for pmf is the same with that of maximal flow.
-\begin{figure}
-\centering
-\begin{subfigure}{0.45\textwidth}
-\includegraphics[width=\textwidth]{pic/dt.eps}
-\caption{An illustration to proposition \ref{prop:psp}}\label{fig:psp}
-\end{subfigure}
-\begin{subfigure}{0.45\textwidth}
-\includegraphics[width=\textwidth]{pic/pdt.eps}
-\caption{Algorithmic pyramid to compute principal sequence of partitions. The top level is parametric Dilworth truncation; the middle level is parametric maximal flow and the bottom level is maximal flow}\label{fig:pyramid}
-\end{subfigure}
-\end{figure}
+In proposition \ref{prop:struc}, if $\lambda$ is sufficiently large, then all $y_i^{\lambda}$ will have the form $a_i -  \lambda$ and the minimum solution is $\{t\}$. That is, $T_k = \{t\}$; On the other hand, since we are only concerned about $\lambda \geq 0$. We can compute \eqref{eq:pmq} for $\lambda = -\epsilon (\epsilon > 0)$. Then we have $T_0$ and $T_k$ in \eqref{eq:Alambda}.
 
-For our problem, $f$ is graph cut function, which is submodular.
+Another important observation of function $\tilde{h}(\lambda)$ is that it is piecewise linear and concave. $T_0$ corresponds a piecewise linear part and $T_k$ corresponds another one.  To compute the nested family between $T_0$ and $T_k$, we use divide and conquer techniques. The algorithm is presented in Algorithm \ref{alg:pmfT}.
+\input{alg_parametric_computing.tex}
+
+\begin{example}
+We use the graph defined in Example \ref{eg:three} and define $f$ as the graph cut function, $t=3$ and $y^{\lambda}_i = -\lambda, i=1,2,3$. 
+We can get $T_0 = \{1,2,3\} $ and $T_k = \{3\}$. And their corresponding lines are $\tilde{h}_{\lambda}(T_0) =2\lambda$ and $\tilde{h}_{\lambda}(T_k)=6$. As Figure \ref{fig:linseg} shows, they intersect at $(3, 6)$, the set $T_1=\{1,3\}$; and we can compute $\tilde{h}(3)=5<6$. That is, there are turning points of $\tilde{h}$ at interval $(0, 3)$ and $(3, +\infty)$ respectively. For $(0,3)$, we compute the intersection of $\tilde{h}_{\lambda}(T_0)$ and $\tilde{h}_{\lambda}(T_1)=2+\lambda$ and get the intersection coordinate $(2,4)$; Also $\tilde{h}(1)=4$, therefore, the computation for $(0,3)$ is finished. The same goes for $(3, +\infty)$. And finally, we can get $L=[2,4, +\infty]$ and $A^{\lambda} = [\{1,2,3\}, \{1,3\},\{3\}]$	
+\end{example}
+
+Algorithm \ref{alg:pmfT} is only theoretically computable. To make it possible to implementation, we need to figure out how to solve $\tilde{\lambda}_2$ and how to compute $\tilde{h}(\lambda)$ for given $\lambda$ efficiently.
+
+To simplify our notation, in this section we will let $w_{ij} = 0$ if $(i,j) \not\in E$. To compute $\tilde{h}(\lambda)$, we combine Algorithm \ref{alg:pmfT} and paramatric maximal flow Algorithm (shorted as pmf in Fig \ref{fig:pyramid}). The combination begins at creating a new weighted directed graph $\widetilde{G}(\widetilde{V}, \widetilde{E})$ from directed graph $G(V,E)$:
+\begin{enumerate}
+	\item Add a new node $s$ and initialize $c^{\lambda}(s,v)=\max\{0, -y^{\lambda}_v\}$ for $v \in V\backslash \{j\}$
+	\item Modify the in arc capacity of node $j$ as $c^{\lambda}(v,t) = w_{vt} + \max\{0, y^{\lambda}_v\}$
+	\end{enumerate}
+In detailed form, the edge weight is defined by:
+\begin{equation}
+c^{\lambda}(i, j) = 
+\begin{cases}
+	\max\{0, -\min\{a_i-\lambda, b_i\}\} &  i = s, j \neq t \\
+	w_{it} + \max\{0, \min\{a_i - \lambda, b_i\}\} & i\neq s, j = t\\
+	0 & i = s, j = t\\
+	w_{ij} & i \neq s, j \neq t
+\end{cases}
+\end{equation}
+For $\widetilde{G}(\widetilde{V}, \widetilde{E})$, there are two special nodes $s$ and $j$, The s-t cut for $\widetilde{G}$
+is defined as $c^{\lambda}(T) = \sum_{i \not\in T, j \in T} c^{\lambda}(i,j)$ where $s \not\in T, t \in T$. By such construction we can guarantee $c^{\lambda}(i,j)\geq 0$ and has the following property.
+\begin{proposition}\label{prop:constDiff}
+	\begin{align}
+		\tilde{h}_{\lambda}(T) &= c^{\lambda}(T) - \lambda - \sum_{v \in V} \max\{0, y^{\lambda}_v\}\\
+	A^{\lambda}	&= \argmin_{s\in U\backslash T, t\in T}c^{\lambda}(T) \label{eq:pmqe}
+	\end{align}
+\end{proposition}
+\begin{proof}
+	
+	\begin{align*}
+	c^{\lambda}(T) &= f(T) + \sum_{i \not\in T} (c^{\lambda}(i, t) - w_{it})+ \sum_{j \in T} c^{\lambda}(s,j) \\
+	\Rightarrow \tilde{h}_{\lambda}(T) - c^{\lambda}(T) &= -\lambda - \sum_{j \in T} y^{\lambda}_j - \sum_{i \not\in T} \max\{0, y^{\lambda}_i\} - \sum_{j \in T} \max\{0,-y^{\lambda}_j\}\\
+	&= -\lambda - \sum_{v \in V} \max\{0, y^{\lambda}_v\}
+	\end{align*}
+\end{proof}
+
+By proposition \ref{prop:constDiff}, for a given $\lambda, \tilde{h}_{\lambda}$ and $c^{\lambda}$ differs a constant value for any $T\subseteq V$. Therefore, we can use $c^{\lambda}$ in Algorithm \ref{alg:pmfT} such that $\argmin c^{\lambda}$ can be computed by maximal flow algorithm. 
+
+Within function \texttt{Split} in Algorithm \ref{alg:pmfT}, An important notice is that we do not compute $P'$ in line \ref{alg:Pap} refreshly but starting from a given flow map which is max flow when computing $Q$. By doing so, the time complexity to minimize $c^{\lambda}$ is reduced to $O(N\abs{E})$ and the bottleneck is the uninitialized minimization at line \ref{alg:uini}, which is $O(N^2\sqrt{E})$ when highest-label selection rule is used.
+
+The result of top level routine is a nested family of partition and its corresponding turning point. In example \ref{eg:three}, we have $[\{1,2,3\},\{\{1,3\},\{2\}\},\{\{1\},\{2\},\{3\}\}],[2,5,+\infty) $ as a return. At the middle level, one of graph node is treated as sink node and parametric maximal flow(pmf) routinue is called.
+
+The pmf routinue is called $\abs{V}$ times. At the bottom level, the edge cost is fixed for given $\lambda$ and maximal flow routinue is called. By the analysis in \cite{RN17}, the time complexity for pmf is the same with that of maximal flow.
 
 For the pmf algorithm applied to our problem, we are required to solve 
 We can make the parameter dependent part on the edge cost and turn the undirected graph to the directed graph by splitting each edge into two directed arc with same capacity value. We also introduce a source
 node $s$ while $j$ is treated as target node.  then change
 $c^{\lambda}(s,v)=\max\{0, -y^{\lambda}_v\}, c^{\lambda}(v,j) += \max\{0, y^{\lambda}_v\}$ for $ v=1 $ to $\abs{V}$ and $v \neq  j$. Then we claim that
-\begin{proposition}
-The minimum minimizer to 
-\begin{equation}\label{eq:pmqe}
-\min_{s\in U\backslash T, j\in T}c^{\lambda}(U\backslash T, T)
-\end{equation}
-is the same with equation \eqref{eq:pmq}.
-\end{proposition}
-By doing so, we can simplify the formulation of pmf in \cite{RN17} and the pseudocode is given in Algorithm \ref{alg:pmf}.
-\begin{algorithm}
-\caption{paramatric maximum flow $(\mathcal{A}, L) = \texttt{pmf}(G(V,E), c(e), j, y^{\lambda})$}\label{alg:pmf}
-\begin{algorithmic}[1]
-\REQUIRE an undirected graph $G(V, E)$; $j \in V={1,2,\dots, \abs{V}}$; edge cost function $c(e)$ for $e \in E$; function $f(A)$ is the cut function w.r.t set $A\subseteq V$; tuples $y^{\lambda}_i = (a_i, b_i)$ for $i \in V$.
-\ENSURE a nested family of minimal value to equation \eqref{eq:pmq}, as a set list $\mathcal{A}$ and its corresponding turning value $\lambda$ as a value list $L$.
-\STATE Let $L$ be the turning point list, initialized as empty array, let $V'=V\cup\{s\}$.
-\STATE find $(S_0, T_0)$ which is optimal to \eqref{eq:pmqe} for $ \lambda  = 0$.  Also let $T_1 = \{j\}$ and $S_1 = \{s\}\cup V \backslash \{j\}$.
-\STATE $\mathcal{A}$ contains the decreasing set list, initialized as $[T_0, T_1]$;
-\STATE \texttt{slice}$( S_0, T_1)$
-\FUNCTION{\texttt{slice}$(S, T)$}
-  \STATE Let $\lambda_2$ be the value of $\lambda$ such that $c^{\lambda}(S, V'\backslash S) = 
-c^{\lambda}(V'\backslash T, T)$ \label{findLambda}
-\STATE for $\lambda = \lambda_2$, find $(S', T')$ which is optimal to \eqref{eq:pmqe} for $\widetilde{G}$.
-\IF{$S' \neq S$ and $T' \neq T$}
-\STATE insert $T'$ to $\mathcal{A}$
-\STATE \texttt{slice}$(S, T')$
-\STATE \texttt{slice}$(S', T)$
-\ELSE
-\STATE insert $\lambda_2$ to $L$ 
-\ENDIF
-\ENDFUNCTION
-\end{algorithmic}
-\end{algorithm}
+
+
 
 \section{Experiment}\label{sec:experiment}
 In this section, we demonstrate info-clustering algorithm on two kinds of datasets. The first is about feature clustering, in which we need to cluster multi-dimentional vectors. For this kind of task, we need to construct the clustering graph first by using proper similarity measure. The other dataset is in community detection, coming from \cite{RN22}, in which a two-level hierachical structure is defined. By comparision with other clustering method, we will show that info-clustering algorithm gives reasonable good result and can recover the two-level hierachical structure under certain conditions. 

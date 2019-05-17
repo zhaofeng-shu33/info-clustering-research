@@ -58,7 +58,7 @@ We consider an example problem. Consider a three node graph (see fig \ref{fig:ex
 we can get $T_0 = \{1,2,3\} $ and $T_k = \{3\}$. And their corresponding lines are $4\lambda$ and $6$. As Figure \ref{fig:linseg} shows, they intersect at $(1.5,6)$, the set $T_1=\{1,3\}$; and we can compute $\tilde{h}(1.5)=5<6$. That is, there are turning points at interval $(0, 1.5)$ and $(1.5, +\infty)$ respectively. For the first interval, we compute the intersection of $4\lambda$ and $2+2\lambda$ and get$(1,4)$; Also $\tilde{h}(1)=4$, therefore, the computation for the first interval is finished. The same goes for the second interval. And finally, we can get $L=[\lambda_1, \lambda_2, +\infty]$ and $A^{\lambda} = [\{1,2,3\}, \{1,3\},\{3\}]$
 \end{example}
 
-Algorithm \ref{alg:pmfT} is theoretical computable. To make it possible to implemetation, we need to figure out how to solve $\tilde{\lambda}_2$ and how to compute $\tilde{h}(\lambda)$ for given $\lambda$ efficiently.
+Algorithm \ref{alg:pmfT} is theoretical computable. To make it possible to implenmetation, we need to figure out how to solve $\tilde{\lambda}_2$ and how to compute $\tilde{h}(\lambda)$ for given $\lambda$ efficiently.
 
 To compute $\tilde{h}(\lambda)$ , we need to convert the problem to a weighted directed graph.
 For the original graph, each edge is splitted into two directed arc with same capacity.
