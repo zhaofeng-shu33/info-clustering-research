@@ -156,6 +156,32 @@ Since
 We have $\sum_{i,j \in C_1, i\neq j} w_{ij} \leq \frac{2(n_1-1) \sum w_{ij}}{n-1}$. Therefore, 
 $2f[\P] \geq \frac{2k \sum w_{ij}}{n-1}$. That is, the result holds for $\abs{\P}=k$.
 \end{proof}
+\input{proposition_submodular_structure}
+\begin{proof}
+There are certain breakpoints $a_i - b_i$ which determines whether $y_i^{\lambda}$ takes constant values. We can get an increasing list of such breakpoints as $\tilde{\lambda}_1 < \dots < \tilde{\lambda}_n$ while $\abs{n}\leq \abs{V}$. If $b_i = +\infty, y^{\lambda}_i = a_i - \lambda$ and there is no turning point for this one.
+
+We first compare $ u < v $ within a breakpoint interval. That is $\tilde{\lambda}_j \leq u < v \leq \tilde{\lambda}_{j+1}$. In such interval, let $S = \{i | y^{\lambda}_i = b_i\}$ and define $g_1(A) =\abs{A\backslash S}, g_2(A)= \sum_{i \in A \cap S} b_i$. We call a function $\mathcal{F}$ modular if
+$\mathcal{F}(A \cup B) + \mathcal{F}(A \cap B) = \mathcal{F}(A) + \mathcal{F}(B)$. Notice that $g_1$ and $g_2$ are both modular. We can rewrite $\tilde{h}(\lambda) = \min_{j\in A \subset V}g_3(A) + \lambda\abs{A}$ where $g_3(A)=f(A)-g_2(A)-\lambda(\abs{S}+1)$ and $g_3$ is a submodular function.
+Let $A_1 = \argmin \tilde{h}(u), A_2 = \argmin \tilde{h}(v)$. Ignoring the constant part, we will have
+\begin{align}
+g_3(A_1) + u \abs{A_1}& \leq g_3(A) + u \abs{A}, \forall A \subseteq V \label{eq:fA1}\\
+g_3(A_2) + v \abs{A_2}& \leq g_3(A) + v \abs{A}, \forall A \subseteq V \label{eq:fA2}
+\end{align}
+Using the submodular property of $f$ we have
+\begin{align*}
+g_3(A_1 \cap A_2) + g_3(A_1 \cup A_2)\leq  &g_3(A_1) + g_3(A_2) \\
+\Rightarrow g_3(A_1 \cap A_2) + g_3(A_1 \cup A_2) + u \abs{A_1} + v\abs{A_2} 
+\leq & g_3(A_1) + u \abs{A_1} + g_3(A_2) + v \abs{A_2}, \textrm{ by (\ref{eq:fA1}, \ref{eq:fA2})} \\
+\Rightarrow g_3(A_1 \cap A_2) + g_3(A_1 \cup A_2) + u \abs{A_1} + v\abs{A_2} 
+\leq &g_3(A) + u \abs{A}+ g_3(B) + v \abs{B}, \forall A, B \subseteq V \\
+\textrm{ let } A =A_1 \cup A_2, B= A_1 \cap A_2 \Rightarrow u \abs{A_1} + v\abs{A_2} 
+\leq & u \abs{A_1 \cup A_2}+ v \abs{A_1\cap A_2} \\
+\Rightarrow u  \abs{A_2 \backslash A_1} \geq v \abs{A_2 \backslash A_1}
+\end{align*}
+Since $ u < v$, we have $\abs{A_2 \backslash A_1}=0$, that is $A_2 \subseteq A_1$.
+
+By the continuity of $\tilde{h}(\lambda)$, if $u<v$ belongs to different interval, we can use the breakpoints as springboard. That is, if $\lambda_j < u \leq \lambda_{j+1} \dots \leq lambda_{j+k} \leq v$,  we will have $ A_1 \supseteq A_{\lambda_{j+1}} \dots \supseteq A_{\lambda_{j+k}} \supseteq A_2$.
+\end{proof}
 \section{Experiment}
 In this section, we describe the details of our experiment. The source code for info-clustering algorithm and experiments can be found at \href{https://github.com/zhaofeng-shu33/lab2c\_presentation\_template}{info-cluster}.
 \subsection{Feature Clustering}

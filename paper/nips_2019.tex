@@ -156,17 +156,7 @@ $y^{\lambda}_i = \min\{a_i - \lambda, b_i\}$  and $b_i \leq +\infty$.
 It is pointed out in \cite{RN4} that \eqref{eq:pmq} can be solved with $\lambda$ as a parameter, not a value. We call this method parametric Dilworth truncation. It can solve \eqref{eq:hL} directly by treating $\lambda$ as a parameter. However, how to solve \eqref{eq:pmq} for fixed $j$ is not a trival task and the approach given in \cite{RN4} is too complex to analyze. We will give an clear and efficient approach to solve \eqref{eq:pmq} for $\lambda\geq 0$. 
 
 First we have the following property to the solution set of $\tilde{h}(\lambda) $.
-\begin{proposition}
-Let $A^{\lambda}$ be the solution to $\tilde{h}(\lambda)$, then 
-\begin{equation}\label{eq:Alambda}
-\mathcal{A}^{\lambda}=\begin{cases}
-T_0 & \lambda < \lambda_1 \\
-T_i & \lambda_i \leq \lambda < \lambda_{i+1}, \textrm{ for } i=1, 2, \dots, k-1 \\
-T_k & \lambda \geq \lambda_{k}
-\end{cases}
-\end{equation}
-where $T_k \subsetneq  \dots \subsetneq T_1 \subsetneq T_0$
-\end{proposition}
+\input{proposition_submodular_structure}
 
 The result of top level routine is a nested family of partition and its corresponding turning point. In example \ref{eg:three}, we have $[\{1,2,3\},\{\{1,3\},\{2\}\},\{\{1\},\{2\},\{3\}\}],[2,5,+\infty) $ as a return. At the middle level, one of graph node is treated as sink node and parametric maximal flow(pmf) routinue is called.
 The pmf routinue is called $\abs{V}$ times. At the bottom level, the edge cost is fixed for given $\lambda$ and maximal flow routinue is called. By the analysis in \cite{RN17}, the time complexity for pmf is the same with that of maximal flow.
@@ -181,6 +171,8 @@ The pmf routinue is called $\abs{V}$ times. At the bottom level, the edge cost i
 \caption{Algorithmic pyramid to compute principal sequence of partitions. The top level is parametric Dilworth truncation; the middle level is parametric maximal flow and the bottom level is maximal flow}\label{fig:pyramid}
 \end{subfigure}
 \end{figure}
+
+For our problem, $f$ is graph cut function, which is submodular.
 
 For the pmf algorithm applied to our problem, we are required to solve 
 We can make the parameter dependent part on the edge cost and turn the undirected graph to the directed graph by splitting each edge into two directed arc with same capacity value. We also introduce a source
