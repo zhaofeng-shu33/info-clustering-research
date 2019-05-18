@@ -1,7 +1,7 @@
-\begin{proposition}\label{prop:ta}
+\begin{proposition}[info-clustering]\label{prop:ta}
 The following two procedures generate the same hierachical tree.
 \begin{enumerate}
-\item For a graph $G$, suppose $I_{\P^*}(Z_V)=I(Z_V)$, each subset of $\P^*$ is child of hierachical tree root $V$. For each tree leaf node set $C$, use partition $\P_C$($I(Z_C)=I_{\P_C}(Z_C)$) to split it until the leaf node has exactly one element.
-\item For a graph $G$, suppose $I(Z_C) = \max_{B\subseteq V} I(Z_B)$ and $C$ is maximal, merge singleton element of $C$ together and $G$ is contracted. At each step select the set with maximal multivariate similarity to contract the graph until the graph contracted to one vertex.
+\item For a graph $G$, suppose $I_{\P^*}(Z_V)=I(Z_V)$, each subset of $\P^*$ is a child of hierachical tree root $V$. For each child node set $C$, use partition $\P_C$($I(Z_C)=I_{\P_C}(Z_C)$) to split it until this branch is divided into singletons.
+\item For a graph $G$, suppose $I(Z_C) = \max_{B\subseteq V} I(Z_B)$ and $C$ is maximal, merge singleton element of $C$ together and contract $G$. At each step select the set with maximal multivariate similarity to contract the graph until the graph is contracted to a single node, which is the tree root.
 \end{enumerate}
 \end{proposition}
