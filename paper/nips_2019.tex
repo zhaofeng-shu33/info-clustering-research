@@ -282,15 +282,16 @@ This proposition inspires us to increase the weight linearly with the number of 
 
 \begin{figure}
 \centering
-\includegraphics[width=6cm]{pic/two_level.eps}
+\begin{subfigure}{0.45\textwidth}
+\includegraphics[width=\textwidth]{pic/two_level.eps}
 \caption{a community with 256 nodes, 16 components in micro-level, each 4 components compose a macro-level larger part of this community. $z_{\mathrm{in}_1} = 14, z_{\mathrm{in}_2} = 3, z_{\mathrm{out}}=1$}\label{fig:c1}
+\end{subfigure}
+\begin{subfigure}{0.45\textwidth}
+	\includegraphics[width=\textwidth]{pic/tree_info-clustering.pdf}
+	\caption{the same community with left figure, clustered with info-clustering algorithm. Merging tree leaf with the same ancestor together we can recover the two level structure of the community}\label{fig:c2}
+\end{subfigure}
 \end{figure}
 
-\begin{figure}
-\centering
-\includegraphics[width=10cm]{pic/tree.pdf}
-\caption{a community with $z_{\mathrm{in}_1} = 14, z_{\mathrm{in}_2} = 2.3$ and $z_{\mathrm{out}}=0.1$. The tree depth is only 4.}\label{fig:c2}
-\end{figure}
 
 \section{Conclusion}\label{sec:conclusion}
 
