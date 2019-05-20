@@ -248,7 +248,7 @@ In this section, we give the complete formulation of parametric Dilworth truncat
 
 We make some remark about Algorithm \ref{alg:pmfC}
 \begin{enumerate}
-\item For different $\lambda$, we need to initialize the the capacity of $\widetilde{G}$ by equation \eqref{eq:clambda}.
+\item For different $\lambda$, we need to initialize the capacity of $\widetilde{G}$ by equation \eqref{eq:clambda}.
 \begin{equation}\label{eq:clambda}
 c^{\lambda}(i, j) = 
 \begin{cases}
@@ -259,11 +259,41 @@ w_{ij} & i \neq s, j \neq t
 \end{cases}
 \end{equation}
 Since $\widetilde{G}$ for a specified $\lambda$ is used only once, we can modify the capacity directly on previous $\widetilde{G}$ without creating new graph data structure.
-\item For \texttt{mf} algorithm we can only use push-relabel method. But we can choose different active node selecting scheme. For example, highest label is known to be practically fastest.
+
+\item For \texttt{mf}, we can only use push-relabel maximum flow algorithm\cite{Goldberg}. $(T,g',\tilde{f})=$\texttt{mf}$(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{\tilde{\lambda}_2}(e), \tilde{f})$. The first parameter of \texttt{mf} is graph topology structure; the second parameter is edge capacity map and the third parameter is a valid flow to be used as the initial flow of the push-relabel algorithm. \texttt{mf} returns three values, $T$ is minimum cut of target side($t\in T$); $g'$ is the maximum flow value; $\tilde{f}$ is the maximum flow map.
+
+For $\texttt{mf}$, we can choose different active node selecting scheme. For example, highest label selection rule is known to be practically fastest.
+
 \item For line \ref{findLambda} in  Algorithm \ref{alg:pmfC}, we can simplify the equation as
-\begin{equation}
-	\sum_{v\in \widetilde{V} \backslash (S\cup T)} [-y^{\lambda}_v ] = f(T_r)-f(T_l)
+\begin{equation}\label{eq:solveL}
+	\sum_{v\in T_l \backslash T_r} y^{\lambda}_v  = f(T_l)-f(T_r)
 \end{equation}
+\begin{proof}
+	\begin{align*}
+	c^{\lambda}(T_l) -
+	c^{\lambda}(T_r)  =& f(T_l) + \sum_{j \in T_l} \max\{0, -y^{\lambda}_j\} + \sum_{j \in V\backslash T_l} \max\{0, y^{\lambda}_j\} \\
+	-& [f(T_r) + \sum_{j \in T_r} \max\{0, -y^{\lambda}_j\} + \sum_{j \in V\backslash T_r} \max\{0, y^{\lambda}_j\}] \\
+	= & f(T_l) - f(T_r) + \sum_{T_l \backslash T_r} (\max\{0, -y^{\lambda}_j\} - \max\{0, y^{\lambda}_j\} )
+	\end{align*}
+	From line \ref{findLambda} equals zero, we have equation \eqref{eq:solveL}.
+\end{proof}
+The right-hand side of equation \eqref{eq:solveL} is constant while the left-hand side is a piecewise linear decreasing function. Since $T_l \supseteq T_r$, the left-hand side summation is not empty. We can show that equation \eqref{eq:clambda} always has solution for Algorithm \ref{alg:pmfC}.
+\begin{proof}
+	we only need to show for the two parameters of function \texttt{split}, the following property always holds.
+\begin{equation}\label{eq:solutionProperty}
+\exists \lambda_1, \lambda_3 \,s.t.\, c^{\lambda_1}(T_l) \leq c^{\lambda_1}(T_r), c^{\lambda_2}(T_l) \geq c^{\lambda_2}(T_r)
+\end{equation}
+Then by the continuity of $c^{\lambda}(T)$, there exists $\tilde{\lambda} \in [-\epsilon, \lambda']$ such that line \eqref{findLambda} holds.
+
+For the initial computation in Algorithm \ref{alg:pmfC},
+	$T_l = T_0, T_r = T_1$. $\lambda_1 = -\epsilon$. On the other hand, for a sufficient large $\lambda=\lambda', T_1$ is minimum value of $c^{\lambda}(T)$, therefore $\lambda_3 = \lambda'$. 
+
+Within \texttt{split}$(T_l, T_r)$ \footnotemark, suppose equation \eqref{eq:solutionProperty} holds with $(\lambda_1, \lambda_3)$, then 
+$c^{\lambda_1}(T_l) \leq c^{\lambda_1}(T')$ and $c^{\tilde{\lambda}_2}(T_l) = h' > c^{\tilde{\lambda}_2}(T')$ by line \ref{alg:lineLarge}. That is, equation \eqref{eq:solutionProperty} holds for \texttt{split}$(T_l, T')$ with $(\lambda_1, \tilde{\lambda}_2)$. Similarly, from $c^{\lambda_3}(T') \geq c^{\lambda_3}(T_r)$ and $c^{\tilde{\lambda}_2}(T') < h' = c^{\tilde{\lambda}_2}(T_r)$ we can get  equation \eqref{eq:solutionProperty} holds for \texttt{split}$(T_l, T')$ with $(\tilde{\lambda}_2, \lambda_3)$.
+\footnotetext{we ignore the third parameter $\tilde{f}$ for notation convenience }
+By deduction, we conclude equation \eqref{eq:solutionProperty} holds and line \eqref{findLambda} always has solution.
+\end{proof}
+\item In line \ref{alg:flowModify} of Algorithm \ref{alg:pmfC}, flow $\tilde{f}$ is modified in place. We can show $\tilde{f}$ is always a valid preflow for $T_l$. For $T_l=T_0$, this claim holds since $\tilde{f}$ is a maximum flow of $T_0$. Suppose it holds for \texttt{split}$(T_l, T_r, \tilde{f})$, 
 \end{enumerate}
 
 \begin{algorithm}
@@ -274,19 +304,21 @@ Since $\widetilde{G}$ for a specified $\lambda$ is used only once, we can modify
 		\STATE Let $L$ be the turning point list, initialized as empty array.
 		\STATE Construct $\widetilde{G}$: let $\widetilde{V}=V\cup\{s\}, \widetilde{E} = E\cup \{(s,j),(j,t)|j \in V, j\neq t\}$
 		\STATE Initialize $c^{-\epsilon}(e)$ for $e \in \widetilde{E}$ according to equation \eqref{eq:clambda}.
-		\STATE $ (T_0, \_)  = \mathtt{mf}(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{-\epsilon}(e))$. Also let $T_1 = \{j\}$.
+		\STATE $ (T_0, \_, \tilde{f})  = \mathtt{mf}(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{-\epsilon}(e))$. Also let $T_1 = \{j\}$. \label{alg:T0property}
 		\STATE $\mathcal{A}$ contains the decreasing set list, initialized as $[T_0, T_1]$;
-		\STATE \texttt{split}$( T_0, T_1)$
-		\FUNCTION{\texttt{split}$(T_l, T_r)$}
-		\STATE Let $\tilde{\lambda}_2$ be the value of $\lambda$ such that $c^{\lambda}(  \widetilde{V}\backslash T_l, T_l) = 
-		c^{\lambda}(\widetilde{V} \backslash T_r, T_r)$ \label{findLambda}
-		\STATE $h' = c^{\lambda}(\widetilde{V} \backslash T_r, T_r) $
+		\STATE \texttt{split}$( T_0, T_1, \tilde{f})$
+		\FUNCTION{\texttt{split}$(T_l, T_r, \tilde{f})$}
+		\STATE Let $\tilde{\lambda}_2$ be the value of $\lambda$ such that $c^{\lambda}(  T_l) = 
+		c^{\lambda}(T_r)$ \label{findLambda}
+		\STATE $h' = c^{\tilde{\lambda}_2}(T_r) $
+		\STATE modify $\tilde{f}$ such that it is a valid preflow for $(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{\tilde{\lambda}_2}(e))$ \label{alg:flowModify}
+
 		\STATE Initialize $c^{\tilde{\lambda}_2}(e)$ for $e \in \widetilde{E}$ according to equation \eqref{eq:clambda}.
-		\STATE $(T', g') = \mathtt{mf}(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{\tilde{\lambda}_2}(e))$.
-		\IF{$h' > g'$}
+		\STATE $(T', g', \tilde{f}') = \mathtt{mf}(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{\tilde{\lambda}_2}(e), \tilde{f})$.
+		\IF{$h' > g'$} \label{alg:lineLarge}
 		\STATE insert $T'$ to $\mathcal{A}$
-		\STATE \texttt{split}$(T_l, T')$
-		\STATE \texttt{split}$(T', T_r)$
+		\STATE \texttt{split}$(T_l, T', \tilde{f})$
+		\STATE \texttt{split}$(T', T_r, \tilde{f}')$
 		\ELSE
 		\STATE insert $\tilde{\lambda}_2$ to $L$
 		\ENDIF
@@ -294,7 +326,6 @@ Since $\widetilde{G}$ for a specified $\lambda$ is used only once, we can modify
 	\end{algorithmic}
 \end{algorithm}
 
-solve $\tilde{\lambda}_2$ and how to .
 
 \section{Experiment Explanation}
 In this section, we describe the details of our two experiments. The source code for info-clustering algorithm and experiments can be found at \href{https://github.com/zhaofeng-shu33/principal\_sequence\_of\_partition}{info-cluster}.
