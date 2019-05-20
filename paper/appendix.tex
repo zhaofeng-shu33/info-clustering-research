@@ -6,10 +6,10 @@
 \begin{document}
 \maketitle
 \appendix
-\section{Proofs}
+\section{Proofs of Propositions}
 This section gives proof details about propositions in the paper.
 \input{proposition_top_bottom.tex}
-Before processing, we give some properties of multivariate similarity $I(Z_V)$.
+Before processing, we give some properties of multivariate similarity $I(Z_V)$, which will be used in the proof of Proposition \ref{prop:ta}.
 \begin{lemma}\label{lem:ref_combination}
 For any $B \in \P' \in \Pi'$ and $\P_B \in \Pi'_B$, let $\P = \P_B \cup \P' \backslash \{B\} $
 be the refinement of $\P'$. Then we have
@@ -79,9 +79,9 @@ Since  $I_{P}(Z_V) = I(Z_V), I_{\P'}(Z_V)\geq I(Z_V) \Rightarrow I(Z_V) \geq I_{
 $(a)$ is from lemma \ref{lem:smallZB} and $(b)$ is from the data processing inequality of mutual information (or the restriction of graph cut function).
 \end{proof}
 
-\begin{theorem}\label{thm:lattice}
+\begin{lemma}\label{lemma:lattice}
 If $I(Z_V) = I_{\P_1}(Z_V) = I_{\P_2}(Z_V)$, then $I_{\P_1 \wedge \P_2}(Z_V)=I(Z_V) $
-\end{theorem}
+\end{lemma}
 \begin{proof}
 Consider $C\in \P_1, \not\in \P_1\wedge\P_2$ and $C = \cup_{i=1}^k B_i, k>1$ where $B_i \in \P_1 \wedge \P_2$.
 Consider $\P_C = \{B_1, \dots, B_k\}$. Each $B_i$ belongs to one of subsets of $\P_2$. Suppose $B_1, B_2 \subseteq D \in \P_2$. Then $B_1\cup B_2 \subseteq D$,
@@ -94,12 +94,12 @@ I_{\P_1 \wedge \P_2}(Z_V) \leq \theta I(Z_V) + (1- \theta)I(Z_V) = I(Z_V)
 Then we have $I_{\P_1 \wedge \P_2}(Z_V)=I(Z_V)$.
 \end{proof}
 
-By theorem \ref{thm:lattice}, the finest partition $I_{\P}(Z_V)=I(Z_V)$ is unique, which is the meet of all partitions. Therefore, the top-down approach is unambigous. We use $\P^*$ to denote the unique finest partition and it has the following property.
-\begin{theorem}\label{thm:strict_larger_mi}
+By Lemma \ref{lemma:lattice}, the finest partition $I_{\P}(Z_V)=I(Z_V)$ is unique, which is the meet of all partitions. Therefore, the top-down approach is unambiguous. We use $\P^*$ to denote the unique finest partition and it has the following property.
+\begin{lemma}\label{lemma:strict_larger_mi}
 The fundamental partition $\P^*$ with the singletons removed is the set of all maximal subsets $B \subseteq V$ with strictly larger mutual information. 
 That is, we have
 $I(Z_B) > I(Z_V)$ for $B \in \P^*, \abs{B}>1$.
-\end{theorem}
+\end{lemma}
 \begin{proof}
 Suppose $I(Z_B)=I_{\P_B}(Z_B)$.
 Let $\P' = \P_B \cup  \P^* \backslash \{B\}$.
@@ -110,24 +110,24 @@ I_{\P'}(Z_V) = \theta I_{\P^*}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 Since $\P^*$ is finest, we have $I_{\P'}(Z_V) > I(Z_V)$, then from \eqref{eq:convexZ}, we have 
 $I(Z_V) < \theta I(Z_V) + (1-\theta) I(Z_B) \Rightarrow I(Z_B) > I(Z_V)$.
 \end{proof}
-\begin{theorem}[Laminarity]\label{thm:laminarity}
+\begin{lemma}[Laminarity]\label{lemma:laminarity}
 \begin{equation}\label{eq:P}
 I(Z_{C_1 \cup C_2}) \geq \min\{ I(Z_{C_1}), I(Z_{C_2})\}, \textrm{ for } C_1\cap C_2 \neq \emptyset
 \end{equation}
-\end{theorem}
+\end{lemma}
 \begin{proof}
 	We proceed by contradiction. Let $V=C_1 \cup C_2$ and suppose $I(Z_V) < I(Z_{C_1}),
 	I(Z_V) < I(Z_{C_2})$. There exists $\P$ such that $I_{\P}(Z_V) = I(Z_V)$.
 	Then by lemma \ref{lem:LargeIZV} we can get $C_1 \subset B_1, C_2 \subset B_2, B_1, B_2 \in
 	\P$. Since $C_1 \cap C_2 \neq \emptyset \Rightarrow B_1 = B_2$. Therefore $V=C_1 \cup C_2 \subset B_1$ which contradicts $\abs{\P}>1$.
 \end{proof}
-Theorem \ref{thm:laminarity} implies the maximal requirement for the bottom-up approach is umambigious. First we notice that if the subsets are non-overlapping, we can merge them respectively. Therefore, we only need to consider $C_1, C_2$ such that $I(Z_{C_1}) = I(Z_{C_2}) = \max_{B\subseteq V} I(Z_B)$ and $C_1\cap C_2 \neq \emptyset$. , $I(Z_{C_1\cup C_2}) \geq \max_{B\subseteq V} I(Z_B)$ therefore $C_1\cup C_2$ is also a solution to the maximization.
+Theorem \ref{lemma:laminarity} implies the maximal requirement for the bottom-up approach is umambigious. First we notice that if the subsets are non-overlapping, we can merge them respectively. Therefore, we only need to consider $C_1, C_2$ such that $I(Z_{C_1}) = I(Z_{C_2}) = \max_{B\subseteq V} I(Z_B)$ and $C_1\cap C_2 \neq \emptyset$. , $I(Z_{C_1\cup C_2}) \geq \max_{B\subseteq V} I(Z_B)$ therefore $C_1\cup C_2$ is also a solution to the maximization.
 \begin{proof}[Proof of Proposition \ref{prop:ta}]
 We make the connection of the two approaches with the original definition of info-clusters in \cite{RN1}.
 \begin{equation}\label{eq:def_CgammaZV}
 \mathcal{C}_{\gamma}(Z_V) = \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \}
 \end{equation}
-The smallest critical value of $\mathcal{C}_{\gamma}(Z_V)$ is $I(Z_V)$ (Theorem 1 in \cite{RN1}) and for each $B \in \P$, since  our $\P$ is fundamental partition we have $I(Z_B) > I(Z_V)$ by theorem \ref{thm:strict_larger_mi} for $\abs{B}>1$. Take $\gamma = I(Z_V)$, by lemma \ref{lem:LargeIZV}, if $I(Z_C) > \gamma$ we have $C\subseteq B' \in \P$. Therefore $B$ is maximal and $B\in \mathcal{C}_{\gamma}(Z_V)$. The same argument can be done for subtrees by replacing $V$ by subroot. Therefore, all tree node sets by top-down approach belong to $\mathcal{C}_{\gamma}(Z_V)$. By Theorem 2.4 in \cite{RN1}, we conclude all clusters in $C_{\gamma}(Z_V)$ is a tree node set by top-down approach.
+The smallest critical value of $\mathcal{C}_{\gamma}(Z_V)$ is $I(Z_V)$ (Theorem 1 in \cite{RN1}) and for each $B \in \P$, since  our $\P$ is fundamental partition we have $I(Z_B) > I(Z_V)$ by Lemma \ref{thm:strict_larger_mi} for $\abs{B}>1$. Take $\gamma = I(Z_V)$, by lemma \ref{lem:LargeIZV}, if $I(Z_C) > \gamma$ we have $C\subseteq B' \in \P$. Therefore $B$ is maximal and $B\in \mathcal{C}_{\gamma}(Z_V)$. The same argument can be done for subtrees by replacing $V$ by subroot. Therefore, all tree node sets by top-down approach belong to $\mathcal{C}_{\gamma}(Z_V)$. By Theorem 2.4 in \cite{RN1}, we conclude all clusters in $C_{\gamma}(Z_V)$ is a tree node set by top-down approach.
 
 The largest critical value of $\mathcal{C}_{\gamma}(Z_V)$ is $\gamma_N = \max_{B\subseteq V} I(Z_B)$. Take $\gamma = \gamma_N - \epsilon$ where $\epsilon$ is sufficient small, since $I(Z_C) > \gamma$ and $C$ is maximal, we have $C \in \mathcal{C}_{\gamma}(Z_V)$. For each tree node set, since it is also maximal for some $\gamma$, all of them belong to $\mathcal{C}_{\gamma}(Z_V)$. By Theorem 4.2 in \cite{RN8}, we conclude all clusters in $C_{\gamma}(Z_V)$ is a tree node set by bottom-up approach.
 \end{proof}
@@ -156,6 +156,12 @@ Since
 We have $\sum_{i,j \in C_1, i\neq j} w_{ij} \leq \frac{2(n_1-1) \sum w_{ij}}{n-1}$. Therefore, 
 $2f[\P] \geq \frac{2k \sum w_{ij}}{n-1}$. That is, the result holds for $\abs{\P}=k$.
 \end{proof}
+\begin{corollary}\label{cor:complete}
+	For a complete graph $G(V,E)$ with equal weight $w$ on each edge, we have $I(Z_{V})=\frac{nw}{2}$ where $n=\abs{V}$. And $I(Z_S) < I(Z_V)$ for any subset $S\subsetneq V$.
+\end{corollary}
+\begin{proof}
+From Proposition \ref{prop:triangle}, $I(Z_{V})$ is achieved by $\P=\{\{1\},\dots,\{n\} \}$ and $I_{\P}(Z_V) = \frac{n(n-1)w/2}{n-1} = \frac{nw}{2} $. From bottom-up approach of Proposition \ref{prop:ta}, $I(Z_V) = \max_{S\subset V} I(Z_S)$ therefore $I(Z_S) < I(Z_V)$ holds for any subset $S\subsetneq V$.
+\end{proof}
 \input{proposition_submodular_structure}
 \begin{proof}
 There are certain breakpoints $a_i - b_i$ which determines whether $y_i^{\lambda}$ takes constant values. We can get an increasing list of such breakpoints as $\tilde{\lambda}_1 < \dots < \tilde{\lambda}_n$ while $\abs{n}\leq \abs{V}$. If $b_i = +\infty, y^{\lambda}_i = a_i - \lambda$ and there is no turning point for this one.
@@ -182,10 +188,26 @@ Since $ u < v$, we have $\abs{A_2 \backslash A_1}=0$, that is $A_2 \subseteq A_1
 
 By the continuity of $\tilde{h}(\lambda)$, if $u<v$ belongs to different interval, we can use the breakpoints as springboard. That is, if $\lambda_j < u \leq \lambda_{j+1} \dots \leq \lambda_{j+k} \leq v$,  we will have $ A_1 \supseteq A_{\lambda_{j+1}} \dots \supseteq A_{\lambda_{j+k}} \supseteq A_2$.
 \end{proof}
+
+\input{proposition_reweight.tex}
+\begin{lemma}\label{lemma:sub}
+	If node set $S_1 \cap S_2 \neq \emptyset$ and $I(Z_{S_1}) > I(Z_{S_2})$, then $S_2$ is not a cluster of $G$.
+\end{lemma}
+\begin{proof}
+	From Lemma \ref{lemma:laminarity},
+	$I(Z_{S_1\cup S_2}) > \min\{I(Z_{S_1}), I(Z_{S_2})\} = I(Z_{S_2})$. From bottom-up formulation in Proposition \ref{prop:ta},  $S_2$ cannot be a cluster of $G$.
+\end{proof}
+\begin{proof}[Proof of Proposition \ref{prop:reweight}]
+From Corollary \ref{cor:complete}, we have $I(Z_{S_1})= \frac{n^2}{2}$. Then for any $U \in S_1 \cup S_2 $ and $\abs{U} <= n$, $U\neq S_1$ and $U\neq S_2$, either $U \cap S_1 \neq \emptyset$ or $U \cap S_2 \neq \emptyset$ holds. By Lemma \ref{lemma:sub}, $I(Z_{S_1})= I(Z_{S_2}) > I(Z_U) \Rightarrow U$ is not a cluster of $G$.
+ For $\abs{U} > n$ but $U \neq V = S_1 \cup S_2$. $I(Z_U)$ can only be reached by $\{\{i\}| i\in U\}$, which is $\frac{\frac{n(n-1)r}{2} + m_1 + \frac{k(k-1)r}{2}}{n+k-1}$ where $m_1 \leq nk$ and $k=\abs{U} - n < n$. We compare it to $\frac{nr}{2}$ and we can show that $I(Z_{S_1}) - I(Z_U) = \frac{(nk(n-1-k))}{2}$. If $k<n-1$, $I(Z_{S_1})>I(Z_U)$, $U$ is not a cluster by Lemma \ref{lemma:sub}. If $k=n-1$, and $I(Z_U) = I(Z_{S_1})$, then $m_1=nk$. In such case, for $\P=\{\{i\}|i\in V\}$ we have $I_{\P}(Z_V) = \frac{n(n-1)+n^2(n-1)}{2n-1} > I(Z_U)=\frac{n^2}{2}$. Then $I(Z_V) \geq I_{\P}(Z_V) > I(Z_U)$ and $U$ cannot be a cluster of $G$.
+ In either case, $U$ is not a cluster of $G$ for $1<\abs{U}<2n$. we call the graph $S_1$ is robust enough since complete linkage between the two clusters cannot destroy its structure.	
+\end{proof}
 \section{Experiment}
-In this section, we describe the details of our experiment. The source code for info-clustering algorithm and experiments can be found at \href{https://github.com/zhaofeng-shu33/lab2c\_presentation\_template}{info-cluster}.
-\subsection{Feature Clustering}
-For the three groups of data: \textsf{Gaussian}, \textsf{Circle} and \textsf{Iris}. The first two have some intrinsic randomness. To make the result reproducible, we use fixed the random seed to generate the data. The three cirlces data is generated using polar coordinate:
+In this section, we describe the details of our two experiments. The source code for info-clustering algorithm and experiments can be found at \href{https://github.com/zhaofeng-shu33/principal\_sequence\_of\_partition}{info-cluster}.
+
+
+\subsection{Data Clustering}
+For the three groups of data: \textsf{Gaussian}, \textsf{Circle} and \textsf{Iris}. The first two have some intrinsic randomness. To make the result reproducible, we use fixed the random seed to generate the data. The three circles data is generated using polar coordinate:
 \begin{align*}
 r &= 0.1*i + 0.01*(2u-1), i = 1, 2, 3\\
 \theta & = 2\pi v
@@ -194,19 +216,20 @@ where random variable $u,v$ conform uniform distribution within $[0,1]$. Also, $
 
 Different metric (or affinity) can affect the clustering accuracy significantly. Some clustering algorithm such as \textsf{k-means} can only use Euclidean metric and performs badly on non-convex dataset such as \textsf{Circle}. Therefore, we do not use such algorithm in comparision. 
 
-Some algorithm needs to specify the number of cluster.  For example, spectral clustering is a powerful method but lacks the flexibility because it needs the dimension of subspace(number of cluster).  We'd like to compare methods which have the ability to select the best cluster without knowing the ground truth. Both \textsf{affinity propagation} and \textsf{agglomerative clustering}\footnote{We can use a quality function to select the best layer in the hierachical tree, for example modularity of Newman and Girvan.} meets the requirement. The agglomerative clustering algorithm we used is the standard one which merges two objects at each step. For \textsf{affinity propagation} and \textsf{agglomerative clustering} we use the implementation of \textsf{sklearn}(\cite{scikit-learn}) and tune their parameters respectively.
+Some algorithm needs to specify the number of cluster.  For example, spectral clustering is a powerful method but lacks the flexibility because it needs the dimension of subspace(number of cluster).  We'd like to compare methods which have the ability to select the best cluster without knowing the ground truth. Both \textsf{affinity propagation} and \textsf{agglomerative clustering}\footnote{We can use a quality function to select the best layer in the hierarchical tree, for example modularity of Newman and Girvan.} meets the requirement. The agglomerative clustering algorithm we used is the standard one which merges two objects at each step. For \textsf{affinity propagation} and \textsf{agglomerative clustering} we use the implementation of \textsf{scikit-learn}(\cite{scikit-learn}) and tune their parameters respectively.
 
 For real world data like Glass dataset, some pre-processing is necessary, for our experiment we just scale each feature dimension to $[0, 1]$ for all algorithms.
 
-\begin{table}
-\centering
-\InputIfFileExists{build/compare_3.tex}{}{}
-\caption{ accuracy for different clustering algorithms }\label{tb:e1}
-\end{table}
-
 For \textsf{Gaussian} dataset, all three algorithms can get correct clustering result (\texttt{ari = 1.0}); for \textsf{Circle} dataset, affinity propagation method performs poorly even for nearest neighbor metric; for \textsf{Glass} dataset, info-clustering method has best performance compared with other method. To achieve this score, we use nearest neighbor affinity metric with 14 neighbors. We also tune the hyperparameters of the other two algorithms but neither of them can achieve the score of info-clustering.
+
+
 \subsection{Community Detection}
-There is some randomness in the generation of the two-level community. For each data point in the figure or table， we average over times of experiment for the same graph configuration.
+There are many other community detection algorithms, but most of them can only divide the graph into several parts and get a one-level structure. For hierarchical community detection, some methods generate binary trees. For given nodes, binary tree tends to have large tree depth and is not suitable in many cases. To compare info-clustering algorithm fairly, we use other two hierarchical community detection algorithms (GN and BHCD) which allow non-binary tree structure.
+ 
+There is some randomness in the generation of the two-level community. For info-clustering algorithms, it is sensitive to input graph and we average the normalized RF distance by running 20 times of experiment for the same graph configuration. For the other two algorithms, the distance remains unchanged for the same graph parameter $(z_{\mathrm{in}_1}, z_{\mathrm{in}_2}, z_{\mathrm{out}})$, hence we do not need to rerun many times.
+
+For this experiment, we make courtesy to ETE Toolkit\cite{ete3} and NetworkX library \cite{SciPyProceedings_11}, which make the experiment easy to implement.
+
 \bibliographystyle{plain}
 \bibliography{exportlist}
 \end{document}

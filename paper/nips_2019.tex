@@ -217,12 +217,12 @@ c^{\lambda}(i, j) =
 \end{figure}
 For $\widetilde{G}(\widetilde{V}, \widetilde{E})$, there are two special nodes $s$ and $t$, The s-t cut for $\widetilde{G}$
 is defined as $c^{\lambda}(T) = \sum_{i \not\in T, j \in T} c^{\lambda}(i,j)$ where $s \not\in T, t \in T$. By such construction we can guarantee $c^{\lambda}(i,j)\geq 0$ and have the following property:
-\begin{proposition}\label{prop:constDiff}
+\begin{theorem}\label{thm:constDiff}
 	\begin{align}
 		\tilde{h}_{\lambda}(T) &= c^{\lambda}(T) - \lambda - \sum_{v \in V} \max\{0, y^{\lambda}_v\}\\
 	A^{\lambda}	&= \argmin_{s\in U\backslash T, t\in T}c^{\lambda}(T) \label{eq:pmqe}
 	\end{align}
-\end{proposition}
+\end{theorem}
 \begin{proof}
 	
 	\begin{align*}
@@ -232,7 +232,7 @@ is defined as $c^{\lambda}(T) = \sum_{i \not\in T, j \in T} c^{\lambda}(i,j)$ wh
 	\end{align*}
 \end{proof}
 
-By proposition \ref{prop:constDiff}, for a given $\lambda, \tilde{h}_{\lambda}$ and $c^{\lambda}$ differs a constant value for any $T\subseteq V$. Therefore, we can use $c^{\lambda}$ in Algorithm \ref{alg:pmfT} such that $\argmin c^{\lambda}$ can be computed by maximum flow algorithm. 
+By Theorem \ref{thm:constDiff}, for a given $\lambda, \tilde{h}_{\lambda}$ and $c^{\lambda}$ differ a constant value for any $T\subseteq V$. Therefore, we can use $c^{\lambda}$ in Algorithm \ref{alg:pmfT} such that $\argmin c^{\lambda}$ can be computed by maximum flow algorithm. 
 
 Within function \texttt{Split} in Algorithm \ref{alg:pmfT}, An important notice is that we do not compute $P'$ in line \ref{alg:Pap} freshly but starting from a given flow map which is maximum flow after computing $Q$. By doing so, the time complexity to minimize $c^{\lambda}$ is reduced to $O(\abs{V}\abs{E})$ and the bottleneck is the uninitialized minimization at line \ref{alg:uini}, which is $O(\abs{V}^2\sqrt{\abs{E}})$ when highest-label selection rule is used.
 
@@ -292,16 +292,10 @@ For such problems with unweighted graph, it is more practical to give weight val
     w_{ij} = 1 + \abs{\{k | (i,k),(j,k) \in E \}} \textrm{ for } (i,j) \in E
 \end{equation}
 This weight assignment scheme is the number of triangles which contain the edge and can be justified by the following proposition.
-\begin{proposition}
-Suppose $S_1, S_2 $ are complete graph with $n$ nodes and equal weight $w=n$. There are $m$ edges between the two graphs and all inter-connection edge is with equal weight 1. Then we have
-\begin{equation}
-I(Z_V) = \begin{cases}
-m & m <\frac{n^2}{2}, S_1,S_2 \textrm{ are non-trival cluster} \\
-\frac{m+n^2(n-1)}{2n-1} & m\geq \frac{n^2}{2}, \textrm{ only trival cluster exists} 
-\end{cases}
-\end{equation}
-\end{proposition}
-This proposition tells us there is no other clusters except for $S_1, S_2$ and singletons. It inspires us to increase the weight linearly with the number of nodes for densely connected part of the whole community. It increases the performance of info-clustering algorithm.
+
+\input{proposition_reweight.tex}
+
+Proposition \ref{prop:reweight} tells us there is no other clusters except for $S_1, S_2$ and singletons. It inspires us to increase the weight linearly with the number of nodes for densely connected part of the whole community. It increases the performance of info-clustering algorithm.
 
 
 

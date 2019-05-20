@@ -106,7 +106,7 @@ If node set $S_1 \cap S_2 \neq \emptyset$ and $I(Z_{S_1}) > I(Z_{S_2})$, then $S
 \end{proposition}
 \begin{proof}
 Since $I(Z_{S_1\cup S_2}) > \min\{I(Z_{S_1}), I(Z_{S_2})\} = I(Z_{S_2})$. Then from the definition of info-cluster $S_2$ cannot be a cluster of $G$.
-Since every two clusters of $G$ are either disjoint or have the inclusion relationship, $S_2$ cannot be a cluster of $G$.
+Since $S_2$ can be extended to $S_1\cup S_2$, which has larger MMI.
 \end{proof}
 \begin{example}\label{ex:2c}
 We extend example \ref{ex:6point}. Consider two complete graphs $S_1, S_2$ with $n$ nodes (weight = 1), there are $m$ connections(edges) between the two complete graphs, but all inter-connection edge is with equal weight 1. Also, suppose there is no complete graph with $n+1$ nodes in the $2n$-nodes graph. Since $I(Z_{S_1})=\frac{n}{2}$ which is largest among all subgraphs with no more than $n$ nodes and equal weight 1(since the solution to $S_1$ is trival). Therefore $I(Z_V) = \min\{m, \frac{m+n(n-1)}{2n-1}\}$. By some deduction, we get
