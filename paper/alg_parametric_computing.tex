@@ -9,7 +9,7 @@
 		\STATE \texttt{Split}$(Q,P)$
 		\FUNCTION{\texttt{Split}$(Q,P)$}
 		\STATE Let $\tilde{\lambda}_2$ be the solution to $g_{\lambda}(Q) =  g_{\lambda}(P)$
-		\STATE $h' = g_{\lambda_2}(Q)$
+		\STATE $h' = g_{\tilde{\lambda}_2}(Q)$
 		\STATE $P' =\argmin_{A\in V} g_{\tilde{\lambda}_2}(A)$  \label{alg:Pap}
 		\IF{$ g_{\tilde{\lambda}_2}(P') = h'$}
 		\STATE add  $\tilde{\lambda}_2$ to $\mathbf{L}$

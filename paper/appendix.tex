@@ -211,11 +211,11 @@ We call the graph $G$ is robust enough since complete linkage between the two cl
 \end{proof}
 
 \section{Algorithm Formulation}
-In this section, we give the complete formulation of parametric Dilworth truncation algorithms.
+In this section, we give the complete formulation of parametric Dilworth truncation algorithms. There are three algorithms in different level. \texttt{pdt}(Algorithm \ref{alg:pdt}) at the top level, \texttt{pmf}(Algorithm \ref{alg:pmfC})at the middle level and \texttt{mf}(Maximum Flow) at the bottom level.
 \begin{algorithm}
-	\caption{paramatric Dilworth truncation $(\P, \mathcal{L})=\texttt{pdt}(G(V,E), c(e))$}\label{alg:pdt}
+	\caption{parametric Dilworth truncation $(\P, \mathcal{L})=\texttt{pdt}(G(V,E), c(e))$}\label{alg:pdt}
 	\begin{algorithmic}[1]
-		\REQUIRE an undirected graph $G(V, E)$; edge cost function $c(e)$ for $e\in E$
+		\REQUIRE a directed graph $G(V, E)$; edge cost function $c(e)$ for $e\in E$
 		\ENSURE a nested family of partition $\P^{\lambda}$ and its corresponding turning point list $\mathcal{L}$
 		\STATE initialize $y^{\lambda}_v = (0, +\infty)$ for $ v \in V$, $\P^{\lambda} = [\{\emptyset\}], \mathcal{L} = [+\infty]$
 		\FOR{$j = 1$ to $\abs{V}$}
@@ -225,8 +225,8 @@ In this section, we give the complete formulation of parametric Dilworth truncat
 		\STATE $y^{\lambda}_j = (f(\{j\}), +\infty)$
 		\ELSE
 		\STATE $ i = \max_i \{ u \in \mathcal{A}[i]\}$
-		\IF{$i$ exists and $L[i] > \frac{a_u - b_u}{2}$}
-		\STATE $y_u^{\lambda} = (a_u, a_u - 2 L[i])$
+		\IF{$i$ exists and $L[i] > a_u - b_u$}
+		\STATE $y_u^{\lambda} = (a_u, a_u - L[i])$
 		\ENDIF
 		\ENDIF
 		\ENDFOR
@@ -245,6 +245,57 @@ In this section, we give the complete formulation of parametric Dilworth truncat
 		\ENDFOR
 	\end{algorithmic}
 \end{algorithm}
+
+We make some remark about Algorithm \ref{alg:pmfC}
+\begin{enumerate}
+\item For different $\lambda$, we need to initialize the the capacity of $\widetilde{G}$ by equation \eqref{eq:clambda}.
+\begin{equation}\label{eq:clambda}
+c^{\lambda}(i, j) = 
+\begin{cases}
+\max\{0, -\min\{a_i-\lambda, b_i\}\} &  i = s, j \neq t \\
+w_{it} + \max\{0, \min\{a_i - \lambda, b_i\}\} & i\neq s, j = t\\
+0 & i = s, j = t\\
+w_{ij} & i \neq s, j \neq t
+\end{cases}
+\end{equation}
+Since $\widetilde{G}$ for a specified $\lambda$ is used only once, we can modify the capacity directly on previous $\widetilde{G}$ without creating new graph data structure.
+\item For \texttt{mf} algorithm we can only use push-relabel method. But we can choose different active node selecting scheme. For example, highest label is known to be practically fastest.
+\item For line \ref{findLambda} in  Algorithm \ref{alg:pmfC}, we can simplify the equation as
+\begin{equation}
+	\sum_{v\in \widetilde{V} \backslash (S\cup T)} [-y^{\lambda}_v ] = f(T_r)-f(T_l)
+\end{equation}
+\end{enumerate}
+
+\begin{algorithm}
+	\caption{parametric maximum flow $(\mathcal{A}, L) = \texttt{pmf}(G(V,E), w(e), t, y^{\lambda})$}\label{alg:pmfC}
+	\begin{algorithmic}[1]
+		\REQUIRE a directed graph $G(V, E)$; $t \in V={1,2,\dots, \abs{V}}$; edge cost function $w(e)$ for $e \in E$; function $f(A)$ is the cut function w.r.t set $A\subseteq V$; tuples $y^{\lambda}_i = (a_i, b_i)$ for $i \in V$.
+		\ENSURE a nested family of minimal value to $c^{\lambda}(T)$, as a reversely ordered set list $\mathcal{A}$ and its corresponding turning value $\lambda$ as an ordered value list $L$.
+		\STATE Let $L$ be the turning point list, initialized as empty array.
+		\STATE Construct $\widetilde{G}$: let $\widetilde{V}=V\cup\{s\}, \widetilde{E} = E\cup \{(s,j),(j,t)|j \in V, j\neq t\}$
+		\STATE Initialize $c^{-\epsilon}(e)$ for $e \in \widetilde{E}$ according to equation \eqref{eq:clambda}.
+		\STATE $ (T_0, \_)  = \mathtt{mf}(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{-\epsilon}(e))$. Also let $T_1 = \{j\}$.
+		\STATE $\mathcal{A}$ contains the decreasing set list, initialized as $[T_0, T_1]$;
+		\STATE \texttt{split}$( T_0, T_1)$
+		\FUNCTION{\texttt{split}$(T_l, T_r)$}
+		\STATE Let $\tilde{\lambda}_2$ be the value of $\lambda$ such that $c^{\lambda}(  \widetilde{V}\backslash T_l, T_l) = 
+		c^{\lambda}(\widetilde{V} \backslash T_r, T_r)$ \label{findLambda}
+		\STATE $h' = c^{\lambda}(\widetilde{V} \backslash T_r, T_r) $
+		\STATE Initialize $c^{\tilde{\lambda}_2}(e)$ for $e \in \widetilde{E}$ according to equation \eqref{eq:clambda}.
+		\STATE $(T', g') = \mathtt{mf}(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{\tilde{\lambda}_2}(e))$.
+		\IF{$h' > g'$}
+		\STATE insert $T'$ to $\mathcal{A}$
+		\STATE \texttt{split}$(T_l, T')$
+		\STATE \texttt{split}$(T', T_r)$
+		\ELSE
+		\STATE insert $\tilde{\lambda}_2$ to $L$
+		\ENDIF
+		\ENDFUNCTION
+	\end{algorithmic}
+\end{algorithm}
+
+solve $\tilde{\lambda}_2$ and how to .
+
 \section{Experiment Explanation}
 In this section, we describe the details of our two experiments. The source code for info-clustering algorithm and experiments can be found at \href{https://github.com/zhaofeng-shu33/principal\_sequence\_of\_partition}{info-cluster}.
 
