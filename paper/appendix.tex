@@ -166,14 +166,13 @@ From Proposition \ref{prop:triangle}, $I(Z_{V})$ is achieved by $\P=\{\{1\},\dot
 \begin{proof}
 There are certain breakpoints $a_i - b_i$ which determines whether $y_i^{\lambda}$ takes constant values. We can get an increasing list of such breakpoints as $\tilde{\lambda}_1 < \dots < \tilde{\lambda}_n$ while $\abs{n}\leq \abs{V}$. If $b_i = +\infty, y^{\lambda}_i = a_i - \lambda$ and there is no turning point for this one.
 
-We first compare $ u < v $ within a breakpoint interval. That is $\tilde{\lambda}_j \leq u < v \leq \tilde{\lambda}_{j+1}$. In such interval, let $S = \{i | y^{\lambda}_i = b_i\}$ and define $g_1(A) =\abs{A\backslash S}, g_2(A)= \sum_{i \in A \cap S} b_i$. We call a function $\mathcal{F}$ modular if
-$\mathcal{F}(A \cup B) + \mathcal{F}(A \cap B) = \mathcal{F}(A) + \mathcal{F}(B)$. Notice that $g_1$ and $g_2$ are both modular. We can rewrite $\tilde{h}(\lambda) = \min_{j\in A \subset V}g_3(A) + \lambda\abs{A}$ where $g_3(A)=f(A)-g_2(A)-\lambda(\abs{S}+1)$ and $g_3$ is a submodular function.
-Let $A_1 = \argmin \tilde{h}(u), A_2 = \argmin \tilde{h}(v)$. Ignoring the constant part, we will have
+We first compare $ u < v $ within a breakpoint interval. That is $\tilde{\lambda}_j \leq u < v \leq \tilde{\lambda}_{j+1}$. In such interval, let $S = \{i | y^{\lambda}_i = b_i\}$ and define $g_1(A) = \sum_{i\in A\backslash S} (a_i - \lambda), g_2(A)= \sum_{i \in A \cap S} b_i$. We can rewrite $\tilde{h}_{\lambda}(A) = f(A) - \lambda - g_1(A) - g_2(A) = g_3(A) + \lambda\abs{A}$ where $g_3(A)=f(A)-g_2(A)-\lambda(\abs{S}+1) - g_4(A)$, $g_4(A) = \sum_{i\in A\backslash S} a_i = \sum_{i \in A} a_i - \sum_{i \in A\cap S} a_i $. We can show that $g_3$ is a submodular function.
+Let $A_1 = \argmin_{A} \tilde{h}_u(A), A_2 = \argmin_{A} \tilde{h}_v(A)$. Ignoring the constant part, we will have
 \begin{align}
 g_3(A_1) + u \abs{A_1}& \leq g_3(A) + u \abs{A}, \forall A \subseteq V \label{eq:fA1}\\
 g_3(A_2) + v \abs{A_2}& \leq g_3(A) + v \abs{A}, \forall A \subseteq V \label{eq:fA2}
 \end{align}
-Using the submodular property of $f$ we have
+Using the submodular property of $g_3$ we have
 \begin{align*}
 g_3(A_1 \cap A_2) + g_3(A_1 \cup A_2)\leq  &g_3(A_1) + g_3(A_2) \\
 \Rightarrow g_3(A_1 \cap A_2) + g_3(A_1 \cup A_2) + u \abs{A_1} + v\abs{A_2} 
@@ -186,7 +185,7 @@ g_3(A_1 \cap A_2) + g_3(A_1 \cup A_2)\leq  &g_3(A_1) + g_3(A_2) \\
 \end{align*}
 Since $ u < v$, we have $\abs{A_2 \backslash A_1}=0$, that is $A_2 \subseteq A_1$.
 
-By the continuity of $\tilde{h}(\lambda)$, if $u<v$ belongs to different interval, we can use the breakpoints as springboard. That is, if $\lambda_j < u \leq \lambda_{j+1} \dots \leq \lambda_{j+k} \leq v$,  we will have $ A_1 \supseteq A_{\lambda_{j+1}} \dots \supseteq A_{\lambda_{j+k}} \supseteq A_2$.
+By the continuity of $\tilde{h}(\lambda)$, if $u<v$ belongs to different interval, we can use the breakpoints as the springboard. That is, if $\lambda_j < u \leq \lambda_{j+1} \dots \leq \lambda_{j+k} \leq v$,  we will have $ A_1 \supseteq A_{\lambda_{j+1}} \dots \supseteq A_{\lambda_{j+k}} \supseteq A_2$.
 \end{proof}
 
 \input{proposition_reweight.tex}
@@ -198,11 +197,55 @@ By the continuity of $\tilde{h}(\lambda)$, if $u<v$ belongs to different interva
 	$I(Z_{S_1\cup S_2}) > \min\{I(Z_{S_1}), I(Z_{S_2})\} = I(Z_{S_2})$. From bottom-up formulation in Proposition \ref{prop:ta},  $S_2$ cannot be a cluster of $G$.
 \end{proof}
 \begin{proof}[Proof of Proposition \ref{prop:reweight}]
-From Corollary \ref{cor:complete}, we have $I(Z_{S_1})= \frac{n^2}{2}$. Then for any $U \in S_1 \cup S_2 $ and $\abs{U} <= n$, $U\neq S_1$ and $U\neq S_2$, either $U \cap S_1 \neq \emptyset$ or $U \cap S_2 \neq \emptyset$ holds. By Lemma \ref{lemma:sub}, $I(Z_{S_1})= I(Z_{S_2}) > I(Z_U) \Rightarrow U$ is not a cluster of $G$.
- For $\abs{U} > n$ but $U \neq V = S_1 \cup S_2$. $I(Z_U)$ can only be reached by $\{\{i\}| i\in U\}$, which is $\frac{\frac{n(n-1)r}{2} + m_1 + \frac{k(k-1)r}{2}}{n+k-1}$ where $m_1 \leq nk$ and $k=\abs{U} - n < n$. We compare it to $\frac{nr}{2}$ and we can show that $I(Z_{S_1}) - I(Z_U) = \frac{(nk(n-1-k))}{2}$. If $k<n-1$, $I(Z_{S_1})>I(Z_U)$, $U$ is not a cluster by Lemma \ref{lemma:sub}. If $k=n-1$, and $I(Z_U) = I(Z_{S_1})$, then $m_1=nk$. In such case, for $\P=\{\{i\}|i\in V\}$ we have $I_{\P}(Z_V) = \frac{n(n-1)+n^2(n-1)}{2n-1} > I(Z_U)=\frac{n^2}{2}$. Then $I(Z_V) \geq I_{\P}(Z_V) > I(Z_U)$ and $U$ cannot be a cluster of $G$.
- In either case, $U$ is not a cluster of $G$ for $1<\abs{U}<2n$. we call the graph $S_1$ is robust enough since complete linkage between the two clusters cannot destroy its structure.	
+	We will show that if $U \neq S_1$ and $U \neq S_2$, $U$ cannot be a cluster of $G$.
+	
+For any $U \in S_1 \cup S_2 $ and $\abs{U} <= n$, by Corollary \ref{cor:complete}, $I(Z_U) < I(Z_{S_1})$.
+Since either $U \cap S_1 \neq \emptyset$ or $U \cap S_2 \neq \emptyset$ holds, by Lemma \ref{lemma:sub}, $I(Z_{S_1})= I(Z_{S_2}) > I(Z_U) \Rightarrow U$ is not a cluster of $G$.
+
+For $\abs{U} > n$ but $U \neq V = S_1 \cup S_2$. Let $\P' = \{\{i\}| i\in U\}$, $I(Z_U) \leq I_{\P'}(Z_V) = \frac{\frac{n(n-1)r}{2} + m_1 + \frac{k(k-1)r}{2}}{n+k-1}$ where $m_1 \leq nk$ and $k=\abs{U} - n < n$. 
+We compare it to $\frac{nr}{2}$ and we can show that $I(Z_{S_1}) - I_{\P'}(Z_U) = \frac{nk(n-1-k)}{2}$. If $k<n-1$, $I(Z_{S_1})>I(Z_U)$, $U$ is not a cluster by Lemma \ref{lemma:sub}. If $k=n-1$, and $I(Z_U) = I(Z_{S_1})$, then $m_1=nk$. In such case, for $\P=\{\{i\}|i\in V\}$ we have $I_{\P}(Z_V) = \frac{n(n-1)+n^2(n-1)}{2n-1} > I_{\P'}(Z_U)=\frac{n^2}{2}$. Then $I(Z_V) = I_{\P}(Z_V) > I_{\P'}(Z_U) \geq I(Z_U)$ and $U$ cannot be a cluster of $G$.
+
+ In either case, $U$ is not a cluster of $G$ for $1<\abs{U}<2n, U \neq S_1, U\neq S_2$. Then $I(Z_V)$ can be computed by comparing $\P$ and $\{S_1, S_2\}$.
+
+We call the graph $G$ is robust enough since complete linkage between the two clusters cannot destroy its structure.	
 \end{proof}
-\section{Experiment}
+
+\section{Algorithm Formulation}
+In this section, we give the complete formulation of parametric Dilworth truncation algorithms.
+\begin{algorithm}
+	\caption{paramatric Dilworth truncation $(\P, \mathcal{L})=\texttt{pdt}(G(V,E), c(e))$}\label{alg:pdt}
+	\begin{algorithmic}[1]
+		\REQUIRE an undirected graph $G(V, E)$; edge cost function $c(e)$ for $e\in E$
+		\ENSURE a nested family of partition $\P^{\lambda}$ and its corresponding turning point list $\mathcal{L}$
+		\STATE initialize $y^{\lambda}_v = (0, +\infty)$ for $ v \in V$, $\P^{\lambda} = [\{\emptyset\}], \mathcal{L} = [+\infty]$
+		\FOR{$j = 1$ to $\abs{V}$}
+		\STATE  $(\mathcal{A}, L) = \texttt{pmf}(G(V,E), c(e), j, y^{\lambda})$
+		\FOR{$u=1$ to $\abs{V}$}
+		\IF{$u=j$}
+		\STATE $y^{\lambda}_j = (f(\{j\}), +\infty)$
+		\ELSE
+		\STATE $ i = \max_i \{ u \in \mathcal{A}[i]\}$
+		\IF{$i$ exists and $L[i] > \frac{a_u - b_u}{2}$}
+		\STATE $y_u^{\lambda} = (a_u, a_u - 2 L[i])$
+		\ENDIF
+		\ENDIF
+		\ENDFOR
+		\STATE $i, k = 0, \mathcal{Q} = \{\emptyset\}, \widetilde{\mathcal{\P}}^{\lambda} = [], \widetilde{\mathcal{L}} = []$, append $+\infty$ to $L$.
+		\WHILE{$i<\texttt{length}(\mathcal{L})$ \texttt{ and } $k<\texttt{length}(L)$}
+		\IF{$ \P^{\lambda}_i[\mathcal{A}_k] \neq \mathcal{Q}$}
+		\STATE $\mathcal{Q} = \P^{\lambda}_i[\mathcal{A}_k]$
+		\STATE append $\mathcal{Q}$ to $\widetilde{\mathcal{\P}}^{\lambda}$ and $\min\{\mathcal{L}[i], L[k]\}$
+		to $\widetilde{\mathcal{L}}$
+		\ELSE
+		\STATE $\widetilde{\mathcal{L}}[-1] = \min\{\mathcal{L}[i], L[k]\}$
+		\ENDIF
+		\STATE $(i, k) \leftarrow \begin{cases} (i+1, k) & \mathcal{L}[i] < L[k] \\  (i, k+1) & \mathcal{L}[i] > L[k]\\ (i+1, k+1) & \mathcal{L}[i] = L[k]\end{cases}$
+		\ENDWHILE
+		\STATE $(\P^{\lambda}, \mathcal{L}) \leftarrow (\widetilde{\mathcal{\P}}^{\lambda},  \widetilde{\mathcal{L}})$
+		\ENDFOR
+	\end{algorithmic}
+\end{algorithm}
+\section{Experiment Explanation}
 In this section, we describe the details of our two experiments. The source code for info-clustering algorithm and experiments can be found at \href{https://github.com/zhaofeng-shu33/principal\_sequence\_of\_partition}{info-cluster}.
 
 
