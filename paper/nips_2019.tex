@@ -9,7 +9,7 @@
 
 % to compile a preprint version, e.g., for submission to arXiv, add add the
 % [preprint] option:
-    \usepackage[preprint]{neurips_2019}
+    \usepackage{neurips_2019}
 
 % to compile a camera-ready version, add the [final] option, e.g.:
  %    \usepackage[final]{neurips_2018}
@@ -38,7 +38,7 @@
 % \AND instead of \And before the third author name.
 
 \author{
-  anonymous
+  Feng Zhao
 }
 
 \begin{document}
@@ -86,9 +86,15 @@ For a three node directed graph (See Fig \ref{fig:tn}) $G=(\{1,2,3\},\{(1,2),(1,
 
 Based on the definition \eqref{def:ms}, we have both a top-down and bottom-up version of hierachical clustering.
 
-\input{proposition_top_bottom.tex}
+\begin{theorem}[info-clustering]\label{thm:ta}
+The following two procedures generate the same hierarchical tree. Each non-leaf node of the hierarchical tree is represented by a subset $S \subset V$, which is called a cluster of graph $G$.[ Theorem 2.4 in \cite{RN1}, Theorem 4.2 in \cite{RN8}]
+\begin{description}
+\item[top-down] For a graph $G$, suppose $I_{\P^*}(Z_V)=I(Z_V)$, each subset of $\P^*$ is a child of hierachical tree root $V$. For each child node set $C$, use partition $\P_C$($I(Z_C)=I_{\P_C}(Z_C)$) to split it until this branch is divided into singletons.
+\item[bottom-up] For a graph $G$, suppose $I(Z_C) = \max_{B\subseteq V} I(Z_B)$ and $C$ is maximal, merge singleton element of $C$ together and contract $G$. At each step select the set with maximal multivariate similarity to contract the graph until the graph is contracted to a single node, which is the tree root.
+\end{description}
+\end{theorem}
 %proof in attachment.
-The two procedures are illustrated by figure \ref{fig:ta}. For the top-down approach, there may be multiple partition $\P$ that reaches the minimum in \eqref{eq:ms}, we can show that there is a unique finest partition and this one is used; for the bottom-up approach, there may be multiple intersecting subsets with equal maximal multivariate similarity, we can show that the union of these subsets also reach the maximal and maximal $C$ is well defined.
+The two procedures are illustrated by Fig. \ref{fig:ta}. For the top-down approach, there may be multiple partition $\P$ that reaches the minimum in \eqref{eq:ms}, we can show that there is a unique finest partition and this one is used; for the bottom-up approach, there may be multiple intersecting subsets with equal maximal multivariate similarity, we can show that the union of these subsets also reach the maximal and maximal $C$ is well defined.
 %proof in attachment, before the proof of the above proposition. (2 statements)
 \begin{figure}
 \centering
@@ -127,7 +133,7 @@ The optimal partitions for $h(\lambda)$ are finite and they can be arranged in a
 
 Since $h_{\P}(\lambda)$ is linear about $\lambda$, $h(\lambda)$ is piecewise linear and each turning point of $h(\lambda)$ corresponds to $\P_i, \P_{i+1}$ respectively. We can use the parametric maximal flow algorithm to compute $\P_i$ efficiently, which is shown in the next section.
 
-The method in proposition \ref{prop:ta} is information theoretic since it is an extension of mutual information in information theory when the graph node is random variable and the edge weight is mutual information metric. In such case, equation \eqref{eq:ms} becomes one form of multivariate mutual information proposed in \cite{RN1}. When $I(Z_V)=0$, the random variables $\{Z_i | i \in V\}$ are called pairwise independent. 
+The method in Theorem \ref{thm:ta} is information theoretic since it is an extension of mutual information in information theory when the graph node is random variable and the edge weight is mutual information metric. In such case, equation \eqref{eq:ms} becomes one form of multivariate mutual information proposed in \cite{RN1}. When $I(Z_V)=0$, the random variables $\{Z_i | i \in V\}$ are called pairwise independent. 
 
 Info-clustering assumes that the weight is additive and tends to produce trivial hierarchical structure when the value of weights are near equal. This property is shown by the following theorem.
 \begin{theorem}\label{thm:trival}
@@ -292,7 +298,7 @@ Proposition \ref{prop:reweight} tells us there is no other clusters except for $
 \section{Conclusion}\label{sec:conclusion}
 In this paper, we have analyzed the mathematical model of info-clustering and extends it to data clustering and community detection scenario. It is suitable to use info-clustering if the size of data samples are small or medium sized. We have proposed a parametric computing scheme. Combined with parametric maximum flow, we can efficiently get the hierarchical structure of dataset or community. Numerical experiment shows that info-clustering performs well and especially suitable if the tree structure of ground truth is far different from the binary tree structure.
 
-\subsubsection*{Acknowledgments}
+%\subsubsection*{Acknowledgments}
 
 
 

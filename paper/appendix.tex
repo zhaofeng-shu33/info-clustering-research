@@ -8,7 +8,7 @@
 \appendix
 \section{Proofs of Propositions}
 This section gives proof on propositions appeared in the paper.
-\input{proposition_top_bottom.tex}
+
 \begin{lemma}\label{lem:ref_combination}
 For any $B \in \P' \in \Pi'$ and $\P_B \in \Pi'_B$, let $\P = \P_B \cup \P' \backslash \{B\} $
 be the refinement of $\P'$. Then we have
@@ -27,30 +27,7 @@ I_{\P}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 	As a result, there exists $\theta = {\abs{\P'} - 1 \over \abs{\P} - 1} \in (0,1)$ such that 
 	\eqref{eq:ref_combination} holds.
 \end{proof}
-\begin{lemma}\label{lem:mi_split}
-For any $\P:=\{C_1, \dots, C_k\} \in \Pi'$, we have
-\begin{align}
-I_{\P}(Z_V) =& I(Z_{C_1} \wedge \dots \wedge Z_{C_k}) \label{eq:mmi_representation} \\
-=& { 1 \over k-1} \sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j}) \label{eq:mi_mmi}
-\end{align}
-\end{lemma}
-\begin{proof}
-$I(Z_1 \wedge Z_2)$ is a kind of representation of mutual information.
-And we use \eqref{eq:mmi_representation} to represent the multivariate mutual information.
-
-Equation \eqref{eq:mi_mmi} is true for $k=2$. Suppose it holds for $k=m$. Then
-let $B=\{C_m, C_{m+1}\}$ , $\P=\{C_1, \dots, C_{m+1}\}$
-and use the result of lemma \ref{lem:ref_combination}, 
-we have $\theta = \frac{m-1}{m}$
-\begin{align*}
-I(Z_{C_1} \wedge \dots \wedge Z_{C_{m+1}}) & = 
- \frac{m-1}{m} I(Z_{C_1} \wedge \dots \wedge Z_{C_m})
-+ \frac{1}{m}  I(Z_{m} \wedge Z_{m+1}) \\
-& = \frac{m-1}{m} \frac{1}{m-1}\sum_{i=1}^{m-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^m C_j})\\
-& + \frac{1}{m}  I(Z_{m} \wedge Z_{m+1})\textrm{ by induction} \\
-& = \frac{1}{m} \sum_{i=1}^{m} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^{m+1} C_j})
-\end{align*}
-\end{proof}
+Lemma \ref{lem:ref_combination} has the same form with Corollary 5.3 in \cite{secretKey}, but the definition of $I_{\P}(Z_V)$ is different.
 
 \begin{lemma}\label{lem:smallZB}
 Suppose $I_{\P}(Z_V) = I(Z_V)$, then we have $I(Z_V) \geq I_{\P_B}(Z_B) \geq I(Z_B)$ if $\exists \P_B \subseteq \P$.
@@ -61,21 +38,6 @@ Let $\P' = \{B\} \cup \P\backslash \P_B$, then $\P = \P_B \cup \P'\backslash\{B\
 I_{\P}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 \end{equation}
 Since  $I_{P}(Z_V) = I(Z_V), I_{\P'}(Z_V)\geq I(Z_V) \Rightarrow I(Z_V) \geq I_{\P_B}(Z_B) \geq I(Z_B)$ 
-\end{proof}
-\begin{lemma}\label{lem:LargeIZV}
-	If $I_{\P}(Z_V)=I(Z_V)$ and $I(Z_C) > I(Z_V)$, then $C\subseteq B$ for $B \in \P$.
-\end{lemma}
-\begin{proof}
-	Suppose $C \not\subseteq B$, then there is a subset of at least two parts from $\P$ intersecting with $C$. Denote the collection of parts by $\P_U :=\{C_1, \dots, C_k\} \in \Pi'$ where 
-	$k \geq 2, C_i \in \P $ such that $C \subseteq \cup_{i=1}^k C_i$ and $C_i \cap C \neq \emptyset$.
-	Then we have
-\begin{align*}
-	I(Z_V) & \overbrace{\geq}_{(a)} I_{\P_U}(Z_U)  = I(Z_{C_1} \wedge \dots \wedge Z_{C_k})\\
-	& \overbrace{=}_{\ref{lem:mi_split}} {1\over k-1}\sum_{i=1}^{k-1} I(Z_{C_i} \wedge Z_{\cup_{j=i+1}^k C_j}) \\
-	& \overbrace{\geq}_{(b)} \frac{1}{k-1}\sum_{i=1}^{k-1} I(Z_{C_i \cap C} \wedge Z_{\cup_{j=i+1}^k C_j \cap C}) \\
-	& = I(Z_{C_1 \cap C} \wedge \dots \wedge Z_{C_k \cap C}) \geq I(Z_C)
-\end{align*}
-$(a)$ is from lemma \ref{lem:smallZB} and $(b)$ is from the data processing inequality of mutual information (or the restriction of graph cut function).
 \end{proof}
 
 \begin{lemma}\label{lemma:lattice}
@@ -93,44 +55,17 @@ I_{\P_1 \wedge \P_2}(Z_V) \leq \theta I(Z_V) + (1- \theta)I(Z_V) = I(Z_V)
 Then we have $I_{\P_1 \wedge \P_2}(Z_V)=I(Z_V)$.
 \end{proof}
 
-By Lemma \ref{lemma:lattice}, the finest partition $I_{\P}(Z_V)=I(Z_V)$ is unique, which is the meet of all partitions. Therefore, the top-down approach is unambiguous. We use $\P^*$ to denote the unique finest partition and it has the following property.
-\begin{lemma}\label{lemma:strict_larger_mi}
-The fundamental partition $\P^*$ with the singletons removed is the set of all maximal subsets $B \subseteq V$ with strictly larger mutual information. 
-That is, we have
-$I(Z_B) > I(Z_V)$ for $B \in \P^*, \abs{B}>1$.
-\end{lemma}
-\begin{proof}
-Suppose $I(Z_B)=I_{\P_B}(Z_B)$.
-Let $\P' = \P_B \cup  \P^* \backslash \{B\}$.
-Then by lemma \ref{lem:ref_combination}, there exists $\theta \in (0,1)$ such that 
-\begin{equation}\label{eq:convexZ}
-I_{\P'}(Z_V) = \theta I_{\P^*}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
-\end{equation}
-Since $\P^*$ is finest, we have $I_{\P'}(Z_V) > I(Z_V)$, then from \eqref{eq:convexZ}, we have 
-$I(Z_V) < \theta I(Z_V) + (1-\theta) I(Z_B) \Rightarrow I(Z_B) > I(Z_V)$.
-\end{proof}
-\begin{lemma}[Laminarity]\label{lemma:laminarity}
+By Lemma \ref{lemma:lattice}, the finest partition $I_{\P}(Z_V)=I(Z_V)$ is unique, which is the meet of all partitions. Therefore, the top-down approach mentioned in the paper is unambiguous. We use $\P^*$ to denote the unique finest partition and it has the following property.
+
+\begin{lemma}[Corollary 5.1 in \cite{secretKey}]\label{lemma:laminarity}
 \begin{equation}\label{eq:P}
 I(Z_{C_1 \cup C_2}) \geq \min\{ I(Z_{C_1}), I(Z_{C_2})\}, \textrm{ for } C_1\cap C_2 \neq \emptyset
 \end{equation}
 \end{lemma}
-\begin{proof}
-	We proceed by contradiction. Let $V=C_1 \cup C_2$ and suppose $I(Z_V) < I(Z_{C_1}),
-	I(Z_V) < I(Z_{C_2})$. There exists $\P$ such that $I_{\P}(Z_V) = I(Z_V)$.
-	Then by lemma \ref{lem:LargeIZV} we can get $C_1 \subset B_1, C_2 \subset B_2, B_1, B_2 \in
-	\P$. Since $C_1 \cap C_2 \neq \emptyset \Rightarrow B_1 = B_2$. Therefore $V=C_1 \cup C_2 \subset B_1$ which contradicts $\abs{\P}>1$.
-\end{proof}
-Theorem \ref{lemma:laminarity} implies the maximal requirement for the bottom-up approach is umambigious. First we notice that if the subsets are non-overlapping, we can merge them respectively. Therefore, we only need to consider $C_1, C_2$ such that $I(Z_{C_1}) = I(Z_{C_2}) = \max_{B\subseteq V} I(Z_B)$ and $C_1\cap C_2 \neq \emptyset$. , $I(Z_{C_1\cup C_2}) \geq \max_{B\subseteq V} I(Z_B)$ therefore $C_1\cup C_2$ is also a solution to the maximization.
-\begin{proof}[Proof of Proposition \ref{prop:ta}]
-We make the connection of the two approaches with the original definition of info-clusters in \cite{RN1}.
-\begin{equation}\label{eq:def_CgammaZV}
-\mathcal{C}_{\gamma}(Z_V) = \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \}
-\end{equation}
-The smallest critical value of $\mathcal{C}_{\gamma}(Z_V)$ is $I(Z_V)$ (Theorem 1 in \cite{RN1}) and for each $B \in \P$, since  our $\P$ is fundamental partition we have $I(Z_B) > I(Z_V)$ by Lemma \ref{thm:strict_larger_mi} for $\abs{B}>1$. Take $\gamma = I(Z_V)$, by lemma \ref{lem:LargeIZV}, if $I(Z_C) > \gamma$ we have $C\subseteq B' \in \P$. Therefore $B$ is maximal and $B\in \mathcal{C}_{\gamma}(Z_V)$. The same argument can be done for subtrees by replacing $V$ by subroot. Therefore, all tree node sets by top-down approach belong to $\mathcal{C}_{\gamma}(Z_V)$. By Theorem 2.4 in \cite{RN1}, we conclude all clusters in $C_{\gamma}(Z_V)$ is a tree node set by top-down approach.
 
-The largest critical value of $\mathcal{C}_{\gamma}(Z_V)$ is $\gamma_N = \max_{B\subseteq V} I(Z_B)$. Take $\gamma = \gamma_N - \epsilon$ where $\epsilon$ is sufficient small, since $I(Z_C) > \gamma$ and $C$ is maximal, we have $C \in \mathcal{C}_{\gamma}(Z_V)$. For each tree node set, since it is also maximal for some $\gamma$, all of them belong to $\mathcal{C}_{\gamma}(Z_V)$. By Theorem 4.2 in \cite{RN8}, we conclude all clusters in $C_{\gamma}(Z_V)$ is a tree node set by bottom-up approach.
-\end{proof}
-By the construction of the clustering tree, we can associate each tree node with a threshold value, which is multivariate similarity computed at that step.
+Lemma \ref{lemma:laminarity} implies the maximal requirement for the bottom-up approach mentioned in the paper is unambiguous. First we notice that if the subsets are non-overlapping, we can merge them respectively. Therefore, we only need to consider $C_1, C_2$ such that $I(Z_{C_1}) = I(Z_{C_2}) = \max_{B\subseteq V} I(Z_B)$ and $C_1\cap C_2 \neq \emptyset$. , $I(Z_{C_1\cup C_2}) \geq \max_{B\subseteq V} I(Z_B)$ therefore $C_1\cup C_2$ is also a solution to the maximization.
+
+
 
 \input{proposition_triangle_inequality.tex}
 \begin{proof}
@@ -193,7 +128,7 @@ By the continuity of $\tilde{h}(\lambda)$, if $u<v$ belongs to different interva
 \end{lemma}
 \begin{proof}
 	From Lemma \ref{lemma:laminarity},
-	$I(Z_{S_1\cup S_2}) > \min\{I(Z_{S_1}), I(Z_{S_2})\} = I(Z_{S_2})$. From bottom-up formulation in Proposition \ref{prop:ta},  $S_2$ cannot be a cluster of $G$.
+	$I(Z_{S_1\cup S_2}) > \min\{I(Z_{S_1}), I(Z_{S_2})\} = I(Z_{S_2})$. From bottom-up formulation,  $S_2$ cannot be a cluster of $G$.
 \end{proof}
 \begin{proof}[Proof of Proposition \ref{prop:reweight}]
 	We will show that if $U \neq S_1$ and $U \neq S_2$, $U$ cannot be a cluster of $G$.
@@ -206,8 +141,8 @@ We compare it to $\frac{nr}{2}$ and we can show that $I(Z_{S_1}) - I_{\P'}(Z_U) 
 
  In either case, $U$ is not a cluster of $G$ for $1<\abs{U}<2n, U \neq S_1, U\neq S_2$. Then $I(Z_V)$ can be computed by comparing $\P$ and $\{S_1, S_2\}$.
 
-We call the graph $G$ is robust enough since complete linkage between the two clusters cannot destroy its structure.	
 \end{proof}
+Proposition \ref{prop:reweight} shows that under certain conditions the graph $G$ is robust enough since complete linkage between the two clusters cannot destroy its structure.	
 
 \section{Algorithm Formulation}
 In this section, we give the complete formulation of parametric Dilworth truncation algorithms. There are three algorithms in different level. \texttt{pdt}(Algorithm \ref{alg:pdt}) at the top level, \texttt{pmf}(Algorithm \ref{alg:pmfC})at the middle level and \texttt{mf}(Maximum Flow) at the bottom level.

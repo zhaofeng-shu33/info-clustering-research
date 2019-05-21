@@ -219,7 +219,23 @@ Denote the collection of set which achieves $\gamma_{i+1}$ as $C_{i+1}:=\{C \in 
 	then $I(Z_B) > I(Z_C)$,
 	by lemma \ref{lem:LargeIZV} and maximal property of $B$, $B \in \P^*_C$.
 \end{proof}
+\begin{proposition}[info-clustering]\label{prop:ta}
+The following two procedures generate the same hierarchical tree. Each non-leaf node of the hierarchical tree is represented by a subset $S \subset V$, which is called a cluster of graph $G$.
+\begin{enumerate}
+\item For a graph $G$, suppose $I_{\P^*}(Z_V)=I(Z_V)$, each subset of $\P^*$ is a child of hierachical tree root $V$. For each child node set $C$, use partition $\P_C$($I(Z_C)=I_{\P_C}(Z_C)$) to split it until this branch is divided into singletons.
+\item For a graph $G$, suppose $I(Z_C) = \max_{B\subseteq V} I(Z_B)$ and $C$ is maximal, merge singleton element of $C$ together and contract $G$. At each step select the set with maximal multivariate similarity to contract the graph until the graph is contracted to a single node, which is the tree root.
+\end{enumerate}
+\end{proposition}
+Theorem \ref{thm:laminarity} implies the maximal requirement for the bottom-up approach is unambiguous. First we notice that if the subsets are non-overlapping, we can merge them respectively. Therefore, we only need to consider $C_1, C_2$ such that $I(Z_{C_1}) = I(Z_{C_2}) = \max_{B\subseteq V} I(Z_B)$ and $C_1\cap C_2 \neq \emptyset$. , $I(Z_{C_1\cup C_2}) \geq \max_{B\subseteq V} I(Z_B)$ therefore $C_1\cup C_2$ is also a solution to the maximization.
 
+We can make the connection of the two approaches with the original definition of info-clusters in 
+equation \eqref{eq:def_CgammaZV}.
+
+The smallest critical value of $\mathcal{C}_{\gamma}(Z_V)$ is $I(Z_V)$  and for each $B \in \P$, since  our $\P$ is fundamental partition we have $I(Z_B) > I(Z_V)$ by Theorem \ref{thm:strict_larger_mi} for $\abs{B}>1$. Take $\gamma = I(Z_V)$, by lemma \ref{lem:LargeIZV}, if $I(Z_C) > \gamma$ we have $C\subseteq B' \in \P$. Therefore $B$ is maximal and $B\in \mathcal{C}_{\gamma}(Z_V)$. The same argument can be done for subtrees by replacing $V$ by subroot. Therefore, all tree node sets by top-down approach belong to $\mathcal{C}_{\gamma}(Z_V)$. By Theorem 2.4 in \cite{ic}, we conclude all clusters in $C_{\gamma}(Z_V)$ is a tree node set by top-down approach.
+
+The largest critical value of $\mathcal{C}_{\gamma}(Z_V)$ is $\gamma_N = \max_{B\subseteq V} I(Z_B)$. Take $\gamma = \gamma_N - \epsilon$ where $\epsilon$ is sufficient small, since $I(Z_C) > \gamma$ and $C$ is maximal, we have $C \in \mathcal{C}_{\gamma}(Z_V)$. For each tree node set, since it is also maximal for some $\gamma$, all of them belong to $\mathcal{C}_{\gamma}(Z_V)$. By Theorem 4.2 in \cite{agg}, we conclude all clusters in $C_{\gamma}(Z_V)$ is a tree node set by bottom-up approach.
+
+By the construction of the clustering tree, we can associate each tree node with a threshold value, which is multivariate similarity computed at that step.
 
 Below we show the connection of info-clustering problem with principal sequence of partition(PSP) problem. The conclusion is that all their critical values 
 and finest partitions coincide.
@@ -564,5 +580,6 @@ In this section, we use 4 different clustering methods and test them on 5 differ
 \bibitem{mac} Minimum Average Cost Clustering
 \bibitem{fwrobust} Provable Submodular Minimization using Wolfe's Algorithm
 \bibitem{psp} The Principal Lattice of Partitions of a Submodular Function
+\bibitem{agg} Agglomerative Info-Clustering
 \end{thebibliography}
 \end{document}
