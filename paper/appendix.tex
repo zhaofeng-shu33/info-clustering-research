@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage[preprint]{neurips_2019}
+\usepackage{neurips_2019}
 \usepackage{hyperref}       % hyperlinks
 \input{extra_math.tex}
 \title{Supplementary Material}
@@ -142,10 +142,9 @@ We compare it to $\frac{nr}{2}$ and we can show that $I(Z_{S_1}) - I_{\P'}(Z_U) 
  In either case, $U$ is not a cluster of $G$ for $1<\abs{U}<2n, U \neq S_1, U\neq S_2$. Then $I(Z_V)$ can be computed by comparing $\P$ and $\{S_1, S_2\}$.
 
 \end{proof}
-Proposition \ref{prop:reweight} shows that under certain conditions the graph $G$ is robust enough since complete linkage between the two clusters cannot destroy its structure.	
 
 \section{Algorithm Formulation}
-In this section, we give the complete formulation of parametric Dilworth truncation algorithms. There are three algorithms in different level. \texttt{pdt}(Algorithm \ref{alg:pdt}) at the top level, \texttt{pmf}(Algorithm \ref{alg:pmfC})at the middle level and \texttt{mf}(Maximum Flow) at the bottom level.
+In this section, we give the complete formulation of parametric Dilworth truncation algorithms. There are three parts in different level. \texttt{pdt}(Algorithm \ref{alg:pdt}) at the top level, \texttt{pmf}(Algorithm \ref{alg:pmfC})at the middle level and \texttt{mf}(Maximum Flow) at the bottom level.
 
 Algorithm \ref{alg:pdt} is an adaption and concrete implementation of Fig. 3 in \cite{RN4}.
 
@@ -199,9 +198,9 @@ Since $\widetilde{G}$ for a specified $\lambda$ is used only once, we can modify
 
 \item For \texttt{mf}, we use push-relabel maximum flow algorithm\cite{Goldberg}.
 
- $(T,g',\tilde{f})=$\texttt{mf}$(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{\tilde{\lambda}_2}(e), \tilde{f})$. The first parameter of \texttt{mf} is graph topology structure; the second parameter is edge capacity map and the third parameter is a valid flow to be used as the initial flow of the push-relabel algorithm. The third parameter is optional \texttt{mf} returns three values, $T$ is minimum cut of target side($t\in T$); $g'$ is the maximum flow value; $\tilde{f}$ is the maximum flow map.
+ $(T,g',\tilde{f})=$\texttt{mf}$(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{\tilde{\lambda}_2}(e), \tilde{f})$. The first parameter of \texttt{mf} is graph topology structure; the second parameter is edge capacity map and the third parameter is a valid flow to be used as the initial flow of the push-relabel algorithm. The third parameter is optional. \texttt{mf} returns three values: $T$ is minimum cut of target side($t\in T$); $g'$ is the maximum flow value; $\tilde{f}$ is the maximum flow map.
 
-For $\texttt{mf}$, we can choose different active node selecting scheme. For example, highest label selection rule is known to be practically fastest.
+For $\texttt{mf}$, we can choose different active node selecting scheme. For example, highest label selection rule is known to be fastest in practice.
 
 \item For line \ref{findLambda} in  Algorithm \ref{alg:pmfC}, we can simplify the equation as
 \begin{equation}\label{eq:solveL}
@@ -272,8 +271,7 @@ This is because $\tilde{\lambda}_2 > -\epsilon$, by equation \eqref{eq:clambda},
 
 
 \section{Experiment Explanation}
-In this section, we describe the details of our two experiments. The source code for info-clustering algorithm and experiments can be found at \href{https://github.com/zhaofeng-shu33/principal\_sequence\_of\_partition}{info-cluster}.
-
+In this section, we describe the details of our two experiments. 
 
 \subsection{Data Clustering}
 For the three groups of data: \textsf{Gaussian}, \textsf{Circle} and \textsf{Iris}. The first two have some intrinsic randomness. To make the result reproducible, we use fixed the random seed to generate the data. The three circles data is generated using polar coordinate:
