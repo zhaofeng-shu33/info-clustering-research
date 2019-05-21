@@ -7,9 +7,8 @@
 \maketitle
 \appendix
 \section{Proofs of Propositions}
-This section gives proof details about propositions in the paper.
+This section gives proof on propositions appeared in the paper.
 \input{proposition_top_bottom.tex}
-Before processing, we give some properties of multivariate similarity $I(Z_V)$, which will be used in the proof of Proposition \ref{prop:ta}.
 \begin{lemma}\label{lem:ref_combination}
 For any $B \in \P' \in \Pi'$ and $\P_B \in \Pi'_B$, let $\P = \P_B \cup \P' \backslash \{B\} $
 be the refinement of $\P'$. Then we have
@@ -212,6 +211,9 @@ We call the graph $G$ is robust enough since complete linkage between the two cl
 
 \section{Algorithm Formulation}
 In this section, we give the complete formulation of parametric Dilworth truncation algorithms. There are three algorithms in different level. \texttt{pdt}(Algorithm \ref{alg:pdt}) at the top level, \texttt{pmf}(Algorithm \ref{alg:pmfC})at the middle level and \texttt{mf}(Maximum Flow) at the bottom level.
+
+Algorithm \ref{alg:pdt} is an adaption and concrete implementation of Fig. 3 in \cite{RN4}.
+
 \begin{algorithm}
 	\caption{parametric Dilworth truncation $(\P, \mathcal{L})=\texttt{pdt}(G(V,E), c(e))$}\label{alg:pdt}
 	\begin{algorithmic}[1]
@@ -260,7 +262,9 @@ w_{ij} & i \neq s, j \neq t
 \end{equation}
 Since $\widetilde{G}$ for a specified $\lambda$ is used only once, we can modify the capacity directly on previous $\widetilde{G}$ without creating new graph data structure.
 
-\item For \texttt{mf}, we can only use push-relabel maximum flow algorithm\cite{Goldberg}. $(T,g',\tilde{f})=$\texttt{mf}$(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{\tilde{\lambda}_2}(e), \tilde{f})$. The first parameter of \texttt{mf} is graph topology structure; the second parameter is edge capacity map and the third parameter is a valid flow to be used as the initial flow of the push-relabel algorithm. \texttt{mf} returns three values, $T$ is minimum cut of target side($t\in T$); $g'$ is the maximum flow value; $\tilde{f}$ is the maximum flow map.
+\item For \texttt{mf}, we use push-relabel maximum flow algorithm\cite{Goldberg}.
+
+ $(T,g',\tilde{f})=$\texttt{mf}$(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{\tilde{\lambda}_2}(e), \tilde{f})$. The first parameter of \texttt{mf} is graph topology structure; the second parameter is edge capacity map and the third parameter is a valid flow to be used as the initial flow of the push-relabel algorithm. The third parameter is optional \texttt{mf} returns three values, $T$ is minimum cut of target side($t\in T$); $g'$ is the maximum flow value; $\tilde{f}$ is the maximum flow map.
 
 For $\texttt{mf}$, we can choose different active node selecting scheme. For example, highest label selection rule is known to be practically fastest.
 
@@ -288,12 +292,17 @@ Then by the continuity of $c^{\lambda}(T)$, there exists $\tilde{\lambda} \in [-
 For the initial computation in Algorithm \ref{alg:pmfC},
 	$T_l = T_0, T_r = T_1$. $\lambda_1 = -\epsilon$. On the other hand, for a sufficient large $\lambda=\lambda', T_1$ is minimum value of $c^{\lambda}(T)$, therefore $\lambda_3 = \lambda'$. 
 
-Within \texttt{split}$(T_l, T_r)$ \footnotemark, suppose equation \eqref{eq:solutionProperty} holds with $(\lambda_1, \lambda_3)$, then 
+Within \texttt{split}$(T_l, T_r)$, suppose equation \eqref{eq:solutionProperty} holds with $(\lambda_1, \lambda_3)$, then 
 $c^{\lambda_1}(T_l) \leq c^{\lambda_1}(T')$ and $c^{\tilde{\lambda}_2}(T_l) = h' > c^{\tilde{\lambda}_2}(T')$ by line \ref{alg:lineLarge}. That is, equation \eqref{eq:solutionProperty} holds for \texttt{split}$(T_l, T')$ with $(\lambda_1, \tilde{\lambda}_2)$. Similarly, from $c^{\lambda_3}(T') \geq c^{\lambda_3}(T_r)$ and $c^{\tilde{\lambda}_2}(T') < h' = c^{\tilde{\lambda}_2}(T_r)$ we can get  equation \eqref{eq:solutionProperty} holds for \texttt{split}$(T_l, T')$ with $(\tilde{\lambda}_2, \lambda_3)$.
-\footnotetext{we ignore the third parameter $\tilde{f}$ for notation convenience }
+
 By deduction, we conclude equation \eqref{eq:solutionProperty} holds and line \eqref{findLambda} always has solution.
 \end{proof}
-\item In line \ref{alg:flowModify} of Algorithm \ref{alg:pmfC}, flow $\tilde{f}$ is modified in place. We can show $\tilde{f}$ is always a valid preflow for $T_l$. For $T_l=T_0$, this claim holds since $\tilde{f}$ is a maximum flow of $T_0$. Suppose it holds for \texttt{split}$(T_l, T_r, \tilde{f})$, 
+\item In line \ref{alg:flowModify} of Algorithm \ref{alg:pmfC}, we use flow $\tilde{f}$ coming from line \ref{alg:T0property}. The modification is quite simple:
+\begin{align}
+\tilde{f}'(j,t) &= \min\{\tilde{f}(j,t), c^{\lambda}(j,t) \} \\
+\tilde{f}'(i,j) &= \tilde{f}(i,j), j \neq t, (i,j) \in \widetilde{E}
+\end{align}
+This is because $\tilde{\lambda}_2 > -\epsilon$, by equation \eqref{eq:clambda}, $c^{\lambda}(s,j)$ increases and $c^{\lambda} (j,t)$ decreases. By only restricting $\tilde{f}'(j,t)$ not to exceed the capacity constraint can we get a valid preflow.
 \end{enumerate}
 
 \begin{algorithm}
@@ -306,19 +315,19 @@ By deduction, we conclude equation \eqref{eq:solutionProperty} holds and line \e
 		\STATE Initialize $c^{-\epsilon}(e)$ for $e \in \widetilde{E}$ according to equation \eqref{eq:clambda}.
 		\STATE $ (T_0, \_, \tilde{f})  = \mathtt{mf}(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{-\epsilon}(e))$. Also let $T_1 = \{j\}$. \label{alg:T0property}
 		\STATE $\mathcal{A}$ contains the decreasing set list, initialized as $[T_0, T_1]$;
-		\STATE \texttt{split}$( T_0, T_1, \tilde{f})$
-		\FUNCTION{\texttt{split}$(T_l, T_r, \tilde{f})$}
+		\STATE \texttt{split}$( T_0, T_1)$
+		\FUNCTION{\texttt{split}$(T_l, T_r)$}
 		\STATE Let $\tilde{\lambda}_2$ be the value of $\lambda$ such that $c^{\lambda}(  T_l) = 
 		c^{\lambda}(T_r)$ \label{findLambda}
 		\STATE $h' = c^{\tilde{\lambda}_2}(T_r) $
-		\STATE modify $\tilde{f}$ such that it is a valid preflow for $(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{\tilde{\lambda}_2}(e))$ \label{alg:flowModify}
+		\STATE initialize $\tilde{f}'$ from $\tilde{f}$ such that it is a valid preflow for $(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{\tilde{\lambda}_2}(e))$ \label{alg:flowModify}
 
 		\STATE Initialize $c^{\tilde{\lambda}_2}(e)$ for $e \in \widetilde{E}$ according to equation \eqref{eq:clambda}.
-		\STATE $(T', g', \tilde{f}') = \mathtt{mf}(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{\tilde{\lambda}_2}(e), \tilde{f})$.
+		\STATE $(T', g', \tilde{f}') = \mathtt{mf}(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{\tilde{\lambda}_2}(e), \tilde{f}')$.
 		\IF{$h' > g'$} \label{alg:lineLarge}
 		\STATE insert $T'$ to $\mathcal{A}$
-		\STATE \texttt{split}$(T_l, T', \tilde{f})$
-		\STATE \texttt{split}$(T', T_r, \tilde{f}')$
+		\STATE \texttt{split}$(T_l, T')$
+		\STATE \texttt{split}$(T', T_r)$
 		\ELSE
 		\STATE insert $\tilde{\lambda}_2$ to $L$
 		\ENDIF
