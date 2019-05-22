@@ -274,26 +274,28 @@ This is because $\tilde{\lambda}_2 > -\epsilon$, by equation \eqref{eq:clambda},
 In this section, we describe the details of our two experiments. 
 
 \subsection{Data Clustering}
-For the three groups of data: \textsf{Gaussian}, \textsf{Circle} and \textsf{Iris}. The first two have some intrinsic randomness. To make the result reproducible, we use fixed the random seed to generate the data. The three circles data is generated using polar coordinate:
+For the three groups of data: \textsf{Gaussian}, \textsf{Circle} and \textsf{Glass}. The first two have some intrinsic randomness. To make the result reproducible, we fix the random seed of our program. The three circles data is generated using polar coordinate:
 \begin{align*}
 r &= 0.1*i + 0.01*(2u-1), i = 1, 2, 3\\
 \theta & = 2\pi v
 \end{align*}
 where random variable $u,v$ conform uniform distribution within $[0,1]$. Also, $u$ and $v$ are independent.
 
-Different metric (or affinity) can affect the clustering accuracy significantly. Some clustering algorithm such as \textsf{k-means} can only use Euclidean metric and performs badly on non-convex dataset such as \textsf{Circle}. Therefore, we do not use such algorithm in comparision. 
+Different metric (or affinity) can affect the clustering accuracy significantly. Some clustering algorithm such as \textsf{k-means} can only use Euclidean metric and performs badly on non-convex dataset such as \textsf{Circle}. Therefore, we do not use such algorithm in our comparison. 
 
-Some algorithm needs to specify the number of cluster.  For example, spectral clustering is a powerful method but lacks the flexibility because it needs the dimension of subspace(number of cluster).  We'd like to compare methods which have the ability to select the best cluster without knowing the ground truth. Both \textsf{affinity propagation} and \textsf{agglomerative clustering}\footnote{We can use a quality function to select the best layer in the hierarchical tree, for example modularity of Newman and Girvan.} meets the requirement. The agglomerative clustering algorithm we used is the standard one which merges two objects at each step. For \textsf{affinity propagation} and \textsf{agglomerative clustering} we use the implementation of \textsf{scikit-learn}(\cite{scikit-learn}) and tune their parameters respectively.
+Some algorithm needs to specify the number of cluster.  For example, spectral clustering is a powerful method but lacks the flexibility because it needs the dimension of subspace(number of cluster).  We'd like to compare methods which have the ability to select the number of cluster without knowing the ground truth. Both \textsf{affinity propagation} and \textsf{agglomerative clustering}\footnote{We can use a quality function to select the best layer in the hierarchical tree, for example modularity of Newman and Girvan.} meet the requirement. The agglomerative clustering algorithm we used is the standard one which merges two objects at each step. For \textsf{affinity propagation} and \textsf{agglomerative clustering} we use the implementation of \textsf{scikit-learn}\cite{scikit-learn} and tune their parameters respectively.
 
 For real world data like Glass dataset, some pre-processing is necessary, for our experiment we just scale each feature dimension to $[0, 1]$ for all algorithms.
 
-For \textsf{Gaussian} dataset, all three algorithms can get correct clustering result (\texttt{ari = 1.0}); for \textsf{Circle} dataset, affinity propagation method performs poorly even for nearest neighbor metric; for \textsf{Glass} dataset, info-clustering method has best performance compared with other method. To achieve this score, we use nearest neighbor affinity metric with 14 neighbors. We also tune the hyperparameters of the other two algorithms but neither of them can achieve the score of info-clustering.
+For \textsf{Gaussian} dataset, all three algorithms can get correct clustering result (\texttt{ari = 1.0}); for \textsf{Circle} dataset, affinity propagation method performs poorly even for nearest neighbor metric; for \textsf{Glass} dataset, info-clustering method has best performance compared with other method. To achieve this score, we use nearest neighbor affinity metric with 14 neighbors. We also tune the hyper-parameters of the other two algorithms but neither of them can achieve the score of info-clustering.
 
 
 \subsection{Community Detection}
 There are many other community detection algorithms, but most of them can only divide the graph into several parts and get a one-level structure. For hierarchical community detection, some methods generate binary trees. For given nodes, binary tree tends to have large tree depth and is not suitable in many cases. To compare info-clustering algorithm fairly, we use other two hierarchical community detection algorithms (GN and BHCD) which allow non-binary tree structure.
  
-There is some randomness in the generation of the two-level community. For info-clustering algorithms, it is sensitive to input graph and we average the normalized RF distance by running 20 times of experiment for the same graph configuration. For the other two algorithms, the distance remains unchanged for the same graph parameter $(z_{\mathrm{in}_1}, z_{\mathrm{in}_2}, z_{\mathrm{out}})$, hence we do not need to rerun many times.
+There is some randomness in the generation of the two-level community for given $(z_{\mathrm{in}_1}, z_{\mathrm{in}_2}, z_{\mathrm{out}})$. Therefore we average the distance metric by running 20 times of experiment for the same graph configuration parameter. For BHCD method, we use symmetric network configuration with $\gamma = 0.4, \lambda=0.85, \delta=0.2$, which is tuned by grid-search method. For info-clustering and GN method, there is no hyper-parameters to tune. Notice that we assign weight to the graph by 
+$w_{ij} = 1 + \abs{\{k | (i,k),(j,k) \in E \}}$
+for info-clustering method.
 
 For this experiment, we make courtesy to ETE Toolkit\cite{ete3} and NetworkX library \cite{SciPyProceedings_11}, which make the experiment easy to implement.
 

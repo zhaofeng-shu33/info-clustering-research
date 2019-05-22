@@ -65,7 +65,7 @@ f[\P] = \sum_{\substack{i\in C, j \not\in C\\ (i,j)\in E, C\in \mathcal{P}}} w_{
 \begin{cases}
 \frac{1}{2} \sum_{C\in \P}f(C)   & G \textrm{ is undirected} \\
 \sum_{C\in \P}f(C)   & G \textrm{ is directed}
-\end{cases}
+\end{cases},\P \in \Pi
 \end{equation}
 An important observation is that if we add direction to an undirected graph, the value of $f[\P]$ is unchanged. Therefore, without specific declaration, $G$ is directed throughout the paper. The last notation is about $x(C)$ in which $x$ is a $\abs{V}$ dimensional vector and $x(C)=\sum_{i \in C} x_i, C\in V$.
 \section{Models}\label{sec:models}
@@ -241,9 +241,9 @@ In this section, we demonstrate info-clustering algorithm on two kinds of proble
 \subsection{Data Clustering}\label{sec:fc}
 For data clustering task, we prepare three groups of data, coming from \cite{RN7}:
 \begin{enumerate}
-\item Four Gaussian blobs with unit variance and centers at $(3,3), (3,-3), (-3,3), (-3,-3)$.  We generate 25 points for each blob.
+\item Four Gaussian blobs with unit variance and centers at $(3,3), (3,-3), (-3,3), (-3,-3)$ respectively.  We generate 25 points for each blob.
 \item Three concentric circles with radius $0.1,0.2,0.3$ and number of data points as $60, 100, 140$. The angles of these points are uniform distributed and they also oscillate around the radius direction.
-\item Iris flower dataset with 50 samples, 3 classes, 4 dimensions of feature.
+\item UCI glass dataset with 214 samples, 6 classes, 9 dimensions of feature.
 \end{enumerate}
 We use adjusted rand index as the metric to score different clustering method, the best performance for each algorithm is shown in Table \ref{tb:e1}.  It can be seen from the table that info-clustering algorithm is competitive with other clustering algorithms.
 \begin{table}[!ht]
@@ -262,6 +262,7 @@ We use adjusted rand index as the metric to score different clustering method, t
 		\includegraphics[width=\textwidth]{pic/tree_info-clustering.pdf}
 		\caption{hierarchical tree by info-clustering algorithm for left figure. By merging tree leaves with the same ancestor, we can recover the two levels of the community.}\label{fig:c2}
 	\end{subfigure}
+	\caption{}
 \end{figure}
 
 For community detection task, we use a two-level artificial dataset proposed in \cite{RN22}. 

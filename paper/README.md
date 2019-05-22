@@ -17,5 +17,8 @@ table, see [utility](https://github.com/zhaofeng-shu33/principal_sequence_of_par
 
 ```shell
 mkdir -p build
-cp ../code/utility/build/compare_3.tex ./build/
+cp ../experiment/data-clustering/build/compare_3.tex ./build/
 ```
+
+If you cannot make the table file, you can download [compare_3.tex](https://programmierung.oss-cn-shenzhen.aliyuncs.com/research/info-clustering/code/utility/parameter.json) 
+and put it in the build directory.
