@@ -265,7 +265,7 @@ We use adjusted rand index as the metric to score different clustering method, t
 \end{figure}
 
 For community detection task, we use a two-level artificial dataset proposed in \cite{RN22}. 
-The community structure is shown in Fig. \ref{fig:c1}. It has 4 communities in macro-level, and each macro community contains 4 micro communities. We use $z_{\mathrm{in}_1}$ to represent the internal average degree of nodes within micro community; $z_{\mathrm{in}_2}$ as node degree between different micro communities but within one macro community; $z_{\mathrm{out}}$ as node degree between different macro communities. By varying one and fixing the other two in $\{z_{\mathrm{in}} , z_{\mathrm{in}_2}, z_{\mathrm{out}} \}$ we get different set of experiment. To compare the hierarchical tree deduced from algorithm and the ground truth, we use the normalized Robinson-Foulds distance as the metric. It describes the distance between two trees with different topology and falls within $[0,1]$. We compare the RF distance of info-clustering algorithm with that of GN(Girvan-Newman algorithm) and BHCD(a Bayes Hierarchical method in \cite{RN23}). The result is shown in Fig. \ref{fig:cdr}. BHCD method produces clusters with $\texttt{norm\_rf}=1$ for any configuration in the three figures and is omitted. As can be seen from Fig.\ref{fig:cdr}, in either case, info-clustering can produce more similar tree structures to the tree structure of the ground truth.
+The community structure is shown in Fig. \ref{fig:c1}. It has 4 communities in macro-level, and each macro community contains 4 micro communities. We use $z_{\mathrm{in}_1}$ to represent the internal average degree of nodes within micro community; $z_{\mathrm{in}_2}$ as node degree between different micro communities but within one macro community; $z_{\mathrm{out}}$ as node degree between different macro communities. By varying one and fixing the other two in $\{z_{\mathrm{in}} , z_{\mathrm{in}_2}, z_{\mathrm{out}} \}$ we get different set of experiment. To compare the hierarchical tree deduced from algorithm and the ground truth, we use the normalized Robinson-Foulds distance as the metric. It describes the distance between two trees with different topology and falls within $[0,1]$. We compare the RF distance of info-clustering algorithm with that of GN(Girvan-Newman algorithm) and BHCD(a Bayes Hierarchical method in \cite{RN23}). The result is shown in Fig. \ref{fig:cdr}. As can be seen from Fig.\ref{fig:cdr}, in either case, info-clustering can produce more similar tree structures to the tree structure of the ground truth.
 \begin{figure}
 	\centering
 	\begin{subfigure}{0.33\textwidth}
@@ -280,7 +280,7 @@ The community structure is shown in Fig. \ref{fig:c1}. It has 4 communities in m
 		\includegraphics[width=\textwidth]{pic/z_o.eps}
 		\caption{}
 	\end{subfigure}
-	\caption{}\label{fig:cdr}	
+	\caption{Distance Comparision between different hierarchical community detection method. Smaller distance indicates more similar structure with the ground truth tree.}\label{fig:cdr}	
 \end{figure}
 
 For such problems with unweighted graph, it is more practical to give weight values for info-clustering algorithm by 
