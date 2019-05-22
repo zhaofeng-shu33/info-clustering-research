@@ -287,7 +287,7 @@ Some algorithm needs to specify the number of cluster.  For example, spectral cl
 
 For real world data like Glass dataset, some pre-processing is necessary, for our experiment we just scale each feature dimension to $[0, 1]$ for all algorithms.
 
-For \textsf{Gaussian} dataset, all three algorithms can get correct clustering result (\texttt{ari = 1.0}); for \textsf{Circle} dataset, affinity propagation method performs poorly even for nearest neighbor metric; for \textsf{Glass} dataset, info-clustering method has best performance compared with other method. To achieve this score, we use nearest neighbor affinity metric with 14 neighbors. We also tune the hyper-parameters of the other two algorithms but neither of them can achieve the score of info-clustering.
+For \textsf{Gaussian} dataset, all three algorithms can get correct clustering result (\texttt{ari = 1.0}); for \textsf{Circle} dataset, affinity propagation method performs poorly even for nearest neighbor metric; for \textsf{Glass} dataset, info-clustering method has best performance compared with other method. To achieve this score, we use nearest neighbor affinity metric with 14 neighbors. We also tune the hyper-parameters of the other two algorithms (ward linkage with pre-specified number of cluster equal to 7 for agglomerative clustering; Euclidean metric, preference equal to -50 and damping factor equal to 0.8 for affinity propagation) but neither of them can achieve the score of info-clustering.
 
 
 \subsection{Community Detection}

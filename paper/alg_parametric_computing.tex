@@ -1,8 +1,8 @@
 \begin{algorithm}
 	\caption{Parametric Computing of $T^{\lambda} = \argmin_{t\in V} g_{\lambda}(T)$}\label{alg:pmfT}
 	\begin{algorithmic}[1]
-		\REQUIRE Node $t$, function $g_{\lambda}$, set $V$.
-		\ENSURE An ordered array \textbf{L} which contains $\lambda_1, \dots \lambda_k$ and a reversely ordered array $T^{\lambda}$ which contains the $T_0,\dots, T_k$. (defined in equation \eqref{eq:Alambda})
+		\REQUIRE set $V$, $t \in V$, function $g_{\lambda}$ whose domain is $V$.
+		\ENSURE An ordered array \textbf{L} which contains $\lambda_1, \dots \lambda_k$ and a reversely ordered array $T^{\lambda}$ which contains $T_0,\dots, T_k$. (defined in equation \eqref{eq:Alambda})
 		\STATE \textbf{L}, $A^{\lambda} \leftarrow$ empty arrays of size $\abs{V}$
 		\STATE $Q \leftarrow \argmin_{A\in V} g_{-\epsilon}(A), P \leftarrow \{ t \}$ \label{alg:uini}
 		\STATE add $Q$ and $P$ to $T^{\lambda}$
@@ -14,7 +14,7 @@
 		\IF{$ g_{\tilde{\lambda}_2}(P') = h'$}
 		\STATE add  $\tilde{\lambda}_2$ to $\mathbf{L}$
 		\ELSE
-		\STATE add $P'$ to $T^{\lambda}$
+		\STATE add $P'$ to $T^{\lambda}$ \label{alg:addP}
 		\STATE \texttt{Split}$(Q,P')$
 		\STATE \texttt{Split}$(P',P)$
 		\ENDIF

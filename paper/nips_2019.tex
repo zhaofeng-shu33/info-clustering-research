@@ -169,7 +169,7 @@ $y^{\lambda}_i = \min\{a_i - \lambda, b_i\}$  and $b_i \leq +\infty$.
 	\centering
 	\begin{subfigure}{0.45\textwidth}
 		\includegraphics[width=\textwidth]{pic/example_pst_single.eps}
-		\caption{An illustration to Algorithm \ref{alg:pmfT}}\label{fig:linseg}
+		\caption{An illustration of Algorithm \ref{alg:pmfT}}\label{fig:linseg}
 	\end{subfigure}
 	\begin{subfigure}{0.45\textwidth}
 		\includegraphics[width=\textwidth]{pic/pdt.eps}
@@ -177,7 +177,7 @@ $y^{\lambda}_i = \min\{a_i - \lambda, b_i\}$  and $b_i \leq +\infty$.
 	\end{subfigure}
 \end{figure}
 
-It is pointed out in \cite{RN4} that \eqref{eq:pmq} can be solved with $\lambda$ as a parameter, not a value. We call this method parametric Dilworth truncation(pdt in short, in Fig \ref{fig:pyramid}). It can solve \eqref{eq:hL} directly by treating $\lambda$ as a parameter. However, how to solve \eqref{eq:pmq} for fixed $t$ is not a trivial task and the approach given in \cite{RN4} is quite complex to analyze. Below, we will give a clear and efficient approach to solve \eqref{eq:pmq} for $\lambda\geq 0$. 
+It is pointed out in \cite{RN4} that equation \eqref{eq:pmq} can be solved with $\lambda$ as a parameter, not a value. We call this method parametric Dilworth truncation(pdt in short, in Fig \ref{fig:pyramid}). It can solve \eqref{eq:hL} directly by treating $\lambda$ as a parameter. However, how to solve \eqref{eq:pmq} for fixed $t$ is not a trivial task and the approach given in \cite{RN4} is quite complex to analyze. Below, we propose a clear and efficient approach to solve \eqref{eq:pmq} for $\lambda\geq 0$. 
 
 First we have the following property to the solution set of $\tilde{h}(\lambda) $.
 \input{proposition_submodular_structure}
@@ -188,16 +188,16 @@ Another important observation of function $\tilde{h}(\lambda)$ is that it is pie
 \input{alg_parametric_computing.tex}
 
 \begin{example}
-We use the graph defined in Example \ref{eg:three} and define $f$ as the graph cut function, $t=3$ and $y^{\lambda}_i = -\lambda, i=1,2,3$. 
-We can get $T_0 = \{1,2,3\} $ and $T_k = \{3\}$. And their corresponding lines are $\tilde{h}_{\lambda}(T_0) =2\lambda$ and $\tilde{h}_{\lambda}(T_k)=6$. As Fig. \ref{fig:linseg} shows, they intersect at $(3, 6)$, the set $T_1=\{1,3\}$; and we can compute $\tilde{h}(3)=5<6$. That is, there are turning points of $\tilde{h}$ at interval $(0, 3)$ and $(3, +\infty)$ respectively. For $(0,3)$, we compute the intersection of $\tilde{h}_{\lambda}(T_0)$ and $\tilde{h}_{\lambda}(T_1)=2+\lambda$ and get the intersection coordinate $(2,4)$; Also $\tilde{h}(1)=4$, therefore, the computation for $(0,3)$ is finished. The same goes for $(3, +\infty)$. And finally, we can get $L=[2,4, +\infty]$ and $A^{\lambda} = [\{1,2,3\}, \{1,3\},\{3\}]$	
+We use the graph defined in Example \ref{eg:three}(Fig. \ref{fig:tn}) and define $f$ as the graph cut function, $t=3$ and $y^{\lambda}_i = -\lambda, i=1,2,3$. 
+We can get $T_0 = \{1,2,3\} $ and $T_k = \{3\}$. And their corresponding lines are $\tilde{h}_{\lambda}(T_0) =2\lambda$ and $\tilde{h}_{\lambda}(T_k)=6$. As Fig. \ref{fig:linseg} shows, they intersect at $(3, 6)$; Since $\tilde{h}(3)=5<6$, the set $T_1=\{1,3\}$ from Algorithm \ref{alg:pmfT} line \ref{alg:addP}. That is, there are turning points of $\tilde{h}$ at interval $(0, 3)$ and $(3, +\infty)$ respectively. For $(0,3)$, we compute the intersection of $\tilde{h}_{\lambda}(T_0)$ and $\tilde{h}_{\lambda}(T_1)=2+\lambda$ and get the intersection coordinate $(2,4)$; Also $\tilde{h}(2)=4$, therefore  the computation for $(0,3)$ is finished. The same goes for $(3, +\infty)$. And finally, we can get $L=[2,4, +\infty]$ and $A^{\lambda} = [\{1,2,3\}, \{1,3\},\{3\}]$	
 \end{example}
 
 Algorithm \ref{alg:pmfT} is only theoretically computable. To make it possible to implement, we need to figure out how to compute $\tilde{h}(\lambda)$ for given $\lambda$ efficiently.
 
-To simplify our notation, in this section we will let $w_{ij} = 0$ if $(i,j) \not\in E$. To compute $\tilde{h}(\lambda)$, we combine Algorithm \ref{alg:pmfT} and parametric maximum flow Algorithm (shorted as pmf in Fig \ref{fig:pyramid}). The combination begins at creating a new weighted directed graph $\widetilde{G}(\widetilde{V}, \widetilde{E})$ from directed graph $G(V,E)$ by the following steps:
+To simplify our notation, in this section we will let $w_{ij} = 0$ if $(i,j) \not\in E$. To compute $\tilde{h}(\lambda)$, we combine Algorithm \ref{alg:pmfT} and parametric maximum flow algorithm (shorted as pmf in Fig \ref{fig:pyramid}). The combination begins at creating a new weighted directed graph $\widetilde{G}(\widetilde{V}, \widetilde{E})$ from directed graph $G(V,E)$ by the following steps:
 \begin{enumerate}
 	\item Add a new node $s$ and initialize $c^{\lambda}(s,v)=\max\{0, -y^{\lambda}_v\}$ for $v \in V\backslash \{t\}$
-	\item Copy the weight to arc capacity of $\widetilde{G}$ and modify the in-arc capacity of node $j$ as $c^{\lambda}(v,t) = w_{vt} + \max\{0, y^{\lambda}_v\}$
+	\item Copy the weight of $G$ to arc capacity of $\widetilde{G}$ and modify the in-arc capacity of node $t$ as $c^{\lambda}(v,t) = w_{vt} + \max\{0, y^{\lambda}_v\}$ for $ v \in V\backslash \{s\}$
 	\end{enumerate}
 
 \begin{figure}
@@ -231,7 +231,7 @@ is defined as $c^{\lambda}(T) = \sum_{i \not\in T, j \in T} c^{\lambda}(i,j)$ wh
 
 By Theorem \ref{thm:constDiff}, for a given $\lambda, \tilde{h}_{\lambda}$ and $c^{\lambda}$ differ a constant value for any $T\subseteq V$. Therefore, we can use $c^{\lambda}$ in Algorithm \ref{alg:pmfT} such that $\argmin c^{\lambda}$ can be computed by maximum flow algorithm. 
 
-Within function \texttt{Split} in Algorithm \ref{alg:pmfT}, An important notice is that we do not compute $P'$ in line \ref{alg:Pap} freshly but starting from a given flow map which comes from maximum flow after computing $Q$. By doing so, the time complexity can be significantly reduced. 
+Within function \texttt{Split} in Algorithm \ref{alg:pmfT}, An important notice is that we do not compute $P'$ in line \ref{alg:Pap} freshly but starting from a given flow map which comes from maximum flow after computing $Q$. By doing so, the time complexity can be significantly reduced.
 
 Algorithm \ref{alg:pmfT} is invoked $\abs{V}$ times by iterating $t=1,\dots \abs{V}$. By the analysis in \cite{RN17}, the time complexity for pmf can be achieved with the same of maximal flow. If highest label selection rule is used, the overall time complexity for parametric Dilworth truncation is $O(\abs{V}^3\sqrt{\abs{E}})$\cite{RN9}. Compared with those iteration method dominated by accuracy $\epsilon$, info-clustering method terminates in strongly polynomial time.
 
@@ -260,9 +260,9 @@ We use adjusted rand index as the metric to score different clustering method, t
 	\end{subfigure}
 	\begin{subfigure}{0.45\textwidth}
 		\includegraphics[width=\textwidth]{pic/tree_info-clustering.pdf}
-		\caption{hierarchical tree by info-clustering algorithm for left figure. By merging tree leaves with the same ancestor, we can recover the two levels of the community.}\label{fig:c2}
+		\caption{hierarchical tree obtained by info-clustering algorithm for left figure. The tree leaves with the same ancestor are merged for clarity.}\label{fig:c2}
 	\end{subfigure}
-	\caption{}
+	\caption{Community Detection Experiment Illustration}
 \end{figure}
 
 For community detection task, we use a two-level artificial dataset proposed in \cite{RN22}. 
