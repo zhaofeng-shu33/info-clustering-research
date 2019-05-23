@@ -7,7 +7,7 @@
 \maketitle
 \appendix
 \section{Proofs of Propositions}
-This section gives proof on propositions appeared in the paper. Before proceeding, we introduce some additional notations used in this section. $\Pi_B$ is the collection of partition on $B\subset V$. $E(C)=\{(i,j) | (i,j)\in E, i,j \in C\}$ is an edge subset of $E$. The meet of two partitions $\P_1 \wedge \P_2 = \max\{\P \in \Pi | \P \preceq \P_1, \P \preceq \P_2\}$. The notation $\wedge$ comes from lattice theory.
+This section gives proof on propositions appeared in the paper. Before proceeding, we introduce some additional notations used in this section. $\Pi_B$ is the collection of partition on $B\subset V$. $E(C)=\{(i,j) | (i,j)\in E, i,j \in C\}$ is an edge subset of $E$. The meet of two partitions $\P_1 \wedge \P_2 = \max\{\P \in \Pi | \P \preceq \P_1, \P \preceq \P_2\}$. The notation $\wedge$ comes from lattice theory. For a partition $\P \in \Pi'$ and set $ A \subset V$, partition expansion is defined as $\P[A] = \{B \in \P | B \cap A = \emptyset \} \cup \{ A \cup (\cup_{B \in \Pi, B \cap A \neq \emptyset} B) \}$.
 
 \begin{lemma}\label{lem:ref_combination}
 For any $B \in \P' \in \Pi'$ and $\P_B \in \Pi'_B$, let $\P = \P_B \cup \P' \backslash \{B\} $
@@ -251,13 +251,13 @@ By deduction, we conclude equation \eqref{eq:solutionProperty} holds and line \e
 \tilde{f}'(j,t) &= \min\{\tilde{f}(j,t), c^{\lambda}(j,t) \} \\
 \tilde{f}'(i,j) &= \tilde{f}(i,j), j \neq t, (i,j) \in \widetilde{E}
 \end{align}
-This is because $\tilde{\lambda}_2 > -\epsilon$, by equation \eqref{eq:clambda}, $c^{\lambda}(s,j)$ increases and $c^{\lambda} (j,t)$ decreases. By only restricting $\tilde{f}'(j,t)$ not to exceed the capacity constraint can we get a valid preflow.
+This is because $\tilde{\lambda}_2 > -\epsilon$, by equation \eqref{eq:clambda}, $c^{\lambda}(s,j)$ increases and $c^{\lambda} (j,t)$ decreases. By restricting $\tilde{f}'(j,t)$ not to exceed the capacity constraint can we get a valid preflow.
 \end{enumerate}
 
 \begin{algorithm}
 	\caption{parametric maximum flow $(\mathcal{A}, L) = \texttt{pmf}(G(V,E), w(e), t, y^{\lambda})$}\label{alg:pmfC}
 	\begin{algorithmic}[1]
-		\REQUIRE a directed graph $G(V, E)$; $t \in V={1,2,\dots, \abs{V}}$; edge cost function $w(e)$ for $e \in E$; function $f(A)$ is the cut function w.r.t set $A\subseteq V$; tuples $y^{\lambda}_i = (a_i, b_i)$ for $i \in V$.
+		\REQUIRE a directed graph $G(V, E)$; $t \in V={1,2,\dots, \abs{V}}$; edge cost function $w(e)$ for $e \in E$; $t \in V$; tuples $y^{\lambda}_i = (a_i, b_i)$ for $i \in V$.
 		\ENSURE a nested family of minimal value to $c^{\lambda}(T)$, as a reversely ordered set list $\mathcal{A}$ and its corresponding turning value $\lambda$ as an ordered value list $L$.
 		\STATE Let $L$ be the turning point list, initialized as empty array.
 		\STATE Construct $\widetilde{G}$: let $\widetilde{V}=V\cup\{s\}, \widetilde{E} = E\cup \{(s,j),(j,t)|j \in V, j\neq t\}$
@@ -296,21 +296,21 @@ r &= 0.1*i + 0.01*(2u-1), i = 1, 2, 3\\
 \end{align*}
 where random variable $u,v$ conform uniform distribution within $[0,1]$. Also, $u$ and $v$ are independent.
 
-Different metric (or affinity) can affect the clustering accuracy significantly. Some clustering algorithm such as \textsf{k-means} can only use Euclidean metric and performs badly on non-convex dataset such as \textsf{Circle}. Therefore, we do not use such algorithm in our comparison. 
-
-Some algorithm needs to specify the number of cluster.  For example, spectral clustering is a powerful method but lacks the flexibility because it needs the dimension of subspace(number of cluster).  We'd like to compare methods which have the ability to select the number of cluster without knowing the ground truth. Both \textsf{affinity propagation} and \textsf{agglomerative clustering}\footnote{We can use a quality function to select the best layer in the hierarchical tree, for example modularity of Newman and Girvan.} meet the requirement. The agglomerative clustering algorithm we used is the standard one which merges two objects at each step. For \textsf{affinity propagation} and \textsf{agglomerative clustering} we use the implementation of \textsf{scikit-learn}\cite{scikit-learn} and tune their parameters respectively.
+Different metric (or affinity) can affect the clustering accuracy significantly. For this experiment, we try rbf kernel, Laplacian and k-nearest neighbors.  The agglomerative clustering algorithm we used is the standard one which merges two objects at each step and we can choose different linkage type. For \textsf{affinity propagation} and \textsf{agglomerative clustering} we use the implementation of \textsf{scikit-learn}\cite{scikit-learn} and tune their parameters respectively.
 
 For real world data like Glass dataset, some pre-processing is necessary, for our experiment we just scale each feature dimension to $[0, 1]$ for all algorithms.
 
-For \textsf{Gaussian} dataset, all three algorithms can get correct clustering result (\texttt{ari = 1.0}); for \textsf{Circle} dataset, affinity propagation method performs poorly even for nearest neighbor metric; for \textsf{Glass} dataset, info-clustering method has best performance compared with other method. To achieve this score, we use nearest neighbor affinity metric with 14 neighbors. We also tune the hyper-parameters of the other two algorithms (ward linkage with pre-specified number of cluster equal to 7 for agglomerative clustering; Euclidean metric, preference equal to -50 and damping factor equal to 0.8 for affinity propagation) but neither of them can achieve the score of info-clustering.
+For \textsf{Gaussian} dataset, all three algorithms can get correct clustering result (\texttt{ari = 1.0}); for \textsf{Circle} dataset, intuitively only k-nearest neighbor affinity works, but propagation method performs poorly even for this metric; for \textsf{Glass} dataset, info-clustering method has best performance compared with other method. To achieve this score, we use nearest neighbor affinity metric with 14 neighbors. We also tune the hyper-parameters of the other two algorithms (ward linkage with pre-specified number of cluster equal to 7 for agglomerative clustering; Euclidean metric, preference equal to -50 and damping factor equal to 0.8 for affinity propagation) but neither of them can achieve the score of info-clustering.
 
 
 \subsection{Community Detection}
-There are many other community detection algorithms, but most of them can only divide the graph into several parts and get a one-level structure. For hierarchical community detection, some methods generate binary trees. For given nodes, binary tree tends to have large tree depth and is not suitable in many cases. To compare info-clustering algorithm fairly, we use other two hierarchical community detection algorithms (GN and BHCD) which allow non-binary tree structure.
+There are many other community detection algorithms, but most of them can only get a flatten structure of the community. For hierarchical community detection method, some of them can only generate binary trees. For some graph models, binary tree tends to have large tree depth and is not suitable. To compare info-clustering algorithm fairly, we use other two hierarchical community detection algorithms (GN and BHCD) which allow non-binary tree structure.
  
-There is some randomness in the generation of the two-level community for given $(z_{\mathrm{in}_1}, z_{\mathrm{in}_2}, z_{\mathrm{out}})$. Therefore we average the distance metric by running 20 times of experiment for the same graph configuration parameter. For BHCD method, we use symmetric network configuration with $\gamma = 0.4, \lambda=0.85, \delta=0.2$, which is tuned by grid-search method. For info-clustering and GN method, there is no hyper-parameters to tune. Notice that we assign weight to the graph by 
+There is some randomness in the generation of the two-level community for given $(z_{\mathrm{in}_1}, z_{\mathrm{in}_2}, z_{\mathrm{out}})$. Therefore we average the distance metric by running 20 times of experiment for the same $(z_{\mathrm{in}_1}, z_{\mathrm{in}_2}, z_{\mathrm{out}})$. For BHCD method, we use symmetric network configuration with $\gamma = 0.4, \lambda=0.85, \delta=0.2$ and 50 times of restart, which is tuned by grid-search method. For info-clustering and GN method, there is no hyper-parameters to tune. Notice that we assign weight to the graph by 
 $w_{ij} = 1 + \abs{\{k | (i,k),(j,k) \in E \}}$
-for info-clustering method.
+for info-clustering method. GN method does not require the weight value of the graph and we simply use the graph topology information to do the clustering task.
+
+The plotting of this experiment shows that BHCD method produces RF distance near or equal to 1(which is maximal distance allowed). It reflects that BHCD is unsuitable for this kind of problem. For gn method, it is nearly unchanged for graph parameter change, except for $z_{\mathrm{in}_1}$. When $z_{\mathrm{in}_1}$ increases from 13 to 15 while $z_{\mathrm{in}_2}=3.0, z_o=1.0$, the distance decreases significantly. However, neither of these two approaches can outperform info-clustering. Plotting shows that info-clustering has the lowest distance for all shown parameters except for $(z_{\mathrm{in}_1}=10, z_{\mathrm{in}_2}=3.0, z_{\mathrm{out}}=1.0)$.
 
 For this experiment, we make courtesy to ETE Toolkit\cite{ete3} and NetworkX library \cite{SciPyProceedings_11}, which make the experiment easy to implement.
 
