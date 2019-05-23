@@ -1,6 +1,8 @@
 \documentclass{article}
 \usepackage{neurips_2019}
 \usepackage{hyperref}       % hyperlinks
+\usepackage{xr}
+\externaldocument{nips_2019}
 \input{extra_math.tex}
 \title{Supplementary Material}
 \begin{document}
@@ -74,7 +76,7 @@ We use deduction to show
 \begin{equation}\label{eq:GF}
 f[\P] \geq \frac{\abs{\P}-1}{\abs{V}-1} \sum_{(i,j) \in E} w_{ij}
 \end{equation}
-for any $\P \in \Pi$. Then by corresponding theorem in the paper, Proposition \ref{prop:triangle} holds. 
+for any $\P \in \Pi$. Then by Theorem \ref{thm:ta} in the paper, Proposition \ref{prop:triangle} holds. 
 
 Let $n=\abs{V}$. For $\abs{\P}=n$, the equality of equation \ref{eq:GF} holds. 
 
