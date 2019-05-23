@@ -157,7 +157,7 @@ We compare it to $I(Z_{S_1}) = \frac{n^2}{2}$ and we can show that $I(Z_{S_1}) -
 \end{proof}
 
 \section{Algorithm Formulation}
-In this section, we give the complete formulation of parametric Dilworth truncation algorithm. There are three parts in different level: \texttt{pdt}(Algorithm \ref{alg:pdt}) at the top level, \texttt{pmf}(Algorithm \ref{alg:pmfC})at the middle level and \texttt{mf}(Maximum Flow) at the bottom level.
+In this section, we give the complete formulation of parametric Dilworth truncation algorithm. There are three parts in different level: \texttt{pdt} (Algorithm \ref{alg:pdt}) at the top level, \texttt{pmf} (Algorithm \ref{alg:pmfC}) at the middle level and \texttt{mf} (Maximum Flow) at the bottom level.
 
 Algorithm \ref{alg:pdt} is an adaption and concrete implementation of Fig. 3 in \cite{RN4}.
 
@@ -210,7 +210,7 @@ w_{ij} & i \neq s, j \neq t
 \end{equation}
 Since $\widetilde{G}$ for a specified $\lambda$ is used only once, we can modify the capacity directly on previous $\widetilde{G}$ without creating new graph data structure.
 
-\item For \texttt{mf}, we use push-relabel maximum flow algorithm\cite{Goldberg}.
+\item For \texttt{mf}, we use push-relabel maximum flow algorithm \cite{Goldberg}.
 
  $(T,g',\tilde{f})=$\texttt{mf}$(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{\tilde{\lambda}_2}(e), \tilde{f})$. The first parameter of \texttt{mf} is graph topology structure; the second parameter is edge capacity map and the third parameter is a valid flow to be used as the initial flow of the push-relabel algorithm. The third parameter is optional. \texttt{mf} returns three values: $T$ is minimum cut of target side($t\in T$); $g'$ is the maximum flow value; $\tilde{f}$ is the maximum flow map.
 
@@ -231,7 +231,7 @@ For $\texttt{mf}$, we can choose different active node selecting scheme. For exa
 \end{proof}
 The right-hand side of equation \eqref{eq:solveL} is constant while the left-hand side is a piecewise linear decreasing function. Since $T_l \supseteq T_r$, the left-hand side summation is not empty. We can show that equation in line \ref{findLambda} always has a solution for Algorithm \ref{alg:pmfC}.
 \begin{lemma}
-	Within function \textrm{split} in Algorithm \ref{alg:pmfC}, $c^{\lambda}(T_l) = c^{\lambda}(T_r)$ is a equation about $\lambda$. It has a solution.
+	Within function \texttt{split} in Algorithm \ref{alg:pmfC}, $c^{\lambda}(T_l) = c^{\lambda}(T_r)$ is a equation about $\lambda$. It has a solution.
 \end{lemma}
 \begin{proof}
 	we only need to show for the two parameters of function \texttt{split}, the following property always holds.
@@ -302,7 +302,7 @@ where random variable $u,v$ conform uniform distribution within $[0,1]$. Also, $
 
 Different metric can affect the clustering accuracy significantly. For this experiment, we try rbf kernel, Laplacian and k-nearest neighbors.  
 
-The agglomerative clustering algorithm we used is the standard one which merges two objects at each step and we can choose different linkage type for this algorithm. For \textsf{affinity propagation} and \textsf{agglomerative clustering} we use the implementation of \textsf{scikit-learn}\cite{scikit-learn} and tune their parameters respectively.
+The agglomerative clustering algorithm we used is the standard one which merges two objects at each step and we can choose different linkage type for this algorithm. For \textsf{affinity propagation} and \textsf{agglomerative clustering} we use the implementation of \textsf{scikit-learn} \cite{scikit-learn} and tune their parameters respectively.
 
 For real world data like Glass dataset, some pre-processing is necessary, for our experiment we just scale each feature dimension to $[0, 1]$ for all algorithms.
 
@@ -318,7 +318,7 @@ for info-clustering method. GN method does not require the weight value of the g
 
 The plotting of this experiment shows that BHCD method produces RF distance near or equal to 1(which is maximal distance allowed). It reflects that BHCD is unsuitable for this kind of problem. For GN method, it is nearly unchanged for graph parameter change, except for $z_{\mathrm{in}_1}$. When $z_{\mathrm{in}_1}$ increases from 13 to 15 while $z_{\mathrm{in}_2}=3.0, z_o=1.0$, the distance decreases significantly. However, neither of these two approaches can outperform info-clustering. Plotting shows that info-clustering has the smallest distance for all shown parameters except for $(z_{\mathrm{in}_1}=10, z_{\mathrm{in}_2}=3.0, z_{\mathrm{out}}=1.0)$, which is a tiny nuisance. 
 
-For this experiment, we make courtesy to ETE Toolkit\cite{ete3} and NetworkX library \cite{SciPyProceedings_11}, which make the experiment easy to implement.
+For this experiment, we make courtesy to ETE Toolkit \cite{ete3} and NetworkX library \cite{SciPyProceedings_11}, which make the experiment easy to implement.
 
 \bibliographystyle{plain}
 \bibliography{exportlist}
