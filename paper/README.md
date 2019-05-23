@@ -13,7 +13,7 @@ Download the template style file to the current directory first.
 
 ## experiment table file
 The experiment 1 table tex file is named as `compare_3.tex`. First you need to generate the 
-table, see the subdirectory **data clustering** for detail; then copy the generated file to current build directory.
+table, see the subdirectory **experiment/data_clustering** for detail; then copy the generated file to current build directory.
 
 ```shell
 mkdir -p build
