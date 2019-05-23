@@ -53,9 +53,11 @@
 \section{Introduction}
 In traditional agglomerative clustering method, two clusters are agglomerated based on pairwise inter-cluster similarity.  For example, well-known single-linkage clustering method uses nearest distance metric between two clusters and merge those two with minimal distance\cite{RN16}.  However, pairwise comparison is not optimal since it does not consider information shared between more than two clusters.  To overcome this drawback, we define a multivariate similarity measure starting from arbitrary pairwise similarity metrics. Using this multivariate measure in the agglomerative clustering case, we can merge several clusters with largest similarity to the hierarchical tree in one step of computation.
 
-As far as we know, Bayes hierarchical clustering\cite{Heller2005Bayesian} can also produce non-binary hierarchical tree under a given probabilistic model. However, Bayes model has many hyper-parameters to tune and the clustering result between different runs varies greatly because of intrinsic randomness. In comparison, once the graph affinity matrix is given, info-clustering has no hyper-parameter to tune and is a deterministic algorithm. By using graph partition techniques\cite{RN3} and parametric maximal flow algorithm\cite{RN4}, info-clustering result can be solved efficiently in practice. 
+This multivariate measure is closely related with the mathematical theory of \textbf{info-clustering}\cite{RN1}. This theory deals with random variable clustering and only uses entropy measure for its purpose. We generalize info-clustering theory to obtain hierarchical structure of arbitrary graph and do not limit the metric used to measure pairwise similarity. Our method is also called info-clustering. It is a hierarchical graph clustering method. 
 
-Info-clustering method used in this paper is information theoretic since it is related with the mathematical theory of \textbf{info-clustering}\cite{RN1}. This theory deals with random variable clustering and we generalize and realize it to cluster graph nodes. We also discuss theoretically and experimentally how to choose a good graph affinity matrix for info-clustering. For tasks like community detection, info-clustering can be used directly and for general dataset clustering problems we can convert it to a connected graph with each node representing a data point and then apply the algorithms. Experiment on synthesized and real-world dataset shows the info-clustering method performs well. 
+As far as we know, Bayes hierarchical clustering\cite{Heller2005Bayesian} can also produce non-binary hierarchical tree under a given probabilistic model. But Bayes model has many hyper-parameters to tune and the clustering result between different runs varies greatly because of intrinsic randomness. In comparison, once the graph affinity matrix is given, our info-clustering has no hyper-parameter to tune and is a deterministic algorithm. By using graph partition techniques\cite{RN3} and parametric maximal flow algorithm\cite{RN4}, the hierarchical tree of info-clustering can be solved efficiently in practice. 
+
+ In this paper, we discuss theoretically and experimentally how to choose a good graph affinity matrix for info-clustering method. For tasks like community detection, info-clustering can be used directly and for general dataset clustering problems we can convert it to a connected graph with each node representing a data point and then apply the method. Experiment on synthesized and real-world dataset shows the info-clustering method performs well. 
 
 The paper is organized as follows. In Section \ref{sec:models}, we formulate the info-clustering problem and show some of its property. In Section \ref{sec:algorithm}, we propose the algorithm workflow. In Section \ref{sec:experiment}, we give the experiment result and compare info-clustering with other methods. Finally, we give the conclusion in Section \ref{sec:conclusion}.
 
@@ -67,9 +69,12 @@ f[\P] := \sum_{(i,j)\in E} w_{ij} =
 \sum_{C\in \P}f(C)   & G \textrm{ is directed}
 \end{cases},\P \in \Pi
 \end{equation}
-If we convert an undirected graph to directed one by adding arbitrary direction to each edge,the value of $f[\P]$ is unchanged. Therefore, without specific declaration, $G$ is directed throughout the paper. The last notation is about $x(C)$ in which $x$ is a $\abs{V}$ dimensional vector and $x(C)=\sum_{i \in C} x_i, C\in V$.
-\section{Alternative formulation of info-clustering}\label{sec:models}
-Info-clustering as a concept was originally proposed by C. Chan et al.\cite{RN1}. It is a general theoretical framework but only practical when graph cut function is considered. For graph cut function, the same mathematical structure can be formulated in many ways, e.g. pairwise inpedendent network\cite{RN9}, minumum average cost\cite{RN7} or graph strength\cite{RN12}. In our work, we give an alternative formulation which focuses on hierarchical structure of graph. Our formulation shares the same name as info-clustering but is a newly proposed formulation which resolves binary hierachical tree restriction.
+If we convert an undirected graph to directed one by adding arbitrary direction to each edge, the value of $f[\P]$ is unchanged. Therefore, without specific declaration, $G$ is directed throughout the paper. The last notation is about $x(C)$ in which $x$ is a $\abs{V}$ dimensional vector and $x(C)=\sum_{i \in C} x_i, C\in V$.
+\section{Graph theory formulation of info-clustering}\label{sec:models}
+Info-clustering as a concept was originally proposed by C. Chan et al.\cite{RN1}.
+It defines $I_{\P}(Z_V) = \frac{1}{\abs{\P}-1}(\sum_{C\in \P} H(Z_C) - H(Z_V))$ and $I(Z_V)$ as equation \eqref{eq:ms} where $Z_i$ represents a random variable and $H$ is the entropy function. By such definition, a variate of Theorem \ref{thm:ta} holds. 
+It is a general theoretical framework but only practical when graph cut function is considered. 
+For graph cut function, the same mathematical structure as Theorem \ref{thm:psp} can be formulated in many ways, e.g. pairwise independent network\cite{RN9}, minimum average cost\cite{RN7} or graph strength\cite{RN12}. In our work, we give an alternative formulation which focuses on hierarchical structure of graph. 
 
 Consider an undirected graph partition problem, in which we want to divide the graph nodes into several groups with larger similarity within each group and smaller similarity between different groups. Let us formulate this problem mathematically in graph language: given $G(V, E)$ where the edge weight $w$ is nonnegative and represents pairwise similarity of nodes, we try to minimize the following quantity over different partition of $V$.
 \begin{definition}[Multivariate similarity]\label{def:ms}
@@ -86,12 +91,12 @@ For a three node directed graph (Fig. \ref{fig:tn})
 $G=(\{1,2,3\},\{(1,2),(1,3),(2,3)\})$ with $w_{12}=w_{23}=1, w_{13}=5$, we have $I(Z_{\{1,3\}}) = 5$ and $I(Z_V) = 2$ which is minimal value among $I_{\{1\},\{2\},\{3\}}(Z_V)=3.5, I_{\{1, 2\},\{3\}}(Z_V)=6, I_{\{1,3\},\{2\}}(Z_V)=2, I_{\{1\},\{2,3\}}(Z_V)=6$.
 \end{example}
 
-Based on the definition \eqref{def:ms}, we have both a top-down and bottom-up approach of hierachical clustering.
+Based on the definition \eqref{def:ms}, we have both a top-down and bottom-up approach of hierarchical clustering.
 
 \begin{theorem}[Theorem 2.4 in \cite{RN1}, Theorem 4.2 in \cite{RN8}]\label{thm:ta}
 The following two procedures generate the same hierarchical tree. A hierarchical tree $\mathcal{T}$ of $G$ is a rooted tree. Each node of $\mathcal{T}$ is represented by a subset $S \subset V$,  root node is $V$; leaf node is $\{j\}$, and each non-leaf node is called a cluster of graph $G$.
 \begin{description}
-\item[top-down] For a graph $G$, suppose $I_{\P^*}(Z_V)=I(Z_V)$, each element of $\P^*$ is a child of hierachical tree root $V$. For each child node set $C$, use partition $\P_C$ where $I(Z_C)=I_{\P_C}(Z_C)$ to split it until this tree branch is divided into singletons.
+\item[top-down] For a graph $G$, suppose $I_{\P^*}(Z_V)=I(Z_V)$, each element of $\P^*$ is a child of hierarchical tree root $V$. For each child node set $C$, use partition $\P_C$ where $I(Z_C)=I_{\P_C}(Z_C)$ to split it until this tree branch is divided into singletons.
 \item[bottom-up] For a graph $G$, suppose $I(Z_C) = \max_{B\subseteq V} I(Z_B)$ and $C$ is maximal, merge elements of $C$ together and contract $G$ to a smaller graph. At each step select the set with maximal multivariate similarity to contract the graph until the graph is contracted to a single node, which is the tree root.
 \end{description}
 \end{theorem}
@@ -101,7 +106,7 @@ The two procedures are illustrated by Fig. \ref{fig:ta}. For the top-down approa
 \begin{figure}
 \centering
 \includegraphics[width=0.8\textwidth]{pic/two_approach.eps}
-\caption{hierachical tree generation based on multivariate similarity. Left figure shows the top-down approach with each subset splitted. Right figure shows the bottom-up approach with the graph nodes $v_1,v_2,v_3$ contracted to $C$ and weight between $C$ and node $u$ is $w_1+w_2+w_3$.}\label{fig:ta}
+\caption{hierarchical tree generation based on multivariate similarity. Left figure shows the top-down approach with each subset split into multiple. Right figure shows the bottom-up approach with the graph nodes $v_1,v_2,v_3$ contracted to $C$ and weight between $C$ and node $u$ is $w_1+w_2+w_3$.}\label{fig:ta}
 \end{figure}
 
 By the construction of the clustering tree, we can associate each tree node with a threshold value, which is the multivariate similarity computed at that step.
@@ -145,7 +150,7 @@ The partition to minimize equation \eqref{eq:ms} is $\P_k = \{\{1\},\{2\},\dots,
 \begin{proof}
 We use Theorem \ref{thm:psp}. Since $h(\lambda)$ is piecewise linear, the first line segment of $h(\lambda)$ is $ - \lambda $ and the last line segment is $ f[\P_k] - \abs{V} \lambda$. Their intersection point is $(\lambda_{+}, -\lambda_{+})$ where $\lambda_{+} = \frac{f[\P_k]}{\abs{V}-1}$. Since $\frac{f[\P]}{\abs{\P}-1} \geq \lambda_{+} \iff f[\P] - \abs{\P}\lambda_{+} \geq - \lambda_{+}$ Equation \eqref{eq:GF} says the minimizer of $h(\lambda)$ at $\lambda = \lambda_{+}$ is either $\{V\}$ or $\{\{1\},\{2\},\dots,\{\abs{V}\}\}$ and $h(\lambda)$ has only two line segments. From geometric point of view, the solution to equation \eqref{eq:ms} is the first turning point of $h(\lambda)$ and it is equal to that of last turning point if and only if \eqref{eq:GF} holds.
 \end{proof}
-By theorem \ref{thm:trival}, we can show that if all graph weights are of equal value, then by applying info-clustering we can only get trival cluster $\{V\}$. Generally, we have the following proposition.
+By theorem \ref{thm:trival}, we can show that if all graph weights are of equal value, then by applying info-clustering we can only get trivial cluster $\{V\}$. Generally, we have the following proposition.
 \input{proposition_triangle_inequality.tex}
 
 Since info-clustering has no hyper-parameters in its formulation, we need to prepare suitable weight values to get a satisfied clustering result.
@@ -168,14 +173,15 @@ $y^{\lambda}_i = \min\{a_i - \lambda, b_i\}$  and $b_i \leq +\infty$.
 
 \begin{figure}
 	\centering
-	\begin{subfigure}{0.45\textwidth}
+	\begin{subfigure}{0.4\textwidth}
 		\includegraphics[width=\textwidth]{pic/example_pst_single.eps}
 		\caption{An illustration of Algorithm \ref{alg:pmfT}}\label{fig:linseg}
 	\end{subfigure}
-	\begin{subfigure}{0.45\textwidth}
+	\begin{subfigure}{0.4\textwidth}
 		\includegraphics[width=\textwidth]{pic/pdt.eps}
 		\caption{Algorithmic pyramid to compute principal sequence of partitions. The top level is parametric Dilworth truncation; the middle level is parametric maximal flow and the bottom level is maximal flow}\label{fig:pyramid}
 	\end{subfigure}
+	\caption{}
 \end{figure}
 
 It is pointed out in \cite{RN4} that equation \eqref{eq:pmq} can be solved with $\lambda$ as a parameter, not a value. We call this method parametric Dilworth truncation(pdt in short, in Fig \ref{fig:pyramid}). It can solve \eqref{eq:hL} directly by treating $\lambda$ as a parameter. However, how to solve \eqref{eq:pmq} for fixed $t$ is not a trivial task and the approach given in \cite{RN4} is quite complex to analyze. Below, we propose a clear and efficient approach to solve \eqref{eq:pmq} for $\lambda\geq 0$. 
@@ -203,11 +209,11 @@ To simplify our notation, in this section we will let $w_{ij} = 0$ if $(i,j) \no
 
 \begin{figure}
 	\centering
-	\begin{subfigure}{0.4\textwidth}
+	\begin{subfigure}{0.33\textwidth}
 		\includegraphics[width=\textwidth]{pic/example_directed.eps}
 		\caption{An example graph $G$ with three nodes}\label{fig:tn}
 	\end{subfigure}~
-	\begin{subfigure}{0.4\textwidth}
+	\begin{subfigure}{0.36\textwidth}
 		\includegraphics[width=\textwidth]{pic/example_st.eps}
 		\caption{$\widetilde{G}$ derived from left graph with $t=3$}\label{fig:tn_converted}
 	\end{subfigure}
@@ -282,7 +288,7 @@ The community structure is shown in Fig. \ref{fig:c1}. It has 4 communities in m
 		\includegraphics[width=\textwidth]{pic/z_o.eps}
 		\caption{}
 	\end{subfigure}
-	\caption{Distance Comparision between different hierarchical community detection method. Smaller distance indicates more similar structure with the ground truth tree.}\label{fig:cdr}	
+	\caption{Distance comparison between different hierarchical community detection method. Smaller distance indicates more similar structure with the ground truth tree.}\label{fig:cdr}	
 \end{figure}
 
 For such problems with unweighted graph, it is more practical to give weight values for info-clustering algorithm by 
