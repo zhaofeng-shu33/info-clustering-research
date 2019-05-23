@@ -108,13 +108,13 @@ $f[\P] \geq \frac{k-1}{n-1}\sum_{(i,j) \in E} w_{ij}$. That is, the result holds
 	For a complete graph $G(V,E)$ with equal weight $w$ on each edge, we have $I(Z_{V})=\frac{nw}{2}$ where $n=\abs{V}$. And $I(Z_S) < I(Z_V)$ for any subset $S\subsetneq V$.
 \end{corollary}
 \begin{proof}
-From Proposition \ref{prop:triangle}, $I(Z_{V})$ is achieved by $\P=\{\{1\},\dots,\{n\} \}$ and $I(Z_V) = I_{\P}(Z_V) = \frac{n(n-1)w/2}{n-1} = \frac{nw}{2} $. From bottom-up approach, $I(Z_V) = \max_{S\subset V} I(Z_S)$, therefore $I(Z_S) \leq I(Z_V)$. If $I(Z_S) = I(Z_V)$, consider $\P_S=\{i | i \in S}$, then $I(Z_S) = I_{\P_S}(Z_S) = \frac{\abs{S}w}{2} < I(Z_V)$, a contradiction. Therefore, $I(Z_S) < I(Z_V)$ holds for any subset $S\subsetneq V$.
+From Proposition \ref{prop:triangle}, $I(Z_{V})$ is achieved by $\P=\{\{1\},\dots,\{n\} \}$ and $I(Z_V) = I_{\P}(Z_V) = \frac{n(n-1)w/2}{n-1} = \frac{nw}{2} $. From bottom-up approach, $I(Z_V) = \max_{S\subset V} I(Z_S)$, therefore $I(Z_S) \leq I(Z_V)$. If $I(Z_S) = I(Z_V)$, consider $\P_S=\{i | i \in S\}$, then $I(Z_S) = I_{\P_S}(Z_S) = \frac{\abs{S}w}{2} < I(Z_V)$, a contradiction. Therefore, $I(Z_S) < I(Z_V)$ holds for any subset $S\subsetneq V$.
 \end{proof}
 \input{proposition_submodular_structure}
 \begin{proof}
 There are certain breakpoints $a_i - b_i$ which determines whether $y_i^{\lambda}$ takes constant values. We can get an increasing list of such breakpoints as $\tilde{\lambda}_1 < \dots < \tilde{\lambda}_n$ while $\abs{n}\leq \abs{V}$. If $b_i = +\infty, y^{\lambda}_i = a_i - \lambda$ and there is no turning point for this one.
 
-We first compare $ u < v $ within a breakpoint interval. That is $\tilde{\lambda}_j \leq u < v \leq \tilde{\lambda}_{j+1}$. In such interval, let $S = \{i | y^{\lambda}_i = b_i\}$ and define $g_1(A) = \sum_{i\in A\backslash S} (a_i - \lambda), g_2(A)= \sum_{i \in A \cap S} b_i$. We can rewrite $\tilde{h}_{\lambda}(A) = f(A) - \lambda - g_1(A) - g_2(A) = g_3(A) + \lambda\abs{A}$ where $g_3(A)=f(A)-g_2(A)-\lambda(\abs{S}+1) - g_4(A)$, $g_4(A) = \sum_{i\in A\backslash S} a_i = \sum_{i \in A} a_i - \sum_{i \in A\cap S} a_i $. We can show that $g_3$ is a submodular function.
+We first show that if $ u < v $ within a breakpoint interval. That is $\tilde{\lambda}_j \leq u < v \leq \tilde{\lambda}_{j+1}$, then $T^v \subseteq T^v$. In such interval, let $S = \{i | y^{\lambda}_i = b_i\}$ and define $g_1(A) = \sum_{i\in A\backslash S} (a_i - \lambda), g_2(A)= \sum_{i \in A \cap S} b_i$. We can rewrite $\tilde{h}_{\lambda}(A) = f(A) - \lambda - g_1(A) - g_2(A) = g_3(A) + \lambda\abs{A}$ where $g_3(A)=f(A)-g_2(A)-\lambda(\abs{S}+1) - g_4(A)$, $g_4(A) = \sum_{i\in A\backslash S} a_i = \sum_{i \in A} a_i - \sum_{i \in A\cap S} a_i $. We can show that $g_3$ is a submodular function.
 Let $A_1 = \argmin_{A} \tilde{h}_u(A), A_2 = \argmin_{A} \tilde{h}_v(A)$. Ignoring the constant part, we will have
 \begin{align}
 g_3(A_1) + u \abs{A_1}& \leq g_3(A) + u \abs{A}, \forall A \subseteq V \label{eq:fA1}\\
@@ -131,12 +131,10 @@ g_3(A_1 \cap A_2) + g_3(A_1 \cup A_2)\leq  &g_3(A_1) + g_3(A_2) \\
 \leq & u \abs{A_1 \cup A_2}+ v \abs{A_1\cap A_2} \\
 \Rightarrow u  \abs{A_2 \backslash A_1} \geq v \abs{A_2 \backslash A_1}
 \end{align*}
-Since $ u < v$, we have $\abs{A_2 \backslash A_1}=0$, that is $A_2 \subseteq A_1$.
+Since $ u < v$, we have $\abs{A_2 \backslash A_1}=0$, that is $A_2 \subseteq A_1$, or $T^v \subseteq T^v$.
 
 By the continuity of $\tilde{h}(\lambda)$, if $u<v$ belongs to different interval, we can use the breakpoints as the springboard. That is, if $\lambda_j < u \leq \lambda_{j+1} \dots \leq \lambda_{j+k} \leq v$,  we will have $ A_1 \supseteq A_{\lambda_{j+1}} \dots \supseteq A_{\lambda_{j+k}} \supseteq A_2$.
 \end{proof}
-
-\input{proposition_reweight.tex}
 \begin{lemma}\label{lemma:sub}
 	If node set $S_1 \cap S_2 \neq \emptyset$ and $I(Z_{S_1}) > I(Z_{S_2})$, then $S_2$ is not a cluster of $G$.
 \end{lemma}
@@ -144,16 +142,18 @@ By the continuity of $\tilde{h}(\lambda)$, if $u<v$ belongs to different interva
 	From Lemma \ref{lemma:laminarity},
 	$I(Z_{S_1\cup S_2}) > \min\{I(Z_{S_1}), I(Z_{S_2})\} = I(Z_{S_2})$. From bottom-up formulation,  $S_2$ cannot be a cluster of $G$.
 \end{proof}
+\input{proposition_reweight.tex}
+
 \begin{proof}[Proof of Proposition \ref{prop:reweight}]
 	We will show that if $U \neq S_1$ and $U \neq S_2$, $U$ cannot be a cluster of $G$.
 	
-For any $U \in S_1 \cup S_2 $ and $\abs{U} <= n$, by Corollary \ref{cor:complete}, $I(Z_U) < I(Z_{S_1})$.
+For any $U \in S_1 \cup S_2 $ and $\abs{U} \leq n$, by Corollary \ref{cor:complete}, $I(Z_U) < I(Z_{S_1})$.
 Since either $U \cap S_1 \neq \emptyset$ or $U \cap S_2 \neq \emptyset$ holds, by Lemma \ref{lemma:sub}, $I(Z_{S_1})= I(Z_{S_2}) > I(Z_U) \Rightarrow U$ is not a cluster of $G$.
 
-For $\abs{U} > n$ but $U \neq V = S_1 \cup S_2$. Let $\P' = \{\{i\}| i\in U\}$, $I(Z_U) \leq I_{\P'}(Z_V) = \frac{\frac{n(n-1)r}{2} + m_1 + \frac{k(k-1)r}{2}}{n+k-1}$ where $m_1 \leq nk$ and $k=\abs{U} - n < n$. 
-We compare it to $\frac{nr}{2}$ and we can show that $I(Z_{S_1}) - I_{\P'}(Z_U) = \frac{nk(n-1-k)}{2}$. If $k<n-1$, $I(Z_{S_1})>I(Z_U)$, $U$ is not a cluster by Lemma \ref{lemma:sub}. If $k=n-1$, and $I(Z_U) = I(Z_{S_1})$, then $m_1=nk$. In such case, for $\P=\{\{i\}|i\in V\}$ we have $I_{\P}(Z_V) = \frac{n(n-1)+n^2(n-1)}{2n-1} > I_{\P'}(Z_U)=\frac{n^2}{2}$. Then $I(Z_V) = I_{\P}(Z_V) > I_{\P'}(Z_U) \geq I(Z_U)$ and $U$ cannot be a cluster of $G$.
+For $\abs{U} > n$ but $U \neq V = S_1 \cup S_2$. Let $\P' = \{\{i\}| i\in U\}$, $I(Z_U) \leq I_{\P'}(Z_V) = \frac{\frac{n^2(n-1)}{2} + m_1 + \frac{k(k-1)n}{2}}{n+k-1}$ where $m_1 \leq nk$ and $k=\abs{U} - n < n$. 
+We compare it to $I(Z_{S_1}) = \frac{n^2}{2}$ and we can show that $I(Z_{S_1}) - I_{\P'}(Z_U) \geq \frac{nk(n-1-k)}{2(n+k-1)}$. If $k<n-1$, $I(Z_{S_1})>I(Z_U)$, $U$ is not a cluster by Lemma \ref{lemma:sub}. If $k=n-1$, and $I(Z_U) = I(Z_{S_1})$, then $m_1=nk$. In such case, $m\geq m_1=n(n-1)$, for $\P=\{\{i\}|i\in V\}$ we have $I_{\P}(Z_V) \geq \frac{n(n-1)+n^2(n-1)}{2n-1} > I_{\P'}(Z_U)=\frac{n^2}{2}$. Then $I(Z_V) = I_{\P}(Z_V) > I_{\P'}(Z_U) \geq I(Z_U)$ and $U$ cannot be a cluster of $G$.
 
- In either case, $U$ is not a cluster of $G$ for $1<\abs{U}<2n, U \neq S_1, U\neq S_2$. Then $I(Z_V)$ can be computed by comparing $\P$ and $\{S_1, S_2\}$.
+ In either case, $U$ is not a cluster of $G$ for $1<\abs{U}<2n, U \neq S_1, U\neq S_2$. Then $I(Z_V)$ can be computed by comparing $I_{\P}(Z_V) = \frac{m+n^2(n-1)}{2n-1}$ and $I_{\{S_1, S_2\}}(Z_V)=m$.
 
 \end{proof}
 
@@ -187,7 +187,7 @@ Algorithm \ref{alg:pdt} is an adaption and concrete implementation of Fig. 3 in 
 		\STATE append $\mathcal{Q}$ to $\widetilde{\mathcal{\P}}^{\lambda}$ and $\min\{\mathcal{L}[i], L[k]\}$
 		to $\widetilde{\mathcal{L}}$
 		\ELSE
-		\STATE $\widetilde{\mathcal{L}}[-1] = \min\{\mathcal{L}[i], L[k]\}$
+		\STATE $\widetilde{\mathcal{L}}[-1] = \min\{\mathcal{L}[i], L[k]\}$ \footnotemark
 		\ENDIF
 		\STATE $(i, k) \leftarrow \begin{cases} (i+1, k) & \mathcal{L}[i] < L[k] \\  (i, k+1) & \mathcal{L}[i] > L[k]\\ (i+1, k+1) & \mathcal{L}[i] = L[k]\end{cases}$
 		\ENDWHILE
@@ -195,8 +195,9 @@ Algorithm \ref{alg:pdt} is an adaption and concrete implementation of Fig. 3 in 
 		\ENDFOR
 	\end{algorithmic}
 \end{algorithm}
+\footnotetext{$\widetilde{\mathcal{L}}[-1]$ is the last element of $\widetilde{\mathcal{L}}$}
 
-We make some remark about Algorithm \ref{alg:pmfC}
+We make some remark about Algorithm \ref{alg:pmfC}, which is discussed in detail in the paper.
 \begin{enumerate}
 \item For different $\lambda$, we need to initialize the capacity of $\widetilde{G}$ by equation \eqref{eq:clambda}.
 \begin{equation}\label{eq:clambda}
@@ -227,18 +228,18 @@ For $\texttt{mf}$, we can choose different active node selecting scheme. For exa
 	-& [f(T_r) + \sum_{j \in T_r} \max\{0, -y^{\lambda}_j\} + \sum_{j \in V\backslash T_r} \max\{0, y^{\lambda}_j\}] \\
 	= & f(T_l) - f(T_r) + \sum_{T_l \backslash T_r} (\max\{0, -y^{\lambda}_j\} - \max\{0, y^{\lambda}_j\} )
 	\end{align*}
-	From line \ref{findLambda} equals zero, we have equation \eqref{eq:solveL}.
+	From line \ref{findLambda} equal to zero, we have equation \eqref{eq:solveL}.
 \end{proof}
-The right-hand side of equation \eqref{eq:solveL} is constant while the left-hand side is a piecewise linear decreasing function. Since $T_l \supseteq T_r$, the left-hand side summation is not empty. We can show that equation \eqref{eq:clambda} always has solution for Algorithm \ref{alg:pmfC}.
+The right-hand side of equation \eqref{eq:solveL} is constant while the left-hand side is a piecewise linear decreasing function. Since $T_l \supseteq T_r$, the left-hand side summation is not empty. We can show that equation in line \ref{findLambda} always has solution for Algorithm \ref{alg:pmfC}.
 \begin{proof}
 	we only need to show for the two parameters of function \texttt{split}, the following property always holds.
 \begin{equation}\label{eq:solutionProperty}
-\exists \lambda_1, \lambda_3 \,s.t.\, c^{\lambda_1}(T_l) \leq c^{\lambda_1}(T_r), c^{\lambda_2}(T_l) \geq c^{\lambda_2}(T_r)
+\exists \lambda_1, \lambda_3 \,s.t.\, c^{\lambda_1}(T_l) \leq c^{\lambda_1}(T_r), c^{\lambda_3}(T_l) \geq c^{\lambda_3}(T_r)
 \end{equation}
-Then by the continuity of $c^{\lambda}(T)$, there exists $\tilde{\lambda} \in [-\epsilon, \lambda']$ such that line \eqref{findLambda} holds.
+Then by the continuity of $c^{\lambda}(T)$, there exists $\tilde{\lambda} \in [\lambda_1, \lambda_3]$ such that line \eqref{findLambda} holds.
 
 For the initial computation in Algorithm \ref{alg:pmfC},
-	$T_l = T_0, T_r = T_1$. $\lambda_1 = -\epsilon$. On the other hand, for a sufficient large $\lambda=\lambda', T_1$ is minimum value of $c^{\lambda}(T)$, therefore $\lambda_3 = \lambda'$. 
+	$T_l = T_0, T_r = T_1$. $\lambda_1 = -\epsilon$ by line \ref{alg:T0property}. On the other hand, for a sufficient large $\lambda=\lambda', T_1$ is minimum value of $c^{\lambda}(T)$, therefore $\lambda_3 = \lambda'$. 
 
 Within \texttt{split}$(T_l, T_r)$, suppose equation \eqref{eq:solutionProperty} holds with $(\lambda_1, \lambda_3)$, then 
 $c^{\lambda_1}(T_l) \leq c^{\lambda_1}(T')$ and $c^{\tilde{\lambda}_2}(T_l) = h' > c^{\tilde{\lambda}_2}(T')$ by line \ref{alg:lineLarge}. That is, equation \eqref{eq:solutionProperty} holds for \texttt{split}$(T_l, T')$ with $(\lambda_1, \tilde{\lambda}_2)$. Similarly, from $c^{\lambda_3}(T') \geq c^{\lambda_3}(T_r)$ and $c^{\tilde{\lambda}_2}(T') < h' = c^{\tilde{\lambda}_2}(T_r)$ we can get  equation \eqref{eq:solutionProperty} holds for \texttt{split}$(T_l, T')$ with $(\tilde{\lambda}_2, \lambda_3)$.
