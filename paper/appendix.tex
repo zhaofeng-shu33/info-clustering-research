@@ -7,7 +7,7 @@
 \maketitle
 \appendix
 \section{Proofs of Propositions}
-This section gives proof on propositions appeared in the paper. Before proceeding, we introduce some additional notations used in this section. $\Pi_B$ is the collection of partition on $B\subset V$. $E(C)=\{(i,j) | (i,j)\in E, i,j \in C\}$ is an edge subset of $E$. The meet of two partitions $\P_1 \wedge \P_2 = \max\{\P \in \Pi | \P \preceq \P_1, \P \preceq \P_2\}$. The notation $\wedge$ comes from lattice theory. For a partition $\P \in \Pi'$ and set $ A \subset V$, partition expansion is defined as $\P[A] = \{B \in \P | B \cap A = \emptyset \} \cup \{ A \cup (\cup_{B \in \Pi, B \cap A \neq \emptyset} B) \}$.
+This section gives proof on propositions appeared in the paper. Before proceeding, we introduce some additional notations used in this section. $\Pi_B$ is the collection of partition on $B\subset V$. $E(C)=\{(i,j) | (i,j)\in E, i,j \in C\}$ is an edge subset of $E$. The meet of two partitions $\P_1 \wedge \P_2 = \mathrm{maximal}\{\P \in \Pi | \P \preceq \P_1, \P \preceq \P_2\}$. The notation $\wedge$ comes from lattice theory. For a partition $\P \in \Pi'$ and set $ A \subset V$, the partition expansion is defined as $\P[A] = \{B \in \P | B \cap A = \emptyset \} \cup \{ A \cup (\cup_{B \in \Pi, B \cap A \neq \emptyset} B) \}$.
 
 \begin{lemma}\label{lem:ref_combination}
 For any $B \in \P' \in \Pi'$ and $\P_B \in \Pi'_B$, let $\P = \P_B \cup \P' \backslash \{B\} $
@@ -27,13 +27,13 @@ I_{\P}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 	As a result, there exists $\theta = {\abs{\P'} - 1 \over \abs{\P} - 1} \in (0,1)$ such that 
 	\eqref{eq:ref_combination} holds.
 \end{proof}
-Although Lemma \ref{lem:ref_combination} has the same form with Corollary 5.3 in \cite{secretKey}, but the definition of $I_{\P}(Z_V)$ is different. 
+Although Lemma \ref{lem:ref_combination} has the same form with Corollary 5.3 in \cite{secretKey}, the definition of $I_{\P}(Z_V)$ is different. 
 %
 \begin{lemma}\label{lem:smallZB}
 Suppose $I_{\P}(Z_V) = I(Z_V)$, then we have $I(Z_V) \geq I_{\P_B}(Z_B) \geq I(Z_B)$ if $\exists \P_B \subseteq \P$.
 \end{lemma}
 \begin{proof}
-Let $\P' = \{B\} \cup \P\backslash \P_B$, then $\P = \P_B \cup \P'\backslash\{B\}$ , use lemma \ref{lem:ref_combination}, we have
+Let $\P' = \{B\} \cup \P\backslash \P_B$, then $\P = \P_B \cup \P'\backslash\{B\}$ , use Lemma \ref{lem:ref_combination}, we have
 \begin{equation}
 I_{\P}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 \end{equation}
@@ -48,7 +48,7 @@ Consider $C\in \P_1, C \not\in \P_1\wedge\P_2$ and $C = \cup_{i=1}^k B_i, k>1$ w
 Consider $\P_C = \{B_1, \dots, B_k\}$. Each $B_i$ belongs to one of subsets of $\P_2$. Suppose $B_1, B_2 \subseteq D \in \P_2$. Then $B_1\cup B_2 \subseteq D$,
 which contradicts the maximal property of $\P_1\wedge \P_2$. Therefore, we have $\P_D = \{D_1, D_2, \dots D_k\}\subseteq \P_2$ such that $B_i \subset D_i$.
 From lemma \ref{lem:smallZB}, we have $I_{\P_D}(Z_V) \leq I(Z_V)$. Since $\abs{\P_D} = \abs{\P_C}=k$, From the definition of $I_{\P}(Z_V)$ we have $I_{\P_C}(Z_V) \leq I_{\P_D}(Z_V) \leq I(Z_V)$.
-Then using lemma \ref{lem:ref_combination}, let $\P' = \P_C \cup \P_1\backslash \{C\}$ we have
+Then using Lemma \ref{lem:ref_combination}, let $\P' = \P_C \cup \P_1\backslash \{C\}$ we have
 \begin{align*}
 	I_{\P'}(Z_V) & = \theta I_{\P_1}(Z_V) + (1-\theta) I_{\P_C}(Z_C) \\
 	& \leq \theta I(Z_V) + (1- \theta)I(Z_V) = I(Z_V)
@@ -57,7 +57,7 @@ Since $I(Z_V)$ is minimum value, then we have $I_{\P'}(Z_V)=I(Z_V)$.
 $\P'\wedge \P_2 = \P_1 \wedge \P_2$ and we can repeat the above procedure using $\P_1 = \P'$. It terminates in finite steps since $\abs{V} > \abs{\P'} > \abs{\P_1}$.
 \end{proof}
 
-By Lemma \ref{lemma:lattice}, the finest partition $I_{\P}(Z_V)=I(Z_V)$ is unique, which is the meet of all partitions. Therefore, the top-down approach mentioned in the paper is unambiguous. We use $\P^*$ to denote the unique finest partition and it has the following property.
+By Lemma \ref{lemma:lattice}, the finest partition $\P^*$ of the top-down approach is unique, which is the meet of all partitions satisfying $I_{\P}(Z_V)=I(Z_V)$. Therefore, the top-down approach mentioned in the paper is unambiguous.
 
 \begin{lemma}[Corollary 5.1 in \cite{secretKey}]\label{lemma:laminarity}
 \begin{equation}\label{eq:P}
@@ -65,19 +65,16 @@ I(Z_{C_1 \cup C_2}) \geq \min\{ I(Z_{C_1}), I(Z_{C_2})\}, \textrm{ for } C_1\cap
 \end{equation}
 \end{lemma}
 
-Lemma \ref{lemma:laminarity} implies the maximal requirement for the bottom-up approach mentioned in the paper is unambiguous. For $I(Z_{C_1}) = I(Z_{C_2}) = \max_{B\subseteq V} I(Z_B)$, if $C_1 \cap C_2 = \emptyset$, we can merge them respectively; if $C_1\cap C_2 \neq \emptyset$, $I(Z_{C_1\cup C_2}) \geq \max_{B\subseteq V} I(Z_B)$ therefore $C_1\cup C_2$ is also a solution to the maximization.
-
-
+Lemma \ref{lemma:laminarity} implies the maximal requirement for the bottom-up approach mentioned in the paper is unambiguous. For $I(Z_{C_1}) = I(Z_{C_2}) = \max_{B\subseteq V} I(Z_B)$, if $C_1 \cap C_2 = \emptyset$, we can merge them respectively; if $C_1\cap C_2 \neq \emptyset$, $I(Z_{C_1\cup C_2}) \geq \max_{B\subseteq V} I(Z_B)$. Therefore $I(Z_{C_1\cup C_2}) = \max_{B\subseteq V} I(Z_B)$.
 
 \input{proposition_triangle_inequality.tex}
 \begin{proof}
-
 
 We use deduction to show  
 \begin{equation}\label{eq:GF}
 f[\P] \geq \frac{\abs{\P}-1}{\abs{V}-1} \sum_{(i,j) \in E} w_{ij}
 \end{equation}
-for any $\P \in \Pi$. Then by theorem in the paper, Proposition \ref{prop:triangle} holds. 
+for any $\P \in \Pi$. Then by corresponding theorem in the paper, Proposition \ref{prop:triangle} holds. 
 
 Let $n=\abs{V}$. For $\abs{\P}=n$, the equality of equation \ref{eq:GF} holds. 
 
@@ -158,7 +155,7 @@ We compare it to $I(Z_{S_1}) = \frac{n^2}{2}$ and we can show that $I(Z_{S_1}) -
 \end{proof}
 
 \section{Algorithm Formulation}
-In this section, we give the complete formulation of parametric Dilworth truncation algorithms. There are three parts in different level. \texttt{pdt}(Algorithm \ref{alg:pdt}) at the top level, \texttt{pmf}(Algorithm \ref{alg:pmfC})at the middle level and \texttt{mf}(Maximum Flow) at the bottom level.
+In this section, we give the complete formulation of parametric Dilworth truncation algorithm. There are three parts in different level: \texttt{pdt}(Algorithm \ref{alg:pdt}) at the top level, \texttt{pmf}(Algorithm \ref{alg:pmfC})at the middle level and \texttt{mf}(Maximum Flow) at the bottom level.
 
 Algorithm \ref{alg:pdt} is an adaption and concrete implementation of Fig. 3 in \cite{RN4}.
 
@@ -197,7 +194,7 @@ Algorithm \ref{alg:pdt} is an adaption and concrete implementation of Fig. 3 in 
 \end{algorithm}
 \footnotetext{$\widetilde{\mathcal{L}}[-1]$ is the last element of $\widetilde{\mathcal{L}}$}
 
-We make some remark about Algorithm \ref{alg:pmfC}, which is discussed in detail in the paper.
+We make some remarks about Algorithm \ref{alg:pmfC}, which is discussed in detail in the paper.
 \begin{enumerate}
 \item For different $\lambda$, we need to initialize the capacity of $\widetilde{G}$ by equation \eqref{eq:clambda}.
 \begin{equation}\label{eq:clambda}
@@ -230,7 +227,10 @@ For $\texttt{mf}$, we can choose different active node selecting scheme. For exa
 	\end{align*}
 	From line \ref{findLambda} equal to zero, we have equation \eqref{eq:solveL}.
 \end{proof}
-The right-hand side of equation \eqref{eq:solveL} is constant while the left-hand side is a piecewise linear decreasing function. Since $T_l \supseteq T_r$, the left-hand side summation is not empty. We can show that equation in line \ref{findLambda} always has solution for Algorithm \ref{alg:pmfC}.
+The right-hand side of equation \eqref{eq:solveL} is constant while the left-hand side is a piecewise linear decreasing function. Since $T_l \supseteq T_r$, the left-hand side summation is not empty. We can show that equation in line \ref{findLambda} always has a solution for Algorithm \ref{alg:pmfC}.
+\begin{lemma}
+	Within function \textrm{split} in Algorithm \ref{alg:pmfC}, $c^{\lambda}(T_l) = c^{\lambda}(T_r)$ is a equation about $\lambda$. It has a solution.
+\end{lemma}
 \begin{proof}
 	we only need to show for the two parameters of function \texttt{split}, the following property always holds.
 \begin{equation}\label{eq:solutionProperty}
@@ -257,7 +257,7 @@ This is because $\tilde{\lambda}_2 > -\epsilon$, by equation \eqref{eq:clambda},
 \begin{algorithm}
 	\caption{parametric maximum flow $(\mathcal{A}, L) = \texttt{pmf}(G(V,E), w(e), t, y^{\lambda})$}\label{alg:pmfC}
 	\begin{algorithmic}[1]
-		\REQUIRE a directed graph $G(V, E)$; $t \in V={1,2,\dots, \abs{V}}$; edge cost function $w(e)$ for $e \in E$; $t \in V$; tuples $y^{\lambda}_i = (a_i, b_i)$ for $i \in V$.
+		\REQUIRE a directed graph $G(V, E)$;  edge cost function $w(e)$ for $e \in E$; $t \in V$; tuples $y^{\lambda}_i = (a_i, b_i)$ for $i \in V$.
 		\ENSURE a nested family of minimal value to $c^{\lambda}(T)$, as a reversely ordered set list $\mathcal{A}$ and its corresponding turning value $\lambda$ as an ordered value list $L$.
 		\STATE Let $L$ be the turning point list, initialized as empty array.
 		\STATE Construct $\widetilde{G}$: let $\widetilde{V}=V\cup\{s\}, \widetilde{E} = E\cup \{(s,j),(j,t)|j \in V, j\neq t\}$
@@ -289,28 +289,32 @@ This is because $\tilde{\lambda}_2 > -\epsilon$, by equation \eqref{eq:clambda},
 In this section, we describe the details of our two experiments. 
 
 \subsection{Data Clustering}
-For the three groups of data: \textsf{Gaussian}, \textsf{Circle} and \textsf{Glass}. The first two have some intrinsic randomness. To make the result reproducible, we fix the random seed of our program. The three circles data is generated using polar coordinate:
+For the three groups of data: \textsf{Gaussian}, \textsf{Circle} and \textsf{Glass}, the first two have some intrinsic randomness in their generation. To make the result reproducible, we fix the random seed of our program. 
+
+\textsf{Circle} dataset is generated using polar coordinate:
 \begin{align*}
 r &= 0.1*i + 0.01*(2u-1), i = 1, 2, 3\\
 \theta & = 2\pi v
 \end{align*}
 where random variable $u,v$ conform uniform distribution within $[0,1]$. Also, $u$ and $v$ are independent.
 
-Different metric (or affinity) can affect the clustering accuracy significantly. For this experiment, we try rbf kernel, Laplacian and k-nearest neighbors.  The agglomerative clustering algorithm we used is the standard one which merges two objects at each step and we can choose different linkage type. For \textsf{affinity propagation} and \textsf{agglomerative clustering} we use the implementation of \textsf{scikit-learn}\cite{scikit-learn} and tune their parameters respectively.
+Different metric can affect the clustering accuracy significantly. For this experiment, we try rbf kernel, Laplacian and k-nearest neighbors.  
+
+The agglomerative clustering algorithm we used is the standard one which merges two objects at each step and we can choose different linkage type for this algorithm. For \textsf{affinity propagation} and \textsf{agglomerative clustering} we use the implementation of \textsf{scikit-learn}\cite{scikit-learn} and tune their parameters respectively.
 
 For real world data like Glass dataset, some pre-processing is necessary, for our experiment we just scale each feature dimension to $[0, 1]$ for all algorithms.
 
-For \textsf{Gaussian} dataset, all three algorithms can get correct clustering result (\texttt{ari = 1.0}); for \textsf{Circle} dataset, intuitively only k-nearest neighbor affinity works, but propagation method performs poorly even for this metric; for \textsf{Glass} dataset, info-clustering method has best performance compared with other method. To achieve this score, we use nearest neighbor affinity metric with 14 neighbors. We also tune the hyper-parameters of the other two algorithms (ward linkage with pre-specified number of cluster equal to 7 for agglomerative clustering; Euclidean metric, preference equal to -50 and damping factor equal to 0.8 for affinity propagation) but neither of them can achieve the score of info-clustering.
+For \textsf{Gaussian} dataset, all three algorithms can get correct clustering result (\texttt{ari = 1.0}); for \textsf{Circle} dataset, intuitively only k-nearest neighbor affinity works, but propagation method performs poorly even for this metric; for \textsf{Glass} dataset, info-clustering method has best performance compared with other method. To achieve this score, we use nearest neighbor metric with 14 neighbors. For agglomerative clustering, the tuned hyper-parameters is to use ward linkage with prespecified number of cluster equal to 7 ; for affinity propagation, we use Euclidean metric, preference equal to -50 and damping factor equal to 0.8. Neither of them can achieve the score of info-clustering.
 
 
 \subsection{Community Detection}
-There are many other community detection algorithms, but most of them can only get a flatten structure of the community. For hierarchical community detection method, some of them can only generate binary trees. For some graph models, binary tree tends to have large tree depth and is not suitable. To compare info-clustering algorithm fairly, we use other two hierarchical community detection algorithms (GN and BHCD) which allow non-binary tree structure.
+There are many other community detection algorithms, but most of them can only get a flatten structure of the community. For hierarchical community detection method, some of them can only generate binary trees. For some graph models, binary tree tends to have large tree depth and is not suitable. To compare info-clustering algorithm fairly, we use two hierarchical community detection algorithms (GN and BHCD) which allow non-binary tree structure.
  
-There is some randomness in the generation of the two-level community for given $(z_{\mathrm{in}_1}, z_{\mathrm{in}_2}, z_{\mathrm{out}})$. Therefore we average the distance metric by running 20 times of experiment for the same $(z_{\mathrm{in}_1}, z_{\mathrm{in}_2}, z_{\mathrm{out}})$. For BHCD method, we use symmetric network configuration with $\gamma = 0.4, \lambda=0.85, \delta=0.2$ and 50 times of restart, which is tuned by grid-search method. For info-clustering and GN method, there is no hyper-parameters to tune. Notice that we assign weight to the graph by 
+There is some randomness in the generation of the two-level community for given $(z_{\mathrm{in}_1}, z_{\mathrm{in}_2}, z_{\mathrm{out}})$. Therefore we average the distance metric by running 20 times of experiment for the same $(z_{\mathrm{in}_1}, z_{\mathrm{in}_2}, z_{\mathrm{out}})$ and given algorithm. For BHCD method, we use symmetric network configuration with $\gamma = 0.4, \lambda=0.85, \delta=0.2$ and 50 times of restart, which is tuned by grid-search method. For info-clustering and GN method, there are no hyper-parameters to tune. Notice that we assign weight to the graph by 
 $w_{ij} = 1 + \abs{\{k | (i,k),(j,k) \in E \}}$
 for info-clustering method. GN method does not require the weight value of the graph and we simply use the graph topology information to do the clustering task.
 
-The plotting of this experiment shows that BHCD method produces RF distance near or equal to 1(which is maximal distance allowed). It reflects that BHCD is unsuitable for this kind of problem. For gn method, it is nearly unchanged for graph parameter change, except for $z_{\mathrm{in}_1}$. When $z_{\mathrm{in}_1}$ increases from 13 to 15 while $z_{\mathrm{in}_2}=3.0, z_o=1.0$, the distance decreases significantly. However, neither of these two approaches can outperform info-clustering. Plotting shows that info-clustering has the lowest distance for all shown parameters except for $(z_{\mathrm{in}_1}=10, z_{\mathrm{in}_2}=3.0, z_{\mathrm{out}}=1.0)$.
+The plotting of this experiment shows that BHCD method produces RF distance near or equal to 1(which is maximal distance allowed). It reflects that BHCD is unsuitable for this kind of problem. For GN method, it is nearly unchanged for graph parameter change, except for $z_{\mathrm{in}_1}$. When $z_{\mathrm{in}_1}$ increases from 13 to 15 while $z_{\mathrm{in}_2}=3.0, z_o=1.0$, the distance decreases significantly. However, neither of these two approaches can outperform info-clustering. Plotting shows that info-clustering has the smallest distance for all shown parameters except for $(z_{\mathrm{in}_1}=10, z_{\mathrm{in}_2}=3.0, z_{\mathrm{out}}=1.0)$, which is a tiny nuisance. 
 
 For this experiment, we make courtesy to ETE Toolkit\cite{ete3} and NetworkX library \cite{SciPyProceedings_11}, which make the experiment easy to implement.
 
