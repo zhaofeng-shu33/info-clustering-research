@@ -59,9 +59,9 @@ Info-clustering method used in this paper is information theoretic since it is r
 
 The paper is organized as follows. In Section \ref{sec:models}, we formulate the info-clustering problem and show some of its property. In Section \ref{sec:algorithm}, we propose the algorithm workflow. In Section \ref{sec:experiment}, we give the experiment result and compare info-clustering with other methods. Finally, we give the conclusion in Section \ref{sec:conclusion}.
 
-Throughout this paper, the graph is denoted by $G(V,E)$, with vertex set $V = \{1, 2, \dots, \abs{V}\}$ and edge set $E=\{(i,j) | w_{ij}>0\}$\footnote{$(\cdot, \cdot)$ is ordered pair. For undirected graph $(i,j) \in E \Rightarrow (j,i) \in E$}. $\P$ is a partition of $V$ and $\{V\}$ is a trivial partition. $\P_C$ is a partition of $C\subset V$. $\Pi$ is the collection of all partitions of $V$. A partial order $\preceq $ is defined on $\Pi$: $\P_2 \preceq \P_1$ means $C\in \P_2 \Rightarrow C \in \P_1$. $\Pi' = \Pi \backslash \{V\}$ is the collection of non-trivial partitions. $f(\cdot)$ is graph cut function, that is $f(C) = \sum_{i\not\in C, j\in C, (i,j) \in E} w_{ij}$. $f[\cdot]$ is function defined on $\Pi$ by
+Throughout this paper, the graph is denoted by $G(V,E)$, with vertex set $V = \{1, 2, \dots, \abs{V}\}$ and edge set $E=\{(i,j) | w_{ij}>0\}$\footnote{$(\cdot, \cdot)$ is ordered pair ($(i,j) \neq (j,i)$) for directed graph and unordered pair ($(i,j) = (j,i)$) for undirected graph.}. $\P$ is a partition of $V$ and $\{V\}$ is a trivial partition. $\P_C$ is a partition of $C\subset V$. $\Pi$ is the collection of all partitions of $V$. A partial order $\preceq $ is defined on $\Pi$: $\P_2 \preceq \P_1$ means $C\in \P_2 \Rightarrow C \in \P_1$. $\Pi' = \Pi \backslash \{V\}$ is the collection of non-trivial partitions. $f(\cdot)$ is graph cut function, that is $f(C) = \sum_{i\not\in C, j\in C, (i,j) \in E} w_{ij}$. $f[\cdot]$ is function defined on $\Pi$ by
 \begin{equation}
-f[\P] := \sum_{\substack{i\not\in C, j \in C\\ (i,j)\in E, C\in \mathcal{P}}} w_{ij} =
+f[\P] := \sum_{(i,j)\in E} w_{ij} =
 \begin{cases}
 \frac{1}{2} \sum_{C\in \P}f(C)   & G \textrm{ is undirected} \\
 \sum_{C\in \P}f(C)   & G \textrm{ is directed}

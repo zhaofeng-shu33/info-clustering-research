@@ -164,11 +164,13 @@ On the other hand, consider $C\in \P_1, \not\in \P_1\wedge\P_2$ and $C = \cup_{i
 Consider $\P_C = \{B_1, \dots, B_k\}$. Each $B_i$ belongs to one of subsets of $\P_2$. Suppose $B_1, B_2 \subseteq D_i \in \P_2$. Then $B_1\cup B_2 \subseteq D_i$,
 which contradicts the maximal property of $\P_1\wedge \P_2$. Therefore, we have $\P_D = \{D_1, D_2, \dots D_k\}\subseteq \P_2$ such that $B_i \subset D_i$.
 From lemma \ref{lem:smallZB}, we have $I_{\P_D}(Z_D) \leq I(Z_V)$. Since $\abs{\P_D} = \abs{\P_C}$, From the definition we have $I_{\P_C}(Z_C) \leq I_{\P_D}(Z_D) \leq I(Z_V)$.
-Then using lemma \ref{lem:ref_combination}, we have
-\begin{equation*}
-I_{\P_1 \wedge \P_2}(Z_V) \leq \theta I(Z_V) + (1- \theta)I(Z_V) = I(Z_V)
-\end{equation*} 
-Since $I(Z_V)$ is minimum value, then we have $I_{\P_1 \wedge \P_2}(Z_V)=I(Z_V)$.
+Then using lemma \ref{lem:ref_combination}, let $\P' = \P_C \cup \P_1\backslash \{C\}$ we have
+\begin{align*}
+I_{\P'}(Z_V) & = \theta I_{\P_1}(Z_V) + (1-\theta) I_{\P_C}(Z_C) \\
+& \leq \theta I(Z_V) + (1- \theta)I(Z_V) = I(Z_V)
+\end{align*} 
+Since $I(Z_V)$ is minimum value, then we have $I_{\P'}(Z_V)=I(Z_V)$.
+$\P'\wedge \P_2 = \P_1 \wedge \P_2$ and we can repeat the above procedure using $\P_1 = \P'$. It terminates in finite steps since $\abs{V} > \abs{\P'} > \abs{\P_1}$.
 \end{proof}
 
 From theorem \ref{thm:lattice}, we have the corollary:

@@ -7,7 +7,7 @@
 \maketitle
 \appendix
 \section{Proofs of Propositions}
-This section gives proof on propositions appeared in the paper.
+This section gives proof on propositions appeared in the paper. Before proceeding, we introduce some additional notations used in this section. $\Pi_B$ is the collection of partition on $B\subset V$. $E(C)=\{(i,j) | (i,j)\in E, i,j \in C\}$ is an edge subset of $E$. The meet of two partitions $\P_1 \wedge \P_2 = \max\{\P \in \Pi | \P \preceq \P_1, \P \preceq \P_2\}$. The notation $\wedge$ comes from lattice theory.
 
 \begin{lemma}\label{lem:ref_combination}
 For any $B \in \P' \in \Pi'$ and $\P_B \in \Pi'_B$, let $\P = \P_B \cup \P' \backslash \{B\} $
@@ -18,7 +18,7 @@ I_{\P}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 \end{lemma}
 \begin{proof}
 	First we have $\abs{\P} = \abs{\P'} -1 + \abs{\P_B}$,
-	Since
+ and
 	\begin{align*}
 		I_{\P}(Z_V) & = { f[\P'] + f_B[\P_B] \over \abs{\P} - 1} \\
 		I_{\P'}(Z_V) & = { f[\P'] \over \abs{\P'} - 1} \\
@@ -27,8 +27,8 @@ I_{\P}(Z_V) = \theta I_{\P'}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 	As a result, there exists $\theta = {\abs{\P'} - 1 \over \abs{\P} - 1} \in (0,1)$ such that 
 	\eqref{eq:ref_combination} holds.
 \end{proof}
-Lemma \ref{lem:ref_combination} has the same form with Corollary 5.3 in \cite{secretKey}, but the definition of $I_{\P}(Z_V)$ is different.
-
+Although Lemma \ref{lem:ref_combination} has the same form with Corollary 5.3 in \cite{secretKey}, but the definition of $I_{\P}(Z_V)$ is different. 
+%
 \begin{lemma}\label{lem:smallZB}
 Suppose $I_{\P}(Z_V) = I(Z_V)$, then we have $I(Z_V) \geq I_{\P_B}(Z_B) \geq I(Z_B)$ if $\exists \P_B \subseteq \P$.
 \end{lemma}
@@ -44,15 +44,17 @@ Since  $I_{P}(Z_V) = I(Z_V), I_{\P'}(Z_V)\geq I(Z_V) \Rightarrow I(Z_V) \geq I_{
 If $I(Z_V) = I_{\P_1}(Z_V) = I_{\P_2}(Z_V)$, then $I_{\P_1 \wedge \P_2}(Z_V)=I(Z_V) $
 \end{lemma}
 \begin{proof}
-Consider $C\in \P_1, \not\in \P_1\wedge\P_2$ and $C = \cup_{i=1}^k B_i, k>1$ where $B_i \in \P_1 \wedge \P_2$.
+Consider $C\in \P_1, C \not\in \P_1\wedge\P_2$ and $C = \cup_{i=1}^k B_i, k>1$ where $B_i \in \P_1 \wedge \P_2$.
 Consider $\P_C = \{B_1, \dots, B_k\}$. Each $B_i$ belongs to one of subsets of $\P_2$. Suppose $B_1, B_2 \subseteq D \in \P_2$. Then $B_1\cup B_2 \subseteq D$,
 which contradicts the maximal property of $\P_1\wedge \P_2$. Therefore, we have $\P_D = \{D_1, D_2, \dots D_k\}\subseteq \P_2$ such that $B_i \subset D_i$.
-From lemma \ref{lem:smallZB}, we have $I_{\P_D}(Z_V) \leq I(Z_V)$. Since $\abs{\P_D} = \abs{\P_C}$, From the definition we have $I_{\P_C}(Z_V) \leq I_{\P_D}(Z_V) \leq I(Z_V)$.
-Then using lemma \ref{lem:ref_combination}, we have
-\begin{equation*}
-I_{\P_1 \wedge \P_2}(Z_V) \leq \theta I(Z_V) + (1- \theta)I(Z_V) = I(Z_V)
-\end{equation*} 
-Then we have $I_{\P_1 \wedge \P_2}(Z_V)=I(Z_V)$.
+From lemma \ref{lem:smallZB}, we have $I_{\P_D}(Z_V) \leq I(Z_V)$. Since $\abs{\P_D} = \abs{\P_C}=k$, From the definition of $I_{\P}(Z_V)$ we have $I_{\P_C}(Z_V) \leq I_{\P_D}(Z_V) \leq I(Z_V)$.
+Then using lemma \ref{lem:ref_combination}, let $\P' = \P_C \cup \P_1\backslash \{C\}$ we have
+\begin{align*}
+	I_{\P'}(Z_V) & = \theta I_{\P_1}(Z_V) + (1-\theta) I_{\P_C}(Z_C) \\
+	& \leq \theta I(Z_V) + (1- \theta)I(Z_V) = I(Z_V)
+\end{align*} 
+Since $I(Z_V)$ is minimum value, then we have $I_{\P'}(Z_V)=I(Z_V)$.
+$\P'\wedge \P_2 = \P_1 \wedge \P_2$ and we can repeat the above procedure using $\P_1 = \P'$. It terminates in finite steps since $\abs{V} > \abs{\P'} > \abs{\P_1}$.
 \end{proof}
 
 By Lemma \ref{lemma:lattice}, the finest partition $I_{\P}(Z_V)=I(Z_V)$ is unique, which is the meet of all partitions. Therefore, the top-down approach mentioned in the paper is unambiguous. We use $\P^*$ to denote the unique finest partition and it has the following property.
@@ -63,7 +65,7 @@ I(Z_{C_1 \cup C_2}) \geq \min\{ I(Z_{C_1}), I(Z_{C_2})\}, \textrm{ for } C_1\cap
 \end{equation}
 \end{lemma}
 
-Lemma \ref{lemma:laminarity} implies the maximal requirement for the bottom-up approach mentioned in the paper is unambiguous. First we notice that if the subsets are non-overlapping, we can merge them respectively. Therefore, we only need to consider $C_1, C_2$ such that $I(Z_{C_1}) = I(Z_{C_2}) = \max_{B\subseteq V} I(Z_B)$ and $C_1\cap C_2 \neq \emptyset$. , $I(Z_{C_1\cup C_2}) \geq \max_{B\subseteq V} I(Z_B)$ therefore $C_1\cup C_2$ is also a solution to the maximization.
+Lemma \ref{lemma:laminarity} implies the maximal requirement for the bottom-up approach mentioned in the paper is unambiguous. For $I(Z_{C_1}) = I(Z_{C_2}) = \max_{B\subseteq V} I(Z_B)$, if $C_1 \cap C_2 = \emptyset$, we can merge them respectively; if $C_1\cap C_2 \neq \emptyset$, $I(Z_{C_1\cup C_2}) \geq \max_{B\subseteq V} I(Z_B)$ therefore $C_1\cup C_2$ is also a solution to the maximization.
 
 
 
@@ -72,29 +74,41 @@ Lemma \ref{lemma:laminarity} implies the maximal requirement for the bottom-up a
 
 
 We use deduction to show  
-$\frac{f[\P]}{\abs{\P}-1} \geq \frac{\sum w_{ij, (i,j) \in E}}{\abs{V}-1}$ for any $\P \in \Pi$. For $\abs{\P}=n$, the result holds. Suppose the result holds for any $\abs{\P} \geq k+1(k\geq 2)$, and for $\abs{\P}=k$, we choose the smallest part $C_1$ with $\abs{C_1}=n_1(\geq 2)$ and divide it into singletons. Then we have $k+n_1-1$ part. Using the assumption we have
-$$
-\mathrm{LHS} = \sum_{i\in C_1, i\neq k} w_{ik} + \sum_{r=2}^k \sum_{i \in C_r, j \not\in C_r} w_{ij}\geq \frac{2(k+n_1 -1)\sum w_{ij}}{n-1}
-$$
+\begin{equation}\label{eq:GF}
+f[\P] \geq \frac{\abs{\P}-1}{\abs{V}-1} \sum_{(i,j) \in E} w_{ij}
+\end{equation}
+for any $\P \in \Pi$. Then by theorem in the paper, Proposition \ref{prop:triangle} holds. 
 
-Then for the given $\abs{\P}=k$, $2f[\P] =\mathrm{LHS} - \sum_{i,j\in C_1, i\neq j} w_{ij}$.
+Let $n=\abs{V}$. For $\abs{\P}=n$, the equality of equation \ref{eq:GF} holds. 
+
+Suppose equation \eqref{eq:GF} holds for any $\abs{\P} \geq k+1(k\geq 2)$, and for $\P=\{C_1, \dots, C_k\}$, with $\abs{C_1} \leq \abs{C_r}$ for $r=2,\dots, k$. Let $\abs{C_1}=n_1(\geq 2), \P_{C_1} = \{\{i\}| i \in C_1\}, \P'=\P_{C_1} \cup \P \backslash \{C_1\}$. Then we have $\abs{\P'} = k+n_1-1$. Using equation \eqref{eq:GF} for $\P'$ we have
+\begin{align}\label{eq:PPrelation}
+f[\P'] & = \sum_{i\in C_1, k \not\in C_1} w_{ik} + \sum_{r=2}^k \sum_{(i,j) \in E(C_r)} w_{ij}\geq \frac{k+n_1 -2}{n-1}\sum_{(i,j) \in E} w_{ij} \\
+f[\P] & =f[P'] - \sum_{(i,j) \in E(C_1)} w_{ij}
+\end{align}
 Applying triangle inequality $w_{ij} \leq w_{ik} + w_{jk}$ for given $k\not\in C_1$ and sum it over all $i, j \in C_1, i\neq j$, we have
 $$
-\sum_{i,j \in C_1, i\neq j} w_{ij} \leq 2(n_1-1)\sum_{i\in C_1} w_{ik}
+\sum_{(i,j) \in E(C_1)} w_{ij} \leq \sum_{(i,j) \in E(C_1)} (w_{ik} + w_{jk}) = (n_1-1)\sum_{i\in C_1} w_{ik}
 $$
-Since
+Summation over $k \not\in C_1$ we have 
+$$
+(n - n_1) \sum_{(i,j) \in E(C_1)} w_{ij} \leq (n_1 - 1) \sum_{i \in C_1, k \not\in C_1} w_{ik}
+$$
+Also
 \begin{align*}
-\sum w_{ij} &= \sum_{i,j \in C_1, i\neq j} w_{ij} + \sum_{i\in C_1, k\neq C_1} w_{ik} \\
-(n - n_1) \sum_{i,j \in C_1, i\neq j} w_{ij}& \leq 2(n_1 - 1) \sum_{i \in C_1, k \not\in C_1} w_{ik} \\
+\sum_{(i,j) \in E} w_{ij}  & \geq \sum_{(i,j) \in E(C_1)} w_{ij} + \sum_{i\in C_1, k\not\in C_1} w_{ik} \\
+(n_1 - 1)\sum_{(i,j) \in E} w_{ij}  & \geq (n_1 -1 )\sum_{(i,j) \in E(C_1)} w_{ij} + (n_1-1)\sum_{i\in C_1, k\not\in C_1} w_{ik} \\
+& \geq (n_1 -1 )\sum_{(i,j) \in E(C_1)} w_{ij} + (n - n_1) \sum_{(i,j) \in E(C_1)} w_{ij}\\
+& = (n-1) \sum_{(i,j) \in E(C_1)} w_{ij}
 \end{align*}
-We have $\sum_{i,j \in C_1, i\neq j} w_{ij} \leq \frac{2(n_1-1) \sum w_{ij}}{n-1}$. Therefore, 
-$2f[\P] \geq \frac{2k \sum w_{ij}}{n-1}$. That is, the result holds for $\abs{\P}=k$.
+We then have $\sum_{(i,j) \in E(C_1)} w_{ij} \leq \frac{n_1-1}{n-1}\sum_{(i,j) \in E} w_{ij}$. From equation \eqref{eq:PPrelation} we have 
+$f[\P] \geq \frac{k-1}{n-1}\sum_{(i,j) \in E} w_{ij}$. That is, the result holds for $\abs{\P}=k$.
 \end{proof}
 \begin{corollary}\label{cor:complete}
 	For a complete graph $G(V,E)$ with equal weight $w$ on each edge, we have $I(Z_{V})=\frac{nw}{2}$ where $n=\abs{V}$. And $I(Z_S) < I(Z_V)$ for any subset $S\subsetneq V$.
 \end{corollary}
 \begin{proof}
-From Proposition \ref{prop:triangle}, $I(Z_{V})$ is achieved by $\P=\{\{1\},\dots,\{n\} \}$ and $I_{\P}(Z_V) = \frac{n(n-1)w/2}{n-1} = \frac{nw}{2} $. From bottom-up approach of Proposition \ref{prop:ta}, $I(Z_V) = \max_{S\subset V} I(Z_S)$ therefore $I(Z_S) < I(Z_V)$ holds for any subset $S\subsetneq V$.
+From Proposition \ref{prop:triangle}, $I(Z_{V})$ is achieved by $\P=\{\{1\},\dots,\{n\} \}$ and $I(Z_V) = I_{\P}(Z_V) = \frac{n(n-1)w/2}{n-1} = \frac{nw}{2} $. From bottom-up approach, $I(Z_V) = \max_{S\subset V} I(Z_S)$, therefore $I(Z_S) \leq I(Z_V)$. If $I(Z_S) = I(Z_V)$, consider $\P_S=\{i | i \in S}$, then $I(Z_S) = I_{\P_S}(Z_S) = \frac{\abs{S}w}{2} < I(Z_V)$, a contradiction. Therefore, $I(Z_S) < I(Z_V)$ holds for any subset $S\subsetneq V$.
 \end{proof}
 \input{proposition_submodular_structure}
 \begin{proof}
