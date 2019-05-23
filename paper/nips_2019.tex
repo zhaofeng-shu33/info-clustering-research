@@ -51,15 +51,15 @@
 \end{abstract}
 
 \section{Introduction}
-In traditional agglomerative clustering method, two clusters are agglomerated based on pairwise inter-cluster similarity.  For example, well-known single-linkage clustering method uses nearest distance metric between two clusters and merge those two with minimal distance \cite{RN16}.  However, pairwise comparison is not optimal since it does not consider information shared between more than two clusters.  To overcome this drawback, we define a multivariate similarity measure starting from arbitrary pairwise similarity metrics. Using this multivariate measure in the agglomerative clustering case, we can merge several clusters with largest similarity to the hierarchical tree in one step of computation.
+In traditional agglomerative clustering methods, two clusters are merged into a larger cluster based on pairwise inter-cluster similarity.  For example, single-linkage clustering uses nearest distance metric between two clusters and merges those two with minimal distance \cite{RN16}.  However, pairwise comparison is not optimal since it does not consider information shared among more than two clusters.  To overcome this drawback, we propose a multivariate similarity measure starting from arbitrary pairwise similarity metrics. Using this multivariate measure in agglomerative clustering, we can merge several clusters with largest similarity to the hierarchical tree in one step of computation.
 
-This multivariate measure is closely related with the mathematical theory of \textbf{info-clustering} \cite{RN1}. This theory deals with random variable clustering and only uses entropy measure for its purpose. We generalize info-clustering theory to obtain hierarchical structure of arbitrary graph and we can use arbitrary nonnegative pairwise similarity measure to do the job. Our method is also called info-clustering. It is a hierarchical graph clustering method. 
+This multivariate measure is closely related with the mathematical theory of \textbf{info-clustering} \cite{RN1}. This theory deals with random variable clustering and only uses entropy measure for its purpose. Using graph theory language, we extend the info-clustering theory to obtain the hierarchical structure of dataset and we can use any nonnegative pairwise similarity measure to do the job. Throughout this paper, our formulation is called graph-based info-clustering.
 
-As far as we know, Bayes hierarchical clustering \cite{Heller2005Bayesian} can also produce non-binary hierarchical tree under a given probabilistic model. But Bayes model has many hyper-parameters to tune and the clustering result between different runs varies greatly because of intrinsic randomness. In comparison, once the graph affinity matrix is given, our info-clustering has no hyper-parameter to tune and is a deterministic algorithm. By using graph partition techniques \cite{RN3} and parametric maximum flow algorithm \cite{RN4}, the hierarchical tree of info-clustering can be solved efficiently in practice. 
+As far as we know, Bayes hierarchical clustering \cite{Heller2005Bayesian} can also produce non-binary hierarchical tree under a given probabilistic model. But Bayes model has many hyper-parameters to tune and the clustering results between different runs vary greatly because of its intrinsic randomness. In comparison, once the pairwise similarity metric is chosen, graph-based info-clustering has no hyper-parameters to tune and is a deterministic algorithm. By using graph partition techniques \cite{RN3} and parametric maximum flow algorithm \cite{RN4}, our method can obtain the hierarchical tree structure of data. 
 
- In this paper, we discuss theoretically and experimentally how to choose a good graph affinity matrix for info-clustering method. For tasks like community detection, info-clustering can be used directly and for general dataset clustering problems we can convert it to a connected graph with each node representing a data point and then apply the method. Experiment on synthesized and real-world dataset shows the info-clustering method performs well. 
+In this paper, we have discussed theoretically and experimentally how to choose a good pairwise metric for graph-based info-clustering. Then we can use graph node to represent a data point and graph edge weight to represent the pairwise similarity of data	. Our method is directly applied to this graph and can deal with community detection tasks directly. Experiments on synthesized and real-world dataset shows that graph-based info-clustering performs well. 
 
-The paper is organized as follows. In Section \ref{sec:models}, we formulate the info-clustering problem and show some of its property. In Section \ref{sec:algorithm}, we propose the algorithm workflow. In Section \ref{sec:experiment}, we give the experiment results and compare info-clustering with other methods. Finally, we give the conclusion in Section \ref{sec:conclusion}.
+The paper is organized as follows. In Section \ref{sec:models}, we formulate graph-based info-clustering and show some of its properties. In Section \ref{sec:algorithm}, we propose the algorithm workflow. In Section \ref{sec:experiment}, we present the experiment results and compare info-clustering with other methods. Finally, we give the conclusion in Section \ref{sec:conclusion}.
 
 Throughout this paper, the graph is denoted by $G(V,E)$, with node index set $V = \{1, 2, \dots, \abs{V}\}$, node set $Z_V=\{Z_i | i \in V\}$\footnote{$Z_i$ represents the i-th node in $G(V,E)$} 
  and edge set $E=\{(i,j) | w_{ij}>0\}$\footnote{$(\cdot, \cdot)$ is ordered pair ($(i,j) \neq (j,i)$) for directed graph and unordered pair ($(i,j) = (j,i)$) for undirected graph.}. $\P$ is a partition of $V$\footnote{$\P=\{C_1, \dots, C_k\}, \bigcup_{i=1}^k C_i = V$ and $i\neq j \Rightarrow C_i \cap C_j = \emptyset$} and $\{V\}$ is a trivial partition. $\P_C$ is a partition of $C\subset V$. $\Pi$ is the collection of all partitions of $V$. A partial order $\preceq $ is defined on $\Pi$: $\P_2 \preceq \P_1$ means $C\in \P_2 \Rightarrow C \in \P_1$. $\Pi' = \Pi \backslash \{V\}$ is the collection of non-trivial partitions. $f(\cdot)$ is graph cut function, that is $f(C) = \sum_{i\not\in C, j\in C, (i,j) \in E} w_{ij}$. $f[\cdot]$ is a function defined on $\Pi$ by
@@ -71,20 +71,20 @@ f[\P] :=
 \end{cases},\P \in \Pi
 \end{equation}
 If we convert an undirected graph to directed one by adding arbitrary direction to each edge, the value of $f[\P]$ is unchanged. Therefore, without specific declaration, $G$ is directed throughout the paper. The last notation is about $x(C)$ in which $x$ is a $\abs{V}$ dimensional vector and $x(C)=\sum_{i \in C} x_i, C\in V$.
-\section{Graph theory formulation of info-clustering}\label{sec:models}
-Info-clustering as a concept was originally proposed by C. Chan et al. \cite{RN1}.
-It defines $I_{\P}(Z_V) = \frac{1}{\abs{\P}-1}(\sum_{C\in \P} H(Z_C) - H(Z_V))$ and $I(Z_V)$ as equation \eqref{eq:ms} where $Z_i$ represents a random variable and $H$ is the entropy function. By such definition, a variate of Theorem \ref{thm:ta} holds. 
-It is a general theoretical framework but only practical when graph cut function is considered. 
-For graph cut function, the same mathematical structure as Theorem \ref{thm:psp} can be formulated in many ways, e.g. pairwise independent network \cite{RN9}, minimum average cost \cite{RN7} or graph strength \cite{RN12}. In our work, we give an alternative formulation which focuses on hierarchical structure of graph. 
 
-Consider an undirected graph partition problem, in which we want to divide the graph nodes into several groups with larger similarity within each group and smaller similarity between different groups. Let us formulate this problem mathematically in graph language: given $G(V, E)$ where the edge weight $w$ is nonnegative and represents pairwise similarity of nodes, we try to minimize the following quantity over different partition of $V$.
+\section{Formulation of graph-based info-clustering}\label{sec:models}
+Info-clustering as a concept was originally proposed by C. Chan et al. \cite{RN1}.
+It extends mutual information and defines multivariate mutual information(\textsf{MMI}). Info-clustering groups random variables with larger \textsf{MMI} together.   
+It is a general theoretical framework and has close connection with a mathematical structure called \textbf{principal sequence of partitions}. This structure has appeared in many related works such as pairwise independent network \cite{RN9}, minimum average cost \cite{RN7} and graph strength \cite{RN12}. In this section, we give an alternative formulation of info-clustering using graph theory language.
+
+Consider a graph $G(V, E)$ where the edge weight $w$ is nonnegative and represents pairwise similarity of nodes. To measure the similarity shared by multiple nodes, we use the following definition.
 \begin{definition}[multivariate similarity]\label{def:ms}
 \begin{align}
 I_{\P}(Z_V) & := \frac{ f[\P] }{  \abs{\mathcal{P}} - 1 }\\
 I(Z_V) & := \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V)  \label{eq:ms}
 \end{align}
 \end{definition}
-We call the quantity in equation \eqref{eq:ms} \textbf{multivariate similarity} of $G$ because it measures the similarity shared by multiple graph nodes. We can also compute multivariate similarity for subgraph $G'(V',E')$ of $G$, denoted by $I(Z_{V'})$. 
+The quantity $I(Z_V)$ in equation \eqref{eq:ms} is called \textbf{multivariate similarity} of $G$. We can also compute multivariate similarity for subgraph $G'(V',E')$ of $G$, denoted by $I(Z_{V'})$. Multivariate similarity is an extension of pairwise similarity. When $V'=\{i,j\}$, we have $I(Z_{V'})=w_{ij}$ from above definition.
 \begin{example}[from  \cite{RN9} Fig. 1]\label{eg:three}
 For a three node directed graph (Fig. \ref{fig:tn}) 
 
@@ -114,7 +114,7 @@ By the construction of the clustering tree, we can associate each tree node with
 \begin{figure}
 \centering
 \includegraphics[width=0.8\textwidth]{pic/threshold.eps}
-\caption{a clustering tree (left) for the weighted graph (right) by info-clustering method. Threshold values are $0.9, 1, 2$.}\label{fig:threshold}
+\caption{a clustering tree (left) for the weighted graph (right) by graph-based info-clustering method. Threshold values are $0.9, 1, 2$.}\label{fig:threshold}
 \end{figure}
 Consider an undirected graph $G(V, E)$ with $V=\{1,2,3,4\}$ and $E=\{(1,2),(1,3),(3,4),(2,4)\}$ with edge weight $w_{12}=1,w_{13}=0.4,w_{24}=0.5,w_{34}=2$ (See Fig. \ref{fig:threshold}). The threshold values are the multivariate similarity $I(Z_{3,4})=2, I(Z_{1,2})=1$ and $I(Z_V)=0.9$ respectively. We can write the complete clustering solution as:
 \begin{equation*}
@@ -134,7 +134,7 @@ Using $I(Z_V)$ to cluster directly is computational expensive, the same clusteri
 h_{\P}(\lambda) &=  f[\P] - \abs{\P} \lambda  \\
 h(\lambda) &= \min_{\P \in \Pi'(V)} h_{\P}(\lambda)
 \end{align}
-The optimal partitions for $h(\lambda)$ are finite and they can be arranged in a decreasing sequence $\P_1, \dots, \P_k$ such that $\P_1 \succeq \P_2 \dots \succeq \P_k$, This sequence is called \textbf{principal sequence of partitions} of $h(\lambda)$ and we can obtain the hierarchical clustering tree from this sequence.
+The optimal partitions for $h(\lambda)$ are finite and they can be arranged in a decreasing sequence $\P_1, \dots, \P_k$ such that $\P_1 \succeq \P_2 \dots \succeq \P_k$, This sequence is called principal sequence of partitions of $h(\lambda)$ and we can obtain the hierarchical clustering tree from this sequence.
 \end{theorem}
 %proof in attachment
 
@@ -303,7 +303,7 @@ Proposition \ref{prop:reweight} tells us there is no other clusters except for $
 
 
 \section{Conclusion}\label{sec:conclusion}
-In this paper, we formulate info-clustering in graph theory and propose a parametric computing scheme to efficiently get the hierarchical structure of dataset or community. Numerical experiment shows that graph-based info-clustering performs well and especially suitable if the tree structure of ground truth is far different from the binary tree structure.
+In this paper, we formulate info-clustering in graph theory language and propose a parametric computing scheme to efficiently get the hierarchical structure of dataset or community. Numerical experiment shows that graph-based info-clustering performs well and especially suitable if the tree structure of ground truth is far different from the binary tree structure.
 
 %\subsubsection*{Acknowledgments}
 
