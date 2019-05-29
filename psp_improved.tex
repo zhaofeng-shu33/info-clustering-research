@@ -1,0 +1,20 @@
+\documentclass{article}
+\usepackage{subcaption}
+\input{macros.tex}
+\title{Improving Algorithm of PSP}
+\begin{document}
+\maketitle
+\begin{algorithm}
+\caption{}\label{alg:psp_a}
+\begin{algorithmic}[1]
+\REQUIRE an undirected graph $G(V, E)$; edge cost function $c(e)$ for $e\in E$
+\ENSURE a nested family of partition $\P^{\lambda}$ and its corresponding turning point list $\mathcal{L}$
+\STATE initialize a set list $K$
+\STATE \texttt{Split}(V)
+\FUNCTION{\texttt{Split}$(Q)$}
+\STATE Consider subgraph $G'$ constraint on set $Q$. Let $Q' = \{i | i \in Q\}$
+\ENDFUNCTION
+
+\end{algorithmic}
+\end{algorithm}
+\end{document}

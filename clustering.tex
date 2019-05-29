@@ -465,7 +465,7 @@ We use method of principal sequence of partition(PSP) to implement the info-clus
 \STATE \texttt{Split}$(Q,P)$
 \FUNCTION{\texttt{Split}$(Q,P)$}
  \STATE\label{alg:gamma} $\gamma' = {1 \over \abs{P} - \abs{Q}} (f(P)-f(Q))$
- \STATE $h' = {1 \over \abs{P} - \abs{Q}}(\abs{P} h(Q) - \abs{Q} h(P))$
+ \STATE $h' = {1 \over \abs{P} - \abs{Q}}(\abs{P} f(Q) - \abs{Q} f(P))$
  \STATE $(\tilde{h}, P') = \texttt{DT}(f,\gamma')$ \footnotemark
  \IF{$\tilde{h} = h'$}
  	\STATE $\mathbf{L}[\abs{Q}] = \gamma'$
