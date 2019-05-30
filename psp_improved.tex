@@ -7,14 +7,33 @@
 \begin{algorithm}
 \caption{}\label{alg:psp_a}
 \begin{algorithmic}[1]
-\REQUIRE an undirected graph $G(V, E)$; edge cost function $c(e)$ for $e\in E$
-\ENSURE a nested family of partition $\P^{\lambda}$ and its corresponding turning point list $\mathcal{L}$
-\STATE initialize a set list $K$
-\STATE \texttt{Split}(V)
-\FUNCTION{\texttt{Split}$(Q)$}
-\STATE Consider subgraph $G'$ constraint on set $Q$. Let $Q' = \{i | i \in Q\}$
+\REQUIRE a directed graph $G(V, E)$; edge cost function $c(e)$ for $e\in E$
+\ENSURE a hierarchical tree $\mathcal{T}(K, E)$ where $K$ is node set and $E$ is edge set; $c'$ as edge weight map. Each non-leaf node of $\mathcal{T}$ is an info-cluster and each edge weight is a critical value. 
+\STATE initialize a set list $K=[V, \{1\}, \dots, \{V\}]$, a tree $\mathcal{T}$ with 0 as root node, $j(j\leq \abs{V})$ as leaf node and no stem node.
+\STATE \texttt{Split}(0)
+\FUNCTION{\texttt{Split}$(i)$}
+\STATE $Q=K[i]$
+\STATE Let $T=\{K[j][0] | \texttt{parent}(j) = i\}$
+\STATE Consider subgraph $G'$ constraint on set $T$. $w$ is the summation of all edge weights within $G'$ 
+\STATE $\gamma' = \frac{w}{\abs{T}-1}$
+\STATE $(\tilde{h}, P') = \texttt{DT}(G', \gamma')$
+\IF{$\tilde{h} = - \gamma'$}
+\STATE add edge weight $\gamma'$ starting from $i$ to its children.
+\ELSE
+\FOR{$S$ in $P'$ and $\abs{S}>1$}
+\STATE Let $S'=S$, $s=\abs{K}$% index(S) = |K|
+\FOR{child $j$ of $i$}
+\IF{$K[j]\cap S = \emptyset$}
+\STATE \texttt{parent}$(j)=s, S'=S\cup K[j]$
+\ENDIF
+\ENDFOR
+\STATE \texttt{parent}$(s)=i$, append $S'$ to $K$
+\STATE \texttt{Split}(s)
+\STATE within the graph $G$, contract $S$ to $S$[0]
+\ENDFOR
+\STATE \texttt{Split}$(i)$ % the graph is modified
+\ENDIF
 \ENDFUNCTION
-
 \end{algorithmic}
 \end{algorithm}
 \end{document}
