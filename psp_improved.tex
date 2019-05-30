@@ -4,6 +4,13 @@
 \title{Improving Algorithm of PSP}
 \begin{document}
 \maketitle
+
+In the original formulation to calculate principal sequence of partition. A Divide and Conquer approach is used and $\min_{\P} \{f[\P]-\lambda \abs{\P}\}$ is evaluated only at finite $\lambda$. However, computation for different $\lambda$ is independent and does not use the nesting property of the PSP. Therefore, we propose an improved version of PSP, which utilitizes the nesting property to decrease the time complexity of the algorithm.
+
+Generally speaking, we first solve $\min_{\P} \{ f[\P]-\lambda \abs{\P} \}$ at $\lambda_1 = \frac{w}{\abs{V}-1}$ where $w$ is the summation of all edge capacity. Then for those $\lambda > \lambda_1$ we do not need to compute for the whole graph $G$. Suppose $\P_1 = \argmin_{\P} \{ f[\P]-\lambda \abs{\P} \}$ and for each $ C \in \P_1$, it is sufficient to consider subgraph $G'$ constraint on node set $C$. That is, we compute the clustering tree starting with tree root $C$ instead of $V$. For $\lambda < \lambda_1$, a graph contraction technique can be used. That is, the graph $G$ can be contracted to $\abs{\P_1}$ parts and the same algorithm can be run with the same root node $V$ but it has different children this time (previously, all children of $V$ is $\{j\}$, afterwards it is $C$ for $C \in \P_1$.
+
+The tricky part of the implementation is how to construct the whole clustering tree $\mathcal{T}$.
+
 \begin{algorithm}
 \caption{}\label{alg:psp_a}
 \begin{algorithmic}[1]
@@ -15,7 +22,7 @@
 \STATE $Q=K[i]$
 \STATE Let $T=\{K[j][0] | \texttt{parent}(j) = i\}$
 \STATE Consider subgraph $G'$ constraint on set $T$. $w$ is the summation of all edge weights within $G'$ 
-\STATE $\gamma' = \frac{w}{\abs{T}-1}$
+\STATE $\gamma' = \frac{w}{\abs{T}-1}$ \label{line:intersection}
 \STATE $(\tilde{h}, P') = \texttt{DT}(G', \gamma')$
 \IF{$\tilde{h} = - \gamma'$}
 \STATE add edge weight $\gamma'$ starting from $i$ to its children.
@@ -36,4 +43,7 @@
 \ENDFUNCTION
 \end{algorithmic}
 \end{algorithm}
+In line \ref{line:intersection}, since we are considering the intersection of $-\lambda$ and $w-\abs{T}\lambda $.
+
+The idea of the improved PSP algorithm can be generalized to get a hierarchical community detection algorithm from any "flatten" algorithm ( which can only get one-level structure of a community ).
 \end{document}
