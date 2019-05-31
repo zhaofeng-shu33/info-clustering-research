@@ -30,7 +30,7 @@ The tricky part of the implementation is how to construct the whole clustering t
 \FOR{$S$ in $P'$ and $\abs{S}>1$}
 \STATE Let $S'=S$, $s=\abs{K}$% index(S) = |K|
 \FOR{child $j$ of $i$}
-\IF{$K[j]\cap S = \emptyset$}
+\IF{$K[j]\cap S \neq \emptyset$}
 \STATE \texttt{parent}$(j)=s, S'=S\cup K[j]$
 \ENDIF
 \ENDFOR
