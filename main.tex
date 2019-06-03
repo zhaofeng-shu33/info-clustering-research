@@ -61,7 +61,14 @@
 \item many graph-based methods are not hierarchical.
 \end{itemize}
 \end{frame}
-
+\begin{frame}
+	\frametitle{Background}
+	\begin{enumerate}
+		\item C. Chan et al. in 2016 proposed the mathematical theory of info-clustering to cluster random variables.
+		\item A mathematical structure called principal sequence of partition [Narayanan et al. 1991] is closely related with info-clustering.
+		\item parametric maximum flow [Tarjan et al. 1989] can be used to efficiently solve the info-clustering problem.
+	\end{enumerate}
+\end{frame}
 \subsection{Mutual Similarity and its extension}
 \begin{frame}
 \begin{block}{mutual similarity}
@@ -277,17 +284,18 @@ Minimizing $g_{\lambda}(T)$ is equivalent to solve the maximum flow for $\wideti
 \end{frame}
 \begin{frame}
 \begin{figure}[!ht]
-\centering
 \begin{subfigure}{\textwidth}
-\IfFileExists{code/utility/build/4part.eps}
-{\includegraphics[width=12cm]{code/utility/build/4part.eps}}
+\centering
+\IfFileExists{experiment/data_clustering/plot_art/build/4part.eps}
+{\includegraphics[width=11cm]{experiment/data_clustering/plot_art/build/4part.eps}}
 {\includegraphics[width=12cm]{pic/4part.eps}} % not up-to-date
 
 \caption{Illustrative example from four Gaussians}\label{fig:4p}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
-\IfFileExists{code/utility/build/3circle.eps}
-{\includegraphics[width=12cm]{code/utility/build/3circle.eps}}
+\centering
+\IfFileExists{experiment/data_clustering/plot_art/build/3circle.eps}
+{\includegraphics[width=11cm]{experiment/data_clustering/plot_art/build/3circle.eps}}
 {\includegraphics[width=12cm]{pic/3circle.eps}} % not up-to-date
 \caption{Illustrative example from three circles}\label{fig:3c}
 \end{subfigure}
@@ -297,28 +305,76 @@ Minimizing $g_{\lambda}(T)$ is equivalent to solve the maximum flow for $\wideti
 \frametitle{empirical comparison}
 \begin{table}[!ht]
 \centering
-\InputIfFileExists{build/compare.tex}{}{}
+\InputIfFileExists{paper/build/compare_3.tex}{}{}
 \caption{clustering accuracy for info-clustering and existing algorithms}
 \end{table}
+\end{frame}
+\begin{frame}
+\frametitle{Info-clustering in hierarchical community detection problem}
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\textwidth]{paper/pic/two_level.eps}
+		\caption{a community with two hierarchical levels}\label{fig:c1}
+	\end{subfigure}
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\textwidth]{paper/pic/tree_info-clustering.pdf}
+		\caption{hierarchical tree obtained by graph-based info-clustering for left figure. The tree leaves with the same ancestor are merged for clarity.}\label{fig:c2}
+	\end{subfigure}
+	\caption{Community Detection Experiment Illustration}
+\end{figure}
+\end{frame}
+\begin{frame}
+	\begin{block}{model parameter}
+	\begin{description}
+	  \item[$z_{\mathrm{in}_1}$] average node degree within micro community;
+	  \item[$z_{\mathrm{in}_2}$] average node degree between different micro communities but within one macro community;  
+	  \item[$z_{\mathrm{out}}$] average node degree between different macro communities
+    \end{description}
+    Robinson-Foulds distance measure between two trees;    
+    {\footnotesize compared with GN(Girvan-Newman) and BHCD(Bayesian hierarchical community detection).
+	}
+    \end{block}
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.33\textwidth}
+		\includegraphics[width=\textwidth]{paper/pic/z_in_1.eps}
+		\caption{}
+	\end{subfigure}~
+	\begin{subfigure}{0.33\textwidth}
+		\includegraphics[width=\textwidth]{paper/pic/z_in_2.eps}
+		\caption{}
+	\end{subfigure}~
+	\begin{subfigure}{0.33\textwidth}
+		\includegraphics[width=\textwidth]{paper/pic/z_o.eps}
+		\caption{}
+	\end{subfigure}
+	\caption{{\scriptsize Distance comparison between different hierarchical community detection method.}}\label{fig:cdr}	
+\end{figure}    
 \end{frame}
 \section{Conclusion and Contribution}
 \begin{frame}
 \frametitle{Conclusion}
 \begin{itemize}
-\item propose multivariate information, used in info-clustering method
-\item implement info-clustering algorithm
-\item competitive with existing algorithms in some dataset
+\item propose graph-based info-clustering method
+\item propose a parametric computing scheme to get the hierarchical structure of given graph 
+\item apply graph-based info-clustering to cluster dataset and find structure of community
 \end{itemize}
 \end{frame}
 \section{Reference}
 \begin{frame}
-\frametitle{Further Reading}
+\frametitle{Reference}
 \begin{thebibliography}{9}
 \bibitem{ic} Chung Chan, \newblock Info-Clustering: A Mathematical Theory for Data Clustering
 \newblock  IEEE Transactions on Molecular, Biological and Multi-Scale Communications, June 2016
 \bibitem{pin}  Chung Chan, \newblock Info-Clustering: An Efficient Algorithm by Network Information Flow
 \newblock 2017 Information Theory and Applications Workshop (ITA)
 \bibitem{mac} Kiyohito Nagano \newblock Minimum Average Cost Clustering \newblock NIPS 2010
+\bibitem{RN4}
+Vladimir Kolmogorov.
+\newblock A faster algorithm for computing the principal sequence of partitions
+of a graph.
+\newblock {\em Algorithmica}, 56(4):394--412, 2010.
 \end{thebibliography}
 \end{frame}
 \end{document}
