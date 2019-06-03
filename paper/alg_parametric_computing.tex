@@ -1,5 +1,16 @@
-\begin{algorithm}
-	\caption{Parametric Computing of $T^{\lambda} = \argmin_{t\in V} g_{\lambda}(T)$}\label{alg:pmfT}
+\begin{algorithm}[H]
+	\caption{
+    \ifbeamer
+    {\footnotesize
+    \fi
+    Parametric Computing of $T^{\lambda} = \argmin_{t\in T} g_{\lambda}(T)$
+    \ifbeamer
+    }
+    \fi
+    }\label{alg:pmfT}
+    \ifbeamer
+    {\tiny
+    \fi
 	\begin{algorithmic}[1]
 		\REQUIRE set $V$, $t \in V$, function $g_{\lambda}$ whose domain is $V$.
 		\ENSURE An ordered array \textbf{L} which contains $\lambda_1, \dots \lambda_k$ and a reversely ordered array $T^{\lambda}$ which contains $T_0,\dots, T_k$. (defined in equation \eqref{eq:Alambda})
@@ -20,4 +31,7 @@
 		\ENDIF
 		\ENDFUNCTION
 	\end{algorithmic}
+    \ifbeamer
+    }
+    \fi
 \end{algorithm}
