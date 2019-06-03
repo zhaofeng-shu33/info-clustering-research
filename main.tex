@@ -1,22 +1,16 @@
 \documentclass{beamer}
 \usetheme{Lab2C}
-
 \usepackage{graphicx}
 \usepackage{subcaption}
-\usepackage{amsthm}
-\usepackage{mathtools}
-\DeclarePairedDelimiter\abs{\lvert}{\rvert}
-\DeclarePairedDelimiter\norm{\lVert}{\rVert}
-\DeclarePairedDelimiter\inner{\langle}{\rangle}
-\def\P{\mathcal{P}}
+\input{macros.tex}
 %further improvement
 %background intro added Chen Chuan's work
 %simulation add hierarchical method
 %find suitable dataset to apply info-clustering
 %Yang Li's suggestion: compared with other clustering method, the threshold is the same or not
 %early stopping technique, complexity from n -> log(n)
-\title{An information-theoretic approach to cluster random variables}
-\author{Feng Zhao\inst{1} \and Fei Ma\inst{2} \and Shao-Lun Huang\inst{2} \and Lin Zhang\inst{2}}
+\title{A Graph-Based Information Theoretic Clustering Method}
+\author{Feng Zhao\inst{1} \and Yang Li\inst{2} \and Shao-Lun Huang\inst{2}}
 \institute{\inst{1}Dept. of Electronic Engineering, Tsinghua University
 \and \inst{2}Tsinghua-Berkeley Shenzhen Institute, Tsinghua University}
 \date{\today}
@@ -36,12 +30,12 @@
 \begin{figure}
     \centering
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{pic/kmeans.png}
-        \caption{KMeans}
+        \includegraphics[width=\textwidth]{pic/agglomerative.png}
+        \caption{Agglomerative method}
     \end{subfigure}~
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{pic/spectral_clustering.png}
-        \caption{Spectral clustering}
+        \includegraphics[width=\textwidth]{pic/bayesian.png}
+        \caption{Bayesian method}
     \end{subfigure}
     ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
     %(or a blank line to force the subfigure onto a new line)
@@ -52,20 +46,33 @@
 \end{figure}
 \end{frame}
 
+\begin{frame}
+\frametitle{Problems}
+\begin{itemize}
+\item binary hierarchical tree only.
+\item probabilistic model
+\begin{itemize}
+\item many hyper-parameters to tune 
+\item need many reruns
+\end{itemize}
+\item many graph-based methods are not hierarchical.
+\end{itemize}
+\end{frame}
+
 \subsection{Mutual Similarity and its extension}
 \begin{frame}
 \begin{block}{mutual similarity}
 \begin{itemize}
 \item Gaussian kernel $ \exp({-\gamma \norm{p_1 - p_2}^2})$
-\item mutual information $I(X;Y)$ for random variables
+\item threshold distance $\delta(\norm{p_1-p_2} < \delta^*)$
 \end{itemize}
 \end{block}
 
-\begin{definition}[Multivariate information]
-Given an undirected Graph $G(V, E)$, with vertex as data point, edge weight as mutual similarity, the multivariate information $I(Z_V)$
+\begin{definition}[Multivariate Similarity]
+Given a graph $G(V, E)$, with vertex as data point, edge weight as mutual similarity, the multivariate similarity $I(Z_V)$
 \begin{align}
 I(Z_V) & = \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V) \\
-\label{eq:newDef}  I_{\mathcal{P}}(Z_V) & = {1 \over 2 ( \abs{\mathcal{P}} - 1) } \sum_{\substack{i\in C, j \not\in C\\ C\in \mathcal{P}}} w_{ij}
+\label{eq:newDef}  I_{\mathcal{P}}(Z_V) & = \frac{1}{ \abs{\mathcal{P}} - 1} \sum_{\substack{i\in C, j \not\in C\\ C\in \mathcal{P}, (i,j) \in E}} w_{ij}
 \end{align}
 \end{definition}
 \end{frame}
@@ -74,7 +81,7 @@ I(Z_V) & = \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V) \\
 \begin{columns}
 \column{5cm}
 \begin{figure}
-\includegraphics[width=4cm]{pic/example.eps}
+\includegraphics[width=4cm]{pic/example_directed.eps}
 \end{figure}
 \column{5cm}
 \begin{align*}
@@ -92,55 +99,50 @@ I(Z_{\{1,3\}}) = 5, I(Z_{\{1,2\}}) = 1
 %\section{B matrix and its relationship with multivariate mutual information}
 
 \begin{frame}{Hierachical clustering method}
-To cluster $Z_1, Z_2, \dots, Z_{\abs{V}}$ for threshold $\gamma$.
-The clusters are:
-\begin{equation}
-C_{\gamma}(Z_V) = \textrm{maximal}\{ B \subseteq V \vert \abs{B} > 1, I(Z_B) > \gamma \}
-\end{equation}
-More specificly:
-\begin{equation*}
-C_{\gamma}(Z_V) = \begin{cases}
-\{V\} & \gamma < \gamma_1 \\
-C_{\gamma_i}(Z_V) & \gamma \in [\gamma_i, \gamma_{i+1}), 1\leq i < N \\
-\emptyset & \gamma \geq \gamma_N
-\end{cases}
-\end{equation*}
-$\gamma_i$: \alert{critical values}
+
+\begin{description}
+\item[top-down] $I_{\P^*}(Z_V)=I(Z_V)$ and use $\P^*$ to split.
+\item[bottom-up] $I(Z_C) = \max_{B\subseteq V} I(Z_B)$ and use $C$ to merge.
+\end{description}
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{paper/pic/two_approach.eps}
+\caption{Left: top-down approach. Right: bottom-up approach}
+\end{figure}
 \end{frame}
 \begin{frame}
 \frametitle{Illustrative example}
-\begin{columns}
-\column{4cm}
 \begin{figure}
-\includegraphics[width=4cm]{pic/example.eps}
+\centering
+\includegraphics[width=0.7\textwidth]{paper/pic/threshold.eps}
+\caption{a clustering tree (left) for the weighted graph (right)}
 \end{figure}
-\column{6cm}
+
+The threshold values $\lambda$ are $I(Z_{3,4})=2, I(Z_{1,2})=1$ and $I(Z_V)=0.9$ respectively.
 \begin{equation*}
-I(Z_{\{1,2,3\}}) = 2, I(Z_{\{1,3\}}) = 5
-\end{equation*}
-\begin{equation*}
-C_{\gamma}(Z_{\{1,2,3\}}) = \begin{cases}
-\{1,2,3\} & \gamma \in (-\infty, 2) \\
-\{1, 3\} & \gamma \in [2, 5) \\
-\emptyset & \gamma \in [5, \infty)
+\P = 
+\begin{cases}
+\{\{1,2,3,4\}\} & \lambda < 0.9 \\
+\{\{1,2\},\{3,4\}\} & 0.9 \leq \lambda < 1 \\
+\{\{1\},\{2\},\{3,4\}\} & 1 \leq \lambda < 2\\
+\{\{1\},\{2\},\{3\},\{4\}\} & \lambda \geq 2
 \end{cases}
 \end{equation*}
-\end{columns}
 \end{frame}
-\section{Info-Cluster Algorithms}
+\section{Algorithms}
 \begin{frame}
 \begin{definition}[graph cut function]
 $C$ is a subset of $V$:
 \begin{align}
-f(C) & ={1 \over 2} \sum_{i\in C, j \not\in C} w_{ij} \\
+f(C) & = \sum_{i\not\in C, j \in C, (i,j) \in E} w_{ij} \\
 f[\P] & = \sum_{C \in \P} f(C)
 \end{align}
 \end{definition}
 \begin{theorem}
 \begin{equation}\label{eq:hLambda}
 h(\lambda) = \min_{\P \in \Pi(V)} \{ f[\P] - \abs{\P}\lambda \}
-\end{equation} piesewise linear about $\lambda$. 
-$\gamma_i$: turning points; $\P_i$ corresponding partition. $C_{\gamma_i}(Z_V)$: non-singleton element of $\P_i$.
+\end{equation}
+The optimal partitions $\P_1, \dots, \P_k$ for $h(\lambda)$ are nested such that $\P_1 \succeq \P_2 \dots \succeq \P_k$, and we can obtain the hierarchical clustering tree from this sequence.
 \end{theorem}
 \end{frame}
 \begin{frame}
@@ -149,7 +151,7 @@ $\gamma_i$: turning points; $\P_i$ corresponding partition. $C_{\gamma_i}(Z_V)$:
 \column{5cm}
 \begin{figure}
 \includegraphics[width=5cm]{pic/dt.eps}
-\caption{Dilworth truncation of $f(\P)$}
+\caption{piecewise linear function $h(\gamma)$}
 \end{figure}
 \column{5cm}
 \begin{align*}
@@ -166,23 +168,29 @@ h_{\lambda}(\P) & = f[\P] - \abs{\P}\lambda
 \end{frame}
 \begin{frame}
 \begin{columns}
-\column{5cm}
+\column{4cm}
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=5cm]{pic/pyramid.eps}
-\caption{pyramid structure of info-clustering algorithm}\label{fig:ps}
+\includegraphics[width=4cm]{paper/pic/pdt.eps}
+\caption{pyramid structure of graph-based info-clustering algorithm}\label{fig:ps}
 \end{figure}
-\column{5cm}
+\column{6cm}
 \begin{enumerate}
-\item principal sequence of partition: $\P_i$
-\item Dilworth truncation: evaluate $h(\lambda)$
-\item submodular function minimization
+\item parametric Dilworth truncation: $\min \{f[\P] -\lambda \abs{\P}\}$
+\item parametric maximum flow: $\min_{t\in C} \{f(C) - \lambda - y^{\lambda}(C)\}$
+\item maximum flow
 \end{enumerate}
-SFM converted to graph max flow.
-
-Time Complexity: $\abs{V}^2 \mathrm{MF}(G(V,E))$
+Achievable time complexity: $\abs{V}^3 \sqrt{\abs{E}}$
 % For push-relabel algorithm, \mathrm{MF}(G(V,E)) = \abs{V}^2 E
 \end{columns}
+\end{frame}
+\begin{frame}
+	\frametitle{Solving $\min_{t\in C} \{f(C) - \lambda - y^{\lambda}(C)\}$}
+	\begin{columns}
+		\column{5cm}
+		\column{5cm}
+	\end{columns}
+	
 \end{frame}
 \section{Numerical Results}
 \begin{frame}
