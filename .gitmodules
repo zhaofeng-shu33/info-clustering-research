@@ -4,6 +4,6 @@
 [submodule "bhcd"]
 	path = experiment/community_detection/bhcd
 	url = https://github.com/zhaofeng-shu33/bhcd
-[submodule "--"]
+[submodule "code"]
 	path = code
 	url = https://github.com/zhaofeng-shu33/info-clustering-python-binding
