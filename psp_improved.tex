@@ -19,19 +19,18 @@ The tricky part of the implementation is how to construct the whole clustering t
 \STATE initialize a set list $K=[V, \{1\}, \dots, \{V\}]$, a tree $\mathcal{T}$ with 0 as root node, $j(j\leq \abs{V})$ as leaf node and no stem node.
 \STATE \texttt{Split}(0)
 \FUNCTION{\texttt{Split}$(i)$}
-\STATE $Q=K[i]$
 \STATE Let $T=\{K[j][0] | \texttt{parent}(j) = i\}$
 \STATE Consider subgraph $G'$ constraint on set $T$. $w$ is the summation of all edge weights within $G'$ 
-\STATE $\gamma' = \frac{w}{\abs{T}-1}$ \label{line:intersection}
+\STATE $\gamma' = \frac{w}{\abs{T}-1}$ \label{line:intersection}  \label{alg:T}
 \STATE $(\tilde{h}, P') = \texttt{DT}(G', \gamma')$
 \IF{$\tilde{h} = - \gamma'$}
-\STATE add edge weight $\gamma'$ starting from $i$ to its children.
+\STATE add edge weight $\gamma'$ starting from $i$ to its children. \label{alg:add_lambda}
 \ELSE
 \FOR{$S$ in $P'$ and $\abs{S}>1$}
 \STATE Let $S'=S$, $s=\abs{K}$% index(S) = |K|
 \FOR{child $j$ of $i$}
 \IF{$K[j]\cap S \neq \emptyset$}
-\STATE \texttt{parent}$(j)=s, S'=S\cup K[j]$
+\STATE \texttt{parent}$(j)=s, S'=S'\cup K[j]$
 \ENDIF
 \ENDFOR
 \STATE \texttt{parent}$(s)=i$, append $S'$ to $K$
@@ -46,4 +45,81 @@ The tricky part of the implementation is how to construct the whole clustering t
 In line \ref{line:intersection}, since we are considering the intersection of $-\lambda$ and $w-\abs{T}\lambda $.
 
 The idea of the improved PSP algorithm can be generalized to get a hierarchical community detection algorithm from any "flatten" algorithm ( which can only get one-level structure of a community ).
+
+It is found that our implementation of info-clustering cannot handle very small capacity value. For a given $\epsilon$, let capacity equal to zero if it is less than $\epsilon$.
+
+Early stopping technique, if $\abs{T}=2$ on line \ref{alg:T}, then we can skip directly to line \ref{alg:add_lambda}.
+
+The graph contraction is summation of absolute values.
+
+Increasing set version of  \texttt{DT} algorithm only support $(i,j) \in E \Rightarrow i<j$.
+
+\section{Agglomerative method}
+Another version of psp can be implemented agglomeratively.
+\begin{algorithm}
+\caption{}\label{alg:psp_agg}
+\begin{algorithmic}[1]
+\REQUIRE a directed graph $G(V, E)$; edge cost function $c(e)$ for $e\in E$
+\ENSURE a hierarchical tree $\mathcal{T}(K, E)$ where $K$ is node set and $E$ is edge set; $c'$ as edge weight map. Each non-leaf node of $\mathcal{T}$ is an info-cluster and each edge weight is a critical value. 
+\STATE initialize a set list $K=[V, \{1\}, \dots, \{V\}]$, a tree $\mathcal{T}$ with 0 as root node, $j(j\leq \abs{V})$ as leaf node and no stem node.
+\STATE \texttt{Merge}(0,0)
+\FUNCTION{\texttt{Merge}$(i,j)$}
+\STATE $j' = \texttt{children}(i)[j]$
+\STATE Compute $C^* =\displaystyle \argmax_{K[j'][0] \in C \subseteq V \cap K[i]} \frac{w(C)}{\abs{C}-1}$ where $w$ is the summation of all edge weights within set $C$. \label{line:max}
+\IF{$C^* = K[i]$}
+\STATE remove node $K[i][j]$ from the graph
+\IF{$j< \texttt{len(children}(i))$}
+\STATE \texttt{Merge}$(i,j+1)$
+\ENDIF
+\ELSE
+\STATE $\widetilde{C} = C^*, s=\abs{K}$
+\FOR{$r \in \texttt{children}(i)$}
+\IF{$K[r] \cap C^* \neq \emptyset$}
+\STATE  $\texttt{parent}(r) = s, \widetilde{C} = \widetilde{C} \cup K[r]$
+\ENDIF
+\STATE append $\widetilde{C} $ to $K$
+\ENDFOR
+\STATE $\texttt{parent}(s) = i$
+\STATE \texttt{Merge}$(s,0)$
+\STATE Within graph $G$, contract $C^*$ to $K[j'][0]$
+\STATE \texttt{Merge}$(i,j)$
+\ENDIF
+\ENDFUNCTION
+\end{algorithmic}
+\end{algorithm}
+The key is to solve the maximum in line \ref{line:max}.
+We only need to consider a subgraph $G'$ with node set $V \cap K[i]$.
+We denote the function to be maximized as
+\begin{equation}
+J_T(Z_C) = \frac{w(C)}{\abs{C}-1}
+\end{equation}
+This comes from the bottom-up approach of info-clustering. We do not need to maximize over $I(Z_C)$. Instead, we maximize over $J_T(Z_C)$.
+
+Consider
+\begin{equation}\label{eq:setdt}
+g(\lambda) = \min_{C\subset V, t \in C} \{ H(C) + \lambda\abs{C}\}
+\end{equation}
+where $H(C) = f(C) - \sum_{i\in C} f(\{i\})$. Denote $a_i = f(\{i\}), y^{\lambda}_i = x_i - \lambda$. Then equation \ref{eq:setdt} can be simplified as 
+\begin{align}\label{eq:setdt}
+g(\lambda) &= \min_{C\subset V, t \in C} g_{\lambda}(C) \\
+g_{\lambda}(C)  & = f(C) - y^{\lambda}(C)
+\end{align}
+The function defined in the above equation is piecewise linear about $\lambda$. 
+% Its property is explored fully in my nips 2019 paper submission.
+
+\begin{theorem}\label{thm:LastCriticalValue}
+The largest turning point of $g(\lambda)$ is denoted as $\gamma_N$, which equals $\max_{C\subset V, t\in C}J_T(Z_C)$
+\end{theorem}
+
+The last line segment of $g(\lambda)$ is $\lambda$.
+\begin{proof}[Proof of theorem \ref{thm:LastCriticalValue}]
+\begin{align*}
+\gamma_N & = \max_{C\subset V: \abs{C}>1} J_T(Z_C) \\
+& = \min\{\lambda : \lambda \geq \frac{-H(C)}{\abs{C}-1} \textrm{ for all $C\subset V$ and $ t\in C$}\} \\
+& = \min\{\lambda : \lambda \leq H(C)+\lambda\abs{C} \textrm{ for all $C\subset V$ and $t \in C$}\} \\
+& = \min\{\lambda : \lambda \leq g(\lambda) \} \textrm{ holds for } \abs{C}=1
+\end{align*}
+\end{proof}
+
+
 \end{document}
