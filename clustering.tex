@@ -47,12 +47,12 @@ if $\abs{C}>1$, then $C \in C_{\gamma_2}(Z_V)$ and we have $I(Z_C) > \gamma_2 > 
 As a result, there exists $C' \in C_{\gamma_1}(Z_V)$ such that $C\subseteq C' \in \P_{\gamma_1}$.
 \end{proof}
 \begin{remark}
-Theorem \ref{thm:hierachical} shows that for a series of threshold $\gamma$, $\P_{\gamma}$ forms a \textbf{hierachical clustering} structure.
+Theorem \ref{thm:hierachical} shows that for a series of threshold $\gamma$, $\P_{\gamma}$ forms a \textbf{hierarchical clustering} structure.
 \end{remark}
 
 It can be seen there are finite values $\gamma$ such that $C_{\gamma}(Z_V)$ differs.
 We call them the critical values of info-clustering.
-More specificly:
+More specifically:
 \begin{equation*}
 C_{\gamma}(Z_V) = \begin{cases}
 \{V\} & \gamma < \gamma_1 \\
@@ -85,7 +85,7 @@ If we use MMI to do clustering, scaling $ \norm{\widetilde{B}_{ij}}_F^2$ does no
 \end{remark}
 \section{Property}
 \subsection{Origin}
-Our definition \eqref{eq:newDef} comes from an approximation of KL-Diverence under certain conditions. See appendix \ref{sec:akld} for detail.
+Our definition \eqref{eq:newDef} comes from an approximation of KL-Divergence under certain conditions. See appendix \ref{sec:akld} for detail.
 
 Let $w_{ij} = \norm{\widetilde{B}_{ij}}_F^2$.
 $\norm{\widetilde{B}_{ij}}_F^2$ can be treated as a kind of similarity metric between two random variables.
@@ -145,8 +145,8 @@ $I(Z_C) \geq I(Z_V)$. The equality $I(Z_C) = I(Z_V)$ holds.
 
 Suppose  $C = \cup_{j=1}^r D_j ,D_j\in \P_2, r>1$. Then $B_i \neq D_j$ by the definition of $\P_1\vee \P_2$. From lemma \ref{lem:elementLarge}, $I(B_i)\geq I(Z_V), I(D_j) \geq I(Z_V)$
 Therefore, we can found $D_t$ such that $B_1 \cap D_t\neq\emptyset$. Then from the laminarity property of MMI, $I(B_1 \cup D_t)\geq I(Z_V)$. If $B_1 \cup D_t \subsetneq C$, we can find another $B_i$ or $D_j$ which has nonempty intersection with  $B_1 \cup D_t$. Otherwise $\{B_1 \cup D_t, B_2, \dots B_k\}$
-forms a parition of $C$ and $D_t \subset B_1$; $\{D_t \cup B_1\}\cup \{ D_1, \dots D_r\}\backslash \{D_t\}$
-forms a parition of $C$ and $B_1 \subset D_t$. That is $B_1 = D_t$, a contradiction with $B_1 \neq D_t$. 
+forms a partition of $C$ and $D_t \subset B_1$; $\{D_t \cup B_1\}\cup \{ D_1, \dots D_r\}\backslash \{D_t\}$
+forms a partition of $C$ and $B_1 \subset D_t$. That is $B_1 = D_t$, a contradiction with $B_1 \neq D_t$. 
 We can continue this process. If this process stops when $(\cup B_i)\cup(\cup D_j) \subsetneq C$. we then have $\cup B_i = \cup D_j \in \P_1 \vee \P_2$, a contradiction with $C \in \P_1 \vee \P_2$. 
 Therefore, this process stops when the union equals $C$ and we will have $I(Z_C) \geq I(Z_V)$.
 
@@ -224,7 +224,7 @@ Denote the collection of set which achieves $\gamma_{i+1}$ as $C_{i+1}:=\{C \in 
 \begin{proposition}[info-clustering]\label{prop:ta}
 The following two procedures generate the same hierarchical tree. Each non-leaf node of the hierarchical tree is represented by a subset $S \subset V$, which is called a cluster of graph $G$.
 \begin{enumerate}
-\item For a graph $G$, suppose $I_{\P^*}(Z_V)=I(Z_V)$, each subset of $\P^*$ is a child of hierachical tree root $V$. For each child node set $C$, use partition $\P_C$($I(Z_C)=I_{\P_C}(Z_C)$) to split it until this branch is divided into singletons.
+\item For a graph $G$, suppose $I_{\P^*}(Z_V)=I(Z_V)$, each subset of $\P^*$ is a child of hierarchical tree root $V$. For each child node set $C$, use partition $\P_C$($I(Z_C)=I_{\P_C}(Z_C)$) to split it until this branch is divided into singletons.
 \item For a graph $G$, suppose $I(Z_C) = \max_{B\subseteq V} I(Z_B)$ and $C$ is maximal, merge singleton element of $C$ together and contract $G$. At each step select the set with maximal multivariate similarity to contract the graph until the graph is contracted to a single node, which is the tree root.
 \end{enumerate}
 \end{proposition}
@@ -312,7 +312,7 @@ Let $\gamma = I(Z_V)$
 & \iff I(Z_V) = I_{\P}(Z_V)
 \end{align*}
 \end{proof}
-This connection is similar from RIR in literature \cite{ic}. We have $f(V)=0$ in our definition and the first line segement is $-\lambda$. Therefore
+This connection is similar from RIR in literature \cite{ic}. We have $f(V)=0$ in our definition and the first line segment is $-\lambda$. Therefore
 $(I(Z_V),  y_1)$ is the first turning point of $h(\lambda)$.
 \begin{corollary}\label{cor:large}
 	\begin{equation}
@@ -341,7 +341,7 @@ Using the corollary \ref{cor:large}, we can give an algorithm to compute $I(Z_V)
 We have shown that the first critical value and partition match of the two problems. Next we show all their critical values and partitions are the same.
 \begin{theorem}
 	\end{theorem}
-\subsection{Computing first critical value via fundamental partitition}
+\subsection{Computing first critical value via fundamental partition}
 Similar to Proposition 3.1 in literature \cite{ic}, we can compute $C_{\gamma_1}$ by computing $\P^*(Z_V)$
 \begin{description}
 \item[Uniqueness] Follows from submodularity of  $h(\lambda)$ defined in equation \eqref{eq:hLambda}
@@ -362,7 +362,7 @@ $\Gamma(Z_V) = \{ \gamma' | (\gamma', B) \in \mathcal{S}\} $ and $ \mathcal{C}_{
 \STATE $B \leftarrow $ dequeue $\mathcal{T}$
 \STATE $(\gamma, \P) \leftarrow$\texttt{FundamentalPartition}$(B)$
 \STATE enqueue $(\gamma, B)$ to $\mathcal{S}$
-\STATE enqueue all non-singleton elemenets of $\P$ to $\mathcal{T}$
+\STATE enqueue all non-singleton elements of $\P$ to $\mathcal{T}$
 \ENDWHILE
 \FUNCTION{\texttt{FundamentalPartition}$(B)$}
   \RETURN $(I(Z_B), \P^*(Z_B))$
@@ -372,14 +372,14 @@ $\Gamma(Z_V) = \{ \gamma' | (\gamma', B) \in \mathcal{S}\} $ and $ \mathcal{C}_{
 
 The computation of fundamental partition is not easy.
 \subsection{Hierarchical clustering by PSP}
-We inspect the property of $h(\lambda)$ from \eqref{eq:hLambda}. Since $h(\lambda)$ is piecewise linear, it is characterised by its turning points where the slope changes.
+We inspect the property of $h(\lambda)$ from \eqref{eq:hLambda}. Since $h(\lambda)$ is piecewise linear, it is characterized by its turning points where the slope changes.
 At turning point $p_i$, the optimal solution to achieve $h(\lambda)$ forms a lattice $\Pi_i$.
 Define $\mathcal{P}_i = \min \Pi_i$, i.e. the finest partition from $\Pi_i$. Then we can show that
 $\Pi_1 \succ \Pi_2 \dots \succ \Pi_N$, where $\Pi_1$ is the fundamental partition of $Z_V$ and $\Pi_N$ contains singleton elements only.
 
 We have the following conclusion
 \section{Relation to PIN model}
-In PIN(Pairewise Indepedent Network)(literatue \cite{pin}, see definition 2.1 and 2.2 for detail).
+In PIN(Pairwise Independent Network)(literature \cite{pin}, see definition 2.1 and 2.2 for detail).
 We can show that ($E$ is the edge set, $e \in C$ represents the edge $e$ is in the subgraph $C$)
 \begin{align*}
 \sum_{C \in \P} H(Z_C) - H(Z_V) & = \sum_{C \in \P} (\sum_{e \in C} H_e + \sum_{\substack{e = (u,v) \\ u \in C, v\not\in C }} H_e) - \sum_{e \in E} H_e \\
@@ -392,13 +392,13 @@ I(Z_V) = \min_{ \P \in \Pi'(V)} \frac{ \sum_{C \in \P} c(\delta_{G}(C))}{2(\abs{
 where $\delta_{G}(C) = \{e = (u, v) \in E | u \in C, v \not\in C\} $ and $c(A) = \sum_{e\in A} H_e$.
 This is (4.21a) in literature \cite{ic}
 \section{Difference to entropy formulation}
-In literature \cite{ic}, the definition of MMI is based on the submodular function is $H(Z_C)$, which is the joint entropy. It has the nondeceasing property such that the larger $C$ is, the bigger value $H(Z_C)$ takes. However, in our formulation of MMI, we use the graph cut function, it does not have the monotonic property and $f(V) = 0$ from the definition. Therefore, our work is not a special case of literature \cite{ic} even through many conclusions are similar.
+In literature \cite{ic}, the definition of MMI is based on the submodular function is $H(Z_C)$, which is the joint entropy. It has the non-deceasing property such that the larger $C$ is, the bigger value $H(Z_C)$ takes. However, in our formulation of MMI, we use the graph cut function, it does not have the monotonic property and $f(V) = 0$ from the definition. Therefore, our work is not a special case of literature \cite{ic} even through many conclusions are similar.
 
 In PIN model, the two definitions coincide. But the PIN model has strong assumptions and is not practical. Our formulation of MMI is suitable to be applied directly to cluster cases in real work application.
 \subsection{Difference to mac}
 minimum average cost is a similar but different clustering method.
 
-In literature \cite{mac}, only the first critical value and partation information are used to do the clustering task. The threshold is controled by $\beta$ not our $\lambda$.
+In literature \cite{mac}, only the first critical value and partition information are used to do the clustering task. The threshold is controlled by $\beta$ not our $\lambda$.
 \section{Contributions}
 \begin{enumerate}
 \item Use graph cut function to reformulate MMI.
@@ -418,13 +418,13 @@ For continue random variables, we modify the summation notation with the integra
 %there is some similarity.
 
 \begin{example}\label{ex:rho}
-Consider $(X,Y)$ conforms to multivariate distribution with correlation coeffient $\rho$, then
+Consider $(X,Y)$ conforms to multivariate distribution with correlation coefficient $\rho$, then
 we can compute $\norm{B}_F^2 = \frac{1}{1-\rho^2}$ for $0\leq \rho < 1 $.
 \end{example}
 
 
 Quantity ${1 \over 2} \norm{\widetilde{B}_{XY}}_F^2$ can be estimated from H-score.
-Let $\sigma_1 \geq \sigma_2 \dots \geq \sigma_n$ be the signular values of  $\widetilde{B}$,
+Let $\sigma_1 \geq \sigma_2 \dots \geq \sigma_n$ be the singular values of  $\widetilde{B}$,
 then
 \begin{equation}
 {1 \over 2} \sum_{i=1}^k \sigma_i^2  = \displaystyle\sup_{f\in \R^k, g \in \R^k} \E_{XY}[f^T(X)g(Y)]- {1 \over 2} \mathrm{tr}(\Lambda_{f(X)} \Lambda_{g(Y)})
@@ -453,12 +453,12 @@ $\rho$ & theoretical & empirical \\
 \includegraphics[width=5cm]{pic/pyramid.eps}
 \caption{pyramid structure of info-clustering algorithm}\label{fig:ps}
 \end{figure}
-We use method of principal sequence of partition(PSP) to implement the info-clustering algorithm. As figure \ref{fig:ps} shows, PSP is at the highest level of algorithm pyramid. By divide and conquer technique, PSP calls at most $\abs{V}$ times of so-called Dilworth truncation(DT) algorithm. The relationship between PSP and DT is shown in Algorithm \ref{alg:psp}.
+We use method of principal sequence of partition(PSP) to implement the info-clustering algorithm. As figure \ref{fig:ps} shows, PSP is at the highest level of algorithm pyramid. By divide and conquer technique, PSP calls at most $\abs{V}$ times of so-called Dilworth truncation(DT) algorithm. The relationship between PSP and DT is shown in Algorithm \ref{alg:psp}. Algorithm \ref{alg:psp} follows Algorithm 3 in \cite{ic}, but we use different data structures.
 \begin{algorithm}
 \caption{PSP algorithm}\label{alg:psp}
 \begin{algorithmic}[1]
 \REQUIRE Statistics of $Z_V$ sufficient for calculating $f(B)$ for all $B \subseteq V$
-\ENSURE The array \textbf{L} contains the values in $\Gamma(Z_V)$. The array \textbf{PSP} contains the PSP $\P_1,\dots, P_N$. More specificly, $\textbf{PSP}[\abs{\P_i}]=\P_i, L[\abs{\P_{i-1}}]=\gamma_i$
+\ENSURE The array \textbf{L} contains the values in $\Gamma(Z_V)$. The array \textbf{PSP} contains the PSP $\P_1,\dots, P_k$. More specifically, $\textbf{PSP}[\abs{\P_i}]=\P_i, L[\abs{\P_{i-1}}]=\gamma_i$
 \STATE \textbf{L}, \textbf{PSP} $\leftarrow$ empty arrays of size $\abs{V}$
 \STATE $Q\leftarrow \{V\}, P \leftarrow \{ \{i \} | i \in V\}$
 \STATE $\mathbf{PSP}[\abs{Q}]=Q, \mathbf{PSP}[\abs{P}] = P$
@@ -478,7 +478,7 @@ We use method of principal sequence of partition(PSP) to implement the info-clus
 \end{algorithmic}
 \end{algorithm}
 \footnotetext{$\tilde{h} \leq h'$ by theory}
-In Algorithm \ref{alg:psp}, the function \texttt{Split} first calculates the intersection point of two lines: $f(P)-\abs{P}\lambda$ and $f(Q)-\abs{Q}\lambda$(in line~\ref{alg:gamma}) and then calls the DT algorithm to get the minimal value and minumal partition at $\gamma'$. From literature \cite{mac}, when there is partition between $Q$ and $P$, the $Split$ algorithm recursively calls itself to calculate all partitions.
+In Algorithm \ref{alg:psp}, the function \texttt{Split} first calculates the intersection point of two lines: $f(P)-\abs{P}\lambda$ and $f(Q)-\abs{Q}\lambda$(in line~\ref{alg:gamma}) and then calls the DT algorithm to get the minimal value and minimal partition at $\gamma'$. From literature \cite{mac}, when there is partition between $Q$ and $P$, the $Split$ algorithm recursively calls itself to calculate all partitions.
 
 For the middle level(DT) in the pyramid, it calls at most $\abs{V}$ times submodular function minimization(SFM) algorithm.
 The algorithm is the same with procedure \texttt{FINDPARTITION} from literature \cite{mac}.
@@ -518,7 +518,7 @@ Let $V=\{1, 2, \dots, n\}$, the greedy algorithm to find $x^*$ and $\P^*$ is giv
 
 In line \ref{alg:tight} of Algorithm \ref{alg:dt}, the set $T^l$ remains tight.
 
-SFM algorithm has been proved to have combinatorial polynomial time algorithm. However, in applications provable combinatorial algorithm for SFM does not perform well. General implementation like Fujishige-Wolfe minimum norm algorithm( in literature \cite{fwrobust}) fails because of intracable accuracy.
+SFM algorithm has been proved to have combinatorial polynomial time algorithm. However, in applications provable combinatorial algorithm for SFM does not perform well. General implementation like Fujishige-Wolfe minimum norm algorithm( in literature \cite{fwrobust}) fails because of intractable accuracy.
 To finish our job, we focus on the specific problem to minimize 
 \begin{equation}\label{eq:alpha}
 \alpha^l = \min \{ f(S) - x^{l-1}(S) - \lambda: l \in \forall S \subset V^l\}
@@ -537,7 +537,7 @@ The optimal solution matches while the optimal values differs a constant value.
 \end{equation} 
 
 If there are multiple solutions to \eqref{eq:alpha}. The solution set equals. However, in 
-pratical computations, the maximal flow algorithm can only compute one set (minimzer).
+practical computations, the maximal flow algorithm can only compute one set (minimizer).
 If our max flow algorithm gives maximum source size result, then using  \eqref{eq:beta} method we will get the solution to $\alpha^l$ with minimum $S$.
 
 If we want the solution to $\alpha^l$ with minimum $S$, we can change the position of source and sink, to solve the following problem.
@@ -567,14 +567,14 @@ In the second simulation environment(Fig~\ref{fig:3c}), we generate 60, 100, 140
 \includegraphics[width=12cm]{pic/3circle.eps}
 \caption{Illustrative example from three circles}\label{fig:3c}
 \end{figure}
-\subsection{Comparision with other clustering method}
+\subsection{Comparison with other clustering method}
 In this section, we use 4 different clustering methods and test them on 5 different datasets. The clustering methods are kmeans, spectral clustering, affine propagation and our info-clustering algorithms. We use adjusted rand score as accuracy criterion. The 5 datasets are 4 Gaussian blobs, 3 circles and the other three are from UCI datasets(Iris, Glass and Libras).
 \begin{table}[!ht]
 \centering
 \InputIfFileExists{build/compare.tex}{}{}
 \caption{clustering accuracy for the proposed and existing algorithms}
 \end{table}
-\subsection{Outlier detection}
+\subsection{Outliers detection}
 \begin{thebibliography}{9}
 \bibitem{ic}Info-Clustering: A Mathematical Theory for Data Clustering
 \bibitem{ska} Multivariate Mutual Information Inspired by Secret-Key Agreement
