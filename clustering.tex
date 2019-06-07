@@ -463,6 +463,7 @@ We use method of principal sequence of partition(PSP) to implement the info-clus
 \STATE $Q\leftarrow \{V\}, P \leftarrow \{ \{i \} | i \in V\}$
 \STATE $\mathbf{PSP}= [Q, P]$
 \STATE \texttt{Split}$(Q,P)$
+\STATE sort $L$ and sort $\mathbf{PSP}$ with respect to $\succeq$ 
 \FUNCTION{\texttt{Split}$(Q,P)$}
  \STATE\label{alg:gamma} $\gamma' = {1 \over \abs{P} - \abs{Q}} (f(P)-f(Q))$
  \STATE $h' = {1 \over \abs{P} - \abs{Q}}(\abs{P} f(Q) - \abs{Q} f(P))$
