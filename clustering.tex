@@ -458,20 +458,20 @@ We use method of principal sequence of partition(PSP) to implement the info-clus
 \caption{PSP algorithm}\label{alg:psp}
 \begin{algorithmic}[1]
 \REQUIRE Statistics of $Z_V$ sufficient for calculating $f(B)$ for all $B \subseteq V$
-\ENSURE The array \textbf{L} contains the values in $\Gamma(Z_V)$. The array \textbf{PSP} contains the PSP $\P_1,\dots, P_k$. More specifically, $\textbf{PSP}[\abs{\P_i}]=\P_i, L[\abs{\P_{i-1}}]=\gamma_i$
-\STATE \textbf{L}, \textbf{PSP} $\leftarrow$ empty arrays of size $\abs{V}$
+\ENSURE A sorted critical value array \textbf{L} and a reverse ordered array \textbf{PSP} containing $\P_1,\dots, P_k$.
+\STATE \textbf{L}  $\leftarrow$ empty list.
 \STATE $Q\leftarrow \{V\}, P \leftarrow \{ \{i \} | i \in V\}$
-\STATE $\mathbf{PSP}[\abs{Q}]=Q, \mathbf{PSP}[\abs{P}] = P$
+\STATE $\mathbf{PSP}= [Q, P]$
 \STATE \texttt{Split}$(Q,P)$
 \FUNCTION{\texttt{Split}$(Q,P)$}
  \STATE\label{alg:gamma} $\gamma' = {1 \over \abs{P} - \abs{Q}} (f(P)-f(Q))$
  \STATE $h' = {1 \over \abs{P} - \abs{Q}}(\abs{P} f(Q) - \abs{Q} f(P))$
  \STATE $(\tilde{h}, P') = \texttt{DT}(f,\gamma')$ \footnotemark
  \IF{$\tilde{h} = h'$}
- 	\STATE $\mathbf{L}[\abs{Q}] = \gamma'$
+ 	\STATE insert $\gamma'$ to $\mathbf{L}$
  \ELSE
- 	\STATE $\mathbf{PSP}[\abs{P'}]=P'$
- 	\STATE \texttt{Split}$(Q,P')$
+ 	\STATE insert $P'$ to $\mathbf{PSP}$
+ 	\STATE \texttt{Split}$(Q, P')$
  	\STATE \texttt{Split}$(P',P)$
  \ENDIF
 \ENDFUNCTION

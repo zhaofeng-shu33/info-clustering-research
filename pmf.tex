@@ -94,16 +94,17 @@ By doing so, we can rewrite Algorithm \ref{alg:pmfT} by Algorithm \ref{alg:pmfC}
 \STATE find $(S_0, T_0)$ which is optimal to \eqref{eq:pmqe} for $ \lambda  = -\epsilon$.  Also let $T_1 = \{j\}$ and $S_1 = \{s\}\cup V \backslash \{j\}$.
 \STATE $\mathcal{A}$ contains the decreasing set list, initialized as $[T_0, T_1]$;
 \STATE \texttt{slice}$( S_0, T_1)$
+\STATE sort $L$ and reverse sort $\mathcal{A}$
 \FUNCTION{\texttt{slice}$(S, T)$}
   \STATE Let $\tilde{\lambda}_2$ be the value of $\lambda$ such that $c^{\lambda}(S, V'\backslash S) = 
 c^{\lambda}(V'\backslash T, T)$ \label{findLambda}
 \STATE for $\lambda = \tilde{\lambda}_2$, find $(S', T')$ which is optimal to \eqref{eq:pmqe} for $\widetilde{G}$.
 \IF{$S' \neq S$ and $T' \neq T$}
-\STATE insert $T'$ to $\mathcal{A}$ at proper position
+\STATE insert $T'$ to $\mathcal{A}$
 \STATE \texttt{slice}$(S, T')$
 \STATE \texttt{slice}$(S', T)$
 \ELSE
-\STATE insert $\lambda_2$ to $L$ at proper position
+\STATE insert $\lambda_2$ to $L$
 \ENDIF
 \ENDFUNCTION
 \end{algorithmic}
