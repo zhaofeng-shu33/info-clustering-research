@@ -121,5 +121,25 @@ The last line segment of $g(\lambda)$ is $\lambda$.
 \end{align*}
 \end{proof}
 
-
+Inner improvement (DT part),
+\begin{algorithm}
+\caption{}\label{alg:dt_i}
+\begin{algorithmic}[1]
+\REQUIRE a directed graph $G(V, E)$; edge cost function $c(e)$ for $e\in E$, a given $\lambda$
+\ENSURE a partition $\P^*$ which minimize $f[\P] - \lambda \abs{\P}$
+\STATE initialize $y_i = -\lambda$ for $ i \in V$, $U = \emptyset, \P = \{\emptyset\}, V' = V$
+\WHILE{$U \neq V$}
+\STATE pick a node $v \in V\backslash U$
+\STATE $A^* = \argmin_{v \in A \subseteq V'} \{ f(A) - \lambda - y(A)\}, a = f(A^*) - y(A^*)$
+\IF{$f(V\backslash U) - y(V\backslash U) = a$} \label{alg:judge}
+\STATE $A* = V \backslash U$
+\ENDIF
+\STATE $y_v = y_v + a$
+\STATE $U = U \cup A^*$
+\STATE $\P= \P[A^*]$
+\STATE contract the graph $G$, with $A^*$ to $v$.
+\ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+Line \ref{alg:judge} of Algorithm \ref{alg:dt_i} is an early stopping technique.
 \end{document}
