@@ -142,4 +142,6 @@ Inner improvement (DT part),
 \end{algorithmic}
 \end{algorithm}
 Line \ref{alg:judge} of Algorithm \ref{alg:dt_i} is an early stopping technique.
+
+Algorithm \ref{alg:dt_i} does not speed up the computation significantly. For the traditional greedy Dilworth truncation. the maximum flow algorithm is applied to an increasing set. However, Algorithm \ref{alg:dt_i} is applied to the whole graph at each step. If $\abs{A^*} = 1$ at each step ( which happens when $\P^* = \{\{1\},\dots, \{\abs{V}\}\}$ is the minimum solution ), then Algorithm \ref{alg:dt_i} is slower than the original algorithm.
 \end{document}

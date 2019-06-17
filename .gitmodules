@@ -7,3 +7,6 @@
 [submodule "code"]
 	path = code
 	url = https://github.com/zhaofeng-shu33/info-clustering-python-binding
+[submodule "poster"]
+	path = poster/info-clustering-poster
+	url = https://gitee.com/freewind201301/info-clustering-poster.git
