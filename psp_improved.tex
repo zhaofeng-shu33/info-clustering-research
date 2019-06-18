@@ -12,7 +12,7 @@ Generally speaking, we first solve $\min_{\P} \{ f[\P]-\lambda \abs{\P} \}$ at $
 The tricky part of the implementation is how to construct the whole clustering tree $\mathcal{T}$.
 
 \begin{algorithm}
-\caption{}\label{alg:psp_a}
+\caption{A Fast Algorithm to Compute the Hierarchical Tree of Info-Clustering}\label{alg:psp_a}
 \begin{algorithmic}[1]
 \REQUIRE a directed graph $G(V, E)$; edge cost function $c(e)$ for $e\in E$
 \ENSURE a hierarchical tree $\mathcal{T}(K, E)$ where $K$ is node set and $E$ is edge set; $c'$ as edge weight map. Each non-leaf node of $\mathcal{T}$ is an info-cluster and each edge weight is a critical value. 
@@ -44,6 +44,23 @@ The tricky part of the implementation is how to construct the whole clustering t
 \end{algorithm}
 In line \ref{line:intersection}, since we are considering the intersection of $-\lambda$ and $w-\abs{T}\lambda $.
 
+To analyze the complexity of algorithm \ref{alg:psp_a}.
+We use $T(n)$ to represent the time complexity when the graph has $n$ nodes. We have the following recursive relationship.
+\begin{equation}
+	T(n) = \max \{ O(n^4) + \sum_{i=1}^k T(n_i) + T(k) | \sum_{i=1}^k n_i = n, n_i \in \mathbb{Z}_{+} \}
+\end{equation}	
+Below we distinguish two cases:
+\begin{enumerate}
+\item Worst case scenario: suppose the hierarchical tree has such a structure that its depth is $\abs{V} - 1$. Consider complete graph with $\abs{E} = O(\abs{V}^2)$. Then each \texttt{DT} has complexity $n^4$ where $n = \abs{V}$. Then our algorithm has complexity $O(3^4+4^4 + \dots + n^4) = O(\frac{1}{5} n^5)$. Although the exponent (still 5) is not improved. We have reduced the time complexity by a constant coefficient 5.
+\item Average case scenario: suppose the hierarchical tree is evenly distributed. To make it easy to analyze, we use an ideal type and this ideal type can be generalized. Suppose $k << n$ and $k$ is fixed in the divide and conquer algorithm.
+Then we have $T(n) = k T(\frac{n}{k}) + O(n^4)$. By Master Theorem, the critical value is $1$ and the regularity condition is satisfied, $T(n) = O(n^4)$. 
+\end{enumerate}
+Compared with parametric algorithm, which also has $O(n^4)$ time complexity. Our algorithm has several advantages:
+\begin{enumerate}
+	\item Lower space complexity. The parametric algorithm uses graph contraction which should copy the graph before contraction. In the worst case, the copy should be conducted in $O(n)$ times which produces $O(n^3)$ space complexity.
+	For our algorithm, the computation is done on the input graph, which has $O(n^2)$ space complexity.
+	\item Robust against floating accuracy. The parametric algorithm uses flow map from the last computation. However, because of floating point accuracy. The output flow map cannot guarantee that the excess of each node (except source and sink) is exactly zero, which makes the computation harder to track and fails totally in some extreme cases. Although some tolerance can be added, there are no theoretical guarantee how to specify such tolerance.
+\end{enumerate}
 The idea of the improved PSP algorithm can be generalized to get a hierarchical community detection algorithm from any "flatten" algorithm ( which can only get one-level structure of a community ).
 
 It is found that our implementation of info-clustering cannot handle very small capacity value. For a given $\epsilon$, let capacity equal to zero if it is less than $\epsilon$.
