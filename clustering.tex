@@ -576,6 +576,25 @@ In this section, we use 4 different clustering methods and test them on 5 differ
 \caption{clustering accuracy for the proposed and existing algorithms}
 \end{table}
 \subsection{Outliers detection}
+Since Info-clustering algorithm often produces singletons as a cluster. It is very suitable to apply info-clustering to detect anomaly in datasets.
+
+Given a dataset with $n$ training data point in $m$ dimensional space. We measure their pairwise similarity by $w_{ij} = \exp\{-\frac{\norm{x_i - x_j}^2}{m}\} $. Then we can apply info-clustering algorithm. The largest critical value after running the algorithm is denoted by $\gamma_N$. We select the clustering result corresponding to last by two partition with the largest cluster as normal points and the others as anomaly (usually they are just singletons).
+Suppose there are $N$ normal points and the index set is $V$. For newly entered points with index $j$, we can predict whether it is normal points by comparing $J_T(Z_{V'})$ with $\gamma_N$, where $V' = V\cup \{j\}$. That is
+$$
+\frac{(N-1)\gamma_N + \sum_{i \in V}w_{ij}}{N} > \gamma_N
+$$
+Simplifying the above equation we get the boundary condition whether predicted data point $x$ is normal point (Suppose $V=\{1,2,\dots, N \}$ ):
+\begin{equation}
+	\sum_{i=1}^N \exp\{ -\frac{\norm{x-x_i}^2}{2} \}	\geq \gamma_N
+\end{equation}
+We make a simple experiment to show the power of info-clustering applied to outliers detection problem. We call our method info-detection. There are 300 points on planar space with 45 outliers and 255 normal points centered around the origin. We compare two algorithms, Elliptic Envelope and Info-detection. Both method achieve 100\% accuracy for this dataset. The Elliptic Envelope method needs to specify the number of outliers as a parameter while our algorithm needs no parameter to tune.  Further, the decision boundary of Elliptic Method is tight around the normal points while the boundary of Info-detection is a little loose.
+\begin{figure}[!ht]
+	\centering
+	\IfFileExists{experiment/outlier_detection/build/outlier_compare.eps}
+	{\includegraphics[width=11cm]{experiment/outlier_detection/build/outlier_compare.eps}}
+	{} % not up-to-date
+	\caption{Comparison of different outliers detection algorithm}\label{fig:outlier}
+\end{figure}
 \begin{thebibliography}{9}
 \bibitem{ic}Info-Clustering: A Mathematical Theory for Data Clustering
 \bibitem{ska} Multivariate Mutual Information Inspired by Secret-Key Agreement
