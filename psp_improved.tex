@@ -12,26 +12,25 @@ Generally speaking, we first solve $\min_{\P} \{ f[\P]-\lambda \abs{\P} \}$ at $
 The tricky part of the implementation is how to construct the whole clustering tree $\mathcal{T}$.
 
 \begin{algorithm}
-\caption{}\label{alg:psp_a}
+\caption{A Fast Algorithm to Compute the Hierarchical Tree of Info-Clustering}\label{alg:psp_a}
 \begin{algorithmic}[1]
 \REQUIRE a directed graph $G(V, E)$; edge cost function $c(e)$ for $e\in E$
 \ENSURE a hierarchical tree $\mathcal{T}(K, E)$ where $K$ is node set and $E$ is edge set; $c'$ as edge weight map. Each non-leaf node of $\mathcal{T}$ is an info-cluster and each edge weight is a critical value. 
 \STATE initialize a set list $K=[V, \{1\}, \dots, \{V\}]$, a tree $\mathcal{T}$ with 0 as root node, $j(j\leq \abs{V})$ as leaf node and no stem node.
 \STATE \texttt{Split}(0)
 \FUNCTION{\texttt{Split}$(i)$}
-\STATE $Q=K[i]$
 \STATE Let $T=\{K[j][0] | \texttt{parent}(j) = i\}$
 \STATE Consider subgraph $G'$ constraint on set $T$. $w$ is the summation of all edge weights within $G'$ 
-\STATE $\gamma' = \frac{w}{\abs{T}-1}$ \label{line:intersection}
+\STATE $\gamma' = \frac{w}{\abs{T}-1}$ \label{line:intersection}  \label{alg:T}
 \STATE $(\tilde{h}, P') = \texttt{DT}(G', \gamma')$
 \IF{$\tilde{h} = - \gamma'$}
-\STATE add edge weight $\gamma'$ starting from $i$ to its children.
+\STATE add edge weight $\gamma'$ starting from $i$ to its children. \label{alg:add_lambda}
 \ELSE
 \FOR{$S$ in $P'$ and $\abs{S}>1$}
 \STATE Let $S'=S$, $s=\abs{K}$% index(S) = |K|
 \FOR{child $j$ of $i$}
 \IF{$K[j]\cap S \neq \emptyset$}
-\STATE \texttt{parent}$(j)=s, S'=S\cup K[j]$
+\STATE \texttt{parent}$(j)=s, S'=S'\cup K[j]$
 \ENDIF
 \ENDFOR
 \STATE \texttt{parent}$(s)=i$, append $S'$ to $K$
@@ -45,5 +44,121 @@ The tricky part of the implementation is how to construct the whole clustering t
 \end{algorithm}
 In line \ref{line:intersection}, since we are considering the intersection of $-\lambda$ and $w-\abs{T}\lambda $.
 
+To analyze the complexity of algorithm \ref{alg:psp_a}.
+We use $T(n)$ to represent the time complexity when the graph has $n$ nodes. We have the following recursive relationship.
+\begin{equation}
+	T(n) = \max \{ O(n^4) + \sum_{i=1}^k T(n_i) + T(k) | \sum_{i=1}^k n_i = n, n_i \in \mathbb{Z}_{+} \}
+\end{equation}	
+Below we distinguish two cases:
+\begin{enumerate}
+\item Worst case scenario: suppose the hierarchical tree has such a structure that its depth is $\abs{V} - 1$. Consider complete graph with $\abs{E} = O(\abs{V}^2)$. Then each \texttt{DT} has complexity $n^4$ where $n = \abs{V}$. Then our algorithm has complexity $O(3^4+4^4 + \dots + n^4) = O(\frac{1}{5} n^5)$. Although the exponent (still 5) is not improved. We have reduced the time complexity by a constant coefficient 5.
+\item Average case scenario: suppose the hierarchical tree is evenly distributed. To make it easy to analyze, we use an ideal type and this ideal type can be generalized. Suppose $k << n$ and $k$ is fixed in the divide and conquer algorithm.
+Then we have $T(n) = k T(\frac{n}{k}) + O(n^4)$. By Master Theorem, the critical value is $1$ and the regularity condition is satisfied, $T(n) = O(n^4)$. 
+\end{enumerate}
+Compared with parametric algorithm, which also has $O(n^4)$ time complexity. Our algorithm has several advantages:
+\begin{enumerate}
+	\item Lower space complexity. The parametric algorithm uses graph contraction which should copy the graph before contraction. In the worst case, the copy should be conducted in $O(n)$ times which produces $O(n^3)$ space complexity.
+	For our algorithm, the computation is done on the input graph, which has $O(n^2)$ space complexity.
+	\item Robust against floating accuracy. The parametric algorithm uses flow map from the last computation. However, because of floating point accuracy. The output flow map cannot guarantee that the excess of each node (except source and sink) is exactly zero, which makes the computation harder to track and fails totally in some extreme cases. Although some tolerance can be added, there are no theoretical guarantee how to specify such tolerance.
+\end{enumerate}
 The idea of the improved PSP algorithm can be generalized to get a hierarchical community detection algorithm from any "flatten" algorithm ( which can only get one-level structure of a community ).
+
+It is found that our implementation of info-clustering cannot handle very small capacity value. For a given $\epsilon$, let capacity equal to zero if it is less than $\epsilon$.
+
+Early stopping technique, if $\abs{T}=2$ on line \ref{alg:T}, then we can skip directly to line \ref{alg:add_lambda}.
+
+The graph contraction is summation of absolute values.
+
+Increasing set version of  \texttt{DT} algorithm only support $(i,j) \in E \Rightarrow i<j$.
+
+\section{Agglomerative method}
+Another version of psp can be implemented agglomeratively.
+\begin{algorithm}
+\caption{}\label{alg:psp_agg}
+\begin{algorithmic}[1]
+\REQUIRE a directed graph $G(V, E)$; edge cost function $c(e)$ for $e\in E$
+\ENSURE a hierarchical tree $\mathcal{T}(K, E)$ where $K$ is node set and $E$ is edge set; $c'$ as edge weight map. Each non-leaf node of $\mathcal{T}$ is an info-cluster and each edge weight is a critical value. 
+\STATE initialize a set list $K=[V, \{1\}, \dots, \{V\}]$, a tree $\mathcal{T}$ with 0 as root node, $j(j\leq \abs{V})$ as leaf node and no stem node.
+\STATE \texttt{Merge}(0,0)
+\FUNCTION{\texttt{Merge}$(i,j)$}
+\STATE $j' = \texttt{children}(i)[j]$
+\STATE Compute $C^* =\displaystyle \argmax_{K[j'][0] \in C \subseteq V \cap K[i]} \frac{w(C)}{\abs{C}-1}$ where $w$ is the summation of all edge weights within set $C$. \label{line:max}
+\IF{$C^* = K[i]$}
+\STATE remove node $K[i][j]$ from the graph
+\IF{$j< \texttt{len(children}(i))$}
+\STATE \texttt{Merge}$(i,j+1)$
+\ENDIF
+\ELSE
+\STATE $\widetilde{C} = C^*, s=\abs{K}$
+\FOR{$r \in \texttt{children}(i)$}
+\IF{$K[r] \cap C^* \neq \emptyset$}
+\STATE  $\texttt{parent}(r) = s, \widetilde{C} = \widetilde{C} \cup K[r]$
+\ENDIF
+\STATE append $\widetilde{C} $ to $K$
+\ENDFOR
+\STATE $\texttt{parent}(s) = i$
+\STATE \texttt{Merge}$(s,0)$
+\STATE Within graph $G$, contract $C^*$ to $K[j'][0]$
+\STATE \texttt{Merge}$(i,j)$
+\ENDIF
+\ENDFUNCTION
+\end{algorithmic}
+\end{algorithm}
+The key is to solve the maximum in line \ref{line:max}.
+We only need to consider a subgraph $G'$ with node set $V \cap K[i]$.
+We denote the function to be maximized as
+\begin{equation}
+J_T(Z_C) = \frac{w(C)}{\abs{C}-1}
+\end{equation}
+This comes from the bottom-up approach of info-clustering. We do not need to maximize over $I(Z_C)$. Instead, we maximize over $J_T(Z_C)$.
+
+Consider
+\begin{equation}\label{eq:setdt}
+g(\lambda) = \min_{C\subset V, t \in C} \{ H(C) + \lambda\abs{C}\}
+\end{equation}
+where $H(C) = f(C) - \sum_{i\in C} f(\{i\})$. Denote $a_i = f(\{i\}), y^{\lambda}_i = x_i - \lambda$. Then equation \ref{eq:setdt} can be simplified as 
+\begin{align}\label{eq:setdt}
+g(\lambda) &= \min_{C\subset V, t \in C} g_{\lambda}(C) \\
+g_{\lambda}(C)  & = f(C) - y^{\lambda}(C)
+\end{align}
+The function defined in the above equation is piecewise linear about $\lambda$. 
+% Its property is explored fully in my nips 2019 paper submission.
+
+\begin{theorem}\label{thm:LastCriticalValue}
+The largest turning point of $g(\lambda)$ is denoted as $\gamma_N$, which equals $\max_{C\subset V, t\in C}J_T(Z_C)$
+\end{theorem}
+
+The last line segment of $g(\lambda)$ is $\lambda$.
+\begin{proof}[Proof of theorem \ref{thm:LastCriticalValue}]
+\begin{align*}
+\gamma_N & = \max_{C\subset V: \abs{C}>1} J_T(Z_C) \\
+& = \min\{\lambda : \lambda \geq \frac{-H(C)}{\abs{C}-1} \textrm{ for all $C\subset V$ and $ t\in C$}\} \\
+& = \min\{\lambda : \lambda \leq H(C)+\lambda\abs{C} \textrm{ for all $C\subset V$ and $t \in C$}\} \\
+& = \min\{\lambda : \lambda \leq g(\lambda) \} \textrm{ holds for } \abs{C}=1
+\end{align*}
+\end{proof}
+
+Inner improvement (DT part),
+\begin{algorithm}
+\caption{}\label{alg:dt_i}
+\begin{algorithmic}[1]
+\REQUIRE a directed graph $G(V, E)$; edge cost function $c(e)$ for $e\in E$, a given $\lambda$
+\ENSURE a partition $\P^*$ which minimize $f[\P] - \lambda \abs{\P}$
+\STATE initialize $y_i = -\lambda$ for $ i \in V$, $U = \emptyset, \P = \{\emptyset\}, V' = V$
+\WHILE{$U \neq V$}
+\STATE pick a node $v \in V\backslash U$
+\STATE $A^* = \argmin_{v \in A \subseteq V'} \{ f(A) - \lambda - y(A)\}, a = f(A^*) - y(A^*)$
+\IF{$f(V\backslash U) - y(V\backslash U) = a$} \label{alg:judge}
+\STATE $A* = V \backslash U$
+\ENDIF
+\STATE $y_v = y_v + a$
+\STATE $U = U \cup A^*$
+\STATE $\P= \P[A^*]$
+\STATE contract the graph $G$, with $A^*$ to $v$.
+\ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+Line \ref{alg:judge} of Algorithm \ref{alg:dt_i} is an early stopping technique.
+
+Algorithm \ref{alg:dt_i} does not speed up the computation significantly. For the traditional greedy Dilworth truncation. the maximum flow algorithm is applied to an increasing set. However, Algorithm \ref{alg:dt_i} is applied to the whole graph at each step. If $\abs{A^*} = 1$ at each step ( which happens when $\P^* = \{\{1\},\dots, \{\abs{V}\}\}$ is the minimum solution ), then Algorithm \ref{alg:dt_i} is slower than the original algorithm.
 \end{document}

@@ -3,7 +3,7 @@
 This project contains the in-progress research about info-clustering. 
 It can be divided into three parts in general:
 
-* research document and paper
+* research document, paper, presentation and poster
 * experiment code and result
 * [info-clustering](https://github.com/zhaofeng-shu33/principal_sequence_of_partition) implementation
 
@@ -30,3 +30,4 @@ you can download [compare.tex](http://data-visualization.leidenschaft.cn/researc
 If you use linux os, you can use `Makefile` to handle the dependencies.
 
 ### Community Detection
+
