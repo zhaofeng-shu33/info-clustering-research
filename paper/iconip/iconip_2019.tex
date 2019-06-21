@@ -1,0 +1,160 @@
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.20 of 2017/10/04
+%
+\documentclass[runningheads]{llncs}
+%
+\usepackage{graphicx}
+\input{extra_math.tex}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+% \renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\begin{document}
+%
+\title{Info-Detection: An Information-Theoretic Approach to Detect Outlier \thanks{Supported by organization x.}}
+%
+%\titlerunning{Abbreviated paper title}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+\author{First Author\inst{1}\orcidID{0000-1111-2222-3333} \and
+Second Author\inst{2,3}\orcidID{1111-2222-3333-4444} \and
+Third Author\inst{3}\orcidID{2222--3333-4444-5555}}
+%
+\authorrunning{F. Author et al.}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{Princeton University, Princeton NJ 08544, USA \and
+Springer Heidelberg, Tiergartenstr. 17, 69121 Heidelberg, Germany
+\email{lncs@springer.com}\\
+\url{http://www.springer.com/gp/computer-science/lncs} \and
+ABC Institute, Rupert-Karls-University Heidelberg, Heidelberg, Germany\\
+\email{\{abc,lncs\}@uni-heidelberg.de}}
+%
+\maketitle              % typeset the header of the contribution
+%
+\begin{abstract}
+We propose a cluster analysis-based outlier detection method called Info-Detection. The method originates from Info-clustering. We accelerate it by utilizing the hierarchical structures. The acceleration makes it possible to finish outlier detection task in reality. Info-Detection is an adaptive method and does not require any hyper parameters like outlier fraction. Experiments show that better accuracy can be achieved with an affordable time overhead.
+
+\keywords{Outlier Detection \and Info-Clustering \and Principal Sequence of Partition.}
+\end{abstract}
+%
+%
+%
+\section{INTRODUCTION}
+Outlier Detection is an important task in data mining. Many algorithms such as local outlier factor, elliptic envelope and one-class SVM exist. They have some assumptions about the distribution of the data and the performance depends a lot on the hyper parameters of the method. For example, many methods require the outlier fraction as a parameter. For real-world task, it is difficult to estimate a good outlier fraction and unsuitable outlier fraction produces no good result. 
+
+In clustering analysis, there are some adaptive methods which do not need the number of cluster as a hyper parameter. Info-clustering is such a method proposed in \cite{RN1}. It has solid theoretical foundations but is limited in application because of the algorithm complexity. In this paper, we propose a new implementation of info-clustering, which is one order of magnitude faster than the original one. This new implementation makes it possible for info-clustering to be applied on outlier detection task. 
+
+Info-clustering is originally implemented by solving the principal sequence of partition problems for different critical values. For given critical value, a procedure called Dilworth truncation is invoked. However, different invocation of Dilworth truncation is independent and does not utilizes the intrinsic hierarchical structure of the method. By using the hierarchical tree structure, we compute latter Dilworth truncation on smaller graph. This is the basic idea of the new implementation. 
+
+The paper is organized as follows. In section II, we make a brief introduction on info-clustering and show how it can be used to detect outlier. In Section III, we review the original algorithm of info-clustering and give our new accelerated implementation. In Section IV, we conduct experiments of outlier detection and compare Info-detection with other methods. Finally, we make the conclusion in Section V.
+
+The notation convention of this paper is as follows: the directed graph is denoted by $G(V, E)$. Node index set $V=\{1, 2,\dots, \abs{V}\}$, node set $Z_V=\{Z_i | i \in V\}$, edge set $E=\{(i, j)\}$. Each edge is associated with a non-negative weight $w_{ij}$. $\P$ is a partition of $V$. That is, $P=\{C_1, \dots, C_k\}, \cup_{i=1}^k C_i=V$ and $i\neq j \rightarrow C_i \cap C_j =\emptyset $. $F(\cdot)$ is the graph in-cut function, defined as $f(C)=\sum_{i \neq C, j\in C, (i,j) \in E} w_{ij}$. $\Pi$ is the collection of all partitions of $V$ and $\Pi'=\Pi\backslash\{V\}$. Finally, $f[\cdot]$ is a functioned defined on $\Pi$ by $f[\P]=\sum_{C\in \P}f(C)$.
+
+\section{FORMULATION OF INFO-DETECTION}
+Info-detection originates from info-clustering. Info-clustering defines the cluster as follows:
+\begin{equation}
+C_{\gamma}(Z_V) = \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \}
+\end{equation}
+For the given threshold $\gamma$, $C_{\gamma} (Z_V)$ represents a collection of non-intersecting subset of $V$. The shared information of $Z_B$ is defined as:
+\begin{align}
+I_{\P}(Z_V) & := \frac{ f[\P] }{  \abs{\mathcal{P}} - 1 }\\
+I(Z_V) & := \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V)  \label{eq:ms}
+\end{align}
+For sufficiently large $\gamma$, $C_{\gamma} (Z_V)$ will become empty set. The largest threshold value which makes such transition is denoted by $\gamma_N$, which has the following form:
+\begin{equation}\label{eq:gammaN}
+\gamma_N = \max_{B\subseteq V, \abs{B}>1} I(Z_B)
+\end{equation}
+In agglomerative interpretation of info-clustering \cite{RN8}, each singleton element $\{i\}$ is regarded as a leaf node of the hierarchical tree. $\gamma_N$ represents the first step to process the tree node. That is, merging elements of B to form a stem node. Traditional hierarchical clustering method using linkage criterion restricts $\abs{B}=2$. Our information criterion defined in \eqref{eq:gammaN} does not have such restriction. 
+
+We can use $\gamma_N$ to detect anomaly in two cases. For existing nodes, suppose $\gamma_N=I(Z_B)$ and $B$ is maximal. Then nodes in $V\backslash B$  are outlier. For newly added node $i'$. Let $V'=B\cup \{i'\}$, we can compute $\gamma'_N$ for $V'$ and compare it with $\gamma_N$. If $\gamma'_N>\gamma_N$, $i'$ is normal observation since it is more integrated with existing nodes. Otherwise, $i'$ is anomaly. It can be shown that we do not need to compute $\gamma'_N$ to determine whether $\gamma'_N>\gamma_N$. We summarize our main result as follows:
+\begin{proposition}\label{prop:main}
+\begin{equation}
+\gamma'_N > \gamma_N \iff  \sum_{i \in B} w_{ii'} > \gamma_N 
+\end{equation}
+\end{proposition}
+From Proposition \ref{prop:main}, we can see that the computational overhead to check whether new data is normal is linear to the size of existing normal data. 
+The prediction requires $\gamma_N$, whose computation is not a trivial task. It has been found that the mathematical structure of info-clustering is the same with that of principal sequence of partition of graph. We use $\P_1, \dots, \P_k$ to denote the sequence where $\P_1 = \{V\}$ and $\P_k = \{\{1\},\dots,\{k\}\}$.
+
+\section{Third Section}
+\subsection{A Subsection Sample}
+Please note that the first paragraph of a section or subsection is
+not indented. The first paragraph that follows a table, figure,
+equation etc. does not need an indent, either.
+
+Subsequent paragraphs, however, are indented.
+
+\subsubsection{Sample Heading (Third Level)} Only two levels of
+headings should be numbered. Lower level headings remain unnumbered;
+they are formatted as run-in headings.
+
+\paragraph{Sample Heading (Fourth Level)}
+The contribution should contain no more than four levels of
+headings. Table~\ref{tab1} gives a summary of all heading levels.
+
+\begin{table}
+\caption{Table captions should be placed above the
+tables.}\label{tab1}
+\begin{tabular}{|l|l|l|}
+\hline
+Heading level &  Example & Font size and style\\
+\hline
+Title (centered) &  {\Large\bfseries Lecture Notes} & 14 point, bold\\
+1st-level heading &  {\large\bfseries 1 Introduction} & 12 point, bold\\
+2nd-level heading & {\bfseries 2.1 Printing Area} & 10 point, bold\\
+3rd-level heading & {\bfseries Run-in Heading in Bold.} Text follows & 10 point, bold\\
+4th-level heading & {\itshape Lowest Level Heading.} Text follows & 10 point, italic\\
+\hline
+\end{tabular}
+\end{table}
+
+
+\noindent Displayed equations are centered and set on a separate
+line.
+\begin{equation}
+x + y = z
+\end{equation}
+Please try to avoid rasterized images for line-art diagrams and
+schemas. Whenever possible, use vector graphics instead (see
+Fig.~\ref{fig1}).
+
+
+\begin{theorem}
+This is a sample theorem. The run-in heading is set in bold, while
+the following text appears in italics. Definitions, lemmas,
+propositions, and corollaries are styled the same way.
+\end{theorem}
+%
+% the environments 'definition', 'lemma', 'proposition', 'corollary',
+% 'remark', and 'example' are defined in the LLNCS documentclass as well.
+%
+\begin{proof}
+Proofs, examples, and remarks have the initial word in italics,
+while the following text appears in normal font.
+\end{proof}
+For citations of references, we prefer the use of square brackets
+and consecutive numbers. Citations using labels or the author/year
+convention are also acceptable. The following bibliography provides
+a sample reference list with entries for journal
+articles~\cite{ref_article1}, an LNCS chapter~\cite{ref_lncs1}, a
+book~\cite{ref_book1}, proceedings without editors~\cite{ref_proc1},
+and a homepage~\cite{ref_url1}. Multiple citations are grouped
+\cite{ref_article1,ref_lncs1,ref_book1},
+\cite{ref_article1,ref_book1,ref_proc1,ref_url1}.
+%
+% ---- Bibliography ----
+%
+% BibTeX users should specify bibliography style 'splncs04'.
+% References will then be sorted and formatted in the correct style.
+%
+\bibliographystyle{splncs04}
+\bibliography{exportlist}
+%
+
+\end{document}
