@@ -4,7 +4,5 @@ proof/*
 **/build
 literature/*
 note/*
-poster/*.pdf
-pic/*eps-converted-to.pdf
-paper/pic/*eps-converted-to.pdf
+**/*.pdf
 **/__pycache__
