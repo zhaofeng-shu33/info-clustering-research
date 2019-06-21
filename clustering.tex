@@ -575,15 +575,50 @@ In this section, we use 4 different clustering methods and test them on 5 differ
 \InputIfFileExists{build/compare.tex}{}{}
 \caption{clustering accuracy for the proposed and existing algorithms}
 \end{table}
-\subsection{Outliers detection}
+\subsection{Outlier detection}
 Since Info-clustering algorithm often produces singletons as a cluster. It is very suitable to apply info-clustering to detect anomaly in datasets.
 
 Given a dataset with $n$ training data point in $m$ dimensional space. We measure their pairwise similarity by $w_{ij} = \exp\{-\frac{\norm{x_i - x_j}^2}{m}\} $. Then we can apply info-clustering algorithm. The largest critical value after running the algorithm is denoted by $\gamma_N$. We select the clustering result corresponding to last by two partition with the largest cluster as normal points and the others as anomaly (usually they are just singletons).
-Suppose there are $N$ normal points and the index set is $V$. For newly entered points with index $j$, we can predict whether it is normal points by comparing $J_T(Z_{V'})$ with $\gamma_N$, where $V' = V\cup \{j\}$. That is
+Suppose there are $N$ normal points and the index set is $V$. For newly entered points with index $j'$, we can predict whether it is normal points by comparing $J_T(Z_{V'})$ with $\gamma_N$, where $V' = B\cup \{j'\}$.
+\begin{proposition}
+\begin{equation}
+J_{T}(Z_{V'}) > \gamma_N \iff  \sum_{j \in B} w_{i'j} > \gamma_N 
+\end{equation}
+\end{proposition}	
+\begin{proof}
+	In this proof, we make some notation convention.
+	$w_C = \sum_{(i,j) \in E(C)} w_{ij}$
+	$w(A, C) = \sum_{i \in A, j \in C, (i,j) \in E(V')} w_{ij}$ and
+	$\P_C = \{\{i \}| i \in C \}$.
+	
+	If $ \sum_{i \in B} w_{ij} > \gamma_N$ we can get
 $$
-\frac{(N-1)\gamma_N + \sum_{i \in V}w_{ij}}{N} > \gamma_N
+J_{T}(Z_{V'}) \geq I_{\P_{V'}}(Z_{V'}) = \frac{(N-1)\gamma_N + \sum_{j \in B}w_{i'j}}{N} > \gamma_N
 $$
-Simplifying the above equation we get the boundary condition whether predicted data point $x$ is normal point (Suppose $V=\{1,2,\dots, N \}$ ):
+
+On the other hand, suppose $J_{T}(Z_{V'}) = I(Z_K) > \gamma_N$. Then $K$ must contain $j'$. If $K=V'$ then the conclusion holds. Otherwise, Suppose $K = \{j'\} \cup B', B=B'\cup J, J\neq \emptyset$. We can write 
+\begin{equation}
+\gamma_N = \frac{w(J,B') + w(J) + w(B')}{ \abs{B'} + \abs{J} - 1 }
+\end{equation}
+where $w_J = \sum_{(i,j) \in E(J)} w_{ij}, w(J, B') = \sum_{i \in J, j \in B', (i,j) \in E(V')} w_{ij}$. Since $I_{\P_K}(Z_K)$ is maximal, we have $I_{\P_K}(Z_K) > I_{\P_{V'}}(Z_{V'})$ and $I_{\P_K}(Z_K) \geq I_{\P_{B'}}(Z_{B'})$.
+\begin{align*}
+	\frac{w(\{i'\}, B') + w(B')}{\abs{B'}} >& \frac{w(B') + w(J, B') + w(J) + w(\{i'\}, B') + w(\{i'\}, J)}{\abs{B'} + \abs{J}}  \\
+	\frac{w(\{i'\}, B') + w(B')}{\abs{B'}} \geq & \frac{w(B')}{\abs{B'} - 1}
+\end{align*}
+we can get 
+\begin{align}
+\abs{J} (w(\{i'\}, B') + w(B')) > & \abs{B'} (w(J, B') + w(J) + w(\{i'\}, J)) \label{eq:target}
+  \\
+	(\abs{B'} - 1)  w(\{i'\}, B') \geq & w(B') \label{eq:convert}
+\end{align}
+Take equation \eqref{eq:convert} in \eqref{eq:target}, we can get
+\begin{equation}\label{eq:summation}
+	\abs{J} w(\{i'\}, B') > w(J, B') + w(J) + w(\{i'\}, J)
+\end{equation}	
+Adding equation \eqref{eq:convert} and \eqref{eq:summation} we can get
+$w(\{i'\}, B') > \gamma_N$. Then $\sum_{j \in B}w_{i'j} > \gamma_N $ follows.
+\end{proof}
+We get the boundary condition whether predicted data point $x$ is normal point (Suppose $V=\{1,2,\dots, N \}$ ):
 \begin{equation}
 	\sum_{i=1}^N \exp\{ -\frac{\norm{x-x_i}^2}{2} \}	\geq \gamma_N
 \end{equation}
