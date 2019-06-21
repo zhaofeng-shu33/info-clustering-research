@@ -89,8 +89,11 @@ h(\lambda) &= \min_{\P \in \Pi'(V)} h_{\P}(\lambda) \label{eq:hlambda}
 We call $\lambda^*$ is a critical value for PSP if $\P_i, \P_{i+1}$ are both minimizer for \eqref{eq:hlambda}.
 The largest critical value is equal to $\gamma_N$. However, it is difficult to solve this critical value directly without solving other critical values. The next section is focused on the algorithm to solve equation \eqref{eq:hlambda} for all $\lambda$.
 \section{Improved principal sequence of partition}
-The canonical way to solve equation \eqref{eq:hlambda} uses divide and conquer techniques to find the critical values and solve \eqref{eq:hlambda} at each specific $\lambda$ \cite{RN7}.  This implementation has $N^2 \textrm{SFM}(N)$ time complexity. An improvement is proposed in \cite{RN4} using parametric maximum flow to finish the job.
+The canonical way to solve equation \eqref{eq:hlambda} uses divide and conquer techniques to find the critical values and solve \eqref{eq:hlambda} at each specific $\lambda$ \cite{RN7}.  This implementation has $\abs{V}^2 \textrm{MF}(G)$ time complexity. \textrm{MF} represents the time complexity of maximum flow algorithm for a graph $G$. An improvement is proposed in \cite{RN4} using parametric maximum flow to finish the job. Although this method can achieve $\abs{V} \textrm{MF}(G)$ theoretically, it also increases the spacial complexity to $ \abs{V} \textrm{S}(G)$ where $\textrm{S}$ represents the spacial complexity to store a graph $G$. For dense graphs with $\abs{V}^2$ non-zero weight, the spacial complexity is formidable. 
+% analysis of spatial complexity of pmf
+Another problem of parametric maximum flow improvement is the floating point accuracy. Since this method uses the flow map of last computation to initiate the next initial flow map. The excess flow of some nodes may not be exactly zero. The non-zero excess can lead to unpredictable result and currently there is no good idea to tackle this issue. 
 
+The above two problems prohibits such improvement from practical implementation. In this section, we abandon this approach and give another improvement which also achieves $\abs{V} \textrm{MF}(G)$ time complexity in general, only $\textrm{S}(G)$ spatial complexity and no floating point issue.
 
 
 
