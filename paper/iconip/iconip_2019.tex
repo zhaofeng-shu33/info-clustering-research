@@ -46,7 +46,7 @@ We propose a cluster analysis-based outlier detection method called Info-Detecti
 %
 %
 %
-\section{INTRODUCTION}
+\section{Introduction}
 Outlier Detection is an important task in data mining. Many algorithms such as local outlier factor, elliptic envelope and one-class SVM exist. They have some assumptions about the distribution of the data and the performance depends a lot on the hyper parameters of the method. For example, many methods require the outlier fraction as a parameter. For real-world task, it is difficult to estimate a good outlier fraction and unsuitable outlier fraction produces no good result. 
 
 In clustering analysis, there are some adaptive methods which do not need the number of cluster as a hyper parameter. Info-clustering is such a method proposed in \cite{RN1}. It has solid theoretical foundations but is limited in application because of the algorithm complexity. In this paper, we propose a new implementation of info-clustering, which is one order of magnitude faster than the original one. This new implementation makes it possible for info-clustering to be applied on outlier detection task. 
@@ -59,7 +59,7 @@ The notation convention of this paper is as follows: the directed graph is denot
 $C \in \P_1 \Rightarrow \exists C' \in \P_2 \, s.t. \, C \subseteq C'$.
 Finally, $f[\cdot]$ is a function defined on $\Pi$ by $f[\P]=\sum_{C\in \P}f(C)$.
 
-\section{FORMULATION OF INFO-DETECTION}
+\section{Formulation of Info-Detection}
 Info-detection originates from info-clustering. Info-clustering defines the cluster as follows:
 \begin{equation}
 C_{\gamma}(Z_V) = \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \}
@@ -140,16 +140,10 @@ Since the PSP has the inclusion relationship, we can restrict further invocation
 \end{example}		
 
 To analyze the time complexity of Algorithm \ref{alg:psp_i_simplified}. We suppose $\abs{V} = n, \abs{E} = O(n^2)$ and highest-relabel preflow algorithm is used to solve the maximum flow problem. Then DT has $O(n^4)$ time complexity. 
-We use $T(n)$ to represent the time complexity when the graph has $n$ nodes. We have the following recursive relationship.
-\begin{equation}
-T(n) = \max \{O(n^4) + \sum_{i=1}^k T(n_i) + T(k) | \sum_{i=1}^k n_i = n, n_i \in \mathbb{Z}_{+} \}
-\end{equation}	
-Below we distinguish two cases:
-\begin{enumerate}
-	\item Worst case scenario: suppose the hierarchical tree has such a structure that its depth is $\abs{V} - 1$. Consider complete graph with $\abs{E} = O(\abs{V}^2)$. Then each \texttt{DT} has complexity $n^4$ where $n = \abs{V}$. Then our algorithm has complexity $O(3^4+4^4 + \dots + n^4) = O(\frac{1}{5} n^5)$. Although the exponent component (still 5) is not improved. We have reduced the time complexity by a constant coefficient 5.
-	\item Average case scenario: we suppose the hierarchical tree is evenly distributed. To make it easy to analyze, we use an ideal type and this ideal type can be generalized. Suppose $k << n$ and $k$ is fixed in the divide and conquer algorithm.
-	Then we have $T(n) = k T(\frac{n}{k}) + O(n^4)$. By Master Theorem, since the critical value is $1$ and the regularity condition is satisfied, $T(n) = O(n^4)$. 
-\end{enumerate}
+We use $T(n)$ to represent the time complexity when the graph has $n$ nodes. We have the following recursive relationship. Under very general conditions, we can show that $T(n) = O(n^4)$. 
+
+In Algorithm \ref{alg:psp_i_simplified}, the computation is done on the input graph and only has $O(n^2)$ space complexity. This is superior than parametric preflow improvement. Besides, Algorithm \ref{alg:psp_i_simplified} does not have floating accuracy problem since each DT computation is freshly started. 
+\section{Experiment Result}
 %
 % ---- Bibliography ----
 %
