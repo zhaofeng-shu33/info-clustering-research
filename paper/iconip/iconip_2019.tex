@@ -110,7 +110,7 @@ Since the PSP has the inclusion relationship, we can restrict further invocation
 		\STATE \texttt{Split}($G, V$)
 		\FUNCTION{\texttt{Split}($\widetilde{G}, \widetilde{V}$)}
 		\STATE $w$ is the summation of all edge weights within $\widetilde{G}$ 
-		\STATE $\gamma' = \frac{w}{\abs{V(G)}-1}$
+		\STATE $\gamma' = \frac{w}{\abs{V(\widetilde{G})}-1}$ where $V(\widetilde{G})$ is the node set of graph $\widetilde{G}$
 		\STATE $(\tilde{h}, P') = \texttt{DT}(\widetilde{G}, \gamma')$ where $\P'$ is minimizer of equation \eqref{eq:hlambda} and $\tilde{h}$ is the corresponding minimum value.  \label{alg:DT}
 		\IF{$\tilde{h} = - \gamma'$}
 		\STATE add edge weight $\gamma'$ in $\mathcal{T}$ starting from $\widetilde{V}$ to its children.
@@ -127,7 +127,7 @@ Since the PSP has the inclusion relationship, we can restrict further invocation
 	\end{algorithmic}
 \end{algorithm}
 	
-\begin{figure}
+\begin{figure}[!ht]
 	\includegraphics[width=\textwidth]{pic/alg_illustration.eps}
 	\caption{Improved PSP for the graph in (b), hierarchical tree evolves from (a), (c) to (d) }\label{fig:alg_eg}
 \end{figure}
@@ -139,6 +139,17 @@ Since the PSP has the inclusion relationship, we can restrict further invocation
 	Then we run PSP for the subgraph $G[\{1,2,3\}]$, $\gamma' = \frac{9}{2}, \tilde{h} = -5 < -\gamma'$ and $\P= \{\{1,2\},\{3\}\}$ we get the tree shown in Fig. \ref{fig:alg_eg} (d). The other computation calculate the edge weight of $\mathcal{T}$ shown in Fig. \ref{fig:alg_eg} (d).
 \end{example}		
 
+To analyze the time complexity of Algorithm \ref{alg:psp_i_simplified}. We suppose $\abs{V} = n, \abs{E} = O(n^2)$ and highest-relabel preflow algorithm is used to solve the maximum flow problem. Then DT has $O(n^4)$ time complexity. 
+We use $T(n)$ to represent the time complexity when the graph has $n$ nodes. We have the following recursive relationship.
+\begin{equation}
+T(n) = \max \{O(n^4) + \sum_{i=1}^k T(n_i) + T(k) | \sum_{i=1}^k n_i = n, n_i \in \mathbb{Z}_{+} \}
+\end{equation}	
+Below we distinguish two cases:
+\begin{enumerate}
+	\item Worst case scenario: suppose the hierarchical tree has such a structure that its depth is $\abs{V} - 1$. Consider complete graph with $\abs{E} = O(\abs{V}^2)$. Then each \texttt{DT} has complexity $n^4$ where $n = \abs{V}$. Then our algorithm has complexity $O(3^4+4^4 + \dots + n^4) = O(\frac{1}{5} n^5)$. Although the exponent component (still 5) is not improved. We have reduced the time complexity by a constant coefficient 5.
+	\item Average case scenario: we suppose the hierarchical tree is evenly distributed. To make it easy to analyze, we use an ideal type and this ideal type can be generalized. Suppose $k << n$ and $k$ is fixed in the divide and conquer algorithm.
+	Then we have $T(n) = k T(\frac{n}{k}) + O(n^4)$. By Master Theorem, since the critical value is $1$ and the regularity condition is satisfied, $T(n) = O(n^4)$. 
+\end{enumerate}
 %
 % ---- Bibliography ----
 %
