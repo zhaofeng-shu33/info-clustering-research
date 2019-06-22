@@ -45,7 +45,7 @@ The tricky part of the implementation is how to construct the whole clustering t
 In line \ref{line:intersection}, since we are considering the intersection of $-\lambda$ and $w-\abs{T}\lambda $.
 
 To analyze the complexity of algorithm \ref{alg:psp_a}.
-We use $T(n)$ to represent the time complexity when the graph has $n$ nodes. We have the following recursive relationship.
+We use $T(n)$ to represent the time complexity when the graph has $n$ nodes. Suppose $\abs{E} = O(n^2)$. We have the following recursive relationship.
 \begin{equation}
 	T(n) = \max \{ O(n^4) + \sum_{i=1}^k T(n_i) + T(k) | \sum_{i=1}^k n_i = n, n_i \in \mathbb{Z}_{+} \}
 \end{equation}	
@@ -58,9 +58,33 @@ We use $T(n)$ to represent the time complexity when the graph has $n$ nodes. We 
 
 Below we distinguish two cases:
 \begin{enumerate}
-\item Worst case scenario: suppose the hierarchical tree has such a structure that its depth is $\abs{V} - 1$. Consider complete graph with $\abs{E} = O(\abs{V}^2)$. Then each \texttt{DT} has complexity $n^4$ where $n = \abs{V}$. Then our algorithm has complexity $O(3^4+4^4 + \dots + n^4) = O(\frac{1}{5} n^5)$. Although the exponent (still 5) is not improved. We have reduced the time complexity by a constant coefficient 5.
-\item Average case scenario: Since $\gamma'$ is the weighted average of critical values, generally it is near to the median of these critical values. We make the assumption that $ \lambda_{\floor{k/2} - 1} \leq \gamma' \leq \lambda_{\ceil{k/2} + 1}$. Then $k < \frac{n}{2}$ and the maximal $n_i \leq \frac{n}{2}$. Let $\mu_i = \frac{n_i}{n}$. We proceed by induction to show $T(n) = O(n^4)$. If $T(m) \leq C m^4$ holds for all $m<=n-1$ then for $T(n)$.
-Then we have $T(n) \leq  3 T(\frac{n}{2}) + O(n^4)$. 
+\item Worst case scenario: suppose the hierarchical tree has such a structure that its depth is $\abs{V} - 1$.  The complexity bound is $O(3^4+4^4 + \dots + n^4) = O(\frac{1}{5} n^5)$. Although the exponent (still 5) is not improved. We have reduced the time complexity by a constant coefficient 5.
+\item Average case scenario: Since $\gamma'$ is the weighted average of critical values, generally it is near to the median of these critical values. We make the assumption that $ \lambda_{\floor{k/2} - 1} \leq \gamma' \leq \lambda_{\ceil{k/2} + 1}$. Then $k < \frac{n}{2}$ and the maximal $n_i \leq \frac{n}{2}$. Let $\mu_i = \frac{n_i}{n}$. We proceed by induction to show $T(n) = O(n^4)$. Assume the time complexity of DT algorithm is $C n^4$
+and $Cm^4 \leq T(m) \leq kC m^4$ holds for all $m \leq n-1$ where $k=\frac{16}{5}$. Then for $T(n)$
+We first show that 
+\begin{equation}\label{eq:outerI}
+\sum_{i=1}^k T(n_i) \leq 10 T(\frac{n}{2})
+\end{equation}
+Since $\sum_{i=1}^k T(n_i) \leq kC n^4\sum_{i=1}^k u_i^4$ and $10 T(\frac{n}{2}) \geq 10Cn^4 (\frac{1}{2})^4$
+\begin{equation}\label{eq:innerI}
+k\sum_{i=1}^k u_i^4 \leq 10 (\frac{1}{2})^4 
+\end{equation}
+We have \eqref{eq:innerI} $\Rightarrow$ \eqref{eq:outerI}. The constraint is that $u_1\leq u_2 \leq \dots \leq u_k \leq \frac{1}{2}$. Therefore we have $u_1 \leq \frac{1}{k}, u_2 \leq \frac{1}{k-1}, \dots, u_{k-1} \leq \frac{1}{2}$.
+\begin{equation}\label{eq:outerOne}
+k[2(\frac{1}{2})^4 + \sum_{i=3}^k (\frac{1}{i})^4] \leq 10 (\frac{1}{2})^4
+\end{equation}
+We have \eqref{eq:outerOne} $\Rightarrow$ \eqref{eq:innerI}. And \eqref{eq:outerOne} is equivalent to
+$\sum_{i=3}^k (\frac{1}{i})^4 \leq \frac{9}{8}(\frac{1}{2})^4$
+\begin{align*}
+	\sum_{i=3}^k (\frac{1}{i})^4 & < \frac{1}{9}\sum_{i=3}^k (\frac{1}{i})^2 \\
+              & < \frac{1}{9}\sum_{i=3}^k (\frac{1}{(i-1)i}) \\
+              & < \frac{1}{18} < \frac{9}{8}(\frac{1}{2})^4
+\end{align*}
+Therefore, \eqref{eq:outerI} holds and we have 
+\begin{align}
+T(n)  & \leq Cn^4 + 11T(\frac{n}{2}) \\
+& \leq C n^4 + 11 k C (\frac{n}{2})^4 = \frac{16}{5} C n^4
+\end{align}
 \end{enumerate}
 Compared with parametric algorithm, which also has $O(n^4)$ time complexity. Our algorithm has several advantages:
 \begin{enumerate}
