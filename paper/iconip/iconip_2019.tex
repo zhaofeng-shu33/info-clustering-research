@@ -55,7 +55,9 @@ Info-clustering is originally implemented by solving the principal sequence of p
 
 The paper is organized as follows. In section II, we make a brief introduction on info-clustering and show how it can be used to detect outlier. In Section III, we review the original algorithm of info-clustering and give our new accelerated implementation. In Section IV, we conduct experiments of outlier detection and compare Info-detection with other methods. Finally, we make the conclusion in Section V.
 
-The notation convention of this paper is as follows: the directed graph is denoted by $G(V, E)$. Node index set $V=\{1, 2,\dots, \abs{V}\}$, node set $Z_V=\{Z_i | i \in V\}$, edge set $E=\{(i, j)\}$. Each edge is associated with a non-negative weight $w_{ij}$. $\P$ is a partition of $V$. That is, $P=\{C_1, \dots, C_k\}, \cup_{i=1}^k C_i=V$ and $i\neq j \rightarrow C_i \cap C_j =\emptyset $. $F(\cdot)$ is the graph in-cut function, defined as $f(C)=\sum_{i \neq C, j\in C, (i,j) \in E} w_{ij}$. $\Pi$ is the collection of all partitions of $V$ and $\Pi'=\Pi\backslash\{V\}$. Finally, $f[\cdot]$ is a functioned defined on $\Pi$ by $f[\P]=\sum_{C\in \P}f(C)$.
+The notation convention of this paper is as follows: the directed graph is denoted by $G(V, E)$. Node index set $V=\{1, 2,\dots, \abs{V}\}$, node set $Z_V=\{Z_i | i \in V\}$, edge set $E=\{(i, j)\}$. Each edge is associated with a non-negative weight $w_{ij}$. $\P$ is a partition of $V$. That is, $P=\{C_1, \dots, C_k\}, \cup_{i=1}^k C_i=V$ and $i\neq j \Rightarrow C_i \cap C_j =\emptyset $. $F(\cdot)$ is the graph in-cut function, defined as $f(C)=\sum_{i \neq C, j\in C, (i,j) \in E} w_{ij}$. $\Pi$ is the collection of all partitions of $V$ and $\Pi'=\Pi\backslash\{V\}$. A partial order $ \P_1 \preceq \P_2$ on $\Pi$ is defined as
+$C \in \P_1 \Rightarrow \exists C' \in \P_2 \, s.t. \, C \subseteq C'$.
+Finally, $f[\cdot]$ is a function defined on $\Pi$ by $f[\P]=\sum_{C\in \P}f(C)$.
 
 \section{FORMULATION OF INFO-DETECTION}
 Info-detection originates from info-clustering. Info-clustering defines the cluster as follows:
@@ -80,7 +82,7 @@ We can use $\gamma_N$ to detect anomaly in two cases. For existing nodes, suppos
 \end{equation}
 \end{proposition}
 From Proposition \ref{prop:main}, we can see that the computational overhead to check whether new data is normal is linear to the size of existing normal data. 
-The prediction requires $\gamma_N$, whose computation is not a trivial task. It has been found that the mathematical structure of info-clustering is the same with that of principal sequence of partition(PSP) of graph. We use $\P_1, \dots, \P_k$ to denote the sequence where $\P_1 = \{V\}$ and $\P_k = \{\{1\},\dots,\{k\}\}$.
+The prediction requires $\gamma_N$, whose computation is not a trivial task. It has been found that the mathematical structure of info-clustering is the same with that of principal sequence of partition(PSP) of graph. We use $\P_1, \dots, \P_k$ to denote the sequence where $\P_1 = \{V\}, \P_{i+1} \preceq \P_i$ and $\P_k = \{\{1\},\dots,\{k\}\}$.
 Each $\P_i$ is the solution to the following optimization problem:
 \begin{align}
 h_{\P}(\lambda) &=  f[\P] - \abs{\P} \lambda  \label{eq:hPL}\\
@@ -89,13 +91,53 @@ h(\lambda) &= \min_{\P \in \Pi'(V)} h_{\P}(\lambda) \label{eq:hlambda}
 We call $\lambda^*$ is a critical value for PSP if $\P_i, \P_{i+1}$ are both minimizer for \eqref{eq:hlambda}.
 The largest critical value is equal to $\gamma_N$. However, it is difficult to solve this critical value directly without solving other critical values. The next section is focused on the algorithm to solve equation \eqref{eq:hlambda} for all $\lambda$.
 \section{Improved principal sequence of partition}
-The canonical way to solve equation \eqref{eq:hlambda} uses divide and conquer techniques to find the critical values and solve \eqref{eq:hlambda} at each specific $\lambda$ \cite{RN7}.  This implementation has $\abs{V}^2 \textrm{MF}(G)$ time complexity. \textrm{MF} represents the time complexity of maximum flow algorithm for a graph $G$. An improvement is proposed in \cite{RN4} using parametric maximum flow to finish the job. Although this method can achieve $\abs{V} \textrm{MF}(G)$ theoretically, it also increases the spacial complexity to $ \abs{V} \textrm{S}(G)$ where $\textrm{S}$ represents the spacial complexity to store a graph $G$. For dense graphs with $\abs{V}^2$ non-zero weight, the spacial complexity is formidable. 
+The canonical way to solve equation \eqref{eq:hlambda} uses divide and conquer techniques to find the critical values and use Dilworth truncation (DT) to solve \eqref{eq:hlambda} at each specific $\lambda$ \cite{RN7}.  This implementation has $\abs{V}^2 \textrm{MF}(G)$ time complexity. \textrm{MF} represents the time complexity of maximum flow algorithm for a graph $G$. 
+
+An improvement is proposed in \cite{RN4} using parametric maximum flow to finish the job. Although this method can achieve $\abs{V} \textrm{MF}(G)$ theoretically, it also increases the spacial complexity to $ \abs{V} \textrm{S}(G)$ where $\textrm{S}$ represents the spacial complexity to store a graph $G$. For dense graphs with $\abs{V}^2$ non-zero weight, the spacial complexity is formidable. 
 % analysis of spatial complexity of pmf
 Another problem of parametric maximum flow improvement is the floating point accuracy. Since this method uses the flow map of last computation to initiate the next initial flow map. The excess flow of some nodes may not be exactly zero. The non-zero excess can lead to unpredictable result and currently there is no good idea to tackle this issue. 
 
 The above two problems prohibits such improvement from practical implementation. In this section, we abandon this approach and give another improvement which also achieves $\abs{V} \textrm{MF}(G)$ time complexity in general, only $\textrm{S}(G)$ spatial complexity and no floating point issue.
 
+Since the PSP has the inclusion relationship, we can restrict further invocation of DT to smaller graphs. To be more specific, suppose we get $P_i = {C_1, \dots, C_t}$ for the first invocation of DT. Then we can compute PSP for each $C_i(i=1,\dots, t)$ respectively and construct those $P_j(j>i)$ from the subgraph computation. For $P_j(j<i)$, we can contract the graph $G$  to $G^t$ which has $t$ nodes by contracting each $C_i$ to a single node. By applying DT to $G^t$ can we get $P_j(j<i)$. We summarize our improved algorithm in Algorithm \ref{alg:psp_i_simplified}.
 
+\begin{algorithm}
+	\caption{An Improved Principal Sequence of Partition Algorithm}\label{alg:psp_i_simplified}
+	\begin{algorithmic}[1]
+		\REQUIRE a directed graph $G(V, E)$; edge cost function $c(e)$ for $e\in E$
+		\ENSURE a hierarchical tree $\mathcal{T}(K, E)$ where $K \subseteq 2^{V}$ is node set and $E$ is edge set. $c'$ is edge weight map.
+		\STATE initialize tree $\mathcal{T}$ with $V$ as root node, $\{j\}(j\leq \abs{V})$ as leaf node and no stem node.
+		\STATE \texttt{Split}($G, V$)
+		\FUNCTION{\texttt{Split}($\widetilde{G}, \widetilde{V}$)}
+		\STATE $w$ is the summation of all edge weights within $\widetilde{G}$ 
+		\STATE $\gamma' = \frac{w}{\abs{V(G)}-1}$
+		\STATE $(\tilde{h}, P') = \texttt{DT}(\widetilde{G}, \gamma')$ where $\P'$ is minimizer of equation \eqref{eq:hlambda} and $\tilde{h}$ is the corresponding minimum value.  \label{alg:DT}
+		\IF{$\tilde{h} = - \gamma'$}
+		\STATE add edge weight $\gamma'$ in $\mathcal{T}$ starting from $\widetilde{V}$ to its children.
+		\ELSE
+		\FOR{$S$ in $P'$ and $\abs{S}>1$}
+		\STATE make each children of $\widetilde{V}$ in $\mathcal{T}$ have new parent $S$		
+		\STATE make the parent of $S$ be $\widetilde{V}$
+		\STATE \texttt{Split}($\widetilde{G}[S], S$) where $\widetilde{G}[S]$ is the subgraph of $\widetilde{G}$ restricted on $S$
+		\STATE contract $S$ to a single node % graph \widetilde{G} is modified
+		\ENDFOR 
+		\STATE \texttt{Split}($\widetilde{G}, \widetilde{V}$)		
+		\ENDIF
+		\ENDFUNCTION
+	\end{algorithmic}
+\end{algorithm}
+	
+\begin{figure}
+	\includegraphics[width=\textwidth]{pic/alg_illustration.eps}
+	\caption{Improved PSP for the graph in (b), hierarchical tree evolves from (a), (c) to (d) }\label{fig:alg_eg}
+\end{figure}
+
+\begin{example}
+	We use a simple example to explain Algorithm \ref{alg:psp_i_simplified}. Consider a graph $G(V, E)$ with $V=\{1,2,3,4\}, E=\{(1,2),(1,3),(2,3),(1,4),(2,4)\}$. The weight values are $w_{13}=2, w_{12}=5, w_{23}=2, w_{14}=1, w_{24}=1$. The graph is illustrated
+	in Fig. \ref{fig:alg_eg} (b). Initially, the hierarchical tree is shown in Fig. \ref{fig:alg_eg} (a). Computing $\gamma' = \frac{11}{4-1}, \tilde{h} = -\frac{16}{3} < -\gamma' $ and $\P' = \{\{1,2,3\},\{4\}\}$ from line \ref {alg:DT} in Algorithm \ref{alg:psp_i_simplified} we get the hierarchical tree shown in Fig. \ref{fig:alg_eg} (c).
+	
+	Then we run PSP for the subgraph $G[\{1,2,3\}]$, $\gamma' = \frac{9}{2}, \tilde{h} = -5 < -\gamma'$ and $\P= \{\{1,2\},\{3\}\}$ we get the tree shown in Fig. \ref{fig:alg_eg} (d). The other computation calculate the edge weight of $\mathcal{T}$ shown in Fig. \ref{fig:alg_eg} (d).
+\end{example}		
 
 %
 % ---- Bibliography ----
