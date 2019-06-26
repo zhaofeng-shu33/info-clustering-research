@@ -144,6 +144,18 @@ We use $T(n)$ to represent the time complexity when the graph has $n$ nodes. We 
 
 In Algorithm \ref{alg:psp_i_simplified}, the computation is done on the input graph and only has $O(n^2)$ space complexity. This is superior than parametric preflow improvement. Besides, Algorithm \ref{alg:psp_i_simplified} does not have floating accuracy problem since each DT computation is freshly started. 
 \section{Experiment Result}
+In this section, we first illustrate the decision boundary of info-detection by two artificial datasets. Then we conduct an experiment matrix, in which info-detection is compared with other commonly used outlier detection algorithms on both artificial and real-world datasets.
+
+The two artificial datasets are prepared as follows:
+\begin{enumerate}
+\item We generate two Gaussian blobs with the same center and standard deviation 0.5. There are 255 points in total and 45 noisy points outside.
+\item We generate two semi circles which located at different centers.
+\end{enumerate}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=\textwidth]{pic/outlier_boundary_illustration.eps}
+	\caption{Detection boundary lines of different methods on different artificial dataset}	
+\end{figure}
 \begin{table}[!ht]
 \centering
 \InputIfFileExists{../../experiment/outlier_detection/build/id_compare.tex}{}{}
