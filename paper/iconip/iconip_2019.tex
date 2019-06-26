@@ -174,5 +174,27 @@ Besides the two artifical dataset, we also prepare two real-world dataset: Lymph
 \bibliographystyle{splncs04}
 \bibliography{exportlist}
 %
+\appendix
+\section{Experiment Detail}
+Since info-detection is a graph-based method, how to choose good weight between two data point is important for application of info-detection to dataset. For our experiment, several metrics are tried: 
+\begin{enumerate}
+\item Gaussian kernel: $w_{ij} = \exp(-\gamma \norm{x_i - x_j}^2)$
+\item Laplacian kernel: $w_{ij} = \exp(-\gamma \norm{x_i - x_j}_1)$
+\item kernel weight combined with k-neighbor filtering. Suppose after kernel computation and sorting we have $w_{i1} > w_{i2} > \dots > w_{in}$, then the weight assignment scheme is
+$$
+w'_{ij}  = 
+\begin{cases}
+ w_{ij} & j \leq k \\
+ 0 & j > k
+\end{cases}
+$$
+This weight choice scheme has two parameters to tune: $k$ and $\gamma$. But it has two advantages. On one hand, it makes the graph have less edge and info-detection can run much faster. On the other hand, it restricts the linkage of one graph node to its k-nearest neighbors, which has more intuition in many cases.
 
+The source code of our experiment is available \footnote{\scriptsize\url{https://github.com/zhaofeng-shu33/info-clustering-research/tree/master/experiment/outlier\_detection}} for reproducation.
+For our experiment comparison, there are some additional notice.
+\begin{itemize}
+\item The accuracy of isolation-forest is determined by its intrinsic randomness. With the same parameter configuration, we select the result of one run of it, not possibly the best result. Info-detection and local outlier detector are deterministic method and do not have this problem.
+\end{itemize}
+
+\end{enumerate} 
 \end{document}
