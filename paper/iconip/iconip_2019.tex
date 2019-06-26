@@ -149,17 +149,21 @@ In this section, we first illustrate the decision boundary of info-detection by 
 The two artificial datasets are prepared as follows:
 \begin{enumerate}
 \item We generate two Gaussian blobs with the same center and standard deviation 0.5. There are 255 points in total and 45 noisy points outside.
-\item We generate two semi circles which located at different centers.
+\item We generate two semi-circles which located at different centers. The 300 points on the two semi-circles are evenly distributed among all angles but deviated from the radius in Gaussian distribution. There are 45 points not belonging to the "moon" structure and are treated as outlier.
 \end{enumerate}
+
+By using the artificial dataset, we can split each into inlier set and outlier set. The boundary curve between the two sets can be used to distinuish new points. As shown by Fig. \ref{fig:boundary}, the boundary curve for info-detection is approximately the closure of the inlier figure. We also draw the decision boundary for the Elliptic Envelope method. Since this method assumes the inlier data is distributed in convex region, the decision boundary is an ellipse, which is not like the ground truth.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=\textwidth]{pic/outlier_boundary_illustration.eps}
-	\caption{Detection boundary lines of different methods on different artificial dataset}	
+	\caption{Detection boundary lines of different methods on different artificial dataset}	\label{fig:boundary}
 \end{figure}
+
+Besides the two artifical dataset, we also prepare two real-world dataset: Lymphography (first used by \cite{Lazarevic}) and Glass (\cite{hics}). Lymphography dataset has 148 instances with 6 outliers while Glass dataset has 214 instances with 7 outliers. We compare info-detection method with two commonly used method: local outlier factor detection and isolation forest. We use two metrics to measure the overall performance of the detection: true positive rate(TPR) and false negative rate(FNR). The inliner is treated as positive sample. It is difficult for a method to achieve high score on both two metrics. We manage to maximize FNR while controlling TPR $\geq 90\%$. The result is shown in Table \ref{tab:compare}.
 \begin{table}[!ht]
 \centering
 \InputIfFileExists{../../experiment/outlier_detection/build/id_compare.tex}{}{}
-\caption{Comparison of info-detection with other outlier detection algorithm on artificial and real-world dataset}
+\caption{Comparison of info-detection with other outlier detection algorithm on artificial and real-world dataset}\label{tab:compare}
 \end{table}
 %
 % ---- Bibliography ----
