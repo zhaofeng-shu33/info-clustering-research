@@ -144,6 +144,11 @@ We use $T(n)$ to represent the time complexity when the graph has $n$ nodes. We 
 
 In Algorithm \ref{alg:psp_i_simplified}, the computation is done on the input graph and only has $O(n^2)$ space complexity. This is superior than parametric preflow improvement. Besides, Algorithm \ref{alg:psp_i_simplified} does not have floating accuracy problem since each DT computation is freshly started. 
 \section{Experiment Result}
+\begin{table}[!ht]
+\centering
+\InputIfFileExists{../../experiment/outlier_detection/build/id_compare.tex}{}{}
+\caption{Comparison of info-detection with other outlier detection algorithm on artificial and real-world dataset}
+\end{table}
 %
 % ---- Bibliography ----
 %
