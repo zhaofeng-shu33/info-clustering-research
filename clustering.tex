@@ -587,7 +587,7 @@ J_{T}(Z_{V'}) > \gamma_N \iff  \sum_{j \in B} w_{i'j} > \gamma_N
 \end{proposition}	
 \begin{proof}
 	In this proof, we make some notation convention.
-	$w_C = \sum_{(i,j) \in E(C)} w_{ij}$
+	$w(C) = \sum_{(i,j) \in E(C)} w_{ij}$
 	$w(A, C) = \sum_{i \in A, j \in C, (i,j) \in E(V')} w_{ij}$ and
 	$\P_C = \{\{i \}| i \in C \}$.
 	
@@ -600,7 +600,7 @@ On the other hand, suppose $J_{T}(Z_{V'}) = I(Z_K) > \gamma_N$. Then $K$ must co
 \begin{equation}
 \gamma_N = \frac{w(J,B') + w(J) + w(B')}{ \abs{B'} + \abs{J} - 1 }
 \end{equation}
-where $w_J = \sum_{(i,j) \in E(J)} w_{ij}, w(J, B') = \sum_{i \in J, j \in B', (i,j) \in E(V')} w_{ij}$. Since $I_{\P_K}(Z_K)$ is maximal, we have $I_{\P_K}(Z_K) > I_{\P_{V'}}(Z_{V'})$ and $I_{\P_K}(Z_K) \geq I_{\P_{B'}}(Z_{B'})$.
+Since $I_{\P_K}(Z_K)$ is maximal, we have $I_{\P_K}(Z_K) > I_{\P_{V'}}(Z_{V'})$ and $I_{\P_K}(Z_K) \geq I_{\P_{B'}}(Z_{B'})$.
 \begin{align*}
 	\frac{w(\{i'\}, B') + w(B')}{\abs{B'}} >& \frac{w(B') + w(J, B') + w(J) + w(\{i'\}, B') + w(\{i'\}, J)}{\abs{B'} + \abs{J}}  \\
 	\frac{w(\{i'\}, B') + w(B')}{\abs{B'}} \geq & \frac{w(B')}{\abs{B'} - 1}
