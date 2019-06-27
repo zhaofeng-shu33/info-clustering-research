@@ -60,26 +60,32 @@ $C \in \P_1 \Rightarrow \exists C' \in \P_2 \, s.t. \, C \subseteq C'$.
 Finally, $f[\cdot]$ is a function defined on $\Pi$ by $f[\P]=\sum_{C\in \P}f(C)$.
 
 \section{Formulation of Info-Detection}
-Info-detection originates from info-clustering. Info-clustering defines the cluster as follows:
-\begin{equation}
-C_{\gamma}(Z_V) = \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \}
-\end{equation}
-where $I(Z_B)$ is the shared information of $Z_B$.
-
-For the given threshold $\gamma$, $C_{\gamma} (Z_V)$ represents a collection of non-intersecting subset of $V$. Every two sets from $\bigcup_{\gamma} C_{\gamma}(Z_V)$ are either disjoint or have subset relationship. Therefore, they can be arranged in a tree $\mathcal{T}$ with the property that $A$ is a parent of $B$ if $B\subset A$. 
-
-$I(Z_V)$ is defined by the following equation:
+Info-Detection originates from info-clustering. Given a graph $G(V,E)$, info-clustering defines the cluster as follows:
 \begin{align}
 I_{\P}(Z_V) & := \frac{ f[\P] }{  \abs{\mathcal{P}} - 1 }\\
-I(Z_V) & := \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V)  \label{eq:ms}
+I(Z_V) & := \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V)  \label{eq:ms} \\
+C_{\gamma}(Z_V) & := \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \}
 \end{align}
+where $I(Z_B)$ is the shared information of $Z_B$. For the definition of $I_{\P}(Z_B)$, the subgraph $G(B,E(B))$ is considered instead.
+
+For the given threshold $\gamma$, $C_{\gamma} (Z_V)$ represents a collection of non-intersecting subset of $V$. Every two sets from $\bigcup_{\gamma} C_{\gamma}(Z_V)$ are either disjoint or have subset relationship. Therefore, they can be put in a tree $\mathcal{T}$ with the property that $A$ is a parent of $B$ if $B\subset A$. $\mathcal{T}$ also includes $\{j\}$ as leaf node. 
+
 For sufficiently large $\gamma$, $C_{\gamma} (Z_V)$ will become empty set. The largest threshold value which makes such transition is denoted by $\gamma_N$, which has the following form:
 \begin{equation}\label{eq:gammaN}
 \gamma_N = \max_{B\subseteq V, \abs{B}>1} I(Z_B)
 \end{equation}
 In agglomerative interpretation of info-clustering \cite{RN8}, each singleton element $\{i\}$ is regarded as a leaf node of the hierarchical tree. $\gamma_N$ represents the first step to process the tree node. That is, merging elements of B to form a stem node. Traditional hierarchical clustering method using linkage criterion restricts $\abs{B}=2$. Our information criterion defined in \eqref{eq:gammaN} does not have such restriction. 
 
-For our Info-Detection proposal, we use $\gamma_N$ to detect anomaly in two cases. For existing nodes, suppose $\gamma_N=I(Z_B)$ and $B$ is maximal. Then nodes in $V\backslash B$  are outlier. We can score outlier $\{Z_j\}$ with the minimal depth of set containing $j$ in the hierarchical tree. For newly added node $i'$. Let $V'=B\cup \{i'\}$, we can compute $\gamma'_N$ for $V'$ and compare it with $\gamma_N$. If $\gamma'_N>\gamma_N$, $i'$ is normal observation since it is more integrated with existing nodes. Otherwise, $i'$ is anomaly. It can be shown that we do not need to compute $\gamma'_N$ to determine whether $\gamma'_N>\gamma_N$. We summarize our main result as follows:
+For our Info-Detection proposal, we use $\gamma_N$ to detect anomaly in two cases. For existing nodes, suppose $\gamma_N=I(Z_B)$ and $B$ is maximal. Then nodes in $V\backslash B$  are outlier. We can score outlier $Z_j$ with the minimal depth of the set containing $j$ in the hierarchical tree. 
+\begin{example}
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[width=8cm]{pic/outlier_example.eps}
+		\caption{Info-Detection applied to 6 points on Cartesian plane}\label{fig:ex}
+	\end{figure}
+	Consider a graph consisting of 6 points on Cartesian plane (Fig. \ref{fig:ex}). The grid has one unit and the arc weight $w_{ij} = \exp(-d_{ij}^2)$ where $d_{ij}$ is the Euclidean distance of $x_i$ and $x_j$. For example $w_{45} = \exp(-5)$. The arc direction is from $i$ to $j$ for $i<j$. From equation \eqref{eq:gammaN}, We can compute $B=\{1,2,3,4\}$ and $\gamma_N = \frac{4\exp(-1)+2\exp(-2)}{3}\approx 0.58$. The whole hierarchical tree $\mathcal{T}$ can be computed, which is shown on the left figure of \ref{fig:ex}. The outlier score for $Z_6$ is higher than $Z_5$ from the tree depth interpretation.
+\end{example}
+For newly added node $i'$. Let $V'=B\cup \{i'\}$, we can compute $\gamma'_N$ for $V'$ and compare it with $\gamma_N$. If $\gamma'_N>\gamma_N$, $i'$ is normal observation since it is more integrated with existing nodes. Otherwise, $i'$ is anomaly. It can be shown that we do not need to compute $\gamma'_N$ to determine whether $\gamma'_N>\gamma_N$. We summarize our main result as follows:
 \begin{proposition}\label{prop:main}
 \begin{equation}
 \gamma'_N > \gamma_N \iff  \sum_{i \in B} w_{ii'} > \gamma_N 
@@ -147,6 +153,9 @@ To analyze the time complexity of Algorithm \ref{alg:psp_i_simplified}. We suppo
 We use $T(n)$ to represent the time complexity when the graph has $n$ nodes. We have the following recursive relationship. Under very general conditions, we can show that $T(n) = O(n^4)$. 
 
 In Algorithm \ref{alg:psp_i_simplified}, the computation is done on the input graph and only has $O(n^2)$ space complexity. This is superior than parametric preflow improvement. Besides, Algorithm \ref{alg:psp_i_simplified} does not have floating accuracy problem since each DT computation is freshly started. 
+
+Our improvement of algorithm is not restricted to Info-Detection scenario. It can be used in general graph partition problems when PSP structure is needed.
+
 \section{Experiment Result}
 In this section, we first illustrate the decision boundary of info-detection by two artificial datasets. Then we conduct an experiment matrix, in which info-detection is compared with other commonly used outlier detection algorithms on both artificial and real-world datasets.
 
@@ -177,7 +186,7 @@ Besides the two artificial dataset, we also prepare two real-world dataset: Lymp
 All results in Table \ref{tab:compare} achieves TPR $\geq 90\%$. It can be seen that info-detection achieves highest FNR for these dataset, which means it detects no less outliers than other methods.
 
 \section{Conclusion}
-In this paper, we 
+In this paper, we propose Info-Detection, which is an adaptive method to detect outliers in dataset. We design an efficient algorithm to solve the hierarchical structure based on existing PSP algorithms. By experiments we show that Info-Detection performs quite well.
 %
 % ---- Bibliography ----
 %
@@ -188,6 +197,40 @@ In this paper, we
 \bibliography{exportlist}
 %
 \appendix
+\section{Proposition Proofs}
+\begin{proof}[Proof of Proposition \ref{prop:main}]
+		In this proof, we make some notation convention.
+		$w_C = \displaystyle\sum_{(i,j) \in E(C)} w_{ij},$
+		$w(A, C) = \displaystyle\sum_{\substack{i \in A, j \in C \\ (i,j) \in E(V')}} w_{ij}$ and
+		$\P_C = \{\{i \}| i \in C \}$.
+		
+		If $ \sum_{i \in B} w_{ij} > \gamma_N$ we can get
+		$$
+		J_{T}(Z_{V'}) \geq I_{\P_{V'}}(Z_{V'}) = \frac{(N-1)\gamma_N + \sum_{j \in B}w_{i'j}}{N} > \gamma_N
+		$$
+		
+		On the other hand, suppose $J_{T}(Z_{V'}) = I(Z_K) > \gamma_N$. Then $K$ must contain $j'$. If $K=V'$ then the conclusion holds. Otherwise, Suppose $K = \{j'\} \cup B', B=B'\cup J, J\neq \emptyset$. We can write 
+		\begin{equation}
+		\gamma_N = \frac{w(J,B') + w(J) + w(B')}{ \abs{B'} + \abs{J} - 1 }
+		\end{equation}
+		where $w_J = \sum_{(i,j) \in E(J)} w_{ij}, w(J, B') = \sum_{i \in J, j \in B', (i,j) \in E(V')} w_{ij}$. Since $I_{\P_K}(Z_K)$ is maximal, we have $I_{\P_K}(Z_K) > I_{\P_{V'}}(Z_{V'})$ and $I_{\P_K}(Z_K) \geq I_{\P_{B'}}(Z_{B'})$.
+		\begin{align*}
+			\frac{w(\{i'\}, B') + w(B')}{\abs{B'}} >& \frac{w(B') + w(J, B') + w(J) + w(\{i'\}, B') + w(\{i'\}, J)}{\abs{B'} + \abs{J}}  \\
+			\frac{w(\{i'\}, B') + w(B')}{\abs{B'}} \geq & \frac{w(B')}{\abs{B'} - 1}
+		\end{align*}
+		we can get 
+		\begin{align}
+			\abs{J} (w(\{i'\}, B') + w(B')) > & \abs{B'} (w(J, B') + w(J) + w(\{i'\}, J)) \label{eq:target}
+			\\
+			(\abs{B'} - 1)  w(\{i'\}, B') \geq & w(B') \label{eq:convert}
+		\end{align}
+		Take equation \eqref{eq:convert} in \eqref{eq:target}, we can get
+		\begin{equation}\label{eq:summation}
+		\abs{J} w(\{i'\}, B') > w(J, B') + w(J) + w(\{i'\}, J)
+		\end{equation}	
+		Adding equation \eqref{eq:convert} and \eqref{eq:summation} we can get
+		$w(\{i'\}, B') > \gamma_N$. Then $\sum_{j \in B}w_{i'j} > \gamma_N $ follows.
+\end{proof}	
 \section{Experiment Detail}
 Since info-detection is a graph-based method, how to choose good weight between two data point is important for application of info-detection to dataset. For our experiment, several metrics are tried: 
 \begin{enumerate}
