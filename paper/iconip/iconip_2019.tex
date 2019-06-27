@@ -55,7 +55,7 @@ Info-clustering is originally implemented by solving the principal sequence of p
 
 The paper is organized as follows. In section II, we make a brief introduction on info-clustering and show how it can be used to detect outlier. In Section III, we review the original algorithm of info-clustering and give our new accelerated implementation. In Section IV, we conduct experiments of outlier detection and compare Info-detection with other methods. Finally, we make the conclusion in Section V.
 
-The notation convention of this paper is as follows: the directed graph is denoted by $G(V, E)$. Node index set $V=\{1, 2,\dots, \abs{V}\}$, node set $Z_V=\{Z_i | i \in V\}$, edge set $E=\{(i, j)\}$. Each edge is associated with a non-negative weight $w_{ij}$. $\P$ is a partition of $V$. That is, $P=\{C_1, \dots, C_k\}, \cup_{i=1}^k C_i=V$ and $i\neq j \Rightarrow C_i \cap C_j =\emptyset $. $F(\cdot)$ is the graph in-cut function, defined as $f(C)=\sum_{i \neq C, j\in C, (i,j) \in E} w_{ij}$. $\Pi$ is the collection of all partitions of $V$ and $\Pi'=\Pi\backslash\{V\}$. A partial order $ \P_1 \preceq \P_2$ on $\Pi$ is defined as
+The notation convention of this paper is as follows: the directed graph is denoted by $G(V, E)$. Node index set $V=\{1, 2,\dots, \abs{V}\}$, node set $Z_V=\{Z_i | i \in V\}$, edge set $E=\{(i, j)\}$. For $B\subseteq V$. edge subset $E(B) = \{(i,j)| i, j \in B,(i,j)\in E\}$. Each edge is associated with a non-negative weight $w_{ij}$. $\P$ is a partition of $V$. That is, $P=\{C_1, \dots, C_k\}, \cup_{i=1}^k C_i=V$ and $i\neq j \Rightarrow C_i \cap C_j =\emptyset $. $F(\cdot)$ is the graph in-cut function, defined as $f(C)=\sum_{i \neq C, j\in C, (i,j) \in E} w_{ij}$. $\Pi$ is the collection of all partitions of $V$ and $\Pi'=\Pi\backslash\{V\}$. A partial order $ \P_1 \preceq \P_2$ on $\Pi$ is defined as
 $C \in \P_1 \Rightarrow \exists C' \in \P_2 \, s.t. \, C \subseteq C'$.
 Finally, $f[\cdot]$ is a function defined on $\Pi$ by $f[\P]=\sum_{C\in \P}f(C)$.
 
@@ -64,11 +64,11 @@ Info-Detection originates from info-clustering. Given a graph $G(V,E)$, info-clu
 \begin{align}
 I_{\P}(Z_V) & := \frac{ f[\P] }{  \abs{\mathcal{P}} - 1 }\\
 I(Z_V) & := \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V)  \label{eq:ms} \\
-C_{\gamma}(Z_V) & := \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \}
+C_{\gamma}(Z_V) & := \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \} \label{eq:CgZv}
 \end{align}
 where $I(Z_B)$ is the shared information of $Z_B$. For the definition of $I_{\P}(Z_B)$, the subgraph $G(B,E(B))$ is considered instead.
 
-For the given threshold $\gamma$, $C_{\gamma} (Z_V)$ represents a collection of non-intersecting subset of $V$. Every two sets from $\bigcup_{\gamma} C_{\gamma}(Z_V)$ are either disjoint or have subset relationship. Therefore, they can be put in a tree $\mathcal{T}$ with the property that $A$ is a parent of $B$ if $B\subset A$. $\mathcal{T}$ also includes $\{j\}$ as leaf node. 
+For the given threshold $\gamma$, $C_{\gamma} (Z_V)$ represents a collection of non-intersecting subset of $V$. Every two sets from $\bigcup_{\gamma \geq 0} C_{\gamma}(Z_V)$ are either disjoint or have subset relationship. Therefore, they can be put in a tree $\mathcal{T}$ with the property that $A$ is a parent of $B$ if $B\subset A$. $\mathcal{T}$ also includes $\{j\}$ as leaf node. 
 
 For sufficiently large $\gamma$, $C_{\gamma} (Z_V)$ will become empty set. The largest threshold value which makes such transition is denoted by $\gamma_N$, which has the following form:
 \begin{equation}\label{eq:gammaN}
@@ -76,14 +76,14 @@ For sufficiently large $\gamma$, $C_{\gamma} (Z_V)$ will become empty set. The l
 \end{equation}
 In agglomerative interpretation of info-clustering \cite{RN8}, each singleton element $\{i\}$ is regarded as a leaf node of the hierarchical tree. $\gamma_N$ represents the first step to process the tree node. That is, merging elements of B to form a stem node. Traditional hierarchical clustering method using linkage criterion restricts $\abs{B}=2$. Our information criterion defined in \eqref{eq:gammaN} does not have such restriction. 
 
-For our Info-Detection proposal, we use $\gamma_N$ to detect anomaly in two cases. For existing nodes, suppose $\gamma_N=I(Z_B)$ and $B$ is maximal. Then nodes in $V\backslash B$  are outlier. We can score outlier $Z_j$ with the minimal depth of the set containing $j$ in the hierarchical tree. 
+For our Info-Detection proposal, we use $\gamma_N$ to detect anomaly in two cases. For existing nodes, suppose $\gamma_N=I(Z_B)$ and $B$ is maximal in a sense of equation \eqref{eq:CgZv}. Then nodes in $V\backslash B$  are outlier. We can score outlier $Z_j$ with the depth of the set $\{j\}$ in the hierarchical tree. 
 \begin{example}
 	\begin{figure}[!ht]
 		\centering
 		\includegraphics[width=8cm]{pic/outlier_example.eps}
 		\caption{Info-Detection applied to 6 points on Cartesian plane}\label{fig:ex}
 	\end{figure}
-	Consider a graph consisting of 6 points on Cartesian plane (Fig. \ref{fig:ex}). The grid has one unit and the arc weight $w_{ij} = \exp(-d_{ij}^2)$ where $d_{ij}$ is the Euclidean distance of $x_i$ and $x_j$. For example $w_{45} = \exp(-5)$. The arc direction is from $i$ to $j$ for $i<j$. From equation \eqref{eq:gammaN}, We can compute $B=\{1,2,3,4\}$ and $\gamma_N = \frac{4\exp(-1)+2\exp(-2)}{3}\approx 0.58$. The whole hierarchical tree $\mathcal{T}$ can be computed, which is shown on the left figure of \ref{fig:ex}. The outlier score for $Z_6$ is higher than $Z_5$ from the tree depth interpretation.
+	Consider a graph consisting of 6 points on Cartesian plane (Fig. \ref{fig:ex}). The grid has one unit and the edge weight $w_{ij} = \exp(-d_{ij}^2)$ where $d_{ij}$ is the Euclidean distance of $x_i$ and $x_j$. For example, $w_{45} = \exp(-5)$. The edge direction is from $i$ to $j$ for $i<j$. From equation \eqref{eq:gammaN}, we can compute $B=\{1,2,3,4\}$ and $\gamma_N = \frac{4\exp(-1)+2\exp(-2)}{3}\approx 0.58$. The whole hierarchical tree $\mathcal{T}$ can be computed, which is shown on the left figure of \ref{fig:ex}. The outlier score for $Z_6$ is higher than $Z_5$ from the tree depth interpretation.
 \end{example}
 For newly added node $i'$. Let $V'=B\cup \{i'\}$, we can compute $\gamma'_N$ for $V'$ and compare it with $\gamma_N$. If $\gamma'_N>\gamma_N$, $i'$ is normal observation since it is more integrated with existing nodes. Otherwise, $i'$ is anomaly. It can be shown that we do not need to compute $\gamma'_N$ to determine whether $\gamma'_N>\gamma_N$. We summarize our main result as follows:
 \begin{proposition}\label{prop:main}
@@ -120,7 +120,7 @@ Since the PSP has the inclusion relationship, we can restrict further invocation
 		\STATE \texttt{Split}($G, V$)
 		\FUNCTION{\texttt{Split}($\widetilde{G}, \widetilde{V}$)}
 		\STATE $w$ is the summation of all edge weights within $\widetilde{G}$ 
-		\STATE $\gamma' = \frac{w}{\abs{V(\widetilde{G})}-1}$ where $V(\widetilde{G})$ is the node set of graph $\widetilde{G}$
+		\STATE $\gamma' = \frac{w}{\abs{V(\widetilde{G})}-1}$ where $V(\widetilde{G})$ is the node set of graph $\widetilde{G}$ \label{alg:gamma_apostrophe}
 		\STATE $(\tilde{h}, P') = \texttt{DT}(\widetilde{G}, \gamma')$ where $\P'$ is minimizer of equation \eqref{eq:hlambda} and $\tilde{h}$ is the corresponding minimum value.  \label{alg:DT}
 		\IF{$\tilde{h} = - \gamma'$}
 		\STATE add edge weight $\gamma'$ in $\mathcal{T}$ starting from $\widetilde{V}$ to its children.
@@ -200,20 +200,22 @@ In this paper, we propose Info-Detection, which is an adaptive method to detect 
 \section{Proposition Proofs}
 \begin{proof}[Proof of Proposition \ref{prop:main}]
 		In this proof, we make some notation convention.
-		$w_C = \displaystyle\sum_{(i,j) \in E(C)} w_{ij},$
-		$w(A, C) = \displaystyle\sum_{\substack{i \in A, j \in C \\ (i,j) \in E(V')}} w_{ij}$ and
-		$\P_C = \{\{i \}| i \in C \}$.
+		$w(C) = \displaystyle\sum_{(i,j) \in E(C)} w_{ij},$
+		$w(A, C) = \displaystyle\sum_{\substack{i \in A, j \in C \\ (i,j) \in E(V')}} (w_{ij}+w_{ji})$ and
+		$\P_C = \{\{i \}| i \in C \}$. Suppose $\gamma_N = I(Z_B)$, from equation \eqref{eq:gammaN}, we can get $\gamma_N =\frac{f[\P_B]} {\abs{B} -1}$.
+		Since $V' = B \cup \{i'\}$
+		$f[P_{V'}] = f[\P_B] + \sum_{i \in B}w_{ii'}$.
 		
 		If $ \sum_{i \in B} w_{ij} > \gamma_N$ we can get
 		$$
-		J_{T}(Z_{V'}) \geq I_{\P_{V'}}(Z_{V'}) = \frac{(N-1)\gamma_N + \sum_{j \in B}w_{i'j}}{N} > \gamma_N
+		\gamma'_N \geq I_{\P_{V'}}(Z_{V'}) = \frac{(\abs{B}-1)\gamma_N + \sum_{i \in B}w_{ii'}}{\abs{B}} > \gamma_N
 		$$
 		
-		On the other hand, suppose $J_{T}(Z_{V'}) = I(Z_K) > \gamma_N$. Then $K$ must contain $j'$. If $K=V'$ then the conclusion holds. Otherwise, Suppose $K = \{j'\} \cup B', B=B'\cup J, J\neq \emptyset$. We can write 
-		\begin{equation}
+		On the other hand, suppose $\gamma'_N = I(Z_K) > \gamma_N$. Then $K$ must contain $i'$. If $K=V'$ then the conclusion holds. Otherwise, Suppose $K = \{i'\} \cup B', B=B'\cup J, J\neq \emptyset$. We can write 
+		\begin{equation}\label{eq:gammaNF}
 		\gamma_N = \frac{w(J,B') + w(J) + w(B')}{ \abs{B'} + \abs{J} - 1 }
 		\end{equation}
-		where $w_J = \sum_{(i,j) \in E(J)} w_{ij}, w(J, B') = \sum_{i \in J, j \in B', (i,j) \in E(V')} w_{ij}$. Since $I_{\P_K}(Z_K)$ is maximal, we have $I_{\P_K}(Z_K) > I_{\P_{V'}}(Z_{V'})$ and $I_{\P_K}(Z_K) \geq I_{\P_{B'}}(Z_{B'})$.
+		Since $I(Z_K) = I_{\P_K}(Z_K)$ is maximal, we have $I_{\P_K}(Z_K) > I_{\P_{V'}}(Z_{V'})$ and $I_{\P_K}(Z_K) \geq I_{\P_{B'}}(Z_{B'})$.
 		\begin{align*}
 			\frac{w(\{i'\}, B') + w(B')}{\abs{B'}} >& \frac{w(B') + w(J, B') + w(J) + w(\{i'\}, B') + w(\{i'\}, J)}{\abs{B'} + \abs{J}}  \\
 			\frac{w(\{i'\}, B') + w(B')}{\abs{B'}} \geq & \frac{w(B')}{\abs{B'} - 1}
@@ -228,11 +230,58 @@ In this paper, we propose Info-Detection, which is an adaptive method to detect 
 		\begin{equation}\label{eq:summation}
 		\abs{J} w(\{i'\}, B') > w(J, B') + w(J) + w(\{i'\}, J)
 		\end{equation}	
-		Adding equation \eqref{eq:convert} and \eqref{eq:summation} we can get
-		$w(\{i'\}, B') > \gamma_N$. Then $\sum_{j \in B}w_{i'j} > \gamma_N $ follows.
+		Combined with \eqref{eq:gammaNF}, adding equation \eqref{eq:convert} and \eqref{eq:summation} we can get
+		$w(\{i'\}, B') > \gamma_N$. Then $\sum_{j \in B}w_{ii'} > \gamma_N $ follows.
 \end{proof}	
+\section{Algorithm Analysis}
+In this section, we give detailed analysis of time complexity of Algorithm \ref{alg:psp_i_simplified}.
+It is noticed that each invocation of \texttt{Split} makes the graph $\widetilde{G}$ contract at least two nodes. Therefore, at most $\abs{V}-2$ times \texttt{Split} is called. Suppose the time complexity of \texttt{DT} is bounded by $Cn^4$. Then the complexity bound for this worst case is $C(3^4+4^4 + \dots + n^4) \sim \frac{1}{5}Cn^5$, which is $5$ times faster than the original algorithm $Cn^5$.
+
+Generally, this worst case is not reached. The recursive relationship for $T(n)$ is
+\begin{equation}\label{eq:Tn}
+T(n) = \max \{ O(n^4) + \sum_{i=1}^k T(n_i) + T(k) | \sum_{i=1}^k n_i = n, n_i \in \mathbb{Z}_{+} \}
+\end{equation}	
+For graph $\widetilde{G}$, let $\lambda_1(\widetilde{G}) < \dots < \lambda_k(\widetilde{G})$ be its critical value list. $\gamma'(\widetilde{G})$ comes from line \ref{alg:gamma_apostrophe} in Algorithm \ref{alg:psp_i_simplified}
+We have the following proposition
+\begin{proposition}\label{prop:alg_complexity}
+	If $\abs{E} = O(n^2)$ and $ \lambda_{\floor{k/2} - 1}(\widetilde{G}) \leq \gamma'(\widetilde{G}) \leq \lambda_{\ceil{k/2} + 1}(\widetilde{G}) $ holds for each invocation of function \texttt{Split}, then $T(n) = O(n^4)$.
+\end{proposition}
+\begin{proof}
+	From the condition on $\gamma'$, we have $k < \frac{n}{2} $ and $n_i \leq \frac{n}{2}$ in equation \eqref{eq:Tn}. Let $\mu_i = \frac{n_i}{n}$. We proceed by induction to show $T(n) = O(n^4)$. Assume the time complexity of DT algorithm is $C n^4$ then $T(n) \geq Cn^4$ holds for all $n$. $T(3)$ is a constant and $T(m) \leq q C m^4$ holds for $m=3$. Suppose
+	$T(m) \leq qC m^4$ holds for all $m \leq n-1$ where $q=\frac{16}{5}$. Then for $T(n)$
+	We first show that 
+	\begin{equation}\label{eq:outerI}
+	\sum_{i=1}^k T(n_i) \leq 10 T(\frac{n}{2})
+	\end{equation}
+	Since $\sum_{i=1}^k T(n_i) \leq qC n^4\sum_{i=1}^k u_i^4$ and $10 T(\frac{n}{2}) \geq 10Cn^4 (\frac{1}{2})^4$
+	\begin{equation}\label{eq:innerI}
+       q\sum_{i=1}^k u_i^4 \leq 10 (\frac{1}{2})^4 
+	\end{equation}
+	We have \eqref{eq:innerI} $\Rightarrow$ \eqref{eq:outerI}. The constraint is that $u_1\leq u_2 \leq \dots \leq u_k \leq \frac{1}{2}$ and $\sum_{i=1}^k u_i = 1$. Therefore we have $u_1 \leq \frac{1}{k}, u_2 \leq \frac{1}{k-1}, \dots, u_{k-1} \leq \frac{1}{2}$.
+	\begin{equation}\label{eq:outerOne}
+	 q[2(\frac{1}{2})^4 + \sum_{i=3}^k (\frac{1}{i})^4] \leq 10 (\frac{1}{2})^4
+	\end{equation}
+	We have \eqref{eq:outerOne} $\Rightarrow$ \eqref{eq:innerI}. And \eqref{eq:outerOne} is equivalent to
+	$\sum_{i=3}^k (\frac{1}{i})^4 \leq \frac{9}{8}(\frac{1}{2})^4$
+	\begin{align*}
+		\sum_{i=3}^k (\frac{1}{i})^4 & < \frac{1}{9}\sum_{i=3}^k (\frac{1}{i})^2 \\
+		& < \frac{1}{9}\sum_{i=3}^k (\frac{1}{(i-1)i}) \\
+		& < \frac{1}{18} < \frac{9}{8}(\frac{1}{2})^4
+	\end{align*}
+	Therefore, \eqref{eq:outerI} holds and we have 
+	\begin{align}
+		T(n)  & \leq Cn^4 + 11T(\frac{n}{2}) \\
+		& \leq C n^4 + 11 q C (\frac{n}{2})^4 = \frac{16}{5} C n^4
+	\end{align}
+\end{proof}	
+\begin{remark}
+		Using the agglomerative view of info-clustering, we can show that 	$\gamma'$ is weighted average of $\lambda_1, \dots, \lambda_k$. Indeed we can
+		get a successively increasing set $\emptyset = S_0 \subsetneq S_1 \subsetneq S_2 \subsetneq \dots \subsetneq S_k$ such that $S_k = V$. Let $\delta_{11}=1, \delta_{i1}=0$ for $i\neq 1, \gamma_i = \frac{\sum_{(i,j) \in E(S_i\backslash S_{i-1})} w_{ij}}{\abs{S_i\backslash S_{i-1}}- \delta_{i1}}$. Then we have $\gamma' = \sum_{i=1}^k \frac{\abs{S_i \backslash S_{i-1}} - \delta_{i1}}{\abs{V} - 1}\gamma_i$ from the definition of $\gamma'$. The agglomerative interpretation contracts the graph from $S_1$ to $S_k$ and each contraction computes a critical value $\lambda_i = \gamma_{k-i+1}$.
+		
+		The condition added by Proposition \ref{prop:alg_complexity} says if the weighted average of $\lambda_i$ is near to its median, then $T(n) = O(n^4)$. We believe the result can be obtained under a more tolerant condition.
+\end{remark}		
 \section{Experiment Detail}
-Since info-detection is a graph-based method, how to choose good weight between two data point is important for application of info-detection to dataset. For our experiment, several metrics are tried: 
+Since Info-Detection is a graph-based method, how to choose good weight between two data point is important for application of info-detection to dataset. For our experiment, several metrics are tried: 
 \begin{enumerate}
 \item Gaussian kernel: $w_{ij} = \exp(-\gamma \norm{x_i - x_j}^2)$
 \item Laplacian kernel: $w_{ij} = \exp(-\gamma \norm{x_i - x_j}_1)$
