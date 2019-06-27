@@ -46,60 +46,64 @@ We propose a cluster analysis-based outlier detection method called Info-Detecti
 %
 %
 \section{Introduction}
-Outlier Detection is an important task in data mining. Many algorithms such as local outlier factor, elliptic envelope and isolation forest\cite{if} exist. Many of them give an outlier score to each data point and the outliers are chosen as top n. For real-world task, $n$, the number of outlier is unknown and mismatched $n$ produces no good result. Also, besides distance metric, many methods have other hyper parameters to tune. To solve this problem, we propose an adaptive method called Info-Detection, which can find the number of outliers and split given data into inliers and outliers, give outlier scores and predict new observations in constant times.
+Outlier Detection is an important task in data mining. It has applications in fraud detection, loan application processing and activity monitoring \cite{Hodge2004}. Many existing detection algorithms give an outlier score to each data point and the outliers are chosen as top n. For real-world task, $n$ -- the number of outlier is unknown and mismatched $n$ produces no good result. Also, besides distance metric, many methods have other hyper parameters to tune. we propose an adaptive method called Info-Detection, which do not require $n$ in advance. It can find the number of outliers, split given data into inliers and outliers, give outlier scores and predict new observations in constant times.
  
-Info-Detection comes from Info-clustering, proposed by Chen Chuan et al. in \cite{RN1}. Info-clustering has solid theoretical foundations from information theory and can produce hierarchical tree for the random variables to be clustered. Children with the same parent node in the tree shares more information than siblings with different parent. Combined with graph structure, Info-clustering can be transfered to cluster dataset directly, which produces same clustering result as minimum cost clustering with $\beta = 1$ in \cite{RN7}.  Using the tree structure, we can score the outliers. Graph-based clustering method does not have prediction ability. But for this specific task, based on Info-clustering theory, we will show that a natural prediction scheme exists. This scheme only has constant time complexity and can be applied directly for new observation.
+Info-Detection comes from info-clustering, proposed by Chen Chuan et al. in \cite{RN1}. Info-clustering has solid theoretical foundations from information theory and can produce hierarchical tree for the random variables to be clustered. Children with the same parent node in the tree shares more information than its siblings with different parent. Combined with graph theory, Info-clustering can be transfered to cluster dataset, which produces the same clustering result as minimum cost clustering with $\beta = 1$ in \cite{RN7}.  Using the tree structure, we can score the outliers. Generally, graph-based clustering method does not have prediction ability since it needs to reconstruct the whole graph when new observation is available. But for the specific task of outlier detection, based on info-clustering theory, we will show that the prediction scheme for info-clustering exists. This scheme only has constant time complexity and can be applied directly for new observation.
 
-One drawback of original Info-clustering comes from the algorithm complexity. In this paper, we improve the implementation of info-clustering, which is one order of magnitude faster than the original one. This new implementation makes it possible for info-clustering to be applied on outlier detection task.
-Info-clustering is originally implemented by solving the principal sequence of partition problems for different critical values. For given critical value, a procedure called Dilworth truncation is invoked. However, different invocation of Dilworth truncation is independent and does not utilizes the intrinsic hierarchical structure of the method. By using the hierarchical tree structure, we compute latter Dilworth truncation on smaller graph. This is the basic idea of the new implementation. 
+One drawback of original info-clustering comes from the algorithm complexity. In this paper, we improve the implementation of info-clustering, which is one order of magnitude faster than the original one. This new implementation makes it possible for info-clustering to be applied on outlier detection task or other clustering problems.
 
-The paper is organized as follows. In section \ref{sec:ID}, we make a brief introduction on info-clustering and show how it can be used to detect outlier. In Section \ref{sec:Alg}, we review the original algorithm of info-clustering and give our new accelerated implementation. In Section \ref{sec:Experiemt}, we conduct experiments of outlier detection and compare Info-detection with other methods. Finally, we make the conclusion in Section \ref{sec:Conclusion}.
+Info-clustering is originally implemented by solving the principal sequence of partition (PSP) problems for different critical values. For given critical value, a procedure called Dilworth truncation is invoked. However, different invocation of Dilworth truncation is independent and does not utilizes the intrinsic hierarchical structure of the method. By using the hierarchical tree structure, we invoke Dilworth truncation on smaller graph in later computation. This is the basic idea of our improvement. 
 
-The notation convention of this paper is as follows: the directed graph is denoted by $G(V, E)$. Node index set $V=\{1, 2,\dots, \abs{V}\}$, node set $Z_V=\{Z_i | i \in V\}$, edge set $E=\{(i, j)\}$. For $B\subseteq V$. edge subset $E(B) = \{(i,j)| i, j \in B,(i,j)\in E\}$. Each edge is associated with a non-negative weight $w_{ij}$. $\P$ is a partition of $V$. That is, $P=\{C_1, \dots, C_k\}, \cup_{i=1}^k C_i=V$ and $i\neq j \Rightarrow C_i \cap C_j =\emptyset $. $F(\cdot)$ is the graph in-cut function, defined as $f(C)=\sum_{i \neq C, j\in C, (i,j) \in E} w_{ij}$. $\Pi$ is the collection of all partitions of $V$ and $\Pi'=\Pi\backslash\{V\}$. A partial order $ \P_1 \preceq \P_2$ on $\Pi$ is defined as
+The paper is organized as follows. In Section \ref{sec:ID}, we make a brief introduction on info-clustering and show how it can be used to detect outlier. In Section \ref{sec:Alg}, we review the original algorithm of info-clustering and give our new accelerated implementation. In Section \ref{sec:Experiemt}, we conduct experiments of outlier detection and compare Info-detection with other methods. Finally, we make the conclusion in Section \ref{sec:Conclusion}.
+
+The notation convention of this paper is as follows: The directed graph is denoted by $G(V, E)$. Node index set $V=\{1, 2,\dots, \abs{V}\}$, node set $Z_V=\{Z_i | i \in V\}$, edge set $E=\{(i, j)\}$. For $B\subseteq V$, edge subset $E(B) = \{(i,j)| i, j \in B,(i,j)\in E\}$. Each edge is associated with a non-negative weight $w_{ij}$. $\P$ is a partition of $V$. That is, $P=\{C_1, \dots, C_k\}, \cup_{i=1}^k C_i=V$ and $i\neq j \Rightarrow C_i \cap C_j =\emptyset $. $F(\cdot)$ is the graph in-cut function, defined as $f(C)=\sum_{i \neq C, j\in C, (i,j) \in E} w_{ij}$. $\Pi$ is the collection of all partitions of $V$ and $\Pi'=\Pi\backslash\{V\}$. A partial order $ \P_1 \preceq \P_2$ on $\Pi$ is defined as
 $C \in \P_1 \Rightarrow \exists C' \in \P_2 \, s.t. \, C \subseteq C'$.
-Finally, $f[\cdot]$ is a function defined on $\Pi$ by $f[\P]=\sum_{C\in \P}f(C)$.
+Finally, $f[\cdot]$ is a function defined on $\Pi$ by $f[\P]=\sum_{C\in \P}f(C)$ and $\textrm{maximal} (F)=\{B\in F | \not\exists B' \in F s.t.\, B \subseteq B'\}$.
 
 \section{Formulation of Info-Detection}\label{sec:ID}
 Info-Detection originates from info-clustering. Given a graph $G(V,E)$, info-clustering defines the cluster as follows:
 \begin{align}
 I_{\P}(Z_V) & := \frac{ f[\P] }{  \abs{\mathcal{P}} - 1 }\\
 I(Z_V) & := \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V)  \label{eq:ms} \\
-C_{\gamma}(Z_V) & := \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \} \label{eq:CgZv}
+C_{\gamma}(Z_V) & := \textrm{maximal}\{ B \in V \vert \, \abs{B} > 1, I(Z_B) > \gamma \} \label{eq:CgZv}
 \end{align}
 where $I(Z_B)$ is the shared information of $Z_B$. For the definition of $I_{\P}(Z_B)$, the subgraph $G(B,E(B))$ is considered instead.
 
 For the given threshold $\gamma$, $C_{\gamma} (Z_V)$ represents a collection of non-intersecting subset of $V$. Every two sets from $\bigcup_{\gamma \geq 0} C_{\gamma}(Z_V)$ are either disjoint or have subset relationship. Therefore, they can be put in a tree $\mathcal{T}$ with the property that $A$ is a parent of $B$ if $B\subset A$. $\mathcal{T}$ also includes $\{j\}$ as leaf node. 
 
-For sufficiently large $\gamma$, $C_{\gamma} (Z_V)$ will become empty set. The largest threshold value which makes such transition is denoted by $\gamma_N$, which has the following form:
+For sufficiently large $\gamma$, $C_{\gamma} (Z_V)$ will become empty set. The largest threshold value which makes such transition is denoted by $\gamma_N$, which has the following expression:
 \begin{equation}\label{eq:gammaN}
-\gamma_N = \max_{B\subseteq V, \abs{B}>1} I(Z_B)
+\gamma_N = \max_{A\subseteq V, \abs{A}>1} I(Z_A)
 \end{equation}
-In agglomerative interpretation of info-clustering \cite{RN8}, each singleton element $\{i\}$ is regarded as a leaf node of the hierarchical tree. $\gamma_N$ represents the first step to process the tree node. That is, merging elements of B to form a stem node. Traditional hierarchical clustering method using linkage criterion restricts $\abs{B}=2$. Our information criterion defined in \eqref{eq:gammaN} does not have such restriction. 
+Suppose $\gamma_N=I(Z_B)$ and $B$ is maximal in a sense of equation \eqref{eq:CgZv}. This convention is used in the following paper.
 
-For our Info-Detection proposal, we use $\gamma_N$ to detect anomaly in two cases. For existing nodes, suppose $\gamma_N=I(Z_B)$ and $B$ is maximal in a sense of equation \eqref{eq:CgZv}. Then nodes in $V\backslash B$  are outlier. We can score outlier $Z_j$ with the depth of the set $\{j\}$ in the hierarchical tree. 
+In agglomerative interpretation of info-clustering \cite{RN8}, each singleton element $\{i\}$ is regarded as a leaf node of the hierarchical tree. $\gamma_N$ represents the first step to process the leaf node. That is, merging elements of $B$ to form a stem node. Traditional hierarchical clustering method using linkage criterion restricts $\abs{B}=2$. The information criterion defined in \eqref{eq:gammaN} does not have such restriction. 
+
+For our Info-Detection proposal, we use $\gamma_N$ as a threshold to detect anomaly. Given $G(V, E)$, we first compute $\gamma_N$ and $B$. Then nodes in $V\backslash B$  are outlier. We can score outlier $Z_j$ for $j \in V\backslash B$ with the depth of the set $\{j\}$ in the hierarchical tree. 
 \begin{example}
 	\begin{figure}[!ht]
 		\centering
 		\includegraphics[width=8cm]{pic/outlier_example.eps}
 		\caption{Info-Detection applied to 6 points on Cartesian plane}\label{fig:ex}
 	\end{figure}
-	Consider a graph consisting of 6 points on Cartesian plane (Fig. \ref{fig:ex}). The grid has one unit and the edge weight $w_{ij} = \exp(-d_{ij}^2)$ where $d_{ij}$ is the Euclidean distance of $x_i$ and $x_j$. For example, $w_{45} = \exp(-5)$. The edge direction is from $i$ to $j$ for $i<j$. From equation \eqref{eq:gammaN}, we can compute $B=\{1,2,3,4\}$ and $\gamma_N = \frac{4\exp(-1)+2\exp(-2)}{3}\approx 0.58$. The whole hierarchical tree $\mathcal{T}$ can be computed, which is shown on the left figure of \ref{fig:ex}. The outlier score for $Z_6$ is higher than $Z_5$ from the tree depth interpretation.
+	Consider a graph consisting of 6 nodes. Each node is corresponding to a point on Cartesian plane (Fig. \ref{fig:ex}). The grid has one unit and the edge weight $w_{ij} = \exp(-d_{ij}^2)$ where $d_{ij}$ is the Euclidean distance of $x_i$ and $x_j$ on the plane. For example, $w_{45} = \exp(-5)$. The edge direction is from $i$ to $j$ for $i<j$. From equation \eqref{eq:gammaN}, we can compute $B=\{1,2,3,4\}$ and $\gamma_N = \frac{4\exp(-1)+2\exp(-2)}{3}\approx 0.58$. The whole hierarchical tree $\mathcal{T}$ can also be computed, which is shown on the left of Fig. \ref{fig:ex}. The outlier score for $Z_6$ is higher than $Z_5$ from the tree depth interpretation.
 \end{example}
-For newly added node $i'$. Let $V'=B\cup \{i'\}$, we can compute $\gamma'_N$ for $V'$ and compare it with $\gamma_N$. If $\gamma'_N>\gamma_N$, $i'$ is normal observation since it is more integrated with existing nodes. Otherwise, $i'$ is anomaly. It can be shown that we do not need to compute $\gamma'_N$ to determine whether $\gamma'_N>\gamma_N$. We summarize our main result as follows:
+For newly added node $i'$. Let $V'=B\cup \{i'\}$, we can compute $\gamma'_N$ for $G(V', E(V'))$ and compare it with $\gamma_N$. If $\gamma'_N>\gamma_N$, $i'$ is normal observation since it is more integrated with existing nodes. Otherwise, $i'$ is anomaly. It can be shown that we do not need to compute $\gamma'_N$ to determine whether $\gamma'_N>\gamma_N$. We summarize our main result as follows:
 \begin{proposition}\label{prop:main}
 \begin{equation}
 \gamma'_N > \gamma_N \iff  \sum_{i \in B} w_{ii'} > \gamma_N 
 \end{equation}
 \end{proposition}
 From Proposition \ref{prop:main}, we can see that the computational overhead to check whether new data is normal is linear to the size of existing normal data. 
-The prediction requires $\gamma_N$, whose computation is not a trivial task. It has been found that the mathematical structure of info-clustering is the same with that of principal sequence of partition(PSP) of graph. We use $\P_1, \dots, \P_k$ to denote the sequence where $\P_1 = \{V\}, \P_{i+1} \preceq \P_i$ and $\P_k = \{\{1\},\dots,\{k\}\}$.
+
+Info-Detection requires $\gamma_N$ and $B$, whose computation is not a trivial task. It has been found that the mathematical structure of info-clustering is the same with that of PSP of graph. We use $\P_1, \dots, \P_k$ to denote the PSP sequence where $\P_1 = \{V\}, \P_{i+1} \preceq \P_i$ and $\P_k = \{\{1\},\dots,\{k\}\}$.
 Each $\P_i$ is the solution to the following optimization problem:
 \begin{align}
 h_{\P}(\lambda) &=  f[\P] - \abs{\P} \lambda  \label{eq:hPL}\\
 h(\lambda) &= \min_{\P \in \Pi'(V)} h_{\P}(\lambda) \label{eq:hlambda}
 \end{align}
-We call $\lambda^*$ is a critical value for PSP if $\P_i, \P_{i+1}$ are both minimizer for \eqref{eq:hlambda}.
-The largest critical value is equal to $\gamma_N$. However, it is difficult to solve this critical value directly without solving other critical values. The next section is focused on the algorithm to solve equation \eqref{eq:hlambda} for all $\lambda$.
+We call $\lambda^*$ is a critical value for PSP if $\P_i, \P_{i+1}$ are both minimizer for $h(\lambda^*)$ in \eqref{eq:hlambda}.
+The largest critical value is equal to $\gamma_N$ and the largest set in $\P_{k-1}$ is equal to $B$. However, it is difficult to solve this critical value directly without solving other critical values. The next section is focused on the algorithm to solve equation \eqref{eq:hlambda} for all $\lambda$.
 
 \section{Improved principal sequence of partition}\label{sec:Alg}
 The canonical way to solve equation \eqref{eq:hlambda} uses divide and conquer techniques to find the critical values and use Dilworth truncation (DT) to solve \eqref{eq:hlambda} at each specific $\lambda$ \cite{RN7}.  This implementation has $\abs{V}^2 \textrm{MF}(G)$ time complexity. \textrm{MF} represents the time complexity of maximum flow algorithm for a graph $G$. 
@@ -177,7 +181,7 @@ The weight is chosen by Gaussian kernel, which produces reasonable result for th
 	\caption{Detection boundary lines of different methods on different artificial dataset}	\label{fig:boundary}
 \end{figure}
 
-Besides the two artificial dataset, we also prepare two real-world dataset: Lymphography (first used by \cite{Lazarevic}) and Glass (\cite{hics}). Lymphography dataset has 148 instances with 6 outliers while Glass dataset has 214 instances with 7 outliers. We compare info-detection method with two commonly used method: local outlier factor detection and isolation forest. We use two metrics to measure the overall performance of the detection: true positive rate(TPR) and false negative rate(FNR). The inliner is treated as positive sample. It is difficult for a method to achieve high score on both two metrics. We manage to maximize FNR while controlling TPR $\geq 90\%$. The result is shown in Table \ref{tab:compare}.
+Besides the two artificial dataset, we also prepare two real-world dataset: Lymphography (first used by \cite{Lazarevic}) and Glass (\cite{hics}). Lymphography dataset has 148 instances with 6 outliers while Glass dataset has 214 instances with 7 outliers. We compare info-detection method with two commonly used method: local outlier factor \cite{Breunig} and isolation forest \cite{if}. We use two metrics to measure the overall performance of the detection: true positive rate (TPR) and false negative rate (FNR). The inlier is treated as positive sample. It is difficult for a method to achieve high score on both two metrics. We manage to maximize FNR while controlling TPR $\geq 90\%$. The result is shown in Table \ref{tab:compare}.
 \begin{table}[!ht]
 \centering
 \InputIfFileExists{../../experiment/outlier_detection/build/id_compare.tex}{}{}
