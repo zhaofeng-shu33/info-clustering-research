@@ -15,42 +15,42 @@
 
 \begin{document}
 %
-\title{Info-Detection: An Information-Theoretic Approach to Detect Outlier \thanks{Supported by organization x.}}
+\title{Info-Detection: An Information-Theoretic Approach to Detect Outlier}
 %
 %\titlerunning{Abbreviated paper title}
 % If the paper title is too long for the running head, you can set
 % an abbreviated paper title here
 %
-\author{First Author\inst{1}\orcidID{0000-1111-2222-3333} \and
-Second Author\inst{2,3}\orcidID{1111-2222-3333-4444} \and
-Third Author\inst{3}\orcidID{2222--3333-4444-5555}}
+\author{Feng Zhao\inst{1} \and
+Fei Ma\inst{2} \and
+Yang Li\inst{2}
+Lin Zhang\inst{1,2}}
 %
 \authorrunning{F. Author et al.}
 % First names are abbreviated in the running head.
 % If there are more than two authors, 'et al.' is used.
 %
-\institute{Princeton University, Princeton NJ 08544, USA \and
-Springer Heidelberg, Tiergartenstr. 17, 69121 Heidelberg, Germany
-\email{lncs@springer.com}\\
-\url{http://www.springer.com/gp/computer-science/lncs} \and
-ABC Institute, Rupert-Karls-University Heidelberg, Heidelberg, Germany\\
-\email{\{abc,lncs\}@uni-heidelberg.de}}
+\institute{Department of Electronic Engineering, Tsinghua University, PR China \and
+Tsinghua-Berkeley Shenzhen Institute 
+\email{zhaof17@mails.tsinghua.edu.cn}
+}
 %
 \maketitle              % typeset the header of the contribution
 %
 \begin{abstract}
-We propose a cluster analysis-based outlier detection method called Info-Detection. The method originates from Info-clustering. We accelerate it by utilizing the hierarchical structures. The acceleration makes it possible to finish outlier detection task in reality. Info-Detection is an adaptive method and does not require any hyper parameters like outlier fraction. Experiments show that better accuracy can be achieved with an affordable time overhead.
+We propose a cluster analysis-based outlier detection method called Info-Detection. The method originates from Info-clustering. We accelerate the computing of principal sequence of partition, which is used to implement Info-clustering. The acceleration makes it possible to finish outlier detection task in real-world task. Info-Detection is an adaptive method and does not require any hyper parameters like k neighbor or outlier fraction. Experiments show that better accuracy can be achieved with an affordable time overhead.
 
-\keywords{Outlier Detection \and Info-Clustering \and Principal Sequence of Partition.}
+\keywords{Outlier Detection \and Info-clustering \and Principal Sequence of Partition.}
 \end{abstract}
 %
 %
 %
 \section{Introduction}
-Outlier Detection is an important task in data mining. Many algorithms such as local outlier factor, elliptic envelope and one-class SVM exist. They have some assumptions about the distribution of the data and the performance depends a lot on the hyper parameters of the method. For example, many methods require the outlier fraction as a parameter. For real-world task, it is difficult to estimate a good outlier fraction and unsuitable outlier fraction produces no good result. 
+Outlier Detection is an important task in data mining. Many algorithms such as local outlier factor, elliptic envelope and one-class SVM exist. Many of them give an outlier score to each data point and the outliers are chosen as top n. For real-world task, $n$, the number of outlier is unknown and mismatched $n$ produces no good result. Also, besides distance metric, many methods have other hyper parameters to tune. To solve this problem, we propose an adaptive method called Info-Detection, which can find the number of outliers and split given data into inliers and outliers, give outlier scores and predict new observations in constant times.
+ 
+Info-Detection comes from Info-clustering, proposed by Chen Chuan et al. in \cite{RN1}. Info-clustering has solid theoretical foundations from information theory and can produce hierarchical tree for the random variables to be clustered. Children with the same parent node in the tree shares more information than siblings with different parent. Combined with graph structure, Info-clustering can be transfered to cluster dataset directly, which produces same clustering result as minimum cost clustering with $\beta = 1$ in \cite{RN7}.  Using the tree structure, we can score the outliers. Graph-based clustering method does not have prediction ability. But for this specific task, based on Info-clustering theory, we will show that a natural prediction scheme exists. This scheme only has constant time complexity and can be applied directly for new observation.
 
-In clustering analysis, there are some adaptive methods which do not need the number of cluster as a hyper parameter. Info-clustering is such a method proposed in \cite{RN1}. It has solid theoretical foundations but is limited in application because of the algorithm complexity. In this paper, we propose a new implementation of info-clustering, which is one order of magnitude faster than the original one. This new implementation makes it possible for info-clustering to be applied on outlier detection task. 
-
+One drawback of original Info-clustering comes from the algorithm complexity. In this paper, we improve the implementation of info-clustering, which is one order of magnitude faster than the original one. This new implementation makes it possible for info-clustering to be applied on outlier detection task.
 Info-clustering is originally implemented by solving the principal sequence of partition problems for different critical values. For given critical value, a procedure called Dilworth truncation is invoked. However, different invocation of Dilworth truncation is independent and does not utilizes the intrinsic hierarchical structure of the method. By using the hierarchical tree structure, we compute latter Dilworth truncation on smaller graph. This is the basic idea of the new implementation. 
 
 The paper is organized as follows. In section II, we make a brief introduction on info-clustering and show how it can be used to detect outlier. In Section III, we review the original algorithm of info-clustering and give our new accelerated implementation. In Section IV, we conduct experiments of outlier detection and compare Info-detection with other methods. Finally, we make the conclusion in Section V.
@@ -64,7 +64,11 @@ Info-detection originates from info-clustering. Info-clustering defines the clus
 \begin{equation}
 C_{\gamma}(Z_V) = \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \}
 \end{equation}
-For the given threshold $\gamma$, $C_{\gamma} (Z_V)$ represents a collection of non-intersecting subset of $V$. The shared information of $Z_B$ is defined as:
+where $I(Z_B)$ is the shared information of $Z_B$.
+
+For the given threshold $\gamma$, $C_{\gamma} (Z_V)$ represents a collection of non-intersecting subset of $V$. Every two sets from $\bigcup_{\gamma} C_{\gamma}(Z_V)$ are either disjoint or have subset relationship. Therefore, they can be arranged in a tree $\mathcal{T}$ with the property that $A$ is a parent of $B$ if $B\subset A$. 
+
+$I(Z_V)$ is defined by the following equation:
 \begin{align}
 I_{\P}(Z_V) & := \frac{ f[\P] }{  \abs{\mathcal{P}} - 1 }\\
 I(Z_V) & := \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V)  \label{eq:ms}
@@ -75,7 +79,7 @@ For sufficiently large $\gamma$, $C_{\gamma} (Z_V)$ will become empty set. The l
 \end{equation}
 In agglomerative interpretation of info-clustering \cite{RN8}, each singleton element $\{i\}$ is regarded as a leaf node of the hierarchical tree. $\gamma_N$ represents the first step to process the tree node. That is, merging elements of B to form a stem node. Traditional hierarchical clustering method using linkage criterion restricts $\abs{B}=2$. Our information criterion defined in \eqref{eq:gammaN} does not have such restriction. 
 
-We can use $\gamma_N$ to detect anomaly in two cases. For existing nodes, suppose $\gamma_N=I(Z_B)$ and $B$ is maximal. Then nodes in $V\backslash B$  are outlier. For newly added node $i'$. Let $V'=B\cup \{i'\}$, we can compute $\gamma'_N$ for $V'$ and compare it with $\gamma_N$. If $\gamma'_N>\gamma_N$, $i'$ is normal observation since it is more integrated with existing nodes. Otherwise, $i'$ is anomaly. It can be shown that we do not need to compute $\gamma'_N$ to determine whether $\gamma'_N>\gamma_N$. We summarize our main result as follows:
+For our Info-Detection proposal, we use $\gamma_N$ to detect anomaly in two cases. For existing nodes, suppose $\gamma_N=I(Z_B)$ and $B$ is maximal. Then nodes in $V\backslash B$  are outlier. We can score outlier $\{Z_j\}$ with the minimal depth of set containing $j$ in the hierarchical tree. For newly added node $i'$. Let $V'=B\cup \{i'\}$, we can compute $\gamma'_N$ for $V'$ and compare it with $\gamma_N$. If $\gamma'_N>\gamma_N$, $i'$ is normal observation since it is more integrated with existing nodes. Otherwise, $i'$ is anomaly. It can be shown that we do not need to compute $\gamma'_N$ to determine whether $\gamma'_N>\gamma_N$. We summarize our main result as follows:
 \begin{proposition}\label{prop:main}
 \begin{equation}
 \gamma'_N > \gamma_N \iff  \sum_{i \in B} w_{ii'} > \gamma_N 
@@ -152,19 +156,28 @@ The two artificial datasets are prepared as follows:
 \item We generate two semi-circles which located at different centers. The 300 points on the two semi-circles are evenly distributed among all angles but deviated from the radius in Gaussian distribution. There are 45 points not belonging to the "moon" structure and are treated as outlier.
 \end{enumerate}
 
-By using the artificial dataset, we can split each into inlier set and outlier set. The boundary curve between the two sets can be used to distinuish new points. As shown by Fig. \ref{fig:boundary}, the boundary curve for info-detection is approximately the closure of the inlier figure. We also draw the decision boundary for the Elliptic Envelope method. Since this method assumes the inlier data is distributed in convex region, the decision boundary is an ellipse, which is not like the ground truth.
+By using the artificial dataset, we can split each into inlier set and outlier set. The boundary curve between the two sets can be used to distinguish new points and has the following equation from Proposition \ref{prop:main}:
+\begin{equation}
+\sum_{j \in B} \exp(-\gamma \norm{x - x_j}^2)= \gamma_N
+\end{equation}
+The weight is chosen by Gaussian kernel, which produces reasonable result for these two artificial dataset. As shown by Fig. \ref{fig:boundary}, the boundary curve for info-detection is approximately the closure of the inlier figure. We also draw the decision boundary for the Elliptic Envelope method. Since this method assumes the inlier data is distributed in convex region, the decision boundary is an ellipse, which is not like the ground truth.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=\textwidth]{pic/outlier_boundary_illustration.eps}
 	\caption{Detection boundary lines of different methods on different artificial dataset}	\label{fig:boundary}
 \end{figure}
 
-Besides the two artifical dataset, we also prepare two real-world dataset: Lymphography (first used by \cite{Lazarevic}) and Glass (\cite{hics}). Lymphography dataset has 148 instances with 6 outliers while Glass dataset has 214 instances with 7 outliers. We compare info-detection method with two commonly used method: local outlier factor detection and isolation forest. We use two metrics to measure the overall performance of the detection: true positive rate(TPR) and false negative rate(FNR). The inliner is treated as positive sample. It is difficult for a method to achieve high score on both two metrics. We manage to maximize FNR while controlling TPR $\geq 90\%$. The result is shown in Table \ref{tab:compare}.
+Besides the two artificial dataset, we also prepare two real-world dataset: Lymphography (first used by \cite{Lazarevic}) and Glass (\cite{hics}). Lymphography dataset has 148 instances with 6 outliers while Glass dataset has 214 instances with 7 outliers. We compare info-detection method with two commonly used method: local outlier factor detection and isolation forest. We use two metrics to measure the overall performance of the detection: true positive rate(TPR) and false negative rate(FNR). The inliner is treated as positive sample. It is difficult for a method to achieve high score on both two metrics. We manage to maximize FNR while controlling TPR $\geq 90\%$. The result is shown in Table \ref{tab:compare}.
 \begin{table}[!ht]
 \centering
 \InputIfFileExists{../../experiment/outlier_detection/build/id_compare.tex}{}{}
 \caption{Comparison of info-detection with other outlier detection algorithm on artificial and real-world dataset}\label{tab:compare}
 \end{table}
+
+All results in Table \ref{tab:compare} achieves TPR $\geq 90\%$. It can be seen that info-detection achieves highest FNR for these dataset, which means it detects no less outliers than other methods.
+
+\section{Conclusion}
+In this paper, we 
 %
 % ---- Bibliography ----
 %
@@ -190,10 +203,11 @@ w'_{ij}  =
 $$
 This weight choice scheme has two parameters to tune: $k$ and $\gamma$. But it has two advantages. On one hand, it makes the graph have less edge and info-detection can run much faster. On the other hand, it restricts the linkage of one graph node to its k-nearest neighbors, which has more intuition in many cases.
 
-The source code of our experiment is available \footnote{\scriptsize\url{https://github.com/zhaofeng-shu33/info-clustering-research/tree/master/experiment/outlier\_detection}} for reproducation.
+The source code of our experiment is available \footnote{\scriptsize\url{https://github.com/zhaofeng-shu33/info-clustering-research/tree/master/experiment/outlier\_detection}} for reproduction.
 For our experiment comparison, there are some additional notice.
 \begin{itemize}
 \item The accuracy of isolation-forest is determined by its intrinsic randomness. With the same parameter configuration, we select the result of one run of it, not possibly the best result. Info-detection and local outlier detector are deterministic method and do not have this problem.
+\item For local outlier factor and isolation forest, it needs to know the number of outliers in advance. We set this parameter to be ground truth for these two methods to produce best result. For info-detection, we try different metric and parameters and select the best.
 \end{itemize}
 
 \end{enumerate} 
