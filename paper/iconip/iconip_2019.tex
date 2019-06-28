@@ -31,7 +31,7 @@ Lin Zhang\inst{1,2}}
 % If there are more than two authors, 'et al.' is used.
 %
 \institute{Department of Electronic Engineering, Tsinghua University, PR China \and
-Tsinghua-Berkeley Shenzhen Institute 
+Tsinghua-Berkeley Shenzhen Institute \\
 \email{zhaof17@mails.tsinghua.edu.cn}
 }
 %
@@ -54,7 +54,7 @@ One drawback of original info-clustering comes from the algorithm complexity. In
 
 Info-clustering is originally implemented by solving the principal sequence of partition (PSP) problems for different critical values. For given critical value, a procedure called Dilworth truncation is invoked. However, different invocation of Dilworth truncation is independent and does not utilizes the intrinsic hierarchical structure of the method. By using the hierarchical tree structure, we invoke Dilworth truncation on smaller graph in later computation. This is the basic idea of our improvement. 
 
-The paper is organized as follows. In Section \ref{sec:ID}, we make a brief introduction on info-clustering and show how it can be used to detect outlier. In Section \ref{sec:Alg}, we review the original algorithm of info-clustering and give our new accelerated implementation. In Section \ref{sec:Experiemt}, we conduct experiments of outlier detection and compare Info-detection with other methods. Finally, we make the conclusion in Section \ref{sec:Conclusion}.
+The paper is organized as follows. In Section \ref{sec:ID}, we make a brief introduction on info-clustering and show how it can be used to detect outlier. In Section \ref{sec:Alg}, we review the original algorithm of info-clustering and give our new accelerated implementation. In Section \ref{sec:Experiemt}, we conduct experiments of outlier detection and compare Info-detection with other methods. Finally, we make the conclusion in Section \ref{sec:Conclusion}. Proposition proof and other supplementary material is provided in the appendix.
 
 The notation convention of this paper is as follows: The directed graph is denoted by $G(V, E)$. Node index set $V=\{1, 2,\dots, \abs{V}\}$, node set $Z_V=\{Z_i | i \in V\}$, edge set $E=\{(i, j)\}$. For $B\subseteq V$, edge subset $E(B) = \{(i,j)| i, j \in B,(i,j)\in E\}$. Each edge is associated with a non-negative weight $w_{ij}$. $\P$ is a partition of $V$. That is, $P=\{C_1, \dots, C_k\}, \cup_{i=1}^k C_i=V$ and $i\neq j \Rightarrow C_i \cap C_j =\emptyset $. $F(\cdot)$ is the graph in-cut function, defined as $f(C)=\sum_{i \neq C, j\in C, (i,j) \in E} w_{ij}$. $\Pi$ is the collection of all partitions of $V$ and $\Pi'=\Pi\backslash\{V\}$. A partial order $ \P_1 \preceq \P_2$ on $\Pi$ is defined as
 $C \in \P_1 \Rightarrow \exists C' \in \P_2 \, s.t. \, C \subseteq C'$.
@@ -154,41 +154,41 @@ Since the PSP has the inclusion relationship, we can restrict further invocation
 	Then we run PSP for the subgraph $G[\{1,2,3\}]$, $\gamma' = \frac{9}{2}, \tilde{h} = -5 < -\gamma'$ and $\P= \{\{1,2\},\{3\}\}$ we get the tree shown in Fig. \ref{fig:alg_eg} (d). The other computation calculate the edge weight of $\mathcal{T}$ shown in Fig. \ref{fig:alg_eg} (d).
 \end{example}		
 
-To analyze the time complexity of Algorithm \ref{alg:psp_i_simplified}. We suppose $\abs{V} = n, \abs{E} = O(n^2)$ and highest-relabel preflow algorithm is used to solve the maximum flow problem. Then DT has $O(n^4)$ time complexity. 
-We use $T(n)$ to represent the time complexity when the graph has $n$ nodes. We have the following recursive relationship. Under very general conditions, we can show that $T(n) = O(n^4)$. 
+To analyze the time complexity of Algorithm \ref{alg:psp_i_simplified}. We suppose $\abs{V} = n, \abs{E} = O(n^2)$ and highest-relabel preflow algorithm is used to solve the maximum flow problem. Then \texttt{DT} routine has $O(n^4)$ time complexity. 
+We use $T(n)$ to represent the time complexity of \texttt{Split} when the graph has $n$ nodes. Under very general conditions, we can show that $T(n) = O(n^4)$. The detailed analysis is put in the appendix.
 
 In Algorithm \ref{alg:psp_i_simplified}, the computation is done on the input graph and only has $O(n^2)$ space complexity. This is superior than parametric preflow improvement. Besides, Algorithm \ref{alg:psp_i_simplified} does not have floating accuracy problem since each DT computation is freshly started. 
 
 Our improvement of algorithm is not restricted to Info-Detection scenario. It can be used in general graph partition problems when PSP structure is needed.
 
 \section{Experiment Result}\label{sec:Experiemt}
-In this section, we first illustrate the decision boundary of info-detection by two artificial datasets. Then we conduct an experiment matrix, in which info-detection is compared with other commonly used outlier detection algorithms on both artificial and real-world datasets.
+In this Section, we first illustrate the decision boundary of Info-Detection by two artificial datasets. Then we conduct an experiment matrix, in which Info-Detection is compared with other commonly used outlier detection algorithms on both artificial and real-world datasets.
 
 The two artificial datasets are prepared as follows:
 \begin{enumerate}
 \item We generate two Gaussian blobs with the same center and standard deviation 0.5. There are 255 points in total and 45 noisy points outside.
-\item We generate two semi-circles which located at different centers. The 300 points on the two semi-circles are evenly distributed among all angles but deviated from the radius in Gaussian distribution. There are 45 points not belonging to the "moon" structure and are treated as outlier.
+\item We generate two semi-circles which located at different centers. The 300 points on the two semi-circles are evenly distributed among the angle but deviated from the radius in Gaussian distribution. There are 45 points not belonging to the "moon" structure and are treated as outlier.
 \end{enumerate}
 
 By using the artificial dataset, we can split each into inlier set and outlier set. The boundary curve between the two sets can be used to distinguish new points and has the following equation from Proposition \ref{prop:main}:
 \begin{equation}
 \sum_{j \in B} \exp(-\gamma \norm{x - x_j}^2)= \gamma_N
 \end{equation}
-The weight is chosen by Gaussian kernel, which produces reasonable result for these two artificial dataset. As shown by Fig. \ref{fig:boundary}, the boundary curve for info-detection is approximately the closure of the inlier figure. We also draw the decision boundary for the Elliptic Envelope method. Since this method assumes the inlier data is distributed in convex region, the decision boundary is an ellipse, which is not like the ground truth.
+The weight is chosen by Gaussian kernel, which produces reasonable good result for these two artificial dataset. As shown by Fig. \ref{fig:boundary}, the boundary curve for Info-Detection is approximately the closure of the inlier figure. We also draw the decision boundary for the Elliptic Envelope method. Since this method assumes the inlier data is distributed in convex region, the decision boundary is an ellipse, which is not like the ground truth.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=\textwidth]{pic/outlier_boundary_illustration.eps}
 	\caption{Detection boundary lines of different methods on different artificial dataset}	\label{fig:boundary}
 \end{figure}
 
-Besides the two artificial dataset, we also prepare two real-world dataset: Lymphography (first used by \cite{Lazarevic}) and Glass (\cite{hics}). Lymphography dataset has 148 instances with 6 outliers while Glass dataset has 214 instances with 7 outliers. We compare info-detection method with two commonly used method: local outlier factor \cite{Breunig} and isolation forest \cite{if}. We use two metrics to measure the overall performance of the detection: true positive rate (TPR) and false negative rate (FNR). The inlier is treated as positive sample. It is difficult for a method to achieve high score on both two metrics. We manage to maximize FNR while controlling TPR $\geq 90\%$. The result is shown in Table \ref{tab:compare}.
+Besides the two artificial dataset, we also prepare two real-world datasets: Lymphography (first used by \cite{Lazarevic}) and Glass (\cite{hics}). Lymphography dataset has 148 instances with 6 outliers while Glass dataset has 214 instances with 7 outliers. We compare Info-Detection method with two commonly used method: local outlier factor \cite{Breunig} and isolation forest \cite{if}. We use two metrics to measure the overall performance of the detection: true positive rate (TPR) and false negative rate (FNR). The inlier is treated as positive sample. TPR measures the percentage of right detection in inlier set while FNR measures that in outlier set. It is difficult for a method to achieve high score on both two metrics. We manage to maximize FNR while controlling TPR $\geq 90\%$. The result is shown in Table \ref{tab:compare}.
 \begin{table}[!ht]
 \centering
 \InputIfFileExists{../../experiment/outlier_detection/build/id_compare.tex}{}{}
-\caption{Comparison of info-detection with other outlier detection algorithm on artificial and real-world dataset}\label{tab:compare}
+\caption{Comparison of Info-Detection with other outlier detection algorithm on artificial and real-world datasets}\label{tab:compare}
 \end{table}
 
-All results in Table \ref{tab:compare} achieves TPR $\geq 90\%$. It can be seen that info-detection achieves highest FNR for these dataset, which means it detects no less outliers than other methods.
+All results in Table \ref{tab:compare} achieves TPR $\geq 90\%$. It can be seen that Info-Detection achieves highest FNR for these datasets, which means it detects no less outliers than other methods.
 
 \section{Conclusion}\label{sec:Conclusion}
 In this paper, we propose Info-Detection, which is an adaptive method to detect outliers in dataset. We design an efficient algorithm to solve the hierarchical structure based on existing PSP algorithms. By experiments we show that Info-Detection performs quite well.
@@ -209,7 +209,7 @@ In this paper, we propose Info-Detection, which is an adaptive method to detect 
 		$w(A, C) = \displaystyle\sum_{\substack{i \in A, j \in C \\ (i,j) \in E(V')}} (w_{ij}+w_{ji})$ and
 		$\P_C = \{\{i \}| i \in C \}$. Suppose $\gamma_N = I(Z_B)$, from equation \eqref{eq:gammaN}, we can get $\gamma_N =\frac{f[\P_B]} {\abs{B} -1}$.
 		Since $V' = B \cup \{i'\}$
-		$f[P_{V'}] = f[\P_B] + \sum_{i \in B}w_{ii'}$.
+		$f[\P_{V'}] = f[\P_B] + \sum_{i \in B}w_{ii'}$.
 		
 		If $ \sum_{i \in B} w_{ij} > \gamma_N$ we can get
 		$$
@@ -240,25 +240,25 @@ In this paper, we propose Info-Detection, which is an adaptive method to detect 
 \end{proof}	
 \section{Algorithm Analysis}
 In this section, we give detailed analysis of time complexity of Algorithm \ref{alg:psp_i_simplified}.
-It is noticed that each invocation of \texttt{Split} makes the graph $\widetilde{G}$ contract at least two nodes. Therefore, at most $\abs{V}-2$ times \texttt{Split} is called. Suppose the time complexity of \texttt{DT} is bounded by $Cn^4$. Then the complexity bound for this worst case is $C(3^4+4^4 + \dots + n^4) \sim \frac{1}{5}Cn^5$, which is $5$ times faster than the original algorithm $Cn^5$.
+It is noticed that each invocation of \texttt{Split} makes the graph $\widetilde{G}$ contract at least two nodes. Therefore, at most $\abs{V}-2$ times \texttt{Split} is called. Suppose the time complexity of \texttt{DT} is bounded by $Cn^4$. Then in worst scenario, the complexity bound for \texttt{Split} is $C(3^4+4^4 + \dots + n^4) \sim \frac{1}{5}Cn^5$, which is $5$ times faster than the original PSP algorithm $Cn^5$.
 
 Generally, this worst case is not reached. The recursive relationship for $T(n)$ is
 \begin{equation}\label{eq:Tn}
-T(n) = \max \{ O(n^4) + \sum_{i=1}^k T(n_i) + T(k) | \sum_{i=1}^k n_i = n, n_i \in \mathbb{Z}_{+} \}
+T(n) = \max \{ C n^4 + \sum_{i=1}^k T(n_i) + T(k) | \sum_{i=1}^k n_i = n, n_i \in \mathbb{Z}_{+} \}
 \end{equation}	
-For graph $\widetilde{G}$, let $\lambda_1(\widetilde{G}) < \dots < \lambda_k(\widetilde{G})$ be its critical value list. $\gamma'(\widetilde{G})$ comes from line \ref{alg:gamma_apostrophe} in Algorithm \ref{alg:psp_i_simplified}
-We have the following proposition
+For graph $\widetilde{G}$, let $\lambda_1(\widetilde{G}) < \dots < \lambda_k(\widetilde{G})$ be its critical value list. $\gamma'(\widetilde{G})$ comes from line \ref{alg:gamma_apostrophe} in Algorithm \ref{alg:psp_i_simplified} and $\floor{x}, \ceil{x}$ represent floor, ceil respectively.
+We have the following proposition:
 \begin{proposition}\label{prop:alg_complexity}
 	If $\abs{E} = O(n^2)$ and $ \lambda_{\floor{k/2} - 1}(\widetilde{G}) \leq \gamma'(\widetilde{G}) \leq \lambda_{\ceil{k/2} + 1}(\widetilde{G}) $ holds for each invocation of function \texttt{Split}, then $T(n) = O(n^4)$.
 \end{proposition}
 \begin{proof}
-	From the condition on $\gamma'$, we have $k < \frac{n}{2} $ and $n_i \leq \frac{n}{2}$ in equation \eqref{eq:Tn}. Let $\mu_i = \frac{n_i}{n}$. We proceed by induction to show $T(n) = O(n^4)$. Assume the time complexity of DT algorithm is $C n^4$ then $T(n) \geq Cn^4$ holds for all $n$. $T(3)$ is a constant and $T(m) \leq q C m^4$ holds for $m=3$. Suppose
-	$T(m) \leq qC m^4$ holds for all $m \leq n-1$ where $q=\frac{16}{5}$. Then for $T(n)$
+	$\lambda_{\floor{k/2} - 1} \leq \gamma' \Rightarrow n_i \leq \frac{n}{2}$ and $ \gamma' \leq \lambda_{\ceil{k/2} + 1} \Rightarrow k < \frac{n}{2} $ in equation \eqref{eq:Tn}. Let $\mu_i = \frac{n_i}{n}$. We proceed by induction to show $T(n) = O(n^4)$. More specifically, $T(n) \leq q C n^4$ where $ q = \frac{16}{5}$. $T(3)$ is a constant and $T(m) \leq q C m^4$ holds for $m=3$. Suppose
+	$T(m) \leq qC m^4$ holds for all $m \leq n-1$. Then for $T(n)$
 	We first show that 
 	\begin{equation}\label{eq:outerI}
 	\sum_{i=1}^k T(n_i) \leq 10 T(\frac{n}{2})
 	\end{equation}
-	Since $\sum_{i=1}^k T(n_i) \leq qC n^4\sum_{i=1}^k u_i^4$ and $10 T(\frac{n}{2}) \geq 10Cn^4 (\frac{1}{2})^4$
+	Since $\sum_{i=1}^k T(n_i) \leq qC n^4\sum_{i=1}^k u_i^4$ and $10 T(\frac{n}{2}) \geq 10Cn^4 (\frac{1}{2})^4$ from equation \eqref{eq:Tn}
 	\begin{equation}\label{eq:innerI}
        q\sum_{i=1}^k u_i^4 \leq 10 (\frac{1}{2})^4 
 	\end{equation}
@@ -273,20 +273,20 @@ We have the following proposition
 		& < \frac{1}{9}\sum_{i=3}^k (\frac{1}{(i-1)i}) \\
 		& < \frac{1}{18} < \frac{9}{8}(\frac{1}{2})^4
 	\end{align*}
-	Therefore, \eqref{eq:outerI} holds and we have 
+	Therefore, \eqref{eq:outerI} holds and from \eqref{eq:Tn} we have 
 	\begin{align}
 		T(n)  & \leq Cn^4 + 11T(\frac{n}{2}) \\
 		& \leq C n^4 + 11 q C (\frac{n}{2})^4 = \frac{16}{5} C n^4
 	\end{align}
 \end{proof}	
 \begin{remark}
-		Using the agglomerative view of info-clustering, we can show that 	$\gamma'$ is weighted average of $\lambda_1, \dots, \lambda_k$. Indeed we can
+		Using the agglomerative view of info-clustering, we can show that 	$\gamma'$ is weighted average of $\lambda_1, \dots, \lambda_k$. Indeed, we can
 		get a successively increasing set $\emptyset = S_0 \subsetneq S_1 \subsetneq S_2 \subsetneq \dots \subsetneq S_k$ such that $S_k = V$. Let $\delta_{11}=1, \delta_{i1}=0$ for $i\neq 1, \gamma_i = \frac{\sum_{(i,j) \in E(S_i\backslash S_{i-1})} w_{ij}}{\abs{S_i\backslash S_{i-1}}- \delta_{i1}}$. Then we have $\gamma' = \sum_{i=1}^k \frac{\abs{S_i \backslash S_{i-1}} - \delta_{i1}}{\abs{V} - 1}\gamma_i$ from the definition of $\gamma'$. The agglomerative interpretation contracts the graph from $S_1$ to $S_k$ and each contraction computes a critical value $\lambda_i = \gamma_{k-i+1}$.
 		
-		The condition added by Proposition \ref{prop:alg_complexity} says if the weighted average of $\lambda_i$ is near to its median, then $T(n) = O(n^4)$. We believe the result can be obtained under a more tolerant condition.
+		The condition added by Proposition \ref{prop:alg_complexity} says if the weighted average of $\lambda_i$ is near to its median, then $T(n) = O(n^4)$. We believe this result can be obtained under a more tolerant condition.
 \end{remark}		
 \section{Experiment Detail}
-Since Info-Detection is a graph-based method, how to choose good weight between two data point is important for application of info-detection to dataset. For our experiment, several metrics are tried: 
+Since Info-Detection is a graph-based method, how to choose good weight between two data point is important for practical application of Info-Detection. For our experiment, several commonly used metrics are tried: 
 \begin{enumerate}
 \item Gaussian kernel: $w_{ij} = \exp(-\gamma \norm{x_i - x_j}^2)$
 \item Laplacian kernel: $w_{ij} = \exp(-\gamma \norm{x_i - x_j}_1)$
@@ -298,13 +298,13 @@ w'_{ij}  =
  0 & j > k
 \end{cases}
 $$
-This weight choice scheme has two parameters to tune: $k$ and $\gamma$. But it has two advantages. On one hand, it makes the graph have less edge and info-detection can run much faster. On the other hand, it restricts the linkage of one graph node to its k-nearest neighbors, which has more intuition in many cases.
+This weight choice scheme has two parameters to tune: $k$ and $\gamma$. It has two advantages. On one hand, it makes the graph have less edge and Info-Detection can run much faster. On the other hand, it restricts the linkage of graph node to its k-nearest neighbors, which has more intuition in many problems.
 
 The source code of our experiment is available \footnote{\scriptsize\url{https://github.com/zhaofeng-shu33/info-clustering-research/tree/master/experiment/outlier\_detection}} for reproduction.
-For our experiment comparison, there are some additional notice.
+For our experiment comparison, there are some additional notes.
 \begin{itemize}
-\item The accuracy of isolation-forest is determined by its intrinsic randomness. With the same parameter configuration, we select the result of one run of it, not possibly the best result. Info-detection and local outlier detector are deterministic method and do not have this problem.
-\item For local outlier factor and isolation forest, it needs to know the number of outliers in advance. We set this parameter to be ground truth for these two methods to produce best result. For info-detection, we try different metric and parameters and select the best.
+\item The accuracy of isolation-forest is determined by its intrinsic randomness. With the same parameter configuration, we select the result of one run of it, not possibly the best result. Info-Detection and local outlier detector are deterministic method and do not have this problem.
+\item For local outlier factor and isolation forest, it needs to know the number of outliers in advance. We set this parameter to be ground truth for these two methods to produce best result. We also tune the number of neighbor parameter for local outlier factor. For Info-Detection, we try different metrics and select the best.
 \end{itemize}
 
 \end{enumerate} 
