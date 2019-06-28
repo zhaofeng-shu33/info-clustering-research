@@ -10,3 +10,6 @@
 [submodule "poster"]
 	path = poster/info-clustering-poster
 	url = https://gitee.com/freewind201301/info-clustering-poster.git
+[submodule "outlier_detection"]
+	path = experiment/outlier_detection
+	url = https://github.com/zhaofeng-shu33/info-detection-experiment
