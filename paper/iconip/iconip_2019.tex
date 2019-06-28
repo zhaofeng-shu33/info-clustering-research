@@ -51,11 +51,9 @@ Outlier Detection is an important task in data mining. It has applications in fr
  
 Info-Detection comes from info-clustering, proposed by Chen Chuan et al. in \cite{RN1}. Info-clustering has solid theoretical foundations from information theory and can produce hierarchical tree for the random variables to be clustered. Children with the same parent node in the tree shares more information than its siblings with different parent. Combined with graph theory, info-clustering can be transfered to cluster dataset, which produces the same clustering result as minimum cost clustering with $\beta = 1$ in \cite{RN7}.  Using the tree structure, we can score the outliers. Generally, graph-based clustering method does not have prediction ability since it needs to reconstruct the whole graph when new observation is available. But for the specific task of outlier detection, based on info-clustering theory, we will show that the prediction scheme for info-clustering exists. This scheme only has constant time complexity and can be applied directly for new observation.
 
-One drawback of original info-clustering comes from the algorithm complexity. In this paper, we improve the implementation of info-clustering, which is one order of magnitude faster than the original one. This new implementation makes it possible for info-clustering to be applied on outlier detection task or other clustering problems.
+One drawback of original info-clustering comes from the algorithm complexity. In this paper, we improve the implementation of info-clustering, which is one order of magnitude faster than the original one. This new implementation makes it possible for info-clustering to be applied on outlier detection task or other clustering problems. For outlier detection task, we prepare two artificial and two real-world dataset and test Info-Detection and other methods on them. Empirical Comparison shows that Info-Detection gives best result on these datasets and is suitable for different kinds of data.
 
-Info-clustering is originally implemented by solving the principal sequence of partition (PSP) problems for different critical values. For given critical value, a procedure called Dilworth truncation is invoked. However, different invocation of Dilworth truncation is independent and does not utilizes the intrinsic hierarchical structure of the method. By using the hierarchical tree structure, we invoke Dilworth truncation on smaller graph in later computation. This is the basic idea of our improvement. 
-
-The paper is organized as follows. In Section \ref{sec:ID}, we make a brief introduction on info-clustering and show how it can be used to detect outlier. In Section \ref{sec:Alg}, we review the original algorithm of info-clustering and give our new accelerated implementation. In Section \ref{sec:Experiemt}, we conduct experiments of outlier detection and compare Info-detection with other methods. Finally, we make the conclusion in Section \ref{sec:Conclusion}. Proposition proof and other supplementary material is provided in the appendix.
+The paper is organized as follows. In Section \ref{sec:ID}, we make a brief introduction of info-clustering and propose Info-Detection. In Section \ref{sec:Alg}, we review the original algorithm of info-clustering and give our new accelerated implementation. In Section \ref{sec:Experiemt}, we conduct experiments of outlier detection and compare Info-Detection with other methods. Finally, we make the conclusion in Section \ref{sec:Conclusion}. Proposition proof and other supplementary materials are provided in the Appendix.
 
 The notation convention of this paper is as follows: The directed graph is denoted by $G(V, E)$. Node index set $V=\{1, 2,\dots, \abs{V}\}$, node set $Z_V=\{Z_i | i \in V\}$, edge set $E=\{(i, j)\}$. For $B\subseteq V$, edge subset $E(B) = \{(i,j)| i, j \in B,(i,j)\in E\}$. Each edge is associated with a non-negative weight $w_{ij}$. $\P$ is a partition of $V$. That is, $P=\{C_1, \dots, C_k\}, \cup_{i=1}^k C_i=V$ and $i\neq j \Rightarrow C_i \cap C_j =\emptyset $. $F(\cdot)$ is the graph in-cut function, defined as $f(C)=\sum_{i \neq C, j\in C, (i,j) \in E} w_{ij}$. $\Pi$ is the collection of all partitions of $V$ and $\Pi'=\Pi\backslash\{V\}$. A partial order $ \P_1 \preceq \P_2$ on $\Pi$ is defined as
 $C \in \P_1 \Rightarrow \exists C' \in \P_2 \, s.t. \, C \subseteq C'$.
@@ -108,6 +106,8 @@ The largest critical value is equal to $\gamma_N$ and the largest set in $\P_{k-
 
 \section{Improved principal sequence of partition}\label{sec:Alg}
 The canonical way to solve equation \eqref{eq:hlambda} uses divide and conquer techniques to find the critical values and uses Dilworth truncation (DT) to solve \eqref{eq:hlambda} at each specific $\lambda$ \cite{RN7}.  This implementation has $\abs{V}^2 \textrm{MF}(G)$ time complexity. \textrm{MF} represents the time complexity of maximum flow algorithm for a graph $G$. 
+
+Info-clustering is originally implemented by solving the principal sequence of partition (PSP) problems for different critical values. For given critical value, a procedure called Dilworth truncation is invoked. However, different invocation of Dilworth truncation is independent and does not utilizes the intrinsic hierarchical structure of the method. By using the hierarchical tree structure, we invoke Dilworth truncation on smaller graph in later computation. This is the basic idea of our improvement. 
 
 An improvement is proposed in \cite{RN4} using parametric maximum flow to finish the job. Although this method can achieve $\abs{V} \textrm{MF}(G)$ theoretically, it also increases the spacial complexity to $ \abs{V} \textrm{S}(G)$ where $\textrm{S}$ represents the spacial complexity to store a graph structure $G$. For dense graphs with $\abs{V}^2$ non-zero floating-point weight, the spacial complexity $\abs{V}^3$ is formidable. 
 % analysis of spatial complexity of pmf
@@ -180,14 +180,14 @@ The weight is chosen by Gaussian kernel, which produces reasonable good result f
 	\caption{Detection boundary lines of different methods on different artificial dataset}	\label{fig:boundary}
 \end{figure}
 
-Besides the two artificial dataset, we also prepare two real-world datasets: Lymphography (first used by \cite{Lazarevic}) and Glass (\cite{hics}). Lymphography dataset has 148 instances with 6 outliers while Glass dataset has 214 instances with 7 outliers. We compare Info-Detection method with four commonly used method: local outlier factor \cite{Breunig}, isolation forest \cite{if}, elliptic envelope \cite{rousseeuw1999fast} and one class SVM \cite{svm}. We use two metrics to measure the overall performance of the detection: true positive rate (TPR) and false negative rate (FNR). The inlier is treated as positive sample. TPR measures the percentage of right detection in inlier set while FNR measures that in outlier set. It is difficult for a method to achieve high score on both two metrics. We manage to maximize FNR while controlling TPR $\geq 90\%$. The result is shown in Table \ref{tab:compare}.
+Besides the two artificial dataset, we also prepare two real-world datasets: Lymphography (first used by \cite{Lazarevic}) and Glass (\cite{hics}). Lymphography dataset has 148 instances with 19 attributes and 6 outliers while Glass dataset has 214 instances with 7 attributes and 7 outliers. We compare Info-Detection method with four commonly used techniques: local outlier factor \cite{Breunig}, isolation forest \cite{if}, elliptic envelope \cite{rousseeuw1999fast} and one class SVM \cite{svm}. We use two metrics to measure the overall performance of the detection: true positive rate (TPR) and false negative rate (FNR). The inlier is treated as positive sample. TPR measures the percentage of right detection in inlier set while FNR measures that in outlier set. It is difficult for a method to achieve high score on both two metrics. We manage to maximize FNR while controlling TPR $\geq 90\%$. The result is shown in Table \ref{tab:compare}.
 \begin{table}[!ht]
 \centering
 \InputIfFileExists{../../experiment/outlier_detection/build/id_compare.tex}{}{}
-\caption{Comparison of Info-Detection with other outlier detection algorithm on artificial and real-world datasets}\label{tab:compare}
+\caption{Comparison of Info-Detection with other outlier detection algorithms on artificial and real-world datasets}\label{tab:compare}
 \end{table}
 
-All results in Table \ref{tab:compare} achieves TPR $\geq 90\%$. It can be seen that Info-Detection achieves highest FNR for these datasets, which means it detects no less outliers than other methods.
+All results in Table \ref{tab:compare} achieves TPR $\geq 90\%$. It can be seen that Info-Detection achieves highest FNR for these datasets, which means Info-Detection detects no less outliers than other methods.
 
 \section{Conclusion}\label{sec:Conclusion}
 In this paper, we propose Info-Detection, which is an adaptive method to detect outliers in dataset. We design an efficient algorithm to solve the hierarchical structure of data based on existing PSP algorithms. By experiments we show that Info-Detection outperforms other methods.  
@@ -297,13 +297,13 @@ w'_{ij}  =
  0 & j > k
 \end{cases}
 $$
-This weight choice scheme has two parameters to tune: $k$ and $\gamma$. It has two advantages. On one hand, it makes the graph have less edge and Info-Detection can run much faster. On the other hand, it restricts the linkage of graph node to its k-nearest neighbors, which has more intuition in many problems.
+This weight choice scheme is determined by two parameters $k$ and $\gamma$ and it has two advantages. On one hand, smaller $k$ makes the graph have less edge and Info-Detection can run much faster. On the other hand, it restricts the linkage of graph node to its k-nearest neighbors, which makes Info-Detection more robust.
 
 The source code of our experiment is available \footnote{\scriptsize\url{https://github.com/zhaofeng-shu33/info-detection-experiment}} for reproduction.
 For our experiment comparison, there are some additional notes.
 \begin{itemize}
-\item The accuracy of isolation-forest is determined by its intrinsic randomness. With the same parameter configuration, we select the result of one run of it, not possibly the best result. Info-Detection and local outlier detector are deterministic method and do not have this problem.
-\item For local outlier factor and isolation forest, it needs to know the number of outliers in advance. We set this parameter to be ground truth for these two methods to produce best result. We also tune the number of neighbor parameter for local outlier factor. For Info-Detection, we try different metrics and select the best.
+\item The accuracy of isolation-forest and elliptic envelope is influenced by their intrinsic randomness. With the same parameter configuration, we select the result of one run of it, not possibly the best result. Info-Detection, one class SVM and local outlier detector are deterministic method and do not have this problem.
+\item For local outlier factor, isolation forest and elliptic envelope, they need to know the number of outliers in advance. We set this parameter to be ground truth for these two methods to produce best result. We also tune the number of neighbor parameter for local outlier factor. For Info-Detection, we try different metrics and select the best.
 \end{itemize}
 
 \end{enumerate} 
