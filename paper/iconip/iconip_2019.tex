@@ -183,7 +183,7 @@ The weight is chosen by Gaussian kernel, which produces reasonable good result f
 	\caption{Detection boundary lines of different methods on different artificial dataset}	\label{fig:boundary}
 \end{figure}
 
-Besides the two artificial dataset, we also prepare two real-world datasets: Lymphography (first used by \cite{Lazarevic}) and Glass (\cite{hics}). Lymphography dataset has 148 instances with 6 outliers while Glass dataset has 214 instances with 7 outliers. We compare Info-Detection method with two commonly used method: local outlier factor \cite{Breunig} and isolation forest \cite{if}. We use two metrics to measure the overall performance of the detection: true positive rate (TPR) and false negative rate (FNR). The inlier is treated as positive sample. TPR measures the percentage of right detection in inlier set while FNR measures that in outlier set. It is difficult for a method to achieve high score on both two metrics. We manage to maximize FNR while controlling TPR $\geq 90\%$. The result is shown in Table \ref{tab:compare}.
+Besides the two artificial dataset, we also prepare two real-world datasets: Lymphography (first used by \cite{Lazarevic}) and Glass (\cite{hics}). Lymphography dataset has 148 instances with 6 outliers while Glass dataset has 214 instances with 7 outliers. We compare Info-Detection method with four commonly used method: local outlier factor \cite{Breunig}, isolation forest \cite{if}, elliptic envelope \cite{rousseeuw1999fast} and one class SVM \cite{svm}. We use two metrics to measure the overall performance of the detection: true positive rate (TPR) and false negative rate (FNR). The inlier is treated as positive sample. TPR measures the percentage of right detection in inlier set while FNR measures that in outlier set. It is difficult for a method to achieve high score on both two metrics. We manage to maximize FNR while controlling TPR $\geq 90\%$. The result is shown in Table \ref{tab:compare}.
 \begin{table}[!ht]
 \centering
 \InputIfFileExists{../../experiment/outlier_detection/build/id_compare.tex}{}{}
@@ -302,7 +302,7 @@ w'_{ij}  =
 $$
 This weight choice scheme has two parameters to tune: $k$ and $\gamma$. It has two advantages. On one hand, it makes the graph have less edge and Info-Detection can run much faster. On the other hand, it restricts the linkage of graph node to its k-nearest neighbors, which has more intuition in many problems.
 
-The source code of our experiment is available \footnote{\scriptsize\url{https://github.com/zhaofeng-shu33/info-clustering-research/tree/master/experiment/outlier\_detection}} for reproduction.
+The source code of our experiment is available \footnote{\scriptsize\url{https://github.com/zhaofeng-shu33/info-detection-experiment}} for reproduction.
 For our experiment comparison, there are some additional notes.
 \begin{itemize}
 \item The accuracy of isolation-forest is determined by its intrinsic randomness. With the same parameter configuration, we select the result of one run of it, not possibly the best result. Info-Detection and local outlier detector are deterministic method and do not have this problem.
