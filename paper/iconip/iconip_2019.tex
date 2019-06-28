@@ -23,22 +23,23 @@
 %
 \author{Feng Zhao\inst{1} \and
 Fei Ma\inst{2} \and
-Yang Li\inst{2}
+Yang Li\inst{2} \and
+Shao-Lun Huang \inst{2} \and
 Lin Zhang\inst{1,2}}
 %
 \authorrunning{Feng Zhao et al.}
 % First names are abbreviated in the running head.
 % If there are more than two authors, 'et al.' is used.
 %
-\institute{Department of Electronic Engineering, Tsinghua University, PR China \and
-Tsinghua-Berkeley Shenzhen Institute \\
+\institute{Department of Electronic Engineering, Tsinghua University \and
+Tsinghua-Berkeley Shenzhen Institute, Tsinghua University \\
 \email{zhaof17@mails.tsinghua.edu.cn}
 }
 %
 \maketitle              % typeset the header of the contribution
 %
 \begin{abstract}
-We propose a cluster analysis-based outlier detection method called Info-Detection. The method originates from Info-clustering. We accelerate the computing of principal sequence of partition, which is used to implement Info-clustering. The acceleration makes it possible to finish outlier detection task in real-world task. Info-Detection is an adaptive method and does not require any hyper parameters like k neighbor or outlier fraction. Experiments show that better accuracy can be achieved with an affordable time overhead.
+We propose a cluster analysis-based outlier detection method called Info-Detection. The method originates from info-clustering. We accelerate the computing of principal sequence of partition, which is used to implement info-clustering. The acceleration makes it possible to finish outlier detection task in real-world task. Info-Detection is an adaptive method and does not require any hyper parameters like k neighbor or outlier fraction. Experiments show that better accuracy can be achieved with an affordable time overhead.
 
 \keywords{Outlier Detection \and Clustering \and Principal Sequence of Partition.}
 \end{abstract}
@@ -48,7 +49,7 @@ We propose a cluster analysis-based outlier detection method called Info-Detecti
 \section{Introduction}
 Outlier Detection is an important task in data mining. It has applications in fraud detection, loan application processing and activity monitoring \cite{Hodge2004}. Many existing detection algorithms give an outlier score to each data point and the outliers are chosen as top n. For real-world task, $n$ -- the number of outlier is unknown and mismatched $n$ produces no good result. Also, besides distance metric, many methods have other hyper parameters to tune. we propose an adaptive method called Info-Detection, which do not require $n$ in advance. It can find the number of outliers, split given data into inliers and outliers, give outlier scores and predict new observations in constant times.
  
-Info-Detection comes from info-clustering, proposed by Chen Chuan et al. in \cite{RN1}. Info-clustering has solid theoretical foundations from information theory and can produce hierarchical tree for the random variables to be clustered. Children with the same parent node in the tree shares more information than its siblings with different parent. Combined with graph theory, Info-clustering can be transfered to cluster dataset, which produces the same clustering result as minimum cost clustering with $\beta = 1$ in \cite{RN7}.  Using the tree structure, we can score the outliers. Generally, graph-based clustering method does not have prediction ability since it needs to reconstruct the whole graph when new observation is available. But for the specific task of outlier detection, based on info-clustering theory, we will show that the prediction scheme for info-clustering exists. This scheme only has constant time complexity and can be applied directly for new observation.
+Info-Detection comes from info-clustering, proposed by Chen Chuan et al. in \cite{RN1}. Info-clustering has solid theoretical foundations from information theory and can produce hierarchical tree for the random variables to be clustered. Children with the same parent node in the tree shares more information than its siblings with different parent. Combined with graph theory, info-clustering can be transfered to cluster dataset, which produces the same clustering result as minimum cost clustering with $\beta = 1$ in \cite{RN7}.  Using the tree structure, we can score the outliers. Generally, graph-based clustering method does not have prediction ability since it needs to reconstruct the whole graph when new observation is available. But for the specific task of outlier detection, based on info-clustering theory, we will show that the prediction scheme for info-clustering exists. This scheme only has constant time complexity and can be applied directly for new observation.
 
 One drawback of original info-clustering comes from the algorithm complexity. In this paper, we improve the implementation of info-clustering, which is one order of magnitude faster than the original one. This new implementation makes it possible for info-clustering to be applied on outlier detection task or other clustering problems.
 
