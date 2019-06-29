@@ -60,7 +60,7 @@ $C \in \P_1 \Rightarrow \exists C' \in \P_2 \, s.t. \, C \subseteq C'$.
 Finally, $f[\cdot]$ is a function defined on $\Pi$ by $f[\P]=\sum_{C\in \P}f(C)$ and $\textrm{maximal} (F)=\{B\in F | \not\exists B' \in F s.t.\, B \subseteq B'\}$.
 
 \section{Formulation of Info-Detection}\label{sec:ID}
-Info-Detection comes from info-clustering. For a graph $G(V,E)$, info-clustering defines the cluster as follows:
+Info-Detection comes from info-clustering \cite{RN1}. For a graph $G(V,E)$, info-clustering defines the cluster as follows:
 \begin{align}
 I_{\P}(Z_V) & := \frac{ f[\P] }{  \abs{\mathcal{P}} - 1 }\\
 I(Z_V) & := \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V)  \label{eq:ms} \\
@@ -75,10 +75,13 @@ For sufficiently large $\gamma$, $C_{\gamma} (Z_V)$ will become empty set. The l
 \gamma_N = \max_{A\subseteq V, \abs{A}>1} I(Z_A)
 \end{equation}
 Suppose $\gamma_N=I(Z_B)$ and $B$ is maximal in a sense of equation \eqref{eq:CgZv}. This convention is used in the following paper.
+It is shown in \cite{RN8} that $\gamma_N$ has an alternative form
+\begin{equation}\label{eq:gammaN_alternative}
+\gamma_N = \max_{A \subseteq V, \abs{A}>1} \frac{\sum_{(i,j)\in E(A)} w_{ij}}{\abs{A}-1}
+\end{equation}
+In agglomerative interpretation of info-clustering \cite{RN8}, each singleton element $\{i\}$ is regarded as a leaf node of the hierarchical tree. $\gamma_N$ represents the first step to process the leaf node. That is, merging elements of $B$ to form a stem node. Traditional hierarchical clustering method using linkage criterion restricts $\abs{A}=2$ in the maximization of equation \eqref{eq:gammaN_alternative}. The information criterion $\gamma_N$ does not have such restriction. 
 
-In agglomerative interpretation of info-clustering \cite{RN8}, each singleton element $\{i\}$ is regarded as a leaf node of the hierarchical tree. $\gamma_N$ represents the first step to process the leaf node. That is, merging elements of $B$ to form a stem node. Traditional hierarchical clustering method using linkage criterion restricts $\abs{B}=2$. The information criterion defined in \eqref{eq:gammaN} does not have such restriction. 
-
-For our Info-Detection proposal, we use $\gamma_N$ as a threshold to detect anomaly. Given $G(V, E)$, we first compute $\gamma_N$ and $B$. Then nodes in $V\backslash B$  are outlier. We can score outlier $Z_j$ for $j \in V\backslash B$ with the depth of the set $\{j\}$ in the hierarchical tree. Below is a simple example showing how Info-Detection is used.
+For our Info-Detection proposal, we use $\gamma_N$ as a threshold to detect anomaly. Given $G(V, E)$, we first compute $\gamma_N$ and $B$. Then nodes in $B$ are inliers while nodes in $V\backslash B$  are outliers. We can score outlier $Z_j$ for $j \in V\backslash B$ with the depth of the set $\{j\}$ in the hierarchical tree. Below is a simple example showing how Info-Detection is used.
 \begin{example}
 	\begin{figure}[!ht]
 		\centering
@@ -95,27 +98,28 @@ For newly added node $i'$. Let $V'=B\cup \{i'\}$, we can compute $\gamma'_N$ for
 \end{proposition}
 From Proposition \ref{prop:main}, we can see that the computational overhead to check whether new data is normal is linear to the size of existing normal data. 
 
-Info-Detection requires $\gamma_N$ and $B$, whose computation is not a trivial task. It has been found that the mathematical structure of info-clustering is the same with that of PSP of graph. We use $\P_1, \dots, \P_k$ to denote the PSP sequence where $\P_1 = \{V\}, \P_{i+1} \preceq \P_i$ and $\P_k = \{\{1\},\dots,\{k\}\}$.
+Info-Detection requires $\gamma_N$ and $B$, whose computation is not a trivial task. It has been found that the mathematical structure of info-clustering is the same with that of principal sequence of partition (PSP) of graph. We use $\P_1, \dots, \P_k$ to denote PSP sequence where $\P_1 = \{V\}, \P_{i+1} \preceq \P_i$ and $\P_k = \{\{1\},\dots,\{k\}\}$.
 Each $\P_i$ is the solution to the following optimization problem:
 \begin{align}
 h_{\P}(\lambda) &=  f[\P] - \abs{\P} \lambda  \label{eq:hPL}\\
 h(\lambda) &= \min_{\P \in \Pi'(V)} h_{\P}(\lambda) \label{eq:hlambda}
 \end{align}
 We call $\lambda^*$ is a critical value for PSP if $\P_i, \P_{i+1}$ are both minimizer for $h(\lambda^*)$ in \eqref{eq:hlambda}.
-The largest critical value is equal to $\gamma_N$ and the largest set in $\P_{k-1}$ is equal to $B$. However, it is difficult to solve this critical value directly without solving other critical values. The next section is focused on the algorithm to solve equation \eqref{eq:hlambda} for all $\lambda$.
+The largest critical value is equal to $\gamma_N$ and the largest set in $\P_{k-1}$ is equal to $B$. The next section is focused on the algorithm to solve equation \eqref{eq:hlambda} for all $\lambda$.
 
-\section{Improved principal sequence of partition}\label{sec:Alg}
-The canonical way to solve equation \eqref{eq:hlambda} uses divide and conquer techniques to find the critical values and uses Dilworth truncation (DT) to solve \eqref{eq:hlambda} at each specific $\lambda$ \cite{RN7}.  This implementation has $\abs{V}^2 \textrm{MF}(G)$ time complexity. \textrm{MF} represents the time complexity of maximum flow algorithm for a graph $G$. 
-
-Info-clustering is originally implemented by solving the principal sequence of partition (PSP) problems for different critical values. For given critical value, a procedure called Dilworth truncation is invoked. However, different invocation of Dilworth truncation is independent and does not utilizes the intrinsic hierarchical structure of the method. By using the hierarchical tree structure, we invoke Dilworth truncation on smaller graph in later computation. This is the basic idea of our improvement. 
+\section{Improved Principal Sequence of Partition}\label{sec:Alg}
+\subsection{Related work}
+Info-clustering is originally implemented by solving the principal sequence of partition (PSP) problems for different critical values \cite{RN3}. For given critical value, a procedure called Dilworth truncation (DT) is invoked to solve \eqref{eq:hlambda} at each specific $\lambda$. This implementation has $\abs{V}^2 \textrm{MF}(G)$ time complexity while \textrm{MF} represents the time complexity of maximum flow algorithm for a graph $G$. 
 
 An improvement is proposed in \cite{RN4} using parametric maximum flow to finish the job. Although this method can achieve $\abs{V} \textrm{MF}(G)$ theoretically, it also increases the spacial complexity to $ \abs{V} \textrm{S}(G)$ where $\textrm{S}$ represents the spacial complexity to store a graph structure $G$. For dense graphs with $\abs{V}^2$ non-zero floating-point weight, the spacial complexity $\abs{V}^3$ is formidable. 
 % analysis of spatial complexity of pmf
-Another problem of parametric maximum flow implementation is the floating point accuracy. Since this method uses the flow map of last computation to initiate the initial flow map of next computation for maximal flow algorithm, the excess flow of some nodes may not be exactly zero. The non-zero excess can lead to unpredictable result and currently there is no good idea to tackle this issue. 
+Another problem of parametric maximum flow implementation is the floating point accuracy. Since this method uses the flow map of last computation to initiate the initial flow map of next computation for maximal flow algorithm, the excess flow of some nodes may not be exactly zero. The non-zero excess can lead to unpredictable result and currently there is no good idea to tackle this issue. The above two problems prohibits parametric implementation from practical usage.
 
-The above two problems prohibits parametric implementation from practical usage. In this section, we give an improvement which achieves $\abs{V} \textrm{MF}(G)$ time complexity in general, but with only $\textrm{S}(G)$ spatial complexity and no floating point issue.
+In this section, we give an improvement which achieves $\abs{V} \textrm{MF}(G)$ time complexity in general, but with only $\textrm{S}(G)$ spatial complexity and no floating point issue. Specifically,
+we notice that different invocation of Dilworth truncation is independent and does not utilize the intrinsic hierarchical structure in the original version of PSP algorithm \cite{RN3}. By using the hierarchical tree structure, we can invoke Dilworth truncation on smaller graph in later computation and make the total computation one order of magnitude faster than previous.
 
-Since the PSP has the inclusion relationship, we can restrict further invocation of DT to smaller graphs. To be more specific, suppose we get $P_i = {C_1, \dots, C_t}$ for the first invocation of DT. Then we can compute PSP for each $C_i(i=1,\dots, t)$ respectively and construct those $P_j(j>i)$ from the subgraph computation. For $P_j(j<i)$, we can contract the graph $G$  to $G^t$ which has $t$ nodes by contracting each $C_i$ to a single node. By applying DT to $G^t$ can we get $P_j(j<i)$. We summarize our improved version in Algorithm \ref{alg:psp_i_simplified}.
+\subsection{Improved Algorithm} 
+Since the PSP has the inclusion relationship $\P_{i+1} \preceq \P_i$, we can restrict further invocation of DT to smaller graphs. To be more specific, suppose we get $P_i = {C_1, \dots, C_t}$ for the first invocation of DT. Then we can compute PSP for each $C_i(i=1,\dots, t)$ respectively and construct those $P_j(j>i)$ from the subgraph computation. For $P_j(j<i)$, we can contract the graph $G$  to $G^t$ which has $t$ nodes by contracting each $C_i$ to a single node. By applying DT to $G^t$ can we get $P_j(j<i)$. We summarize our improved version in Algorithm \ref{alg:psp_i_simplified}.
 
 \begin{algorithm}
 	\caption{An Improved Principal Sequence of Partition Algorithm}\label{alg:psp_i_simplified}
