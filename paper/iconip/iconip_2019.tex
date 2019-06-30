@@ -52,15 +52,16 @@ Outlier detection is an important task in data mining. It is the identification 
 To overcome these problems, we propose Info-Detection, which do not require $n$ in advance and is determined totally by the similarity metric used.  
 Info-Detection is a cluster analysis based method. Some authors use density-based cluster method to do outlier detection \cite{Campello}. But density method only captures the local property of the data. When outliers are concentrated, density-based method fails to report the truth. Info-Detection comes from info-clustering, which is a global clustering method \cite{RN1} and does not have this problem. Info-clustering has solid theoretical foundations from information theory and can produce hierarchical tree for the random variables to be clustered. Info-clustering can also be used to cluster data. In such case, it produces the same clustering result as minimum cost clustering with $\beta = 1$ in \cite{RN7}. In this paper, we combine info-clustering with graph theory and propose Info-Detection, which captures the global property of the dataset.  
 
-One drawback of original info-clustering comes from its algorithm complexity. In this paper, we improve the implementation of info-clustering, which is one order of magnitude faster than the original one. We also propose a prediction scheme which can predict new observations in linear time complexity. To demonstrate our method works, we prepare two artificial and two real-world dataset and test Info-Detection and other methods on them. Empirical comparison shows that Info-Detection gives best result on these datasets and is suitable for different kinds of data.
+Though info-clustering has good theoretical properties, it has high time complexity to compute, which limited its application. In this paper, we improve the implementation of info-clustering, which is one order of magnitude faster than the original one. We also propose a prediction scheme which can predict new observations in linear time complexity. To demonstrate our method works, we prepare two artificial and two real-world dataset and test Info-Detection and other methods on them. Empirical comparison shows that Info-Detection gives best result on these datasets and is suitable for different kinds of data.
 
 The paper is organized as follows. In Section \ref{sec:ID}, we make a brief introduction of info-clustering and propose Info-Detection. In Section \ref{sec:Alg}, we review the original algorithm of info-clustering and give our new accelerated implementation. In Section \ref{sec:Experiemt}, we conduct experiments of outlier detection and compare Info-Detection with other methods. Finally, we make the conclusion in Section \ref{sec:Conclusion}. Proposition proof and other supplementary materials are provided in the Appendix.
 
-The notation convention of this paper is as follows: The directed graph is denoted by $G(V, E)$. Node index set $V=\{1, 2,\dots, \abs{V}\}$, node set $Z_V=\{Z_i | i \in V\}$, edge set $E=\{(i, j)\}$. For $B\subseteq V$, edge subset $E(B) = \{(i,j)| i, j \in B,(i,j)\in E\}$. Each edge is associated with a non-negative weight $w_{ij}$. $\P$ is a partition of $V$. That is, $P=\{C_1, \dots, C_k\}, \cup_{i=1}^k C_i=V$ and $i\neq j \Rightarrow C_i \cap C_j =\emptyset $. $F(\cdot)$ is the graph in-cut function, defined as $f(C)=\sum_{i \neq C, j\in C, (i,j) \in E} w_{ij}$. $\Pi$ is the collection of all partitions of $V$ and $\Pi'=\Pi\backslash\{V\}$. A partial order $ \P_1 \preceq \P_2$ on $\Pi$ is defined as
+The notation convention of this paper is as follows: Let $x_i$ represents the feature vector for the $i$-th data point in the dataset. The directed graph is denoted by $G(V, E)$. Node index set $V=\{1, 2,\dots, \abs{V}\}$. Node set $Z_V=\{Z_i | i \in V\}$. Edge set $E$ is the collection of tuple $(i,j)$. For $B\subseteq V$, edge subset $E(B) = \{(i,j)| i, j \in B,(i,j)\in E\}$ is the edge set restricted on $B$. Each edge is associated with a non-negative weight $w_{ij}$, which is computed from $x_i$ and $x_j$ with a given affinity metric. $\P$ is a partition of $V$. That is, $P=\{C_1, \dots, C_k\}, \cup_{i=1}^k C_i=V$ and $i\neq j \Rightarrow C_i \cap C_j =\emptyset $. $F(\cdot)$ is the graph in-cut function, defined as $f(C)=\sum_{i \neq C, j\in C, (i,j) \in E} w_{ij}$. $\Pi$ is the collection of all partitions of $V$ and $\Pi'=\Pi\backslash\{V\}$. A partial order $ \P_1 \preceq \P_2$ on $\Pi$ is defined as
 $C \in \P_1 \Rightarrow \exists C' \in \P_2 \, s.t. \, C \subseteq C'$.
 Finally, $f[\cdot]$ is a function defined on $\Pi$ by $f[\P]=\sum_{C\in \P}f(C)$ and $\textrm{maximal} (F)=\{B\in F | \not\exists B' \in F s.t.\, B \subseteq B'\}$.
 
 \section{Formulation of Info-Detection}\label{sec:ID}
+\subsection{Overview of Info-clustering}
 Info-Detection comes from info-clustering \cite{RN1}. For a graph $G(V,E)$, info-clustering defines the cluster as follows:
 \begin{align}
 I_{\P}(Z_V) & := \frac{ f[\P] }{  \abs{\mathcal{P}} - 1 }\\
@@ -81,7 +82,7 @@ It is shown in \cite{RN8} that $\gamma_N$ has an alternative form
 \gamma_N = \max_{A \subseteq V, \abs{A}>1} \frac{\sum_{(i,j)\in E(A)} w_{ij}}{\abs{A}-1}
 \end{equation}
 In agglomerative interpretation of info-clustering \cite{RN8}, each singleton element $\{i\}$ is regarded as a leaf node of the hierarchical tree. $\gamma_N$ represents the first step to process the leaf node. That is, merging elements of $B$ to form a stem node. Traditional hierarchical clustering method using linkage criterion restricts $\abs{A}=2$ in the maximization of equation \eqref{eq:gammaN_alternative}. The information criterion $\gamma_N$ does not have such restriction. 
-
+\subsection{Info-Detection Method}
 For our Info-Detection proposal, we use $\gamma_N$ as a threshold to detect anomaly. Given $G(V, E)$, we first compute $\gamma_N$ and $B$. Then nodes in $B$ are inliers while nodes in $V\backslash B$  are outliers. We can score outlier $Z_j$ for $j \in V\backslash B$ with the depth of the set $\{j\}$ in the hierarchical tree. Below is a simple example showing how Info-Detection is used.
 \begin{example}
 	\begin{figure}[!ht]
@@ -99,18 +100,20 @@ For newly added node $i'$. Let $V'=B\cup \{i'\}$, we can compute $\gamma'_N$ for
 \end{proposition}
 From Proposition \ref{prop:main}, we can see that the computational overhead to check whether new data is normal is linear to the size of existing normal data. 
 
-Info-Detection requires $\gamma_N$ and $B$, whose computation is not a trivial task. It has been found that the mathematical structure of info-clustering is the same with that of principal sequence of partition (PSP) of graph. We use $\P_1, \dots, \P_k$ to denote PSP sequence where $\P_1 = \{V\}, \P_{i+1} \preceq \P_i$ and $\P_k = \{\{1\},\dots,\{k\}\}$.
+Info-Detection requires $\gamma_N$ and $B$, whose computation is not a trivial task, whose computation is the main focus of the next Section.
+
+\section{Improved Principal Sequence of Partition}\label{sec:Alg}
+\subsection{Existing Algorithms}
+It has been found that the mathematical structure of info-clustering is the same with that of principal sequence of partition (PSP) of graph. We use $\P_1, \dots, \P_k$ to denote PSP sequence where $\P_1 = \{V\}, \P_{i+1} \preceq \P_i$ and $\P_k = \{\{1\},\dots,\{k\}\}$.
 Each $\P_i$ is the solution to the following optimization problem:
 \begin{align}
 h_{\P}(\lambda) &=  f[\P] - \abs{\P} \lambda  \label{eq:hPL}\\
 h(\lambda) &= \min_{\P \in \Pi'(V)} h_{\P}(\lambda) \label{eq:hlambda}
 \end{align}
 We call $\lambda^*$ is a critical value for PSP if $\P_i, \P_{i+1}$ are both minimizer for $h(\lambda^*)$ in \eqref{eq:hlambda}.
-The largest critical value is equal to $\gamma_N$ and the largest set in $\P_{k-1}$ is equal to $B$. The next section is focused on the algorithm to solve equation \eqref{eq:hlambda} for all $\lambda$.
+The largest critical value is equal to $\gamma_N$ and the largest set in $\P_{k-1}$ is equal to $B$. 
 
-\section{Improved Principal Sequence of Partition}\label{sec:Alg}
-\subsection{Related work}
-Info-clustering is originally implemented by solving the principal sequence of partition (PSP) problems for different critical values \cite{RN3}. For given critical value, a procedure called Dilworth truncation (DT) is invoked to solve \eqref{eq:hlambda} at each specific $\lambda$. This implementation has $\abs{V}^2 \textrm{MF}(G)$ time complexity while \textrm{MF} represents the time complexity of maximum flow algorithm for a graph $G$. 
+Info-clustering is originally implemented by solving equation \eqref{eq:hlambda} for different critical values \cite{RN3}. For given critical value, a procedure called Dilworth truncation (DT) can be used to get the minimum value and corresponding partition. This implementation has $\abs{V}^2 \textrm{MF}(G)$ time complexity while \textrm{MF} represents the time complexity of maximum flow algorithm for a graph $G$. 
 
 An improvement is proposed in \cite{RN4} using parametric maximum flow to finish the job. Although this method can achieve $\abs{V} \textrm{MF}(G)$ theoretically, it also increases the spacial complexity to $ \abs{V} \textrm{S}(G)$ where $\textrm{S}$ represents the spacial complexity to store a graph structure $G$. For dense graphs with $\abs{V}^2$ non-zero floating-point weight, the spacial complexity $\abs{V}^3$ is formidable. 
 % analysis of spatial complexity of pmf
@@ -290,11 +293,7 @@ We have the following proposition:
 		The condition added by Proposition \ref{prop:alg_complexity} says if the weighted average of $\lambda_i$ is near to its median, then $T(n) = O(n^4)$. We believe this result can be obtained under a more tolerant condition.
 \end{remark}		
 \section{Experiment Detail}
-Since Info-Detection is a graph-based method, how to choose good weight between two data point is important for practical application of Info-Detection. For our experiment, several commonly used metrics are tried: 
-\begin{enumerate}
-\item Gaussian kernel: $w_{ij} = \exp(-\gamma \norm{x_i - x_j}^2)$
-\item Laplacian kernel: $w_{ij} = \exp(-\gamma \norm{x_i - x_j}_1)$
-\item kernel weight combined with k-neighbor filtering. Suppose after kernel computation and sorting we have $w_{i1} > w_{i2} > \dots > w_{in}$, then the weight assignment scheme is
+Since Info-Detection is a graph-based method, how to choose graph weight $w_{ij} = \mathrm{affinity}(x_i, x_j)$ is important for practical application of Info-Detection. For our experiment, we use Gaussian kernel $w_{ij} = \exp(-\gamma \norm{x_i - x_j}^2)$, Laplacian kernel $w_{ij} = \exp(-\gamma \norm{x_i - x_j}_1)$. We also try k-neighbor filtering. That is, after comting $w_{ij}$, we only preserve the largest $k$ weight. Suppose $w_{i1} > w_{i2} > \dots > w_{in}$, then
 $$
 w'_{ij}  = 
 \begin{cases}
@@ -302,14 +301,10 @@ w'_{ij}  =
  0 & j > k
 \end{cases}
 $$
-This weight choice scheme is determined by two parameters $k$ and $\gamma$ and it has two advantages. On one hand, smaller $k$ makes the graph have less edge and Info-Detection can run much faster. On the other hand, it restricts the linkage of graph node to its k-nearest neighbors, which makes Info-Detection more robust.
+By using $k$-neighbor filtering, the graph has less edge and Info-Detection can run much faster. On the other hand, it restricts the linkage of graph node to its k-nearest neighbors, which makes Info-Detection more robust.
 
 The source code of our experiment is available \footnote{\scriptsize\url{https://github.com/zhaofeng-shu33/info-detection-experiment}} for reproduction.
-For our experiment comparison, there are some additional notes.
-\begin{itemize}
-\item The accuracy of isolation-forest and elliptic envelope is influenced by their intrinsic randomness. With the same parameter configuration, we select the result of one run of it, not possibly the best result. Info-Detection, one class SVM and local outlier detector are deterministic method and do not have this problem.
-\item For local outlier factor, isolation forest and elliptic envelope, they need to know the number of outliers in advance. We set this parameter to be ground truth for these two methods to produce best result. We also tune the number of neighbor parameter for local outlier factor. For Info-Detection, we try different metrics and select the best.
-\end{itemize}
+For our experiment comparison, the accuracy of isolation-forest and elliptic envelope is influenced by their intrinsic randomness. With the same parameter configuration, we select the result of one run of it, not possibly the best result. Info-Detection, one class SVM and local outlier detector are deterministic method and do not have this problem.
+For local outlier factor, isolation forest and elliptic envelope, they need to know the number of outliers in advance. We set this parameter to be ground truth for these three methods to produce best result. We also tune the number of neighbor parameter for local outlier factor. For Info-Detection, we try different metrics and select the best.
 
-\end{enumerate} 
 \end{document}
