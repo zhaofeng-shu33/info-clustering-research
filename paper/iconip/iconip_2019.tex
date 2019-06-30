@@ -135,7 +135,7 @@ Since the PSP has the inclusion relationship $\P_{i+1} \preceq \P_i$, we can res
 		\FUNCTION{\texttt{Split}($\widetilde{G}, \widetilde{V}$)}
 		\STATE $w$ is the summation of all edge weights of $\widetilde{G}$ 
 		\STATE $\gamma' = \frac{w}{\abs{V(\widetilde{G})}-1}$ where $V(\widetilde{G})$ is the node set of graph $\widetilde{G}$ \label{alg:gamma_apostrophe}
-		\STATE $(\tilde{h}, P') = \texttt{DT}(\widetilde{G}, \gamma')$ where $\P'$ is minimizer of equation \eqref{eq:hlambda} and $\tilde{h}$ is the corresponding minimum value.  \label{alg:DT}
+		\STATE $(\tilde{h}, P') = \texttt{DT}(\widetilde{G}, \gamma')$ where $\P'$ is minimizer of $h(\gamma')$ in equation \eqref{eq:hlambda} and $\tilde{h}$ is the corresponding minimum value.  \label{alg:DT}
 		\IF{$\tilde{h} = - \gamma'$}
 		\STATE add edge weight $\gamma'$ in $\mathcal{T}$ starting from $\widetilde{V}$ to its children.
 		\ELSE
@@ -251,15 +251,14 @@ It is noticed that each invocation of \texttt{Split} makes the graph $\widetilde
 
 Generally, this worst case is not reached. The recursive relationship for $T(n)$ is
 \begin{equation}\label{eq:Tn}
-T(n) = \max \{ C n^4 + \sum_{i=1}^k T(n_i) + T(k) | \sum_{i=1}^k n_i = n, n_i \in \mathbb{Z}_{+} \}
+T(n) = \max \{ C n^4 + \sum_{i=1}^k T(n_i) + T(k)\delta_{k<n} | \sum_{i=1}^k n_i = n, n_i \in \mathbb{Z}_{+} \}
 \end{equation}	
-For graph $\widetilde{G}$, let $\lambda_1(\widetilde{G}) < \dots < \lambda_k(\widetilde{G})$ be its critical value list. $\gamma'(\widetilde{G})$ comes from line \ref{alg:gamma_apostrophe} in Algorithm \ref{alg:psp_i_simplified} and $\floor{x}, \ceil{x}$ represent floor, ceil respectively.
-We have the following proposition:
+In \eqref{eq:Tn}, $Cn^4$ is the time complexity of \texttt{DT} when $\abs{E} = O(n^2)$. $\delta_{k<n} = 1$ when $k<n$ otherwise $\delta_{k<n}=0$. We have the following proposition:
 \begin{proposition}\label{prop:alg_complexity}
-	If $\abs{E} = O(n^2)$ and $ \lambda_{\floor{k/2} - 1}(\widetilde{G}) \leq \gamma'(\widetilde{G}) \leq \lambda_{\ceil{k/2} + 1}(\widetilde{G}) $ holds for each invocation of function \texttt{Split}, then $T(n) = O(n^4)$.
+	 If $n_i \leq \frac{n}{2}, \textrm{ for } i=1,\dots,k, k \leq \frac{n}{2}$  hold in equation \eqref{eq:Tn}, then $T(n) = O(n^4)$.
 \end{proposition}
 \begin{proof}
-	$\lambda_{\floor{k/2} - 1} \leq \gamma' \Rightarrow n_i \leq \frac{n}{2}$ and $ \gamma' \leq \lambda_{\ceil{k/2} + 1} \Rightarrow k < \frac{n}{2} $ in equation \eqref{eq:Tn}. Let $\mu_i = \frac{n_i}{n}$. We proceed by induction to show $T(n) = O(n^4)$. More specifically, $T(n) \leq q C n^4$ where $ q = \frac{16}{5}$. $T(3)$ is a constant and $T(m) \leq q C m^4$ holds for $m=3$. Suppose
+Let $\mu_i = \frac{n_i}{n} \leq \frac{1}{2}$. We proceed by induction to show $T(n) = O(n^4)$. More specifically, $T(n) \leq q C n^4$ where $ q = \frac{16}{5}$. $T(3)$ is a constant and $T(m) \leq q C m^4$ holds for $m=3$. Suppose
 	$T(m) \leq qC m^4$ holds for all $m \leq n-1$. Then for $T(n)$
 	We first show that 
 	\begin{equation}\label{eq:outerI}
@@ -280,20 +279,18 @@ We have the following proposition:
 		& < \frac{1}{9}\sum_{i=3}^k (\frac{1}{(i-1)i}) \\
 		& < \frac{1}{18} < \frac{9}{8}(\frac{1}{2})^4
 	\end{align*}
-	Therefore, \eqref{eq:outerI} holds and from \eqref{eq:Tn} we have 
+	Therefore, \eqref{eq:outerI} holds and from \eqref{eq:Tn} and $T(k) \leq T(\frac{n}{2})$ we have 
 	\begin{align}
 		T(n)  & \leq Cn^4 + 11T(\frac{n}{2}) \\
 		& \leq C n^4 + 11 q C (\frac{n}{2})^4 = \frac{16}{5} C n^4
 	\end{align}
 \end{proof}	
 \begin{remark}
-		Using the agglomerative view of info-clustering, we can show that 	$\gamma'$ is weighted average of $\lambda_1, \dots, \lambda_k$. Indeed, we can
-		get a successively increasing set $\emptyset = S_0 \subsetneq S_1 \subsetneq S_2 \subsetneq \dots \subsetneq S_k$ such that $S_k = V$. Let $\delta_{11}=1, \delta_{i1}=0$ for $i\neq 1, \gamma_i = \frac{\sum_{(i,j) \in E(S_i\backslash S_{i-1})} w_{ij}}{\abs{S_i\backslash S_{i-1}}- \delta_{i1}}$. Then we have $\gamma' = \sum_{i=1}^k \frac{\abs{S_i \backslash S_{i-1}} - \delta_{i1}}{\abs{V} - 1}\gamma_i$ from the definition of $\gamma'$. The agglomerative interpretation contracts the graph from $S_1$ to $S_k$ and each contraction computes a critical value $\lambda_i = \gamma_{k-i+1}$.
-		
-		The condition added by Proposition \ref{prop:alg_complexity} says if the weighted average of $\lambda_i$ is near to its median, then $T(n) = O(n^4)$. We believe this result can be obtained under a more tolerant condition.
+		The condition added by Proposition \ref{prop:alg_complexity} is a sufficient condition for $T(n) = O(n^4)$. It encompasses a large number of graphs when each \texttt{Split} does not produce more than $\frac{n}{2}$ set and large set whose cardinality large than $\frac{n}{2}$.
+		We believe $T(n)=O(n^4)$ can be obtained under a more tolerant condition.
 \end{remark}		
 \section{Experiment Detail}
-Since Info-Detection is a graph-based method, how to choose graph weight $w_{ij} = \mathrm{affinity}(x_i, x_j)$ is important for practical application of Info-Detection. For our experiment, we use Gaussian kernel $w_{ij} = \exp(-\gamma \norm{x_i - x_j}^2)$, Laplacian kernel $w_{ij} = \exp(-\gamma \norm{x_i - x_j}_1)$. We also try k-neighbor filtering. That is, after comting $w_{ij}$, we only preserve the largest $k$ weight. Suppose $w_{i1} > w_{i2} > \dots > w_{in}$, then
+Since Info-Detection is a graph-based method, how to choose graph weight $w_{ij} = \mathrm{affinity}(x_i, x_j)$ is important for practical application of Info-Detection. For our experiment, we use Gaussian kernel $w_{ij} = \exp(-\gamma \norm{x_i - x_j}^2)$, Laplacian kernel $w_{ij} = \exp(-\gamma \norm{x_i - x_j}_1)$. We also try k-neighbor filtering. That is, after counting $w_{ij}$, we only preserve the largest $k$ weight. Suppose $w_{i1} > w_{i2} > \dots > w_{in}$, then
 $$
 w'_{ij}  = 
 \begin{cases}
