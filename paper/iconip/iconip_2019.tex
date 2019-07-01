@@ -116,11 +116,11 @@ For newly added node $i'$. Let $V'=B\cup \{i'\}$, we can compute $\gamma'_N$ for
 \end{proposition}
 From Proposition \ref{prop:main}, we can see that the computational overhead to check whether new data is normal is linear to the size of existing normal data. 
 
-Info-Detection requires $\gamma_N$ and $B$, whose computation is not a trivial task, whose computation is the main focus of the next Section.
+Info-Detection requires $\gamma_N$ and $B$, whose computation is not a trivial task and is the main focus of the next Section.
 
 \section{Improved Principal Sequence of Partition}\label{sec:Alg}
 \subsection{Existing Algorithms}
-It has been found that the mathematical structure of info-clustering is the same with that of principal sequence of partition (PSP) of graph. We use $\P_1, \dots, \P_k$ to denote PSP sequence where $\P_1 = \{V\}, \P_{i+1} \preceq \P_i$ and $\P_k = \{\{1\},\dots,\{k\}\}$.
+It has been found that the mathematical structure of info-clustering is the same with that of principal sequence of partition (PSP) of graph. Let $\P_1, \dots, \P_k$ denote PSP sequence where $\P_1 = \{V\}, \P_{i+1} \preceq \P_i$ and $\P_k = \{\{1\},\dots,\{k\}\}$.
 Each $\P_i$ is the solution to the following optimization problem:
 \begin{align}
 h_{\P}(\lambda) &=  f[\P] - \abs{\P} \lambda  \label{eq:hPL}\\
@@ -167,11 +167,11 @@ Since the PSP has the inclusion relationship $\P_{i+1} \preceq \P_i$, we can res
 	\end{algorithmic}
 \end{algorithm}
 	
-	It is shown in \cite{RN8} that $\gamma_N$ has an alternative form
+%	It is shown in \cite{RN8} that $\gamma_N$ has an alternative form
 	
-	\begin{equation}\label{eq:gammaN_alternative}
-	\gamma_N = \max_{A \subseteq V, \abs{A}>1} \frac{\sum_{(i,j)\in E(A)} w_{ij}}{\abs{A}-1}
-	\end{equation}
+%	\begin{equation}\label{eq:gammaN_alternative}
+%	\gamma_N = \max_{A \subseteq V, \abs{A}>1} \frac{\sum_{(i,j)\in E(A)} w_{ij}}{\abs{A}-1}
+%	\end{equation}
 	
 \begin{figure}[!ht]
 	\centering
@@ -277,7 +277,7 @@ T(n) = \max \{ C n^4 + \sum_{i=1}^k T(n_i) + T(k)\delta_{k<n} | \sum_{i=1}^k n_i
 \end{equation}	
 In \eqref{eq:Tn}, $Cn^4$ is the time complexity of \texttt{DT} when $\abs{E} = O(n^2)$. $\delta_{k<n} = 1$ when $k<n$ otherwise $\delta_{k<n}=0$. We have the following proposition:
 \begin{proposition}\label{prop:alg_complexity}
-	 If $n_i \leq \frac{n}{2}, \textrm{ for } i=1,\dots,k, k \leq \frac{n}{2}$  hold in equation \eqref{eq:Tn}, then $T(n) = O(n^4)$.
+	 If $n_i \leq \frac{n}{2}, \textrm{ for } i=1,\dots,k$ and $ k \leq \frac{n}{2}$  hold in equation \eqref{eq:Tn}, then $T(n) = O(n^4)$.
 \end{proposition}
 \begin{proof}
 Let $\mu_i = \frac{n_i}{n} \leq \frac{1}{2}$. We proceed by induction to show $T(n) = O(n^4)$. More specifically, $T(n) \leq q C n^4$ where $ q = \frac{16}{5}$. $T(3)$ is a constant and $T(m) \leq q C m^4$ holds for $m=3$. Suppose
