@@ -64,7 +64,7 @@ In this paper, we show theoretically and experimentally how to choose a good pai
 The paper is organized as follows. In Section \ref{sec:models}, we formulate graph-based info-clustering and show some of its properties. In Section \ref{sec:algorithm}, we propose the algorithm workflow. In Section \ref{sec:experiment}, we present the experiment results and compare graph-based info-clustering with other methods. Finally, we give the conclusion in Section \ref{sec:conclusion}.
 
 Throughout this paper, the graph is denoted by $G(V,E)$, with node index set $V = \{1, 2, \dots, \abs{V}\}$, node set $Z_V=\{Z_i | i \in V\}$\footnote{$Z_i$ represents the i-th node in $G(V,E)$} 
- and edge set $E=\{(i,j) | w_{ij}>0\}$\footnote{$(\cdot, \cdot)$ is ordered pair ($(i,j) \neq (j,i)$) for directed graph and unordered pair ($(i,j) = (j,i)$) for undirected graph.}. $\P$ is a partition of $V$\footnote{$\P=\{C_1, \dots, C_k\}, \bigcup_{i=1}^k C_i = V$ and $i\neq j \Rightarrow C_i \cap C_j = \emptyset$} and $\{V\}$ is a trivial partition. $\P_C$ is a partition of $C\subset V$. $\Pi$ is the collection of all partitions of $V$. A partial order $\preceq $ is defined on $\Pi$: $\P_2 \preceq \P_1$ means $C\in \P_2 \Rightarrow \exists C' \in \P_1 \,s.t.\, C \subseteq C'$. $\Pi' = \Pi \backslash \{V\}$ is the collection of non-trivial partitions. $f(\cdot)$ is graph cut function, that is $f(C) = \sum_{i\not\in C, j\in C, (i,j) \in E} w_{ij}$. $f[\cdot]$ is a function defined on $\Pi$ by
+ and edge set $E=\{(i,j) | w_{ij}>0\}$\footnote{$(\cdot, \cdot)$ is ordered pair ($(i,j) \neq (j,i)$) for directed graph and unordered pair ($(i,j) = (j,i)$) for undirected graph.}. $\P$ is a partition of $V$\footnote{$\P=\{C_1, \dots, C_k\}, \bigcup_{i=1}^k C_i = V$ and $i\neq j \Rightarrow C_i \cap C_j = \emptyset$} and $\{V\}$ is the only trivial partition. $\P_C$ is a partition of $C\subset V$. $\Pi$ is the collection of all partitions of $V$. A partial order $\preceq $ is defined on $\Pi$: $\P_2 \preceq \P_1$ means $C\in \P_2 \Rightarrow \exists C' \in \P_1 \,s.t.\, C \subseteq C'$. $\Pi' = \Pi \backslash \{V\}$ is the collection of non-trivial partitions. $f(\cdot)$ is graph cut function, that is $f(C) = \sum_{i\not\in C, j\in C, (i,j) \in E} w_{ij}$. $f[\cdot]$ is a function defined on $\Pi$ by
 \begin{equation}
 f[\P] :=
 \begin{cases}
@@ -72,7 +72,7 @@ f[\P] :=
 \sum_{C\in \P}f(C)   & G \textrm{ is directed}
 \end{cases},\P \in \Pi
 \end{equation}
-If we convert an undirected graph to directed one by adding arbitrary direction to each edge, the value of $f[\P]$ is unchanged. Therefore, without specific declaration, $G$ is directed throughout the paper. The last notation is about $x(C)$ in which $x$ is a $\abs{V}$ dimensional vector and $x(C)=\sum_{i \in C} x_i, C\in V$.
+If we convert an undirected graph to directed one by adding arbitrary direction to each edge, the value of $f[\P]$ is unchanged. Therefore, without specific declaration, $G$ is directed throughout the paper. The last notation is about $x(C)$ in which $x$ is a $\abs{V}$ dimensional vector and $x(C)=\sum_{i \in C} x_i, C\subseteq V$.
 
 \section{Formulation of graph-based info-clustering}\label{sec:models}
 Info-clustering as a concept was originally proposed by C. Chan et al. \cite{RN1}.
