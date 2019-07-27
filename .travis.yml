@@ -37,6 +37,4 @@ install:
   - python -c "import scipy" 2>/dev/null || pip install oss2 networkx numpy scipy
 script:
   - make all
-  # deploy the document on aliyun oss
   - export AccessKeyId=LTAIhGvOLG5VLaqh
-  - python upload.py
