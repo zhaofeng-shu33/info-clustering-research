@@ -21,4 +21,15 @@ Our paper presents experimental results mainly on synthetic datasets but good re
 
 \textbf{Common Response: Novelty and Contribution}
 In theoretical model level, our paper proposed a new graph-based hierarchical clustering method (Definition 1)and analyze the hierarchical tree structure for some graph weight configuration(Proposition 1 and 3). In algorithmic level, our paper proposed a  succinct computing scheme (Algorithm 1) for parametric maximum flow and prove its equivalence and correctness(Proposition 2 and Theorem 4).
+
+\textbf{Reviewer \#2:}
+
+\textbf{Relation with other object optimization clustering method}
+Correlation Clustering admits negative weight while our method does not; Dasgupta's cost is a function of tree while our objective is a function of partition of graph node sets. Our method is interpreted in a "maximizing information" way and is different from other graph-based formulation.
+\textbf{Background of info-clustering} Besides starting paragraph of Section 2, Info-Clustering is originally proposed to deal with genome clustering. Its objective function is an extension of Shannon's mutual information but impossible to compute in general cases. Currently, it is known that info-clustering is computable for hyper-graph structure.
+\textbf{Experiment not explained} The configuration of each method used in the experiments is detailed in paper Appendix, and the experiment is reproducible from submitted code.
+\textbf{Usage of Theorem} Theorem 3 is a basic theoretical result, sufficient condition for the trivial hierarchical tree structure and is used to prove Proposition 1 and 3. Theorem 3 is targeted at our formulation and does not apply to other objective function. It is possible similar results exist for other graph-based formulation. Your understanding of Theorem 4 is correct.
+\textbf{Writting Issues} Fig.1 illustrates two interpretations (Top-Down and Bottom-Up) of our method. The pointing about BHC is correct and it is our mistake.
+
+
 \end{document}
