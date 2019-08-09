@@ -264,7 +264,7 @@ This is because $\tilde{\lambda}_2 > -\epsilon$, by equation \eqref{eq:clambda},
 		\STATE Let $L$ be the turning point list, initialized as empty array.
 		\STATE Construct $\widetilde{G}$: let $\widetilde{V}=V\cup\{s\}, \widetilde{E} = E\cup \{(s,j),(j,t)|j \in V, j\neq t\}$
 		\STATE Initialize $c^{-\epsilon}(e)$ for $e \in \widetilde{E}$ according to equation \eqref{eq:clambda}.
-		\STATE $ (T_0, \_, \tilde{f})  = \mathtt{mf}(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{-\epsilon}(e))$. Also let $T_1 = \{j\}$. \label{alg:T0property}
+		\STATE $ (T_0, \_, \tilde{f})  = \mathtt{mf}(\widetilde{G}(\widetilde{V}, \widetilde{E}), c^{-\epsilon}(e))$. Also let $T_1 = \{t\}$. \label{alg:T0property}
 		\STATE $\mathcal{A}$ contains the decreasing set list, initialized as $[T_0, T_1]$;
 		\STATE \texttt{split}$( T_0, T_1)$
 		\FUNCTION{\texttt{split}$(T_l, T_r)$}
