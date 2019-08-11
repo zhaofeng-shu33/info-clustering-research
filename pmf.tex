@@ -165,4 +165,57 @@ to $\widetilde{\mathcal{L}}$
 \end{algorithmic}
 \end{algorithm}
 Algorithm \ref{alg:pmfC} has numerical issues. Using old maximum flow as preflow to initialize can possiblity lead to very small negative excess. How to filter out these negative excess is related to numerical floating accuracy.
+
+\section{Algorithm Complexity of PMF\_R with highest relabel rule}
+Suppose $\abs{V}=\abs{E}^2$ and $n=\abs{V}$. Then the time complexity of one invocation of preflow algorithm for a graph with $n$ nodes is $O(n^3)$. Let $T(n)$ be the running time of \texttt{slice} routine not including the time of the preflow algorithm.
+Then we have
+\begin{equation}
+T(n) \leq \max\{T(n_1) + T(n_2) + O(n_1)^3\} \textrm{ with } n_1 + n_2 = n+1, n_1 \leq n_2
+\end{equation}
+It can be shown that $T(n) = O(n^3)$ in such case. To achieve this,  let $n_1 \approx n_2$.
+
+
+Preflow and Preflow\_Reverse function, $\tilde{f}$ is the resulting flow and $\tilde{d}$ is the resulting label. $v$ is the maxflow value, $S$ is the source side cut set and $T$ is the sink side cut set.
+\begin{itemize}
+\item $(\tilde{f}, \tilde{d}, v, S, T) = \textsf{pf}(G, c, f, d)$
+\item $(\tilde{f}, \tilde{d}, v, S, T) = \textsf{pf\_r}(G, c, f, d)$
+\item $(f, d, v, S, T) = \textsf{pf}(G, c)$
+\item $(f, d, v, S, T) = \textsf{pf\_r}(G, c)$
+\end{itemize}	
+If no initial flow and labels are provided, the preflow algorithm uses internal flow and labels.
+\begin{algorithm}
+\caption{real pmf $(\mathcal{A}, L) = \texttt{pmf\_r}(G(V,E), c(e), j, y^{\lambda})$}\label{alg:pmfRC}
+\begin{algorithmic}[1]
+\REQUIRE a directed graph $G(V, E)$; $j \in V={1,2,\dots, \abs{V}}$; edge cost function $c(e)$ for $e \in E$; function $f(A)$ is the in-cut function w.r.t set $A\subseteq V$; tuples $y^{\lambda}_i = (a_i, b_i)$ for $i \in V$.
+\ENSURE a nested family of minimal value to equation \eqref{eq:pmq}, as a set list $\mathcal{A}$ and its corresponding turning value $\lambda$ as a value list $L$.
+\STATE Let $L$ be the turning point list, initialized as empty array, let $V'=V\cup\{s\}$.
+\STATE find $(S_0, T_0)$ which is optimal to \eqref{eq:pmqe} for $ \lambda_1  = -\epsilon$, the resulting maxflow is $f_1$ and valid label is $d_1$
+\STATE select $\lambda_3 = \max_{i}\{a_i-b_i, a_i, w_{it} + a_i\}$. Run the preflow algorithm for $\lambda_3$ and get $(S_1,T_1)$.\footnotemark the resulting maxflow is $f_3$ and valid label is $d_3$.
+\STATE $\mathcal{A}$ contains the decreasing set list, initialized as $[T_0, T_1]$;
+\STATE \texttt{slice}$(\widetilde{G}, c, S_0, T_1, f_1, f_3, d_1, d_3)$
+\STATE sort $L$ and reverse sort $\mathcal{A}$
+\FUNCTION{\texttt{slice}$(G, c, S, T, f_1, f_3, d_1, d_3)$}
+\STATE Let $\tilde{\lambda}_2$ be the value of $\lambda$ such that $c^{\lambda}(S, V'\backslash S) = 
+c^{\lambda}(V'\backslash T, T)$ 
+\STATE $(\tilde{f}_1, \tilde{d}_1, v, S', T') = \textsf{pf}(G, c^{\lambda_2}, f_1, d_1)$
+\STATE $(\tilde{f}_3, \tilde{d}_3, ~, ~, ~) = \textsf{pf\_r}(G, c^{\lambda_2}, f_3, d_3)$
+\IF{$T' \neq T$}
+\STATE insert $T'$ to $\mathcal{A}$
+\IF{$ \texttt{size}(T') \leq \texttt{size}(G)/2$}
+\STATE \texttt{slice}$(G, c, S, T', f_1, \tilde{f}_3, d_1, \tilde{d}_3)$
+\STATE contract the graph $G$ by $S'$ and $T$, $f_1, \tilde{f}_3$ are contracted correspondingly; get valid label $d'_1, d'_3$ for the contracted structure.
+\STATE \texttt{slice}$(G[S'][T], c[S'][T], S', T, f_1, \tilde{f}_3, d'_1, d'_3)$
+\ELSE
+\STATE contract the graph $G$ by $S$ and $T'$, the flowMap is contracted correspondingly; get valid label $d'_1, d'_3$ for the contracted structure.
+\STATE \texttt{slice}$(G[S][T'], c[S][T'], S', T, \tilde{f}_1, f_3, d'_1, d'_3)$
+\STATE \texttt{slice}$(G, c, S', T, \tilde{f}_1, f_3, \tilde{d}_1, f_3)$
+\ENDIF
+\ELSE
+\STATE insert $\lambda_2$ to $L$
+\ENDIF
+\ENDFUNCTION
+\end{algorithmic}
+\end{algorithm}
+\footnotetext{$ T_1 = \{j\}$ and $S_1 = \{s\}\cup V \backslash \{j\}$}
+Restriction: the elevator structure of pf should be maintained for its whole lifetime; it cannot use global relabeling heuristic in second phase.
 \end{document}
