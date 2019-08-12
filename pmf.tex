@@ -170,7 +170,7 @@ Algorithm \ref{alg:pmfC} has numerical issues. Using old maximum flow as preflow
 Suppose $\abs{V}=\abs{E}^2$ and $n=\abs{V}$. Then the time complexity of one invocation of preflow algorithm for a graph with $n$ nodes is $O(n^3)$. Let $T(n)$ be the running time of \texttt{slice} routine not including the time of the preflow algorithm.
 Then we have
 \begin{equation}
-T(n) \leq \max\{T(n_1) + T(n_2) + O(n_1)^3\} \textrm{ with } n_1 + n_2 = n+1, n_1 \leq n_2
+T(n) \leq \max\{T(n_1) + T(n_2) + O(n_1^3)\} \textrm{ with } n_1 + n_2 = n+1, n_1 \leq n_2
 \end{equation}
 It can be shown that $T(n) = O(n^3)$ in such case. To achieve this,  let $n_1 \approx n_2$.
 
@@ -180,7 +180,6 @@ Preflow and Preflow\_Reverse function, $\tilde{f}$ is the resulting flow and $\t
 \item $(\tilde{f}, \tilde{d}, v, S, T) = \textsf{pf}(G, c, f, d)$
 \item $(\tilde{f}, \tilde{d}, v, S, T) = \textsf{pf\_r}(G, c, f, d)$
 \item $(f, d, v, S, T) = \textsf{pf}(G, c)$
-\item $(f, d, v, S, T) = \textsf{pf\_r}(G, c)$
 \end{itemize}	
 If no initial flow and labels are provided, the preflow algorithm uses internal flow and labels.
 \begin{algorithm}
@@ -189,8 +188,8 @@ If no initial flow and labels are provided, the preflow algorithm uses internal 
 \REQUIRE a directed graph $G(V, E)$; $j \in V={1,2,\dots, \abs{V}}$; edge cost function $c(e)$ for $e \in E$; function $f(A)$ is the in-cut function w.r.t set $A\subseteq V$; tuples $y^{\lambda}_i = (a_i, b_i)$ for $i \in V$.
 \ENSURE a nested family of minimal value to equation \eqref{eq:pmq}, as a set list $\mathcal{A}$ and its corresponding turning value $\lambda$ as a value list $L$.
 \STATE Let $L$ be the turning point list, initialized as empty array, let $V'=V\cup\{s\}$.
-\STATE find $(S_0, T_0)$ which is optimal to \eqref{eq:pmqe} for $ \lambda_1  = -\epsilon$, the resulting maxflow is $f_1$ and valid label is $d_1$
-\STATE select $\lambda_3 = \max_{i}\{a_i-b_i, a_i, w_{it} + a_i\}$. Run the preflow algorithm for $\lambda_3$ and get $(S_1,T_1)$.\footnotemark the resulting maxflow is $f_3$ and valid label is $d_3$.
+\STATE Let $ \lambda_1  = -\epsilon$, $(f_1, d_1, \_, S_0, T_0) = \mathsf{pf}(\widetilde{G},c^{\lambda_1})$
+\STATE select $\lambda_3 = \max_{i}\{a_i-b_i, a_i, w_{it} + a_i\}$. $(f_3, d_3, \_, S_1, T_1) = \mathsf{pf}(\widetilde{G}, c^{\lambda_3})$\footnotemark 
 \STATE $\mathcal{A}$ contains the decreasing set list, initialized as $[T_0, T_1]$;
 \STATE \texttt{slice}$(\widetilde{G}, c, S_0, T_1, f_1, f_3, d_1, d_3)$
 \STATE sort $L$ and reverse sort $\mathcal{A}$
@@ -217,5 +216,6 @@ c^{\lambda}(V'\backslash T, T)$
 \end{algorithmic}
 \end{algorithm}
 \footnotetext{$ T_1 = \{j\}$ and $S_1 = \{s\}\cup V \backslash \{j\}$}
+
 Restriction: the elevator structure of pf should be maintained for its whole lifetime; it cannot use global relabeling heuristic in second phase.
 \end{document}
