@@ -180,6 +180,7 @@ Preflow and Preflow\_Reverse function, $\tilde{f}$ is the resulting flow and $\t
 \item $(\tilde{f}, \tilde{d}, v, S, T) = \textsf{pf}(G, c, f, d)$
 \item $(\tilde{f}, \tilde{d}, v, S, T) = \textsf{pf\_r}(G, c, f, d)$
 \item $(f, d, v, S, T) = \textsf{pf}(G, c)$
+\item $(f, d, v, S, T) = \textsf{pf\_r}(G, c)$
 \end{itemize}	
 If no initial flow and labels are provided, the preflow algorithm uses internal flow and labels.
 \begin{algorithm}
@@ -189,7 +190,7 @@ If no initial flow and labels are provided, the preflow algorithm uses internal 
 \ENSURE a nested family of minimal value to equation \eqref{eq:pmq}, as a set list $\mathcal{A}$ and its corresponding turning value $\lambda$ as a value list $L$.
 \STATE Let $L$ be the turning point list, initialized as empty array, let $V'=V\cup\{s\}$.
 \STATE Let $ \lambda_1  = -\epsilon$, $(f_1, d_1, \_, S_0, T_0) = \mathsf{pf}(\widetilde{G},c^{\lambda_1})$
-\STATE select $\lambda_3 = \max_{i}\{a_i-b_i, a_i, w_{it} + a_i\}$. $(f_3, d_3, \_, S_1, T_1) = \mathsf{pf}(\widetilde{G}, c^{\lambda_3})$\footnotemark 
+\STATE select $\lambda_3 = \max_{i}\{a_i-b_i, a_i, w_{it} + a_i\}$. $(f_3, d_3, \_, S_1, T_1) = \mathsf{pf\_r}(\widetilde{G}, c^{\lambda_3})$\footnotemark 
 \STATE $\mathcal{A}$ contains the decreasing set list, initialized as $[T_0, T_1]$;
 \STATE \texttt{slice}$(\widetilde{G}, c, S_0, T_1, f_1, f_3, d_1, d_3)$
 \STATE sort $L$ and reverse sort $\mathcal{A}$
@@ -207,7 +208,7 @@ c^{\lambda}(V'\backslash T, T)$
 \ELSE
 \STATE contract the graph $G$ by $S$ and $T'$, the flowMap is contracted correspondingly; get valid label $d'_1, d'_3$ for the contracted structure.
 \STATE \texttt{slice}$(G[S][T'], c[S][T'], S', T, \tilde{f}_1, f_3, d'_1, d'_3)$
-\STATE \texttt{slice}$(G, c, S', T, \tilde{f}_1, f_3, \tilde{d}_1, f_3)$
+\STATE \texttt{slice}$(G, c, S', T, \tilde{f}_1, f_3, \tilde{d}_1, d_3)$
 \ENDIF
 \ELSE
 \STATE insert $\lambda_2$ to $L$
