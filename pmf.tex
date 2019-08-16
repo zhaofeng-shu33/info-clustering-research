@@ -204,10 +204,10 @@ c^{\lambda}(V'\backslash T, T)$
 \IF{$ \texttt{size}(T') \leq \texttt{size}(G)/2$}
 \STATE \texttt{slice}$(G, c, S, T', f_1, \tilde{f}_3, d_1, \tilde{d}_3)$
 \STATE contract the graph $G$ by $S'$ and $T$, $f_1, \tilde{f}_3$ are contracted correspondingly; get valid label $d'_1, d'_3$ for the contracted structure.
-\STATE \texttt{slice}$(G[S'][T], c[S'][T], S', T, f_1, \tilde{f}_3, d'_1, d'_3)$
+\STATE \texttt{slice}$(G[S'][T], c[S'][T], S', T, \tilde{f}_3, f_3, d'_1, d'_3)$
 \ELSE
 \STATE contract the graph $G$ by $S$ and $T'$, the flowMap is contracted correspondingly; get valid label $d'_1, d'_3$ for the contracted structure.
-\STATE \texttt{slice}$(G[S][T'], c[S][T'], S', T, \tilde{f}_1, f_3, d'_1, d'_3)$
+\STATE \texttt{slice}$(G[S][T'], c[S][T'], S, T', f_1, \tilde{f}_1, d'_1, d'_3)$
 \STATE \texttt{slice}$(G, c, S', T, \tilde{f}_1, f_3, \tilde{d}_1, d_3)$
 \ENDIF
 \ELSE
