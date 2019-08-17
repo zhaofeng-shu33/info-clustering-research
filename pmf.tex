@@ -234,4 +234,16 @@ c^{\lambda}(V'\backslash T, T)$
 \footnotetext{$ T_1 = \{j\}$ and $S_1 = \{s\}\cup V \backslash \{j\}$}
 
 Restriction: the elevator structure of pf should be maintained for its whole lifetime; it cannot use global relabeling heuristic in second phase.
+\section{Necessity of uniform $y^{\lambda}$}
+The key idea of PMF is to decrease some $y^{\lambda}_i$ for the current computing. If we remain all previous $y^{\lambda}_i$, then $y^{\lambda}_v$ may not be decreasing function, which makes the parametric maximum flow impossible.
+
+Take figure \ref{fig:ex} as an example, let there be an arc $(i,j)$ if $i<j$. Then by computing with increasing set, $y^{\lambda}_1 = f(\{1\}) = -\lambda$, $y^{\lambda}_2 = \min\{1-\lambda, 0\}$, for $y^{\lambda}_3$ we have
+\begin{equation}
+y_3^{\lambda} = \begin{cases} - \min\{1-\lambda, 0\} & \lambda < 2 \\
+1 & 2 < \lambda < 5 \\
+6-\lambda & \lambda > 5 
+\end{cases}
+\end{equation}
+which is not an increasing function.
+Therefore, by prescribing the form of $y^{\lambda}_i = \min\{a_i - \lambda, b_i\}$, we can make the computing possible.
 \end{document}
