@@ -38,3 +38,10 @@ install:
 script:
   - make all
   - export AccessKeyId=LTAIhGvOLG5VLaqh
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  file: build/*.pdf
+  skip_cleanup: true
+  on:
+    tags: true

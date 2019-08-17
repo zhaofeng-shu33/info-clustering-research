@@ -2,6 +2,7 @@
 \usepackage{subcaption}
 \input{macros.tex}
 \title{Paramatric Computing of Info-Clustering}
+\author{zhaofeng-shu33}
 \begin{document}
 \maketitle
 Using paramatric maximum flow algorithm to solve the following problem:
@@ -174,6 +175,18 @@ T(n) \leq \max\{T(n_1) + T(n_2) + O(n_1^3)\} \textrm{ with } n_1 + n_2 = n+1, n_
 \end{equation}
 It can be shown that $T(n) = O(n^3)$ in such case. To achieve this,  let $n_1 \approx n_2$.
 
+There is a property that for the larger part $T(n_2)$, the computing of preflow and preflow\_reverse are time free. Suppose for $T(n)$, the left flow is $f_1$ and the right flow if $f_3$. We concurrently run the two algorithms, after the stopping of one algorithm (consuming \texttt{min\_time}(preflow, preflow\_reverse))
+we can determine which part to contract ($T$ or $S$). The contraction of $T$ corresponds to the first interval.
+We use $T(\textsf{pf})$ to denote the costing time of preflow. There are four cases in total:
+\begin{enumerate}
+\item $T(\textsf{pf}) < T(\textsf{pf\_r})$ and $\abs{T} < \abs{S}$: contract $T$, get right flow $f_2$ from $\textsf{pf\_r}$. The running time is controlled by  $T(\textsf{pf\_r})$, which comes from the first computation for $f_3$. The latter computation $f_2$ replaces $f_3$ and the transition is used only once. Notice that the resulting flow for \textsf{pf} is not used in this computation.
+\item $T(\textsf{pf}) > T(\textsf{pf\_r})$ and $\abs{T} < \abs{S}$: contract $T$, get right flow $f_2$ from $\textsf{pf\_r}$.  In this case, the thread to run \textsf{pf} is killed midway. The running time is controlled by 
+$T(\textsf{pf\_r})$. The analysis is the same with the previous.
+\item $T(\textsf{pf}) < T(\textsf{pf\_r})$ and $\abs{T} > \abs{S}$: contract $S$, get right flow $f_2$ from $\textsf{pf}$. The thread to run $\textsf{pf\_r}$ is killed midway. The running time is controlled by 
+$T(\textsf{pf})$, which comes from the first computation for $f_1$. The latter computation $f_2$ replaces $f_1$ and the transition is used only once. 
+\item $T(\textsf{pf}) > T(\textsf{pf\_r})$ and $\abs{T} > \abs{S}$: contract $S$, get right flow $f_2$ from $\textsf{pf}$. The running time is controlled by $T(\textsf{pf})$. Although $T(\textsf{pf\_r})$ stops first, its resulting flow is not used.
+\end{enumerate}
+By the above analysis, we conclude that the computation for the larger part $T(n_2)$ is time free.
 
 Preflow and Preflow\_Reverse function, $\tilde{f}$ is the resulting flow and $\tilde{d}$ is the resulting label. $v$ is the maxflow value, $S$ is the source side cut set and $T$ is the sink side cut set.
 \begin{itemize}
@@ -197,15 +210,17 @@ If no initial flow and labels are provided, the preflow algorithm uses internal 
 \FUNCTION{\texttt{slice}$(G, c, S, T, f_1, f_3, d_1, d_3)$}
 \STATE Let $\tilde{\lambda}_2$ be the value of $\lambda$ such that $c^{\lambda}(S, V'\backslash S) = 
 c^{\lambda}(V'\backslash T, T)$ 
-\STATE $(\tilde{f}_1, \tilde{d}_1, v, S', T') = \textsf{pf}(G, c^{\lambda_2}, f_1, d_1)$
-\STATE $(\tilde{f}_3, \tilde{d}_3, ~, ~, ~) = \textsf{pf\_r}(G, c^{\lambda_2}, f_3, d_3)$
+\STATE $(\tilde{f}_1, \tilde{d}_1, \sim, S', T') = \textsf{pf}(G, c^{\lambda_2}, f_1, d_1)$
+\STATE $(\tilde{f}_3, \tilde{d}_3, \sim, S', T') = \textsf{pf\_r}(G, c^{\lambda_2}, f_3, d_3)$ concurrently, \STATE proceed if one thread terminates
 \IF{$T' \neq T$}
 \STATE insert $T'$ to $\mathcal{A}$
-\IF{$ \texttt{size}(T') \leq \texttt{size}(G)/2$}
+\IF{$ \texttt{size}(T') \leq \texttt{size}(S')$}
+\STATE finish the running of $\textsf{pf\_r}$, kill \textsf{pf} if it does not terminate.
 \STATE \texttt{slice}$(G, c, S, T', f_1, \tilde{f}_3, d_1, \tilde{d}_3)$
 \STATE contract the graph $G$ by $S'$ and $T$, $f_1, \tilde{f}_3$ are contracted correspondingly; get valid label $d'_1, d'_3$ for the contracted structure.
 \STATE \texttt{slice}$(G[S'][T], c[S'][T], S', T, \tilde{f}_3, f_3, d'_1, d'_3)$
 \ELSE
+\STATE finish the running of $\textsf{pf}$, kill \textsf{pf\_r} if it does not terminate.
 \STATE contract the graph $G$ by $S$ and $T'$, the flowMap is contracted correspondingly; get valid label $d'_1, d'_3$ for the contracted structure.
 \STATE \texttt{slice}$(G[S][T'], c[S][T'], S, T', f_1, \tilde{f}_1, d'_1, d'_3)$
 \STATE \texttt{slice}$(G, c, S', T, \tilde{f}_1, f_3, \tilde{d}_1, d_3)$

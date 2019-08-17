@@ -3,7 +3,7 @@ BUILD_DIR = ./build
 
 .PHONY: all
 
-all: $(BUILD_DIR)/main.pdf $(BUILD_DIR)/clustering.pdf
+all: $(BUILD_DIR)/main.pdf $(BUILD_DIR)/clustering.pdf ${BUILD_DIR}/psp_improved.pdf ${BUILD_DIR}/pmf.pdf
 
 $(BUILD_DIR)/compare.tex:
 	wget -P $(BUILD_DIR) https://programmierung.oss-cn-shenzhen.aliyuncs.com/research/info-clustering/code/utility/compare.tex
@@ -19,3 +19,12 @@ $(BUILD_DIR)/clustering.pdf: $(BUILD_DIR)/compare.tex clustering.tex
 	xelatex -output-directory=$(BUILD_DIR) clustering.tex
 	xelatex -output-directory=$(BUILD_DIR) clustering.tex
 
+$(BUILD_DIR)/pmf.pdf: pmf.tex
+	mkdir -p $(BUILD_DIR)
+	xelatex -output-directory=$(BUILD_DIR) pmf.tex
+	xelatex -output-directory=$(BUILD_DIR) pmf.tex
+    
+$(BUILD_DIR)/psp_improved.pdf: psp_improved.tex
+	mkdir -p $(BUILD_DIR)
+	xelatex -output-directory=$(BUILD_DIR) psp_improved.tex
+	xelatex -output-directory=$(BUILD_DIR) psp_improved.tex
