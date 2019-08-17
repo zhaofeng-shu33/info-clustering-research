@@ -1,13 +1,11 @@
 cache:
-  - pip
   - directories:
     - /tmp/texlive
+git:
+  submodules: false    
 os:
   - linux
 dist: xenial
-language: python
-python:
-  - "3.6"
 addons:
   apt:
     packages: ghostscript 
@@ -34,10 +32,8 @@ install:
         $INSTALL/install-tl -profile $INSTALL/tl.profile;        
         tlmgr install beamer etoolbox translator caption mathtools algorithms float footmisc;          
     fi
-  - python -c "import scipy" 2>/dev/null || pip install oss2 networkx numpy scipy
 script:
   - make all
-  - export AccessKeyId=LTAIhGvOLG5VLaqh
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
