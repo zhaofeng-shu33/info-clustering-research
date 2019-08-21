@@ -137,10 +137,10 @@ Now we give the algorithm to compute the Dilworth truncation $$\min_{\P}\{f[\P] 
 \begin{algorithmic}[1]
 \REQUIRE an undirected graph $G(V, E)$; edge cost function $c(e)$ for $e\in E$
 \ENSURE a nested family of partition $\P^{\lambda}$ and its corresponding turning point list $\mathcal{L}$
-\STATE initialize $y^{\lambda}_v = (0, +\infty)$ for $ v \in V$, $\P^{\lambda} = [\{\emptyset\}], \mathcal{L} = [+\infty]$
-\FOR{$j = 1$ to $\abs{V}$}
-\STATE  $(\mathcal{A}, L) = \texttt{pmf}(G(V,E), c(e), j, y^{\lambda})$
-\FOR{$u=1$ to $\abs{V}$}
+\STATE initialize $y^{\lambda}_v = (0, +\infty)$ for $ v \in V$, $\P^{\lambda} = [\{1\}], \mathcal{L} = [+\infty]$
+\FOR{$j = 2$ to $\abs{V}$}
+\STATE  $(\mathcal{A}, L) = \texttt{pmf}(G_j(V,E), c(e), j, y^{\lambda})$\footnotemark
+\FOR{$u=1$ to $j$}
 \IF{$u=j$}
 \STATE $y^{\lambda}_j = (f(\{j\}), +\infty)$
 \ELSE
@@ -165,6 +165,7 @@ to $\widetilde{\mathcal{L}}$
 \ENDFOR
 \end{algorithmic}
 \end{algorithm}
+\footnotetext{$G_j$ is $G$ restricted on node set whose index is no more than $j$}
 Algorithm \ref{alg:pmfC} has numerical issues. Using old maximum flow as preflow to initialize can possiblity lead to very small negative excess. How to filter out these negative excess is related to numerical floating accuracy.
 
 \section{Algorithm Complexity of PMF\_R with highest relabel rule}
