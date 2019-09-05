@@ -147,8 +147,8 @@ Consider
 \begin{equation}\label{eq:setdt}
 g(\lambda) = \min_{C\subset V, t \in C} \{ H(C) + \lambda\abs{C}\}
 \end{equation}
-where $H(C) = f(C) - \sum_{i\in C} f(\{i\})$. Denote $a_i = f(\{i\}), y^{\lambda}_i = x_i - \lambda$. Then equation \ref{eq:setdt} can be simplified as 
-\begin{align}\label{eq:setdt}
+where $H(C) = f(C) - \sum_{i\in C} f(\{i\})$. Denote $a_i = f(\{i\}), y^{\lambda}_i = a_i - \lambda$. Then equation \ref{eq:setdt} can be simplified as 
+\begin{align}
 g(\lambda) &= \min_{C\subset V, t \in C} g_{\lambda}(C) \\
 g_{\lambda}(C)  & = f(C) - y^{\lambda}(C)
 \end{align}
