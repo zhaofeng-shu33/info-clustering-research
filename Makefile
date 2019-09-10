@@ -6,8 +6,8 @@ BUILD_DIR = ./build
 all: $(BUILD_DIR)/exportlist.bib $(BUILD_DIR)/main.pdf $(BUILD_DIR)/clustering.pdf ${BUILD_DIR}/psp_improved.pdf ${BUILD_DIR}/pmf.pdf
 
 $(BUILD_DIR)/exportlist.bib: exportlist.bib
-    cp exportlist.bib $(BUILD_DIR)
-    
+	cp exportlist.bib $(BUILD_DIR)
+	
 $(BUILD_DIR)/main.pdf: main.tex
 	# run twice to generate the toc and make label and reference work
 	mkdir -p $(BUILD_DIR)
@@ -17,7 +17,7 @@ $(BUILD_DIR)/main.pdf: main.tex
 $(BUILD_DIR)/clustering.pdf: clustering.tex
 	mkdir -p $(BUILD_DIR)
 	xelatex -output-directory=$(BUILD_DIR) clustering.tex
-    cd $(BUILD_DIR) && bibtex clustering.aux && cd ..
+	cd $(BUILD_DIR) && bibtex clustering.aux && cd ..
 	xelatex -output-directory=$(BUILD_DIR) clustering.tex
 	xelatex -output-directory=$(BUILD_DIR) clustering.tex
 
@@ -25,7 +25,7 @@ $(BUILD_DIR)/pmf.pdf: pmf.tex
 	mkdir -p $(BUILD_DIR)
 	xelatex -output-directory=$(BUILD_DIR) pmf.tex
 	xelatex -output-directory=$(BUILD_DIR) pmf.tex
-    
+	
 $(BUILD_DIR)/psp_improved.pdf: psp_improved.tex
 	mkdir -p $(BUILD_DIR)
 	xelatex -output-directory=$(BUILD_DIR) psp_improved.tex
