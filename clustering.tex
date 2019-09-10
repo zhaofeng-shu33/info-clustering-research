@@ -11,17 +11,10 @@
 \title{Introduction to info-clustering and DT algorithm}
 \author{zhaofeng-shu33}
 \maketitle
-%整体思路：
-%   0. 基于hierarchical structure 
-%   1. 用B matrix 重新定义 MMI
-%   2. 定义的背景，是对用KL divergence 原定义的近似
-%   3. 新定义满足的性质， 可以用现有迭代算法解决
-%   4. 计算fundamental partition 的原理和算法pseudo code
-%   5. 简单的例子、算法实现与验证
-%   6. B matrix 的近似，人工数据验证
-%   7. application in real world dataset
-%   8. 总结与展望
-\section{Background}
+\tableofcontents
+\section{Info-Clustering Background}
+In this article, the theory of info-clustering (formulated by \cite{ic}) and Dilworth truncation algorithm (proposed by \cite{psp}) is reviewed.
+
 Hierarchical clustering is a popular clustering method. It produces a clustering tree. 
 An information-theoretic approach to hierarchical clustering is formulated in \cite{ic}.
 
@@ -81,7 +74,7 @@ I(Z_V) & = \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V) \\
 From the definition of $I(Z_V)$, we can get the scaling-invariant property of info-clustering. 
 That is, multiplying all $ w_{ij}$ by the same constant does not affect the clustering result.
 \end{remark}
-\section{Property}
+\section{Info-Clustering Property}
 \subsection{Graph weight interpretation}
 $w_{ij}$ can be treated as a kind of similarity metric between two objects. It is naturally to associate $w_{ij}$ with the edge weight in a graph.
 If we treat each index as a vertex in a graph, then the partition $\P$ divides these vertices into $\abs{\P}$ groups.  Besides, we define
@@ -269,7 +262,7 @@ In $h(\lambda)$, for each turning point of line segments,
 from Lemma \ref{lem:lattice_structure},
 the optimal partition forms a lattice. 
 
-The connection of \red{MMI with DT} is through equation \eqref{eq:Connection}. More precisely, $I(Z_V)$
+The connection of$I(Z_V)$ with DT is through equation \eqref{eq:Connection}. More precisely, $I(Z_V)$
 is the solution of equation $-\lambda = h(\lambda)$.
 And then we show its connection with $h(\lambda)$.
 \begin{theorem}\label{thm:f}
@@ -290,7 +283,7 @@ $I(Z_V)$ satisfies equation \eqref{eq:rir} for some $\P$. We only need to show t
 \end{align*}
 \end{proof}
 \begin{remark}
-Geometrically speaking, we know that the first line segment of $h(\lambda)$ is $\lambda$, theorem \ref{thm:f} shows that $I(Z_V)$ is the first critical value of $h(\lambda)$. It is the x coordinate of the intersection point of $-\lambda$ and a line with slope large than 1. $\Pi^*(Z_V) $ are just the collection of partitions which minimize $h_{\lambda}(\P)$ at $\lambda = I(Z_V)$.
+Geometrically speaking, we know that the first line segment of $h(\lambda)$ is $\lambda$. Theorem \ref{thm:f} shows that $I(Z_V)$ is the first critical value of $h(\lambda)$. It is the x coordinate of the intersection point of $-\lambda$ and a line with slope large than 1. $\Pi^*(Z_V) $ are just the collection of partitions which minimize $h_{\lambda}(\P)$ at $\lambda = I(Z_V)$.
 \end{remark}
 
 \begin{corollary}\label{cor:F}
@@ -303,7 +296,7 @@ Let $\gamma = I(Z_V)$
 & \iff I(Z_V) = I_{\P}(Z_V)
 \end{align*}
 \end{proof}
-This connection is similar from RIR in literature \cite{ic}. We have $f(V)=0$ in our definition and the first line segment is $-\lambda$. Therefore
+This connection is similar with RIR in literature \cite{ic}. We have $f(V)=0$ in our definition and the first line segment is $-\lambda$. Therefore
 $(I(Z_V),  y_1)$ is the first turning point of $h(\lambda)$.
 \begin{corollary}\label{cor:large}
 	\begin{equation}
@@ -314,8 +307,8 @@ $(I(Z_V),  y_1)$ is the first turning point of $h(\lambda)$.
 	From equation \eqref{eq:hLambda} or from the geometric meaning.
 \end{proof}
 
-Using the corollary \ref{cor:large}, we can give an algorithm to compute $I(Z_V)$.
-\begin{algorithm}
+Using the Corollary \ref{cor:large}, we can give an algorithm to compute $I(Z_V)$.
+\begin{algorithm}\label{alg:first_critical_value_computing}
 	\begin{algorithmic}[1]
 		\REQUIRE Statistics of $Z_V$ sufficient for calculating $f(B)$ for all $B \subseteq V$
 		\ENSURE $I(Z_V)$ and partition $\P'$ such that $I_{\P'}(Z_V) = I(Z_V)$
@@ -329,16 +322,10 @@ Using the corollary \ref{cor:large}, we can give an algorithm to compute $I(Z_V)
 	\end{algorithmic}
 \end{algorithm}
 
-We have shown that the first critical value and partition match of the two problems. Next we show all their critical values and partitions are the same.
-\begin{theorem}
-	\end{theorem}
+We have shown that the first critical value and partition match in the two problems. We can show all their critical values and partitions are the same. See Theorem 3.3 in \cite{ic} for detail.
+
 \subsection{Computing first critical value via fundamental partition}
-Similar to Proposition 3.1 in literature \cite{ic}, we can compute $C_{\gamma_1}$ by computing $\P^*(Z_V)$
-\begin{description}
-\item[Uniqueness] Follows from submodularity of  $h(\lambda)$ defined in equation \eqref{eq:hLambda}
-\item[Maximal] Theorem 5.3 in literature \cite{ska}
-\end{description}
-\red{Why}
+Algorithm \ref{alg:first_critical_value_computing} shows the detail. This is also the algorithm to compute the graph strength.
 
 \subsection{clustering by fundamental partition}
 \begin{algorithm}
@@ -361,15 +348,16 @@ $\Gamma(Z_V) = \{ \gamma' | (\gamma', B) \in \mathcal{S}\} $ and $ \mathcal{C}_{
 \end{algorithmic}
 \end{algorithm}
 
-The computation of fundamental partition is not easy.
+The computation of fundamental partition is not easy. Therefore the above algorithm is not practical.
+
 \subsection{Hierarchical clustering by PSP}
 We inspect the property of $h(\lambda)$ from \eqref{eq:hLambda}. Since $h(\lambda)$ is piecewise linear, it is characterized by its turning points where the slope changes.
 At turning point $p_i$, the optimal solution to achieve $h(\lambda)$ forms a lattice $\Pi_i$.
 Define $\mathcal{P}_i = \min \Pi_i$, i.e. the finest partition from $\Pi_i$. Then we can show that
-$\Pi_1 \succ \Pi_2 \dots \succ \Pi_N$, where $\Pi_1$ is the fundamental partition of $Z_V$ and $\Pi_N$ contains singleton elements only.
+$\P_1 \succ \P_2 \dots \succ \P_N$, where $\P_1$ is the fundamental partition of $Z_V$ and $\P_N$ contains singleton elements only.
 
-We have the following conclusion
-\section{Relation to PIN model}
+\section{Relation with other models}
+\subsection{Relation to PIN model}
 In PIN(Pairwise Independent Network)(literature \cite{pin}, see definition 2.1 and 2.2 for detail).
 We can show that ($E$ is the edge set, $e \in C$ represents the edge $e$ is in the subgraph $C$)
 \begin{align*}
@@ -382,63 +370,22 @@ I(Z_V) = \min_{ \P \in \Pi'(V)} \frac{ \sum_{C \in \P} c(\delta_{G}(C))}{2(\abs{
 \end{equation}
 where $\delta_{G}(C) = \{e = (u, v) \in E | u \in C, v \not\in C\} $ and $c(A) = \sum_{e\in A} H_e$.
 This is (4.21a) in literature \cite{ic}
-\section{Difference to entropy formulation}
+\subsection{Difference from entropy formulation}
 In literature \cite{ic}, the definition of MMI is based on the submodular function is $H(Z_C)$, which is the joint entropy. It has the non-deceasing property such that the larger $C$ is, the bigger value $H(Z_C)$ takes. However, in our formulation of MMI, we use the graph cut function, it does not have the monotonic property and $f(V) = 0$ from the definition. Therefore, our work is not a special case of literature \cite{ic} even through many conclusions are similar.
 
 In PIN model, the two definitions coincide. But the PIN model has strong assumptions and is not practical. Our formulation of MMI is suitable to be applied directly to cluster cases in real work application.
-\subsection{Difference to mac}
+\subsection{Difference from mac}
 minimum average cost is a similar but different clustering method.
 
 In literature \cite{mac}, only the first critical value and partition information are used to do the clustering task. The threshold is controlled by $\beta$ not our $\lambda$.
 \section{Contributions}
 \begin{enumerate}
-\item Use graph cut function to reformulate MMI.
-\item Implement the algorithm in C++, which is fast and can be used by others.
-\item The algorithm can be customized by using different similarity metric between two random variables.
+\item Use graph cut function to reformulate info-clustering.
+\item Implementation of the algorithm in C++, which is fast and can be used by others.
+\item The algorithm can be customized by using different similarity metric between two objects.
 \end{enumerate}
 \appendix
-\section{Approximation of KL Divergence}\label{sec:akld}
-\ifpublish
-\input{appr_kld.tex}
-\fi
-For continue random variables, we modify the summation notation with the integral notation.
-\begin{align}
-\norm{\widetilde{B}}_F^2 & = \int \frac{(p(x,y)-p(x)p(y))^2}{p(x)p(y)} dx dy
-\end{align}
-%compared with the definition of mutual information $I(X;Y) =  \E[\log \frac{P(X,Y)}{P(X)P(Y)}] $,
-%there is some similarity.
-
-\begin{example}\label{ex:rho}
-Consider $(X,Y)$ conforms to multivariate distribution with correlation coefficient $\rho$, then
-we can compute $\norm{B}_F^2 = \frac{1}{1-\rho^2}$ for $0\leq \rho < 1 $.
-\end{example}
-
-
-Quantity ${1 \over 2} \norm{\widetilde{B}_{XY}}_F^2$ can be estimated from H-score.
-Let $\sigma_1 \geq \sigma_2 \dots \geq \sigma_n$ be the singular values of  $\widetilde{B}$,
-then
-\begin{equation}
-{1 \over 2} \sum_{i=1}^k \sigma_i^2  = \displaystyle\sup_{f\in \R^k, g \in \R^k} \E_{XY}[f^T(X)g(Y)]- {1 \over 2} \mathrm{tr}(\Lambda_{f(X)} \Lambda_{g(Y)})
-\end{equation}
-Take proper $k$ we can get at least \textbf{lower bound} of ${1 \over 2} \norm{\widetilde{B}_{XY}}_F^2$.
-
-We use the above method to get h-score and compare it to the method:
-
-\begin{table}[!ht]
-\centering
-\begin{tabular}{ccc}
-\hline
-$\rho$ & theoretical & empirical \\
-\hline
-0.1 & 0.01 & 0.01 \\
-0.5 & 0.33 & 0.27 \\
-0.9 & 4.26 & 0.78 \\
-\hline
-\end{tabular}
-\end{table}
-
-
-\section{Algorithm Architecture}
+\section{Algorithm Description}
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=5cm]{pic/pyramid.eps}
@@ -566,7 +513,7 @@ In this section, we use 4 different clustering methods and test them on 5 differ
 \InputIfFileExists{compare.tex}{}{}
 \caption{clustering accuracy for the proposed and existing algorithms}
 \end{table}
-\subsection{Outlier detection}
+\subsection{Application to Outlier detection}
 Since Info-clustering algorithm often produces singletons as a cluster. It is very suitable to apply info-clustering to detect anomaly in datasets.
 
 Given a dataset with $n$ training data point in $m$ dimensional space. We measure their pairwise similarity by $w_{ij} = \exp\{-\frac{\norm{x_i - x_j}^2}{m}\} $. Then we can apply info-clustering algorithm. The largest critical value after running the algorithm is denoted by $\gamma_N$. We select the clustering result corresponding to last by two partition with the largest cluster as normal points and the others as anomaly (usually they are just singletons).
@@ -616,9 +563,7 @@ We get the boundary condition whether predicted data point $x$ is normal point (
 We make a simple experiment to show the power of info-clustering applied to outliers detection problem. We call our method info-detection. There are 300 points on planar space with 45 outliers and 255 normal points centered around the origin. We compare two algorithms, Elliptic Envelope and Info-detection. Both method achieve 100\% accuracy for this dataset. The Elliptic Envelope method needs to specify the number of outliers as a parameter while our algorithm needs no parameter to tune.  Further, the decision boundary of Elliptic Method is tight around the normal points while the boundary of Info-detection is a little loose.
 \begin{figure}[!ht]
 	\centering
-	\IfFileExists{experiment/outlier_detection/build/outlier_compare.eps}
-	{\includegraphics[width=11cm]{experiment/outlier_detection/build/outlier_compare.eps}}
-	{} % not up-to-date
+	\includegraphics[width=11cm]{pic/outlier_boundary_illustration.eps}
 	\caption{Comparison of different outliers detection algorithm}\label{fig:outlier}
 \end{figure}
 \bibliographystyle{plain}
