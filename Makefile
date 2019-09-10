@@ -6,7 +6,8 @@ BUILD_DIR = ./build
 all: $(BUILD_DIR)/exportlist.bib $(BUILD_DIR)/main.pdf $(BUILD_DIR)/clustering.pdf ${BUILD_DIR}/psp_improved.pdf ${BUILD_DIR}/pmf.pdf
 
 $(BUILD_DIR)/exportlist.bib: exportlist.bib
-	cp exportlist.bib $(BUILD_DIR)
+	mkdir -p $(BUILD_DIR)
+	cp exportlist.bib $(BUILD_DIR)/
 	
 $(BUILD_DIR)/main.pdf: main.tex
 	# run twice to generate the toc and make label and reference work
