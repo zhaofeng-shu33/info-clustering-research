@@ -1,6 +1,13 @@
 \documentclass{article}
 \input{macros.tex}
+\title{Trivial clustering in info-clustering framework}
+\author{zhaofeng-shu33}
 \begin{document}
+\maketitle
+This article is a theoretical exploration of trvial clustering case within info-clustering framework \cite{ic}.
+We give the sufficient condition when the solution from info-clustering becomes trivial and
+make some strong proposition on special graphs based on our sufficient condition. The verification code can be found on \href{https://gitee.com/freewind201301/info-clustering-special-case-verification}{this} repository.
+
 If the graph weights are similar, we cannot distinguish each cluster. 
 In such case, info-clustering algorithm will provide trivial solution: 
 that is, either the whole set is one cluster or each singleton forms one cluster.
@@ -141,4 +148,6 @@ m & m <\frac{n^2}{2}, S_1,S_2 \textrm{ are non-trival cluster} \\
 \end{equation*}
 This example inspires us to assign the weight value to unweighted graph as the number of triangle (3 node cliques) the edges contribute plus 1. In such case $ r = n-1$ and suboptimal result can be obtained. See \texttt{experiment\_equal\_n.py} for code verification.
 \end{example}
+\bibliographystyle{plain}
+\bibliography{exportlist}
 \end{document}

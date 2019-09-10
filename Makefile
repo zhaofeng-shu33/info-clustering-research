@@ -3,7 +3,7 @@ BUILD_DIR = ./build
 
 .PHONY: all
 
-all: $(BUILD_DIR)/exportlist.bib $(BUILD_DIR)/main.pdf $(BUILD_DIR)/clustering.pdf ${BUILD_DIR}/psp_improved.pdf ${BUILD_DIR}/pmf.pdf
+all: $(BUILD_DIR)/exportlist.bib $(BUILD_DIR)/main.pdf $(BUILD_DIR)/clustering.pdf ${BUILD_DIR}/psp_improved.pdf ${BUILD_DIR}/pmf.pdf $(BUILD_DIR)/trival_solution.pdf
 
 $(BUILD_DIR)/exportlist.bib: exportlist.bib
 	mkdir -p $(BUILD_DIR)
@@ -31,3 +31,10 @@ $(BUILD_DIR)/psp_improved.pdf: psp_improved.tex
 	mkdir -p $(BUILD_DIR)
 	xelatex -output-directory=$(BUILD_DIR) psp_improved.tex
 	xelatex -output-directory=$(BUILD_DIR) psp_improved.tex
+
+$(BUILD_DIR)/trival_solution.pdf: trival_solution.tex
+	mkdir -p $(BUILD_DIR)
+	xelatex -output-directory=$(BUILD_DIR) trival_solution.tex    
+	cd $(BUILD_DIR) && bibtex trival_solution.aux && cd ..    
+	xelatex -output-directory=$(BUILD_DIR) trival_solution.tex
+	xelatex -output-directory=$(BUILD_DIR) trival_solution.tex
