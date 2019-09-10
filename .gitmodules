@@ -19,3 +19,6 @@
 [submodule "data-clustering"]
 	path = experiment/data-clustering
 	url = https://github.com/zhaofeng-shu33/data-clustering-experiment.git
+[submodule "nips-authorship"]
+	path = experiment/nips-authorship
+	url = https://gitee.com/freewind201301/nips-authorship
