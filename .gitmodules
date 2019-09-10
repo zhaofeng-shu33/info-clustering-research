@@ -1,9 +1,3 @@
-[submodule "cmty"]
-	path = experiment/community_detection/cmty
-	url = https://github.com/zhaofeng-shu33/community
-[submodule "bhcd"]
-	path = experiment/community_detection/bhcd
-	url = https://github.com/zhaofeng-shu33/bhcd
 [submodule "code"]
 	path = code
 	url = https://github.com/zhaofeng-shu33/info-clustering-python-binding
@@ -22,3 +16,6 @@
 [submodule "nips-authorship"]
 	path = experiment/nips-authorship
 	url = https://gitee.com/freewind201301/nips-authorship
+[submodule "community-detection"]
+	path = experiment/community-detection
+	url = https://github.com/zhaofeng-shu33/hierarchical-community-detection
