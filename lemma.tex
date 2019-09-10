@@ -45,8 +45,8 @@ I_{\P}(Z_V) =& I(Z_{C_1} \wedge \dots \wedge Z_{C_k}) \label{eq:mmi_representati
 \end{lemma}
 \begin{proof}
 \ifshowNonSelf
-$I(Z_1 \wedge Z_2)$ is a kind of representation of mutual information.
-And we use \eqref{eq:mmi_representation} to represent the multivariate mutual information.
+$I(Z_1 \wedge Z_2)$ is a kind of representation of mutual similarity for a 2-partition.
+And we use \eqref{eq:mmi_representation} to represent the multivariate similarity for a given partition.
 
 Equation \eqref{eq:mi_mmi} is true for $k=2$. Suppose it holds for $k=m$. Then
 let $B=\{C_m, C_{m+1}\}$ , $\P=\{C_1, \dots, C_{m+1}\}$
@@ -65,7 +65,7 @@ See corollary 5.4 of literature \cite{ska}.
 \fi
 \end{proof}
 \begin{remark}
-This lemma shows that we can use the mutual information to compute the multivariate mutual information.
+This lemma shows that we can use the mutual similarity to compute the multivariate similarity for a given partition.
 \end{remark}
 \begin{lemma}\label{lem:elementLarge}
 If $I_{P}(Z_V) = I(Z_V)$, then for any $\P_B, B\in P$, we have $I_{P_B}(Z_B) \geq I(Z_V)$. 
@@ -138,7 +138,7 @@ By induction, \eqref{eq:P12Inequality} holds.
 	& \overbrace{\geq}_{(b)} \frac{1}{k-1}\sum_{i=1}^{k-1} I(Z_{C_i \cap C} \wedge Z_{\cup_{j=i+1}^k C_j \cap C}) \\
 	& = I(Z_{C_1 \cap C} \wedge \dots \wedge Z_{C_k \cap C}) \geq I(Z_C)
 \end{align*}
-$(a)$ is from lemma \ref{lem:smallZB} and $(b)$ is from the data processing inequality of mutual information (or the restriction of graph cut function).
+$(a)$ is from lemma \ref{lem:smallZB} and $(b)$ is from the data processing inequality of mutual information (or the property of graph cut function).
 \else
 The proof is similar to Proposition 5.3 of literature \cite{ska}.
 \fi

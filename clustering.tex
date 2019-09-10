@@ -72,7 +72,7 @@ The key is how to define $I(Z_B)$, which is called the multivariate mutual infor
 \end{itemize}
 
 We give a definition as follows:
-\begin{align}
+\begin{align}\label{eq:IZV}
 I(Z_V) & = \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V) \\
 \label{eq:newDef}  I_{\mathcal{P}}(Z_V) & = \frac{1}{ 2( \abs{\mathcal{P}} - 1) } \sum_{\substack{(i,j) \not\in C\\ C\in \mathcal{P}}} w_{ij}
 \end{align}
@@ -83,15 +83,8 @@ That is, multiplying all $ w_{ij}$ by the same constant does not affect the clus
 \end{remark}
 \section{Property}
 \subsection{Graph weight interpretation}
-Our definition \eqref{eq:newDef} comes from an approximation of KL-Divergence under certain conditions. See appendix \ref{sec:akld} for detail.
-
-Let $w_{ij} = w_{ij}$.
-$w_{ij}$ can be treated as a kind of similarity metric between two random variables.
-
-The graph-cut weight is $w_{ij}$.
-\subsection{Notation}
-If we treat each index as a vertex in a graph, then the partition $\P$ divides these vertices into $\abs{\P}$ groups. 
-
+$w_{ij}$ can be treated as a kind of similarity metric between two objects. It is naturally to associate $w_{ij}$ with the edge weight in a graph.
+If we treat each index as a vertex in a graph, then the partition $\P$ divides these vertices into $\abs{\P}$ groups.  Besides, we define
 \begin{align}
 f(C) & = \frac{1}{2}\sum_{i\in C, j \in V\backslash C} w_{ij} \\
 f_B(C) & = \frac{1}{2}\sum_{i\in C, j \in B\backslash C} w_{ij}  \textrm{  for }C \subseteq B  \\
@@ -101,15 +94,15 @@ We can write
 f[\P] & = \sum_{C \in \P} f(C) \\
 I_{\mathcal{P}}(Z_V)  &= \frac{1}{\abs{\P}  - 1}f(\P) 
 \end{align}
-%$f$ on $S_i$ is a submodular function defined as graph cut.
+we call $I(Z_V)$ multivariate similarity between it measures the similarity shared by multiple objects.
 \subsection{Property}
-Below we show some properties of MMI.
+Below we show some mathematical properties of $I(Z_V)$.
 \ifpublish
 \input{notation.tex}
 \input{examples.tex}
 \fi
 \input{lemma.tex}
-From lemma \ref{lem:LargeIZV}, we can show that
+From Lemma \ref{lem:LargeIZV}, we can show that
 \begin{theorem}[Laminarity]\label{thm:laminarity}
 \begin{equation}\label{eq:P}
 I(Z_{C_1 \cup C_2}) \geq \min\{ I(Z_{C_1}), I(Z_{C_2})\}, \textrm{ for } C_1\cap C_2 \neq \emptyset
@@ -123,7 +116,7 @@ provided we can compute the first critical value and the first set of clusters.
 \begin{proof}
 	We proceed by contradiction. Let $V=C_1 \cup C_2$ and suppose $I(Z_V) < I(Z_{C_1}),
 	I(Z_V) < I(Z_{C_2})$. There exists $\P$ such that $I_{\P}(Z_V) = I(Z_V)$.
-	Then by lemma \ref{lem:LargeIZV} we can get $C_1 \subset B_1, C_2 \subset B_2, B_1, B_2 \in
+	Then by Lemma \ref{lem:LargeIZV} we can get $C_1 \subset B_1, C_2 \subset B_2, B_1, B_2 \in
 	\P$. Since $C_1 \cap C_2 \neq \emptyset \Rightarrow B_1 = B_2$. Therefore $V=C_1 \cup C_2 \subset B_1$ which contradicts $\abs{\P}>1$.
 \end{proof}
 \begin{theorem}\label{thm:lattice}
@@ -137,18 +130,18 @@ if $I(Z_V) = I_{\P_1}(Z_V) = I_{\P_2}(Z_V)$, then $I(Z_V)
 Consider $C \in \P_1 \vee \P_2$, $C\not\in \P_1$. we will show that $I(Z_C) = I(Z_V)$.
 
 We have $C = \cup_{i=1}^k B_i ,B_i\in \P_1, k>1$. 
-From lemma \ref{lem:smallZB} we have $I(Z_C) \leq I(Z_V)$.
-Consider the relationship of $C$ with $\P_2$. if $C\in \P_2$, by lemma \ref{lem:elementLarge} we have
+From Lemma \ref{lem:smallZB} we have $I(Z_C) \leq I(Z_V)$.
+Consider the relationship of $C$ with $\P_2$. if $C\in \P_2$, by Lemma \ref{lem:elementLarge} we have
 $I(Z_C) \geq I(Z_V)$. The equality $I(Z_C) = I(Z_V)$ holds.
 
-Suppose  $C = \cup_{j=1}^r D_j ,D_j\in \P_2, r>1$. Then $B_i \neq D_j$ by the definition of $\P_1\vee \P_2$. From lemma \ref{lem:elementLarge}, $I(B_i)\geq I(Z_V), I(D_j) \geq I(Z_V)$
+Suppose  $C = \cup_{j=1}^r D_j ,D_j\in \P_2, r>1$. Then $B_i \neq D_j$ by the definition of $\P_1\vee \P_2$. From Lemma \ref{lem:elementLarge}, $I(B_i)\geq I(Z_V), I(D_j) \geq I(Z_V)$
 Therefore, we can found $D_t$ such that $B_1 \cap D_t\neq\emptyset$. Then from the laminarity property of MMI, $I(B_1 \cup D_t)\geq I(Z_V)$. If $B_1 \cup D_t \subsetneq C$, we can find another $B_i$ or $D_j$ which has nonempty intersection with  $B_1 \cup D_t$. Otherwise $\{B_1 \cup D_t, B_2, \dots B_k\}$
 forms a partition of $C$ and $D_t \subset B_1$; $\{D_t \cup B_1\}\cup \{ D_1, \dots D_r\}\backslash \{D_t\}$
 forms a partition of $C$ and $B_1 \subset D_t$. That is $B_1 = D_t$, a contradiction with $B_1 \neq D_t$. 
 We can continue this process. If this process stops when $(\cup B_i)\cup(\cup D_j) \subsetneq C$. we then have $\cup B_i = \cup D_j \in \P_1 \vee \P_2$, a contradiction with $C \in \P_1 \vee \P_2$. 
 Therefore, this process stops when the union equals $C$ and we will have $I(Z_C) \geq I(Z_V)$.
 
-Since $\P_1 \preceq \P_1 \vee \P_2 $, using lemma \ref{lem:multi_combination}, we have
+Since $\P_1 \preceq \P_1 \vee \P_2 $, using Lemma \ref{lem:multi_combination}, we have
 \begin{equation*}
 I_{\P_1}(Z_V) = \Pr(\P_1 \vee \P_2) I_{\P_1 \vee \P_2}(Z_V) + \sum_{Q \in \P\backslash\P'} \Pr(Q) I_{Q}(Z_{\cup_{C\in Q}C})
 \end{equation*}
@@ -161,8 +154,8 @@ We get $I_{\P_1 \vee \P_2}(Z_V) \leq I(Z_V)$, then we have $I_{\P_1 \vee \P_2}(Z
 On the other hand, consider $C\in \P_1, \not\in \P_1\wedge\P_2$ and $C = \cup_{i=1}^k B_i, k>1$ where $B_i \in \P_1 \wedge \P_2$.
 Consider $\P_C = \{B_1, \dots, B_k\}$. Each $B_i$ belongs to one of subsets of $\P_2$. Suppose $B_1, B_2 \subseteq D_i \in \P_2$. Then $B_1\cup B_2 \subseteq D_i$,
 which contradicts the maximal property of $\P_1\wedge \P_2$. Therefore, we have $\P_D = \{D_1, D_2, \dots D_k\}\subseteq \P_2$ such that $B_i \subset D_i$.
-From lemma \ref{lem:smallZB}, we have $I_{\P_D}(Z_D) \leq I(Z_V)$. Since $\abs{\P_D} = \abs{\P_C}$, From the definition we have $I_{\P_C}(Z_C) \leq I_{\P_D}(Z_D) \leq I(Z_V)$.
-Then using lemma \ref{lem:ref_combination}, let $\P' = \P_C \cup \P_1\backslash \{C\}$ we have
+From Lemma \ref{lem:smallZB}, we have $I_{\P_D}(Z_D) \leq I(Z_V)$. Since $\abs{\P_D} = \abs{\P_C}$, From the definition we have $I_{\P_C}(Z_C) \leq I_{\P_D}(Z_D) \leq I(Z_V)$.
+Then using Lemma \ref{lem:ref_combination}, let $\P' = \P_C \cup \P_1\backslash \{C\}$ we have
 \begin{align*}
 I_{\P'}(Z_V) & = \theta I_{\P_1}(Z_V) + (1-\theta) I_{\P_C}(Z_C) \\
 & \leq \theta I(Z_V) + (1- \theta)I(Z_V) = I(Z_V)
@@ -171,7 +164,7 @@ Since $I(Z_V)$ is minimum value, then we have $I_{\P'}(Z_V)=I(Z_V)$.
 $\P'\wedge \P_2 = \P_1 \wedge \P_2$ and we can repeat the above procedure using $\P_1 = \P'$. It terminates in finite steps since $\abs{V} > \abs{\P'} > \abs{\P_1}$.
 \end{proof}
 
-From theorem \ref{thm:lattice}, we have the corollary:
+From Theorem \ref{thm:lattice}, we have the corollary:
 \begin{corollary}
 There is a unique finest partition $\P^* \in \Pi^*$, referred to as the \textbf{fundamental partition}.
 \end{corollary}
@@ -186,7 +179,7 @@ $I(Z_B) > I(Z_V)$ for $B \in \P^*, \abs{B}>1$.
 \begin{proof}
 Suppose $I(Z_B)=I_{\P_B}(Z_B)$.
 Let $\P' = \P_B \cup  \P^* \backslash \{B\}$.
-Then by lemma \ref{lem:ref_combination}, there exists $\theta \in (0,1)$ such that 
+Then by Lemma \ref{lem:ref_combination}, there exists $\theta \in (0,1)$ such that 
 \begin{equation}\label{eq:convexZ}
 I_{\P'}(Z_V) = \theta I_{\P^*}(Z_V) + (1-\theta) I_{\P_B}(Z_B)
 \end{equation}
@@ -195,7 +188,7 @@ $I(Z_V) < \theta I(Z_V) + (1-\theta) I(Z_B) \Rightarrow I(Z_B) > I(Z_V)$.
 
 \end{proof}
 
-From theorem \ref{thm:strict_larger_mi} we have 
+From Theorem \ref{thm:strict_larger_mi} we have 
 \begin{theorem}
 Suppose $\P_{\gamma_i} = \{C, C\in V \}$, then
 \begin{equation}
@@ -217,7 +210,7 @@ Denote the collection of set which achieves $\gamma_{i+1}$ as $C_{i+1}:=\{C \in 
 	then $B \in \P_{\gamma_{i+1}}/\P_{\gamma_{i}}$;
 	for $B \in \P_{\gamma_{i+1}}/\P_{\gamma_{i}}$, $B\subsetneq C \in \P_{\gamma_i}$, since $B$ is maximal, $I(Z_C) \leq \gamma_{i+1}$, 
 	then $I(Z_B) > I(Z_C)$,
-	by lemma \ref{lem:LargeIZV} and maximal property of $B$, $B \in \P^*_C$.
+	by Lemma \ref{lem:LargeIZV} and maximal property of $B$, $B \in \P^*_C$.
 \end{proof}
 \begin{proposition}[info-clustering]\label{prop:ta}
 The following two procedures generate the same hierarchical tree. Each non-leaf node of the hierarchical tree is represented by a subset $S \subset V$, which is called a cluster of graph $G$.
@@ -231,7 +224,7 @@ Theorem \ref{thm:laminarity} implies the maximal requirement for the bottom-up a
 We can make the connection of the two approaches with the original definition of info-clusters in 
 equation \eqref{eq:def_CgammaZV}.
 
-The smallest critical value of $\mathcal{C}_{\gamma}(Z_V)$ is $I(Z_V)$  and for each $B \in \P$, since  our $\P$ is fundamental partition we have $I(Z_B) > I(Z_V)$ by Theorem \ref{thm:strict_larger_mi} for $\abs{B}>1$. Take $\gamma = I(Z_V)$, by lemma \ref{lem:LargeIZV}, if $I(Z_C) > \gamma$ we have $C\subseteq B' \in \P$. Therefore $B$ is maximal and $B\in \mathcal{C}_{\gamma}(Z_V)$. The same argument can be done for subtrees by replacing $V$ by subroot. Therefore, all tree node sets by top-down approach belong to $\mathcal{C}_{\gamma}(Z_V)$. By Theorem 2.4 in \cite{ic}, we conclude all clusters in $C_{\gamma}(Z_V)$ is a tree node set by top-down approach.
+The smallest critical value of $\mathcal{C}_{\gamma}(Z_V)$ is $I(Z_V)$  and for each $B \in \P$, since  our $\P$ is fundamental partition we have $I(Z_B) > I(Z_V)$ by Theorem \ref{thm:strict_larger_mi} for $\abs{B}>1$. Take $\gamma = I(Z_V)$, by Lemma \ref{lem:LargeIZV}, if $I(Z_C) > \gamma$ we have $C\subseteq B' \in \P$. Therefore $B$ is maximal and $B\in \mathcal{C}_{\gamma}(Z_V)$. The same argument can be done for subtrees by replacing $V$ by sub-root. Therefore, all tree node sets by top-down approach belong to $\mathcal{C}_{\gamma}(Z_V)$. By Theorem 2.4 in \cite{ic}, we conclude all clusters in $C_{\gamma}(Z_V)$ is a tree node set by top-down approach.
 
 The largest critical value of $\mathcal{C}_{\gamma}(Z_V)$ is $\gamma_N = \max_{B\subseteq V} I(Z_B)$. Take $\gamma = \gamma_N - \epsilon$ where $\epsilon$ is sufficient small, since $I(Z_C) > \gamma$ and $C$ is maximal, we have $C \in \mathcal{C}_{\gamma}(Z_V)$. For each tree node set, since it is also maximal for some $\gamma$, all of them belong to $\mathcal{C}_{\gamma}(Z_V)$. By Theorem 4.2 in \cite{agg}, we conclude all clusters in $C_{\gamma}(Z_V)$ is a tree node set by bottom-up approach.
 
@@ -273,7 +266,7 @@ If $\lambda_1 < \lambda_2$, then $\P_2 \preceq \P_1$.
 
 
 In $h(\lambda)$, for each turning point of line segments, 
-from lemma \ref{lem:lattice_structure},
+from Lemma \ref{lem:lattice_structure},
 the optimal partition forms a lattice. 
 
 The connection of \red{MMI with DT} is through equation \eqref{eq:Connection}. More precisely, $I(Z_V)$
@@ -628,13 +621,6 @@ We make a simple experiment to show the power of info-clustering applied to outl
 	{} % not up-to-date
 	\caption{Comparison of different outliers detection algorithm}\label{fig:outlier}
 \end{figure}
-\begin{thebibliography}{9}
-\bibitem{ic}Info-Clustering: A Mathematical Theory for Data Clustering
-\bibitem{ska} Multivariate Mutual Information Inspired by Secret-Key Agreement
-\bibitem{pin} Info-Clustering: An Efficient Algorithm by Network Information Flow
-\bibitem{mac} Minimum Average Cost Clustering
-\bibitem{fwrobust} Provable Submodular Minimization using Wolfe's Algorithm
-\bibitem{psp} The Principal Lattice of Partitions of a Submodular Function
-\bibitem{agg} Agglomerative Info-Clustering
-\end{thebibliography}
+\bibliographystyle{plain}
+\bibliography{exportlist}
 \end{document}
