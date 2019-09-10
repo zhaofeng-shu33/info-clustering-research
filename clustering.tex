@@ -8,7 +8,7 @@
 \showNonSelftrue
 \showIrrelevantfalse
 \begin{document}
-\title{draft}
+\title{Introduction to info-clustering and DT algorithm}
 \author{zhaofeng-shu33}
 \maketitle
 %整体思路：
@@ -22,23 +22,23 @@
 %   7. application in real world dataset
 %   8. 总结与展望
 \section{Background}
-Hierarchical clustering is a popular clustering method. It produces a semi-lattice structure of clusters. 
+Hierarchical clustering is a popular clustering method. It produces a clustering tree. 
 An information-theoretic approach to hierarchical clustering is formulated in \cite{ic}.
 
 The idea of this formulation is as follows:
 
-Suppose we have a set of random variables $Z_1, Z_2, \dots, Z_{\abs{V}}$ to be clustered, and for a given threshold $\gamma \in \mathbb{R}$, the set of clusters is defined as:
+Suppose we have a set of objects $Z_1, Z_2, \dots, Z_{\abs{V}}$ to be clustered, and for a given threshold $\gamma \in \mathbb{R}$, the set of clusters is defined as:
 \begin{equation}\label{eq:def_CgammaZV}
 C_{\gamma}(Z_V) = \textrm{maximal}\{ B \in V \vert \abs{B} > 1, I(Z_B) > \gamma \}
 \end{equation}
-This definition is well defined if \eqref{eq:P} holds. See theorem \ref{thm:laminarity} for detail.
+This definition is well defined if \eqref{eq:P} holds. See Theorem \ref{thm:laminarity} for detail.
 
 $C_{\gamma}(Z_V)$ consists of collection of disjoint subsets of $V$.
 The definition of $C_{\gamma}(Z_V)$ excludes the singleton element,
-we use the notation $\P_{\gamma}$ to denote the partition associated with $C_{\gamma}(Z_V)$.$\P_{\gamma}$ is obtained by adding $C_{\gamma}(Z_V)$ with all the other singletons.
+we use the notation $\P_{\gamma}$ to denote the partition associated with $C_{\gamma}(Z_V)$. $\P_{\gamma}$ is obtained by adding $C_{\gamma}(Z_V)$ with all the other singletons.
 $\P_{\gamma}$ is a partition of $V$.
 
-\begin{theorem}\label{thm:hierachical}
+\begin{theorem}\label{thm:hierarchical}
 $\P_{\gamma_2} \preceq \P_{\gamma_1}$ if $\gamma_1 < \gamma_2$.
 \end{theorem}
 \begin{proof}
@@ -47,7 +47,7 @@ if $\abs{C}>1$, then $C \in C_{\gamma_2}(Z_V)$ and we have $I(Z_C) > \gamma_2 > 
 As a result, there exists $C' \in C_{\gamma_1}(Z_V)$ such that $C\subseteq C' \in \P_{\gamma_1}$.
 \end{proof}
 \begin{remark}
-Theorem \ref{thm:hierachical} shows that for a series of threshold $\gamma$, $\P_{\gamma}$ forms a \textbf{hierarchical clustering} structure.
+Theorem \ref{thm:hierarchical} shows that for a series of threshold $\gamma$, $\P_{\gamma}$ forms a \textbf{hierarchical clustering} structure.
 \end{remark}
 
 It can be seen there are finite values $\gamma$ such that $C_{\gamma}(Z_V)$ differs.
@@ -61,36 +61,34 @@ C_{\gamma_i}(Z_V) & \gamma \in [\gamma_i, \gamma_{i+1}), 1\leq i < N \\
 \end{cases}
 \end{equation*}
 Obviously, the first critical value is $I(Z_V)$, and the critical value set is $\{\gamma_1, \dots, \gamma_N \}$.
-Let $\P_{\gamma_0} = \{V\}$, then the hierachical partition structure is $\P_{\gamma_0} \prec \P_{\gamma_1} \prec \dots \P_{\gamma_N}$.
+Let $\P_{\gamma_0} = \{V\}$, then the hierarchical partition structure is $\P_{\gamma_0} \prec \P_{\gamma_1} \prec \dots \P_{\gamma_N}$.
 where $\P_{\gamma_N} = \{1, 2, \dots, \abs{V}\}$.
 
-The key is how to define $I(Z_B)$, which is called the multivariate mutual information(MMI) for $\{Z_i | i
-\in B\}$ such that
+The key is how to define $I(Z_B)$, which is called the multivariate mutual information(MMI) in \cite{ic}. Generally speaking, the definition of $I(Z_B)$ should have the following three properties:
 \begin{itemize}
 \item satisfies equation \eqref{eq:P}
-\item easily computable.
+\item computable.
 \item theoretically interpretable.
 \end{itemize}
 
-We give a definition of MMI as follows:
+We give a definition as follows:
 \begin{align}
 I(Z_V) & = \min_{\mathcal{P} \in \Pi'(V)} I_{\mathcal{P}}(Z_V) \\
-\label{eq:newDef}  I_{\mathcal{P}}(Z_V) & = \frac{1}{ 2( \abs{\mathcal{P}} - 1) } \sum_{\substack{(i,j) \not\in C\\ C\in \mathcal{P}}} \norm{\widetilde{B}_{ij}}_F^2
+\label{eq:newDef}  I_{\mathcal{P}}(Z_V) & = \frac{1}{ 2( \abs{\mathcal{P}} - 1) } \sum_{\substack{(i,j) \not\in C\\ C\in \mathcal{P}}} w_{ij}
 \end{align}
 
-$\widetilde{B}_{ij}$ is called divergence transfer matrix which comes from the information geometry theory.
 \begin{remark}
-From the definition of MMI, we can get the scaling-invariant property of info-clustering.
-If we use MMI to do clustering, scaling $ \norm{\widetilde{B}_{ij}}_F^2$ does not affect the clustering result.
+From the definition of $I(Z_V)$, we can get the scaling-invariant property of info-clustering. 
+That is, multiplying all $ w_{ij}$ by the same constant does not affect the clustering result.
 \end{remark}
 \section{Property}
-\subsection{Origin}
+\subsection{Graph weight interpretation}
 Our definition \eqref{eq:newDef} comes from an approximation of KL-Divergence under certain conditions. See appendix \ref{sec:akld} for detail.
 
-Let $w_{ij} = \norm{\widetilde{B}_{ij}}_F^2$.
-$\norm{\widetilde{B}_{ij}}_F^2$ can be treated as a kind of similarity metric between two random variables.
+Let $w_{ij} = w_{ij}$.
+$w_{ij}$ can be treated as a kind of similarity metric between two random variables.
 
-The graph-cut weight is $\norm{\widetilde{B}_{ij}}_F^2$.
+The graph-cut weight is $w_{ij}$.
 \subsection{Notation}
 If we treat each index as a vertex in a graph, then the partition $\P$ divides these vertices into $\abs{\P}$ groups. 
 
