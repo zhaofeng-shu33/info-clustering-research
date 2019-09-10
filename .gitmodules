@@ -13,6 +13,6 @@
 [submodule "outlier_detection"]
 	path = experiment/outlier_detection
 	url = https://github.com/zhaofeng-shu33/info-detection-experiment
-[submodule "higra"]
-	path = experiment/higra
-	url = https://github.com/PerretB/Higra.git
+[submodule "verification"]
+	path = verification
+	url = https://gitee.com/freewind201301/info-clustering-special-case-verification.git

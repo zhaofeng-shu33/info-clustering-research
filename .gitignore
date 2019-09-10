@@ -1,9 +1,7 @@
 **/.vscode
-experiment_1/
 .DS_Store
 proof/*
 **/build
-literature/*
-note/*
+literature
 **/*.pdf
 **/__pycache__
