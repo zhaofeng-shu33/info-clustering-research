@@ -7,6 +7,7 @@ all: $(BUILD_DIR)/exportlist.bib $(BUILD_DIR)/main.pdf $(BUILD_DIR)/clustering.p
 
 $(BUILD_DIR)/exportlist.bib: exportlist.bib
     cp exportlist.bib $(BUILD_DIR)
+    
 $(BUILD_DIR)/main.pdf: main.tex
 	# run twice to generate the toc and make label and reference work
 	mkdir -p $(BUILD_DIR)

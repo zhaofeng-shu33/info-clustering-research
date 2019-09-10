@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/zhaofeng-shu33/info-clustering-research.svg?branch=master)](https://travis-ci.org/zhaofeng-shu33/info-clustering-research)
+[![Build Status](https://travis-ci.com/zhaofeng-shu33/info-clustering-research.svg?branch=master)](https://travis-ci.com/zhaofeng-shu33/info-clustering-research)
+
 # Introduction
 This project contains the in-progress research about info-clustering. 
 It can be divided into three parts in general:
