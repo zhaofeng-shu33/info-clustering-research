@@ -16,3 +16,6 @@
 [submodule "verification"]
 	path = verification
 	url = https://gitee.com/freewind201301/info-clustering-special-case-verification.git
+[submodule "data-clustering"]
+	path = experiment/data-clustering
+	url = https://github.com/zhaofeng-shu33/data-clustering-experiment.git
