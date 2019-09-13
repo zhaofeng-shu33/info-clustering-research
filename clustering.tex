@@ -370,14 +370,23 @@ I(Z_V) = \min_{ \P \in \Pi'(V)} \frac{ \sum_{C \in \P} c(\delta_{G}(C))}{2(\abs{
 \end{equation}
 where $\delta_{G}(C) = \{e = (u, v) \in E | u \in C, v \not\in C\} $ and $c(A) = \sum_{e\in A} H_e$.
 This is (4.21a) in literature \cite{ic}
-\subsection{Difference from entropy formulation}
+\subsection{Relatition with entropy formulation}
 In literature \cite{ic}, the definition of MMI is based on the submodular function is $H(Z_C)$, which is the joint entropy. It has the non-deceasing property such that the larger $C$ is, the bigger value $H(Z_C)$ takes. However, in our formulation of MMI, we use the graph cut function, it does not have the monotonic property and $f(V) = 0$ from the definition. Therefore, our work is not a special case of literature \cite{ic} even through many conclusions are similar.
 
 In PIN model, the two definitions coincide. But the PIN model has strong assumptions and is not practical. Our formulation of MMI is suitable to be applied directly to cluster cases in real work application.
-\subsection{Difference from mac}
+\subsection{Relation with mac}
 minimum average cost is a similar but different clustering method.
 
 In literature \cite{mac}, only the first critical value and partition information are used to do the clustering task. The threshold is controlled by $\beta$ not our $\lambda$.
+
+\subsection{Relation with cross information potential}
+In our formulation, $f(C)$ can be regarded as the unnormalized cross information potential \cite{gokcay2002information} when the Gaussian kernel similarity metric is used.
+
+The unnormalized cross information for $A$ and $B$ is defined as 
+\begin{equation}
+\textrm{U-CIP}(A, B) = \sum_{i \in A, j \in B} G(x_i - x_j, \sigma^2)
+\end{equation}
+where $G$ is pdf of Gaussian distribution. This quantity measures shared information between two different random varibles. In this interpretation, we treat each cluster as a random variable and data within this cluster as its sample. The distribution for this cluster random variable is estimated by Parzen Window Method using Gaussian kernel. Also a special Renyi entropy is used. For our problem, U-CIP measures the cross information potential between cluster $C$ and the others $V\backslash C$.
 \section{Contributions}
 \begin{enumerate}
 \item Use graph cut function to reformulate info-clustering.
