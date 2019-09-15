@@ -19,3 +19,6 @@
 [submodule "community-detection"]
 	path = experiment/community-detection
 	url = https://github.com/zhaofeng-shu33/hierarchical-community-detection
+[submodule "iconip2019"]
+	path = paper/iconip
+	url = https://github.com/zhaofeng-shu33/iconip2019paper
