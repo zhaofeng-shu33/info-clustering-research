@@ -22,3 +22,6 @@
 [submodule "iconip2019"]
 	path = paper/iconip
 	url = https://github.com/zhaofeng-shu33/iconip2019paper
+[submodule "presentation"]
+	path = presentation
+	url = https://github.com/zhaofeng-shu33/info-clustering-presentation
