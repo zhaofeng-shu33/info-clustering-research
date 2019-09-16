@@ -14,15 +14,5 @@ It can be divided into three parts in general:
  * `pmf.tex`: article about parametric Dilworth truncation algorithm. 
  * `psp_improved.tex`: article about improved principal sequence of partition algorithm.
 
-### Template 
-The presentation uses a beamer template customized for TBSI Lab2C, which is based on `Madrid`, modified by [xiangxiang-xu](https://xiangxiangxu.com/)
-and packaged by *zhaofeng-shu33*. If you want to use it in your beamer presentation, follows:
 
-```latex
-\documentclass{beamer}
-\usetheme{Lab2C}
-%other materials
-```
-
-### 
 
