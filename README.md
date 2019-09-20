@@ -4,7 +4,7 @@
 This project contains the in-progress research about info-clustering. 
 It can be divided into three parts in general:
 
-* research document, paper, presentation slide and poster material
+* research document, paper, presentation slides and poster materials.
 * experiment code and result, see the subdirectory `experiment` for detail.
 * [info-clustering](https://github.com/zhaofeng-shu33/principal_sequence_of_partition) implementation, see the submodule `code` for detail.
 
