@@ -61,9 +61,7 @@ we can get $T_0 = \{1,2,3\} $ and $T_k = \{3\}$. And their corresponding lines a
 
 Algorithm \ref{alg:pmfT} is theoretical computable. To implement it, we need to figure out how to solve $\tilde{\lambda}_2$ and how to compute $\tilde{h}(\lambda)$ for given $\lambda$ efficiently.
 
-To compute $\tilde{h}(\lambda)$ , we need to convert the problem to a weighted directed graph.
-For the original graph, each edge is splitted into two directed arc with same capacity.
-Introduce a source node $s$ while $j$ is treated as target node.  then change
+To compute $\tilde{h}(\lambda)$ , we introduce a source node $s$ while $j$ is treated as target node.  then change
 $c^{\lambda}(s,v)=\max\{0, -y^{\lambda}_v\}, c^{\lambda}(v,j) += \max\{0, y^{\lambda}_v\}$ for $ v=1 $ to $\abs{V}$ and $v \neq  j$.
 In detailed form is:
 \begin{align}
@@ -123,15 +121,15 @@ T_i & \lambda_i \leq \lambda < \lambda_{i+1}, \textrm{ for } i=1, 2, \dots, k-1 
 T_k & \lambda \geq \lambda_{k}
 \end{cases}
 \end{equation}
-Parametric Representation. For edge cost of the converted directed graph, we have
 
-$\lambda_2$ computing can be simplified in previous. For line \ref{findLambda} in  Algorithm \ref{alg:pmfC},  we can rewrite it as:
+
+The computation of $\lambda_2$ can be simplified algebraically. For line \ref{findLambda} in  Algorithm \ref{alg:pmfC},  we can rewrite it as:
 \begin{equation*}
 \sum_{v\in V'\backslash (S\cup T)} [-y^{\lambda}_v ] = g(T)-g(S\backslash\{s\})
 \end{equation*}
 where $g(B)$ is the graph cut function of the original graph $G$.
 
-Now we give the algorithm to compute the Dilworth truncation $$\min_{\P}\{f[\P] - \abs{\P} \lambda \}$$for all values of $\lambda$. We call the algorithm parametric Dilworth truncation (Algorithm \ref{alg:pdt}) to distinguish Dilworth truncation algorithm which is applied for a given $\lambda$.
+Now we give the algorithm to compute the Dilworth truncation $$\min_{\P}\{f[\P] - \abs{\P} \lambda \}$$for all values of $\lambda$. We call the algorithm parametric Dilworth truncation (Algorithm \ref{alg:pdt}) to distinguish it from Dilworth truncation algorithm which is applied for a given $\lambda$.
 \begin{algorithm}
 \caption{paramatric Dilworth truncation $(\P, \mathcal{L})=\texttt{pdt}(G(V,E), c(e))$}\label{alg:pdt}
 \begin{algorithmic}[1]
@@ -145,8 +143,8 @@ Now we give the algorithm to compute the Dilworth truncation $$\min_{\P}\{f[\P] 
 \STATE $y^{\lambda}_j = (f(\{j\}), +\infty)$
 \ELSE
 \STATE $ i = \max_i \{ u \in \mathcal{A}[i]\}$
-\IF{$i$ exists and $L[i] > \frac{a_u - b_u}{2}$}
-\STATE $y_u^{\lambda} = (a_u, a_u - 2 L[i])$
+\IF{$i$ exists and $L[i] > a_u - b_u$}
+\STATE $y_u^{\lambda} = (a_u, a_u - L[i])$
 \ENDIF
 \ENDIF
 \ENDFOR
@@ -166,7 +164,8 @@ to $\widetilde{\mathcal{L}}$
 \end{algorithmic}
 \end{algorithm}
 \footnotetext{$G_j$ is $G$ restricted on node set whose index is no more than $j$}
-Algorithm \ref{alg:pmfC} has numerical issues. Using old maximum flow as preflow to initialize can possiblity lead to very small negative excess. How to filter out these negative excess is related to numerical floating accuracy.
+
+Algorithm \ref{alg:pmfC} has numerical issues. Using old maximum flow as preflow to initialize can possibility lead to very small negative excess. How to filter out these negative excess is related to numerical floating accuracy.
 
 \section{Algorithm Complexity of PMF\_R with highest relabel rule}
 Suppose $\abs{V}=\abs{E}^2$ and $n=\abs{V}$. Then the time complexity of one invocation of preflow algorithm for a graph with $n$ nodes is $O(n^3)$. Let $T(n)$ be the running time of \texttt{slice} routine not including the time of the preflow algorithm.
