@@ -7,13 +7,13 @@
 \maketitle
 Using paramatric maximum flow algorithm to solve the following problem:
 \begin{equation}\label{eq:pmq}
-\tilde{h}(\lambda) = \min_{j \in A \subseteq V} f(A) - 2\lambda - y^{\lambda}(A)
+\tilde{h}(\lambda) = \min_{j \in A \subseteq V} f(A) - \lambda - y^{\lambda}(A)
 \end{equation}
 where
-$y^{\lambda}_i = \min\{a_i - 2\lambda, b_i\}$, where $b_i$ maybe $+\infty$.
+$y^{\lambda}_i = \min\{a_i - \lambda, b_i\}$, where $b_i$ maybe $+\infty$.
 The minimum solution to \eqref{eq:pmq} is denoted as $A^{\lambda}$ since different $\lambda$ will produce different set $A$. The structure of the solution is a nested family like \eqref{eq:Alambda}.
 
-If $\lambda$ is sufficiently large, then all $y_i^{\lambda}$ will have the form $a_i - 2 \lambda$ and the minimum solution is $\{j\}$; on the other hand, since we are only concerned about $\lambda \geq 0$. We can compute \eqref{eq:pmq} for $\lambda = -\epsilon$. Then we have $T_0$ and $T_k$ in \eqref{eq:Alambda}.
+If $\lambda$ is sufficiently large, then all $y_i^{\lambda}$ will have the form $a_i - \lambda$ and the minimum solution is $\{j\}$; on the other hand, since we are only concerned about $\lambda \geq 0$. We can compute \eqref{eq:pmq} for $\lambda = -\epsilon$. Then we have $T_0$ and $T_k$ in \eqref{eq:Alambda}.
 
 An important observation of function $\tilde{h}(\lambda)$ is that it is piecewise linear and concave. $T_0$ corresponds a piecewise linear part and $T_k$ corresponds another one.  To compute the nested family between $T_0$ and $T_k$, we use divide and conquer techniques. The algorithm is presented in Algorithm \ref{alg:pmfT}.
 
@@ -43,23 +43,23 @@ An important observation of function $\tilde{h}(\lambda)$ is that it is piecewis
 \footnotetext{we let $\lambda_{k+1} = +\infty$}
 
 \begin{example}\label{ex:3point}
-We consider an example problem. Consider a three node graph (see fig \ref{fig:ex}). $G=(\{1,2,3\},\{(1,2),(1,3),(2,3)| w_{12}=w_{23}=1, w_{13}=5\})$ and $f(A)$ is the graph cut function. Let $j=3$ and $y^{\lambda}_i = -2\lambda$ for $i=1,2,3$.
+We consider an example problem. Consider a three node directed graph (see fig \ref{fig:ex}). $G=(\{1,2,3\},\{(1,2),(1,3),(2,3)| w_{12}=w_{23}=1, w_{13}=5\})$ and $f(A)$ is the graph cut function. Let $j=3$ and $y^{\lambda}_i = -\lambda$ for $i=1,2,3$.
 \begin{figure}[!ht]
 \centering
 \begin{subfigure}{0.45\textwidth}
-\includegraphics[width=\textwidth]{pic/example.eps}
+\includegraphics[width=\textwidth]{pic/example_directed.eps}
 \caption{A three node graph}\label{fig:ex}
 \end{subfigure}
 \begin{subfigure}{0.45\textwidth}
-\includegraphics[width=\textwidth]{pic/example_pst.eps}
+\includegraphics[width=\textwidth]{pic/example_pst_single.eps}
 \caption{method to solve $\tilde{h}(\lambda)$}\label{fig:linseg}
 \end{subfigure}
 \caption{}
 \end{figure}
-we can get $T_0 = \{1,2,3\} $ and $T_k = \{3\}$. And their corresponding lines are $4\lambda$ and $6$. As Figure \ref{fig:linseg} shows, they intersect at $(1.5,6)$, the set $T_1=\{1,3\}$; and we can compute $\tilde{h}(1.5)=5<6$. That is, there are turning points at interval $(0, 1.5)$ and $(1.5, +\infty)$ respectively. For the first interval, we compute the intersection of $4\lambda$ and $2+2\lambda$ and get$(1,4)$; Also $\tilde{h}(1)=4$, therefore, the computation for the first interval is finished. The same goes for the second interval. And finally, we can get $L=[\lambda_1, \lambda_2, +\infty]$ and $A^{\lambda} = [\{1,2,3\}, \{1,3\},\{3\}]$
+we can get $T_0 = \{1,2,3\} $ and $T_k = \{3\}$. And their corresponding lines are $2\lambda$ and $6$. As Figure \ref{fig:linseg} shows, they intersect at $(3,6)$, the set $T_1=\{1,3\}$; and we can compute $\tilde{h}(3) = 4 < 6$. That is, there are turning points at interval $(0, 3)$ and $(3, +\infty)$ respectively. For the first interval, we compute the intersection of $2\lambda$ and $1+\lambda$ and get $(1,2)$; Also $\tilde{h}(1)=2$, therefore, the computation for the first interval is finished. The same goes for the second interval. And finally, we can get $L=[\lambda_1, \lambda_2, +\infty]$ and $A^{\lambda} = [\{1,2,3\}, \{1,3\},\{3\}]$
 \end{example}
 
-Algorithm \ref{alg:pmfT} is theoretical computable. To make it possible to implenmetation, we need to figure out how to solve $\tilde{\lambda}_2$ and how to compute $\tilde{h}(\lambda)$ for given $\lambda$ efficiently.
+Algorithm \ref{alg:pmfT} is theoretical computable. To implement it, we need to figure out how to solve $\tilde{\lambda}_2$ and how to compute $\tilde{h}(\lambda)$ for given $\lambda$ efficiently.
 
 To compute $\tilde{h}(\lambda)$ , we need to convert the problem to a weighted directed graph.
 For the original graph, each edge is splitted into two directed arc with same capacity.
