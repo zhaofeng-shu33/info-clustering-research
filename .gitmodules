@@ -15,7 +15,7 @@
 	url = https://github.com/zhaofeng-shu33/data-clustering-experiment.git
 [submodule "nips-authorship"]
 	path = experiment/nips-authorship
-	url = https://gitee.com/freewind201301/nips-authorship
+	url = https://github.com/zhaofeng-shu33/nips-authorship
 [submodule "community-detection"]
 	path = experiment/community-detection
 	url = https://github.com/zhaofeng-shu33/hierarchical-community-detection
