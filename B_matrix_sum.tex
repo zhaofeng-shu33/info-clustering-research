@@ -6,6 +6,32 @@
 \begin{document}
 
 \maketitle
+\textbf{weakly dependent for multiple random variables}
+It is known that when we say two random variables $X$ and $Y$ are weakly dependent, we may either
+say $P_{Y|X}$ is in a small neighborhood of $P_Y$:
+\begin{equation}
+P_{Y|X=x}(y) = P_Y(y) +\epsilon \phi_x(y) \sqrt{P_Y(y)}
+\end{equation}
+where $\norm{\phi}\leq 1$, or we say $I(X;Y)=O(\epsilon^2)$ (provided $P_Y(y) \geq \gamma$).
+
+Now we extend this definition to multiple random variables:
+\begin{definition}\label{def:general}
+$X_1, \dots, X_n$ are weakly dependent if there exist random variable $U$ such that
+$(X_1, \dots, X_n)$ is weakly dependent with $U$ and $X_1, \dots X_n$ are independent conditioned
+on $U$.
+\end{definition}
+If $n=2$ we can show that Definition \ref{def:general} leads to the commonly
+used definition for two random variables.
+
+Using the concept of weakly dependent for multiple variables, we can show that the total correlation
+$D(P_{X_1, \dots, X_n}||P_{X_1} \dots P_{X_n})$ reduces to a simple summation form.
+\begin{theorem}
+If $X_1, \dots, X_n$ are weakly dependent, then
+\begin{equation}
+D(P_{X_1, \dots, X_n}||P_{X_1} \dots P_{X_n}) = \frac{1}{2}\sum_{i\neq j}\norm{\widetilde{B}_{ij}}_F^2
+\end{equation}
+\end{theorem}
+\begin{proof}
 Suppose $U$ is a discrete distribution over $\{1, 2,\dots, K\}$, $X_1, \dots, X_n$ are independent conditioned on $U$.
 Further suppose that each $X_i$ is weakly dependent with $U$.  That is, 
 \begin{equation}\label{XUk}
@@ -70,8 +96,9 @@ D(P_{X_1,\dots, X_n}|| P_{X_1}\dots P_{X_n}) & ={1 \over 2} \sum_{x_1,\dots,x_n}
 \end{align*}
 From the definition of $\widetilde{B}_{ij}$, the above is the summation over $\norm{\widetilde{B}_{ij}}^2_F$(the coupling item is zero). Therefore we get the second order approximation:
 \begin{equation}
-D(P_{X_1,\dots, X_n}|| P_{X_1}\dots P_{X_n}) \approx  {1 \over 2} \sum_{i\neq j} \norm{\widetilde{B}_{ij}}^2_F 
+D(P_{X_1,\dots, X_n}|| P_{X_1}\dots P_{X_n}) \approx  {1 \over 2} \sum_{i\neq j} \norm{\widetilde{B}_{ij}}^2_F
 \end{equation}
+\end{proof}
 Let $\Pi$ be the partition of $V=\{1,2,\dots, n\}$. Then we can show that 
 \begin{equation}
 D(P_{X_V} || \prod_{C\in \Pi} P_{X_{C}}) \approx {1 \over 2}\sum_{\substack{(i,j) \not\in C\\ C\in \Pi}} \norm{\widetilde{B}_{ij}}_F^2
