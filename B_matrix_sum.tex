@@ -1,0 +1,134 @@
+\documentclass{article}
+
+\title{clustering}
+\author{zhaof17}
+\date{April 2020}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{footmisc}
+\usepackage{xcolor}
+\DeclareMathOperator\E{\mathbb{E}}
+\DeclareMathOperator\Var{\mathrm{Var}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\def\R{\mathbb{R}}
+\def\P{\mathcal{P}}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+\DeclarePairedDelimiter\inner{\langle}{\rangle}
+\def\red#1{\textcolor{red}{#1}}
+\makeatletter
+\newcommand{\algorithmicfunction}{\textbf{function}}
+\newcommand{\algorithmicendfunction}{\algorithmicend\ \algorithmicfunction}
+\newenvironment{ALC@func}{\begin{ALC@g}}{\end{ALC@g}}
+\newcommand{\FUNCTION}[2][default]{\ALC@it\algorithmicfunction\ #2\ %
+\textbf{:}%
+\ALC@com{#1}\begin{ALC@func}}
+\ifthenelse{\boolean{ALC@noend}}{
+    \newcommand{\ENDFUNCTION}{\end{ALC@func}}
+  }{
+    \newcommand{\ENDFUNCTION}{\end{ALC@func}\ALC@it\algorithmicendfunction}
+  }
+\makeatother
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{example}{Example}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\begin{document}
+
+\maketitle
+$D(P_{1,2,3} || P_1 P_2 P_3) \approx 1/2 *(\norm{\widetilde{B}_{12}}^2_F
++ \norm{\widetilde{B}_{13}}^2_F
++ \norm{\widetilde{B}_{23}}^2_F) $
+
+$$
+D(P_{X^d|U = u} || P_{X^d}) < I(X^d; U) / P_U(u) < eps^2 / (2 * gamma)
+$$
+Suppose $U$ is uniformly distributed over $\{1, 2,\dots, 2K\}$, $X_1, \dots, X_n$ are independent conditioned on $U$.
+Further suppose that each $X_i$ is weakly dependent with $U$.  That is, 
+$$
+P_{X_i | U=k}(x) = P_{X_i} (x)( 1 + \epsilon {\phi^{(k,i)}(x ) \over \sqrt{P_{X_i}(x)}} )
+$$
+We also have
+\begin{align*}
+P_{X_i, X_j | U = k}(x_i, x_j)
+=& P_{X_i | U=k}(x_i)
+P_{X_j | U=k}(x_j) \\
+=& P_{X_i}(x_i)P_{X_j}(x_j)
+(1 + \epsilon(\frac{\phi^{(k,i)}(x_i)}{P_{X_i}(x_i)}
++ \frac{\phi^{(k,j)}(x_j)}{P_{X_j}(x_j)}) + \epsilon^2\frac{\phi^{(k,i)}(x_i)\phi^{(k,j)}(x_j)}{P_{X_i}(x_i)P_{X_j}(x_j)})
+\end{align*}
+Since 
+\begin{align*}
+P_{X_i}(x) &= \sum_{k=1}^{2K} P_{X_i | U=k}(x) P_U(k) \\
+& = {1 \over 2K} \sum_{k=1}^{2K}P_{X_i} (x)( 1 + \epsilon {\phi^{(k,i)}(x ) \over \sqrt{P_{X_i}(x)}} )\\
+\Rightarrow & \sum_{k=1}^{2K} {\phi^{(k, i)}(x) \over \sqrt{P_{X_i}(x)}} =0,\forall i, x\in \mathcal{X}
+\end{align*}
+
+Then
+\begin{align*}
+P_{X_1,\dots,X_n}(x_1,\dots,x_n)  &= \sum_{k=1}^{K} P_{X_1,\dots,X_n | U=k}(x_1,\dots,x_n) P_U(u_k) \\
+&=  \sum_{k=1}^{K}P_U(u_k) \prod_{i=1}^n P_{X_i|U=k}(x_i)\\
+&= \sum_{k=1}^{K} P_U(u_k)\prod_{i=1}^n \left(P_{X_i} (x_i)( 1 + \epsilon {\phi^{(k,i)}(x_i ) \over \sqrt{P_{X_i}(x_i)}} )\right)\\
+&=  \sum_{k=1}^{K}P_U(u_k) (\prod_{i=1}^n  P_{X_i} (x_i))
+\left( 1 + \epsilon\sum_{i=1}^n {\phi^{(k,i)}(x_i) \over \sqrt{P_{X_i}(x_i)}} + \epsilon^2\sum_{i\neq j}{\phi^{k,i}(x_i)\phi^{k,j}(x_j)\over \sqrt{P_{X_i}(x_i)P_{X_j}(x_j)} }\right)+o(\epsilon^2) \\
+&= (\prod_{i=1}^n  P_{X_i} (x_i))
+(1+\epsilon\sum_{i=1}^n \sum_{k=1}^{K} P_U(u_k){\phi^{(k,i)}(x_i) \over \sqrt{P_{X_i}(x_i)}} \\
+&+\epsilon^2 \sum_{k=1}^{K} P_U(u_k)\sum_{i\neq j}{\phi^{k,i}(x_i)\phi^{k,j}(x_j)\over \sqrt{P_{X_i}(x_i)P_{X_j}(x_j)} } ) + o(\epsilon^2)\\
+&= (\prod_{i=1}^n  P_{X_i} (x_i))
+\left(1 +\sum_{i\neq j}{\epsilon^2 \over 2K}\sum_{k=1}^{2K}{\phi^{k,i}(x_i)\phi^{k,j}(x_j)\over \sqrt{P_{X_i}(x_i)P_{X_j}(x_j)} }\right) + o(\epsilon^2)
+\end{align*}
+If only two random variables are used, we have:
+$$P_{X_i, X_j}(x_i, x_j) = P_{X_i}(x_i)P_{X_j}(x_j)\left(1+{\epsilon^2 \over 2K} \sum_{k=1}^{2K}{\phi^{k,i}(x_i)\phi^{k,j}(x_j)\over \sqrt{P_{X_i}(x_i)P_{X_j}(x_j)} } \right) \footnotemark$$
+\footnotetext{no $o(\epsilon^2)$ here}
+Let $\widetilde{B}_{ij}(x_i, x_j)={P_{X_i, X_j}(x_i,x_j) - P_{X_i}(x_i)P_{X_j}(x_j) \over \sqrt{P_{X_i}(x_i)P_{X_j}(x_j)}} $, then we have:
+\begin{align*}
+{\epsilon^2 \over 2K} \sum_{k=1}^{2K}{\phi^{k,i}(x_i)\phi^{k,j}(x_j)\over \sqrt{P_{X_i}(x_i)P_{X_j}(x_j)} } & = {P_{X_i, X_j}(x_i, x_j) - P_{X_i}(x_i)P_{X_j}(x_j) \over P_{X_i}(x_i)P_{X_j}(x_j)} \\
+& = {\widetilde{B}_{ij}(x_i, x_j) \over \sqrt{P_{X_i}(x_i)P_{X_j}(x_j)} }
+\end{align*}
+Therefore, we have 
+\begin{equation}
+P_{X_1,\dots,X_n}(x_1,\dots,x_n) =  (\prod_{i=1}^n  P_{X_i} (x_i))\left ( 1 + \sum_{i\neq j}{\widetilde{B}_{ij}(x_i, x_j) \over \sqrt{P_{X_i}(x_i)P_{X_j}(x_j)} }\right) +o(\epsilon^2)
+\end{equation}
+Then $P_{X_1,\dots, X_n}$ is in the neighborhood of $P_{X_1}\dots P_{X_n}$ with $$\phi(x_1,\dots, x_n)=
+\sqrt{P_{X_1}(x_1)\dots P_{X_n}(x_n)}\left(\sum_{i\neq j}{\widetilde{B}_{ij}(x_i, x_j) \over \sqrt{P_{X_i}(x_i)P_{X_j}(x_j)} }\right)+o(\epsilon^2)$$
+\begin{align*}
+D(P_{X_1,\dots, X_n}|| P_{X_1}\dots P_{X_n}) & ={1 \over 2} \sum_{x_1,\dots,x_n}\phi^2(x_1,\dots, x_n) \\
+& = {1\over 2}\sum_{x_1,\dots,x_n} (\prod_{i=1}^n  P_{X_i} (x_i)) \left(\sum_{i\neq j}{\widetilde{B}_{ij}(x_i, x_j) \over \sqrt{P_{X_i}(x_i)P_{X_j}(x_j)} }\right)^2 +o(\epsilon^2) 
+\end{align*}
+From the definition of $\widetilde{B}_{ij}$, the above is the summation over $\norm{\widetilde{B}_{ij}}^2_F$(the coupling item is zero). Therefore we get the second order approximation:
+\begin{equation}
+D(P_{X_1,\dots, X_n}|| P_{X_1}\dots P_{X_n}) \approx  {1 \over 2} \sum_{i\neq j} \norm{\widetilde{B}_{ij}}^2_F 
+\end{equation}
+Let $\Pi$ be the partition of $V=\{1,2,\dots, n\}$. Then we can show that 
+\begin{equation}
+D(P_{X_V} || \prod_{C\in \Pi} P_{X_{C}}) \approx {1 \over 2}\sum_{\substack{(i,j) \not\in C\\ C\in \Pi}} \norm{\widetilde{B}_{ij}}_F^2
+\end{equation}
+Then the multivariate mutual information can be defined as:
+\begin{equation}
+I(Z_V) = \min_{\Pi} {1 \over 2( \abs{\Pi} - 1) } \sum_{\substack{(i,j) \not\in C\\ C\in \Pi}} \norm{\widetilde{B}_{ij}}_F^2
+\end{equation}
+Specifically, when $n=2$ we have 
+\begin{equation}
+I(X;Y) \approx {1 \over 2} \norm{\widetilde{B}_{XY}}_F^2
+\end{equation}
+let $B(x,y)=\frac{P_{X,Y}(x,y)}{\sqrt{P_X(x)P_Y(y)}}$, then we have $\widetilde{B}(x,y)=B(x,y)-\sqrt{P_X(x)P_Y(y)}$ and 
+\begin{equation}
+\norm{\widetilde{B}}_F^2 = \norm{B}_F^2 -1
+\end{equation}
+
+\end{document}
+
