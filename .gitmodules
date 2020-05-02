@@ -25,3 +25,6 @@
 [submodule "presentation"]
 	path = presentation
 	url = https://github.com/zhaofeng-shu33/info-clustering-presentation
+[submodule "paper/journal"]
+	path = paper/journal
+	url = https://github.com/zhaofeng-shu33/info-clustering-journal-paper
