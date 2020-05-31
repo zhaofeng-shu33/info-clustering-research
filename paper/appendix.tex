@@ -135,22 +135,23 @@ Since $ u < v$, we have $\abs{A_2 \backslash A_1}=0$, that is $A_2 \subseteq A_1
 By the continuity of $\tilde{h}(\lambda)$, if $u<v$ belongs to different interval, we can use the breakpoints as the springboard. That is, if $\lambda_j < u \leq \lambda_{j+1} \dots \leq \lambda_{j+k} \leq v$,  we will have $ A_1 \supseteq A_{\lambda_{j+1}} \dots \supseteq A_{\lambda_{j+k}} \supseteq A_2$.
 \end{proof}
 \begin{lemma}\label{lemma:sub}
-	If node set $S_1 \cap S_2 \neq \emptyset$ and $I(Z_{S_1}) > I(Z_{S_2})$, then $S_2$ is not a cluster of $G$.
+	If node set $S_1 \cap S_2 \neq \emptyset, S_1 \not\subseteq S_2$ and $I(Z_{S_1}) \geq I(Z_{S_2})$, then $S_2$ is not a cluster of $G$.
 \end{lemma}
 \begin{proof}
 	From Lemma \ref{lemma:laminarity},
-	$I(Z_{S_1\cup S_2}) > \min\{I(Z_{S_1}), I(Z_{S_2})\} = I(Z_{S_2})$. From bottom-up formulation,  $S_2$ cannot be a cluster of $G$.
+	$I(Z_{S_1\cup S_2}) \geq \min\{I(Z_{S_1}), I(Z_{S_2})\} = I(Z_{S_2})$. From bottom-up formulation,  $S_2$ cannot be a cluster of $G$.
 \end{proof}
 \input{proposition_reweight.tex}
 
 \begin{proof}[Proof of Proposition \ref{prop:reweight}]
 	We will show that if $U \neq S_1$ and $U \neq S_2$, $U$ cannot be a cluster of $G$.
 	
-For any $U \in S_1 \cup S_2 $ and $\abs{U} \leq n$, by Corollary \ref{cor:complete}, $I(Z_U) < I(Z_{S_1})$.
-Since either $U \cap S_1 \neq \emptyset$ or $U \cap S_2 \neq \emptyset$ holds, by Lemma \ref{lemma:sub}, $I(Z_{S_1})= I(Z_{S_2}) > I(Z_U) \Rightarrow U$ is not a cluster of $G$.
+For any $U \in S_1 \cup S_2 $ and $\abs{U} \leq n$, If $U \in S_1$ or $U \in S_2$, then by Corollary \ref{cor:complete}, $I(Z_U) < I(Z_{S_1})$.
+If $U \cap S_1 \neq \emptyset$ or $U \cap S_2 \neq \emptyset$ holds, by Lemma \ref{lemma:sub}, $I(Z_{S_1})= I(Z_{S_2}) > I(Z_U) \Rightarrow U$ is not a cluster of $G$.
 
-For $\abs{U} > n$ but $U \neq V = S_1 \cup S_2$. Let $\P' = \{\{i\}| i\in U\}$, $I(Z_U) \leq I_{\P'}(Z_V) = \frac{\frac{n^2(n-1)}{2} + m_1 + \frac{k(k-1)n}{2}}{n+k-1}$ where $m_1 \leq nk$ and $k=\abs{U} - n < n$. 
-We compare it to $I(Z_{S_1}) = \frac{n^2}{2}$ and we can show that $I(Z_{S_1}) - I_{\P'}(Z_U) \geq \frac{nk(n-1-k)}{2(n+k-1)}$. If $k<n-1$, $I(Z_{S_1})>I(Z_U)$, $U$ is not a cluster by Lemma \ref{lemma:sub}. If $k=n-1$, and $I(Z_U) = I(Z_{S_1})$, then $m_1=nk$. In such case, $m\geq m_1=n(n-1)$, for $\P=\{\{i\}|i\in V\}$ we have $I_{\P}(Z_V) \geq \frac{n(n-1)+n^2(n-1)}{2n-1} > I_{\P'}(Z_U)=\frac{n^2}{2}$. Then $I(Z_V) = I_{\P}(Z_V) > I_{\P'}(Z_U) \geq I(Z_U)$ and $U$ cannot be a cluster of $G$.
+For $\abs{U} > n$ but $U \neq V = S_1 \cup S_2$. Suppose $S_2 \subset U$. Let $\P' = \{\{i\}| i\in U\}$, $I(Z_U) \leq I_{\P'}(Z_U) = \frac{\frac{n^2(n-1)}{2} + m_1 + \frac{k(k-1)n}{2}}{n+k-1}$ where $m_1 \leq nk$ and $k=\abs{U} - n < n$. 
+We compare it to $I(Z_{S_1}) = \frac{n^2}{2}$ and we can show that $I(Z_{S_1}) - I_{\P'}(Z_U) \geq \frac{nk(n-1-k)}{2(n+k-1)}$. If $k<n-1$, $I(Z_{S_1})>I(Z_U)$, $U$ is not a cluster by Lemma \ref{lemma:sub}.
+If $k=n-1$, and $I(Z_U) = I(Z_{S_1})$. Since $U\cap S_1 \neq \emptyset$, Using Lemma \ref{lemma:laminarity} we have $I(Z_V)= I(Z_{U\cup S_1}) \geq \min\{I(Z_U), I(Z_{S_1})\} = \frac{n^2}{2}$. Then we must have $I(Z_V) = I(Z_U)$ and $U$ cannot be a cluster in this case.
 
  In either case, $U$ is not a cluster of $G$ for $1<\abs{U}<2n, U \neq S_1, U\neq S_2$. Then $I(Z_V)$ can be computed by comparing $I_{\P}(Z_V) = \frac{m+n^2(n-1)}{2n-1}$ and $I_{\{S_1, S_2\}}(Z_V)=m$.
 
