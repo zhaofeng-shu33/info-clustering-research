@@ -1,5 +1,31 @@
 \documentclass{article}
+\usepackage{algorithmic}
 \begin{document}
 Using $\gamma_N$ implicitly assumes inliers come from one class.
 If we are required to detect outliers in a multi-class dataset, we can use other critical values of $C_{\gamma}(Z_V)$ starting from the second largest one. Actually we do not need to manually choose which threshold to use.
+
+Assuming the clusters of inliners are of equal size $N$ and the total number of
+outliers $M$ is less than $N$.
+
+If we know there are $k$ classes, we should choose the critical value $\gamma_{-k}$ as the threshold value instead of $\gamma_{-1}$ for simple outlier detection scenario.
+
+Suppose we do not know how many classes there are, which is often the case.
+
+An empirical and reasonable way is given as follows:
+We start from the finest partition $\mathcal{P}_{-1}$ and test whether the total number of data (equal to $N+M$) is larger than $2M$. If true, then $k=1$ and $\mathcal{P}_{-1}$ is our choice.
+Empirically, $M$ is estimated from $|\mathcal{P}_{-1}|$.
+
+The selection rule for $\mathcal{P}_{-k}$ is as follows:
+
+\begin{algorithmic}
+\STATE Let $k=1$
+\WHILE{ $ n \leq (k+1) |\mathcal{P}_{-k}|$}
+\STATE $k\leftarrow k+1$
+\ENDWHILE
+\end{algorithmic}
+
+We use $n$ to represent the total number of data. Notice that the condition $ n > (k+1) |\mathcal{P}_{-k}|$ is equivalent
+to $N>M$ when there are $k$ clusters and $k$ is small.
+
+
 \end{document}
