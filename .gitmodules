@@ -31,3 +31,6 @@
 [submodule "stability"]
 	path = experiment/stability
 	url = https://github.com/zhaofeng-shu33/hierarchical_clustering_stability.git
+[submodule "literature"]
+	path = literature
+	url = git@git.lug.ustc.edu.cn:zhaofeng-shu33/info_clustering_literature.git

@@ -3,7 +3,7 @@ exportlist.bib.sav
 **/.vscode
 .DS_Store
 proof/*
+literature_backup
 **/build
-literature
 **/*.pdf
 **/__pycache__
