@@ -5,5 +5,5 @@ exportlist.bib.sav
 proof/*
 literature_backup
 **/build
-**/*.pdf
+*eps-converted-to.pdf
 **/__pycache__
