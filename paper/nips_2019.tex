@@ -151,7 +151,7 @@ The partition to minimize equation \eqref{eq:ms} is $\P_k = \{\{1\},\{2\},\dots,
 \end{theorem}
 \begin{proof}
 We use Theorem \ref{thm:psp}. Since $h(\lambda)$ is piecewise linear, the first line segment of $h(\lambda)$ is $ - \lambda $ and the last line segment is $ f[\P_k] - \abs{V} \lambda$. Their intersection point is $(\lambda_{+}, -\lambda_{+})$ where $\lambda_{+} = \frac{f[\P_k]}{\abs{V}-1}$.
-Since $\frac{f[\P]}{\abs{\P}-1} \geq \lambda_{+} \iff f[\P] - \abs{\P}\lambda_{+} \geq - \lambda_{+}$, Equation \eqref{eq:GF} says the minimizer of $h(\lambda)$ at $\lambda = \lambda_{+}$ is either $\{V\}$ or $\{\{1\},\{2\},\dots,\{\abs{V}\}\}$ and $h(\lambda)$ has only two line segments. From geometric point of view, the solution to equation \eqref{eq:ms} is the first turning point of $h(\lambda)$ and it is equal to that of last turning point if and only if \eqref{eq:GF} holds.
+Since $\frac{f[\P]}{\abs{\P}-1} \geq \lambda_{+} \iff f[\P] - \abs{\P}\lambda_{+} \geq - \lambda_{+}$, equation \eqref{eq:GF} says the minimizer of $h(\lambda)$ at $\lambda = \lambda_{+}$ is either $\{V\}$ or $\{\{1\},\{2\},\dots,\{\abs{V}\}\}$ and $h(\lambda)$ has only two line segments. From geometric point of view, the solution to equation \eqref{eq:ms} is the first turning point of $h(\lambda)$ and it is equal to that of last turning point if and only if \eqref{eq:GF} holds.
 \end{proof}
 By Theorem \ref{thm:trival}, we can show that if all graph weights are of equal value, then by applying info-clustering we can only get trivial cluster $\{V\}$. Generally, we have the following proposition.
 \input{proposition_triangle_inequality.tex}
