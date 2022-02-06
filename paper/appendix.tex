@@ -80,9 +80,10 @@ for any $\P \in \Pi$. Then by Theorem \ref{thm:ta} in the paper, Proposition \re
 
 Let $n=\abs{V}$. For $\abs{\P}=n$, the equality of equation \eqref{eq:GF} holds. 
 
-Suppose equation \eqref{eq:GF} holds for any $\abs{\P} \geq k+1(k\geq 2)$, and for $\P=\{C_1, \dots, C_k\}$, with $\abs{C_1} \leq \abs{C_r}$ for $r=2,\dots, k$. Let $\abs{C_1}=n_1(\geq 2), \P_{C_1} = \{\{i\}| i \in C_1\}, \P'=\P_{C_1} \cup \P \backslash \{C_1\}$. Then we have $\abs{\P'} = k+n_1-1$. Using equation \eqref{eq:GF} for $\P'$ we have
+Suppose equation \eqref{eq:GF} holds for any $\abs{\P} \geq k+1(k\geq 2)$, and for $\P=\{C_1, \dots, C_k\}$,
+WLOG, assume $\abs{C_1}=n_1(\geq 2), \P_{C_1} = \{\{i\}| i \in C_1\}, \P'=\P_{C_1} \cup \P \backslash \{C_1\}$. Then we have $\abs{\P'} = k+n_1-1$. Using equation \eqref{eq:GF} for $\P'$ we have
 \begin{align}\label{eq:PPrelation}
-f[\P'] & = \sum_{i\in C_1, k \not\in C_1} w_{ik} + \sum_{r=2}^k \sum_{(i,j) \in E(C_r)} w_{ij}\geq \frac{k+n_1 -2}{n-1}\sum_{(i,j) \in E} w_{ij} \\
+f[\P'] & \geq \frac{k+n_1 -2}{n-1}\sum_{(i,j) \in E} w_{ij} \\
 f[\P] & =f[P'] - \sum_{(i,j) \in E(C_1)} w_{ij}
 \end{align}
 Applying triangle inequality $w_{ij} \leq w_{ik} + w_{jk}$ for given $k\not\in C_1$ and sum it over all $i, j \in C_1, i\neq j$, we have
