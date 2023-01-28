@@ -1,0 +1,25 @@
+\documentclass{ctexart}
+\usepackage{amsmath}
+\begin{document}
+    Chung Chan further summarized his work on Agglomerative Info-Clustering
+    in a journal \cite{chan2020agglomerative}.
+    In the actual implementation of Algorithm 2,
+    a slight different notation is used. 
+    That is: $j$ iterates from 2 to $k$,
+    \begin{equation}
+        g_j(B) = h(\bigcup_{i \in B \cup \{j\}} C_i)
+        - \sum_{i \in B \cup \{j\} } h(C_i), \textrm{ for } B \subseteq \{1, \dots, j-1\}
+    \end{equation}
+    This can be treated as reversing the order of appearance of elements
+    in $\mathcal{P}$ as 
+    $\mathcal{P} = \{C_k, \dots, C_1\}$.
+
+    Actually the implementation is not faster than the baseline implementation (See \cite{mac})
+    to compute the
+    principal sequence of partition. Though the theoretic
+    contributions are thorough, I don't think this article contain
+    much nutritional contents for practitioners of graph algorithms.
+    \bibliographystyle{plain}
+    \bibliography{exportlist}
+\end{document}
+

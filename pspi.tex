@@ -1,0 +1,20 @@
+\documentclass{ctexart}
+\begin{document}
+    In our implementation of PSPI algorithm,
+    after the construction of the clustering tree,
+    we extract the critical values and the partition list $L$
+    immediately. This process involves the a vector data structure
+    to traverse the
+    clustering tree. 
+    The vector $S$ maintains the current partition corresponding to the critical value.
+    At first, we push $V$ to the stack, which corresponds to the smallest critical value
+    $\lambda_1$. As we traverse
+    through the tree, we first pop $V$ out and add it to the partition list.
+    Then the children of the root node $V$ are added to the stack $S=\{C_1, \dots, C_k\}$.
+    Let $\lambda(C_i)$ denotes the  critical value $C_i$ corresponds.
+    Then $\lambda(C_1) \leq \dots \leq \lambda(C_k)$.
+    Afterwards, $C_1$ is first examined (popped). The children of $C_1$ are added to corresponding
+    positions of $S=\{C_2, \dots, C_k\}$ to maintain the order of critical values increasing.
+    The process is repeated until the vector $S$ only contains the leaf nodes. 
+
+\end{document}
