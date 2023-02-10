@@ -18,3 +18,6 @@ be copied to paper directory for better integration.
 ## Outliers Detection
 
 ## NIPS Authorship
+
+## Language Similarity
+Visualizing Language Lexical Similarity Clusters: A Case Study of Indonesian Ethnic Languages
