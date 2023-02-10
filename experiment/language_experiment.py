@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
-df_h = pd.read_csv('./similarities_1.0_high.tsv', sep='\t')
-# df = pd.read_csv('./similarities_1.0.tsv', sep='\t')
-# df_h=df[df['Robustness'] == 'High']
+# df_h = pd.read_csv('./similarities_1.0_high.tsv', sep='\t')
+df = pd.read_csv('./similarities_1.0.tsv', sep='\t')
+df_h=df[df['Robustness'] == 'High']
 N = 83 # robustness = high
 X = np.zeros([N, N])
 dic_map = {}
@@ -34,7 +34,10 @@ filter = [1,  2,  3,  4,  5,  6,  7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18,
 new_columns = []
 for i in filter:
     new_columns.append(columns[i])
+print(new_columns)
+
 df_sim = pd.DataFrame(X[filter,:][:,filter], index=new_columns, columns=new_columns)
-df_sim.to_csv('similarity_matrix_67.csv',sep=',')
+# df_sim.to_csv('similarity_matrix_67.csv',sep=',')
+np.save('X.npy', X[filter,:][:,filter])
 # import code
 # code.interact(local=locals())
