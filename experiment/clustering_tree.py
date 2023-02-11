@@ -24,7 +24,12 @@ for _n in ic.tree.traverse("postorder"):
     if _n.is_leaf():
         _n.name = new_columns[int(_n.name)]
 print(ic.tree)
-ic.tree.render('build/language_tree.pdf')
+ts = TreeStyle()
+# ts.rotation = 90
+ts.show_scale = False
+
+ic.tree.render('build/language_tree.pdf', tree_style=ts)
+ic.tree.render('build/language_tree.png', tree_style=ts)
 # ic.tree.render('build/language_tree.pdf')
 #       /-arb
 #      |
