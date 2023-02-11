@@ -1,5 +1,6 @@
 import numpy as np
 from info_cluster import InfoCluster
+from ete3 import TreeStyle
 
 ic = InfoCluster(affinity='precomputed')
 X=np.load('X.npy')
@@ -21,8 +22,9 @@ new_columns = ['阿拉伯语', '阿萨姆语', '孟加拉语', 'brx', 'bul',
 'mkd', 'nno', 'nso', 'zul']
 for _n in ic.tree.traverse("postorder"):
     if _n.is_leaf():
-        _n.name = columns[int(_n.name)]
+        _n.name = new_columns[int(_n.name)]
 print(ic.tree)
+ic.tree.render('build/language_tree.pdf')
 # ic.tree.render('build/language_tree.pdf')
 #       /-arb
 #      |
