@@ -1,0 +1,35 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+\title{Hierarchical Clustering Methods}
+\author{zhaofeng-shu33}
+\begin{document}
+\maketitle
+\begin{algorithm}\label{alg:bhac}
+	\begin{algorithmic}[1]
+		\REQUIRE $x_i \in \mathbb{R}^d, i=1,\dots, n$
+		\ENSURE A hierarchical clustering tree $\mathcal{T} = \textsf{hac}(\mathbf{X})$ where $\mathbf{X}=(x_1,\dots, x_n)$
+		\STATE initialize $D_i = \{x_i\}, i=1,\dots, n$ as leaf node of $\mathcal{T}$, $S=\{1, \dots, n\}, t=n+1$
+		\WHILE{$\abs{S}>1$}
+		\STATE\label{line:maxsim} $(i,j) = \arg\max_{i,j \in S} \textrm{sim}(D_i, D_j)$
+		\STATE $D_t = D_i \cup D_j$
+		\STATE add $D_t$ to the clustering tree, which is the parent node of $D_i$ and $D_j$
+		\STATE $S = S\cup \{t\}\backslash \{i, j\}$
+		\STATE $t=t+1$
+		\ENDWHILE
+	\end{algorithmic}
+\caption{Hierarchical Agglomerative Clustering Algorithm}
+\end{algorithm}
+To make the notation concise, we use $f(A,B)$ to represent the similarity function. If $f(A,B)$ can be computed in $O(1)$ times based on history information and we use exhaustive search to find the optimal value in line \ref{line:maxsim}. Then Algorithm \ref{alg:bhac} has $O(n^3)$ time complexity.
+
+For example, we let $f(A,B) = \frac{1}{d(A,B)}$ where $d(A,B)=\min_{i\in A, j\in B} \norm{x_i - x_j}_2$. Computing $f(A,B)$ without history information is costive. However, we can store the previous computing results which makes computing $f(A,B)$ is equivalent to look up a table (2d array) in $O(1)$ time. In every iteration of the main loop of Algorithm \ref{alg:bhac}, the loop-up table should be updated partially. That is,  $f(D_t, D_r)$ needs to be updated for $r\neq i,j$ and the time cost is $O(n)$\footnote{computation of $f(D_t, D_r)$ based on $f(D_i, D_r)$ and $f(D_j, D_r)$}, which is no more than finding the maximum value $O(n^2)$. Therefore, the naive implementation of HAC has $O(n^3)$ time complexity. 
+
+Using special data structures can we make the time complexity reduce to $O(n^2 \log n)$.
+Only under very special feature function $f(A,B)$ can the time complexity be further reduced.
+
+\end{document}
