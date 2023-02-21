@@ -10,8 +10,8 @@ columns = []
 index = 0
 for i in range(len(df_h)):
     row = df_h.iloc[i]
-    lan_1 = row['ISO_1']
-    lan_2 = row['ISO_2']
+    lan_1 = row['LangName_1']
+    lan_2 = row['LangName_2']
     if dic_map.get(lan_1) is None:
         dic_map[lan_1] = index
         columns.append(lan_1)
@@ -37,7 +37,7 @@ for i in filter:
 print(new_columns)
 
 df_sim = pd.DataFrame(X[filter,:][:,filter], index=new_columns, columns=new_columns)
-# df_sim.to_csv('similarity_matrix.csv', sep=',')
+df_sim.to_csv('similarity_matrix.csv', sep=',')
 np.save('X.npy', X[filter,:][:,filter])
 # import code
 # code.interact(local=locals())
